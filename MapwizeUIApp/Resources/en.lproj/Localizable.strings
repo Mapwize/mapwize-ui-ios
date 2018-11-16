@@ -1,0 +1,17 @@
+// Uncomment this to override default translation in the view
+// You can create localizable strings file for all languages if you want to.
+/*"Direction" = "Custom Direction";
+"Information" = "Custom Information";
+"Search a venue..." = "Custom Search a venue...";
+"Entering in %@..." = "Custom Entering in %@...";
+"Search in %@..." = "Custom Search in %@...";
+"Destination" = "Custom Destination";
+"Starting point" = "Custom Starting point";
+"Current location" = "Custom Current location";
+"No results" = "Custom No results";
+"Floor %@" = "Custom Floor %@";
+"Universes" = "Custom Universes";
+"Choose an universe to display it on the map" = "Custom Choose a universe to display it on the map";
+"Languages" = "Custom Languages";
+"Choose your preferred language" = "Custom Choose your preferred language";
+"Cancel" = "Custom Cancel";*/
