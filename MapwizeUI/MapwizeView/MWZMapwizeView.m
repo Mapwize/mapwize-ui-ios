@@ -1062,7 +1062,7 @@ const CGFloat marginRight = 16;
 #pragma mark MWZComponentLanguagesButtonDelegate
 
 - (void) didSelectLanguage:(NSString *)language {
-    [_mapwizePlugin setLanguage:language];
+    [_mapwizePlugin setLanguage:language forVenue:[_mapwizePlugin getVenue]];
 }
 
 @end

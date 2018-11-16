@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "MapwizeUI"
-  s.version      = "1.0.1"
+  s.version      = "1.0.2"
   s.license      = { :type => 'MIT' }
   s.summary      = "Fully featured and ready to use UIView to add Mapwize Indoor Maps and Navigation in your iOS app."
   s.homepage     = "https://github.com/Mapwize/mapwize-ui-ios"

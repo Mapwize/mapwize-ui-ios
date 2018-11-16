@@ -60,18 +60,48 @@
 
 - (void)mapwizeView:(MWZMapwizeView *)mapwizeView didTapOnPlaceInformationButton:(MWZPlace *)place {
     NSLog(@"didTapOnPlaceInformations");
+    NSString* message = [NSString stringWithFormat:@"Click on the place information button %@", place.translations[0].title];
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"User action"
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDestructive handler:nil];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)mapwizeView:(MWZMapwizeView *)mapwizeView didTapOnPlaceListInformationButton:(MWZPlaceList *)placeList {
     NSLog(@"didTapOnPlaceListInformations");
+    NSString* message = [NSString stringWithFormat:@"Click on the placelist information button %@", placeList.translations[0].title];
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"User action"
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDestructive handler:nil];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)mapwizeViewDidTapOnFollowWithoutLocation:(MWZMapwizeView *)mapwizeView {
     NSLog(@"mapwizeViewDidTapOnFollowWithoutLocation");
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"User action"
+                                                                   message:@"Click on the follow user mode button but no location has been found"
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDestructive handler:nil];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)mapwizeViewDidTapOnMenu:(MWZMapwizeView *)mapwizeView {
     NSLog(@"mapwizeViewDidTapOnMenu");
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"User action"
+                                                                    message:@"Click on the menu"
+                                                             preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDestructive handler:nil];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void) mapwizeViewDidLoad:(MWZMapwizeView*) mapwizeView {

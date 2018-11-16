@@ -46,7 +46,7 @@
     NSBundle* bundle = [NSBundle bundleForClass:self.class];
     UIImage* imageVenue = [UIImage imageNamed:@"venue" inBundle:bundle compatibleWithTraitCollection:nil];
     UIImage* imagePlace = [UIImage imageNamed:@"place" inBundle:bundle compatibleWithTraitCollection:nil];
-    UIImage* imagePlacelist = [UIImage imageNamed:@"menu" inBundle:bundle compatibleWithTraitCollection:nil];
+    UIImage* imagePlacelist = [UIImage imageNamed:@"search_menu" inBundle:bundle compatibleWithTraitCollection:nil];
     imageVenue = [imageVenue imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     imagePlace = [imagePlace imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     imagePlacelist = [imagePlacelist imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
