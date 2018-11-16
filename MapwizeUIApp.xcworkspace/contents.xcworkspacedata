@@ -2,10 +2,13 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:MapwizeUI.xcodeproj">
+      location = "group:MapwizeUIAppSwift.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:MapwizeUIApp.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:MapwizeUI.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

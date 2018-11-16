@@ -13,7 +13,12 @@ target 'MapwizeUIApp' do
   workspace 'MapwizeUIApp'
   project './MapwizeUIApp.xcodeproj'
   use_frameworks!
-  pod 'MapwizeForMapbox', '~> 1.8.1'
+  pod 'MapwizeUI', path: '.'
 end
 
-
+target 'MapwizeUIAppSwift' do
+  workspace 'MapwizeUIApp'
+  project './MapwizeUIAppSwift.xcodeproj'
+  use_frameworks!
+  pod 'MapwizeUI', path: '.'
+end

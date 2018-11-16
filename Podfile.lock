@@ -4,15 +4,23 @@ PODS:
   - MapwizeForMapbox (1.8.1):
     - IndoorLocation (= 1.0.4)
     - Mapbox-iOS-SDK (= 4.6.0)
+  - MapwizeUI (1.0.2):
+    - MapwizeForMapbox (~> 1.8)
 
 DEPENDENCIES:
   - MapwizeForMapbox (~> 1.8.1)
+  - MapwizeUI (from `.`)
+
+EXTERNAL SOURCES:
+  MapwizeUI:
+    :path: .
 
 SPEC CHECKSUMS:
   IndoorLocation: 9812c8c2d499ef25e6146ef90cf23f8d107213a8
   Mapbox-iOS-SDK: 204c04713477cf2a88c52c5a8eed1790eb75a02a
   MapwizeForMapbox: 78ae382529e629eba6f70a5de05954342aa9efe0
+  MapwizeUI: acca9d78b25652bf28f385700426a15514a092ec
 
-PODFILE CHECKSUM: 5ec8e5aada2ab57589f6f1eb745fd47b43e68fb3
+PODFILE CHECKSUM: b0beb56040078e6c288b9742e01da8cacc8d707b
 
 COCOAPODS: 1.4.0

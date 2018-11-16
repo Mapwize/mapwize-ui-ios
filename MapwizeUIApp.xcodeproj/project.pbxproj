@@ -13,25 +13,9 @@
 		8F860760219D669300281AB7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F86075F219D669300281AB7 /* Assets.xcassets */; };
 		8F860763219D669300281AB7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8F860761219D669300281AB7 /* LaunchScreen.storyboard */; };
 		8F860766219D669300281AB7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860765219D669300281AB7 /* main.m */; };
-		8F8607FA219D6A2800281AB7 /* MapwizeUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F8607F9219D6A2800281AB7 /* MapwizeUI.framework */; };
-		8F8607FB219D6A2800281AB7 /* MapwizeUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8F8607F9219D6A2800281AB7 /* MapwizeUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8F860804219D986500281AB7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8F860806219D986500281AB7 /* Localizable.strings */; };
 		CE81999151E501BBB218530D /* Pods_MapwizeUIApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21DE401BA52C1E73B1C38D03 /* Pods_MapwizeUIApp.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		8F8607F8219D6A1F00281AB7 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				8F8607FB219D6A2800281AB7 /* MapwizeUI.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		21DE401BA52C1E73B1C38D03 /* Pods_MapwizeUIApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapwizeUIApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,7 +31,6 @@
 		8F860762219D669300281AB7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8F860764219D669300281AB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F860765219D669300281AB7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		8F8607F9219D6A2800281AB7 /* MapwizeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MapwizeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F860805219D986500281AB7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -56,7 +39,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8F8607FA219D6A2800281AB7 /* MapwizeUI.framework in Frameworks */,
 				CE81999151E501BBB218530D /* Pods_MapwizeUIApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -67,7 +49,6 @@
 		8F86074A219D669200281AB7 = {
 			isa = PBXGroup;
 			children = (
-				8F8607F9219D6A2800281AB7 /* MapwizeUI.framework */,
 				8F860755219D669200281AB7 /* MapwizeUIApp */,
 				8F860754219D669200281AB7 /* Products */,
 				C3A9FD12D39F64F0B42D86E2 /* Frameworks */,
@@ -136,7 +117,6 @@
 				8F86074F219D669200281AB7 /* Sources */,
 				8F860750219D669200281AB7 /* Frameworks */,
 				8F860751219D669200281AB7 /* Resources */,
-				8F8607F8219D6A1F00281AB7 /* Embed Frameworks */,
 				C77892832B1AF1FF74ACCDE4 /* [CP] Embed Pods Frameworks */,
 				68EB37C72FC6C5F8313177C2 /* [CP] Copy Pods Resources */,
 			);
@@ -417,7 +397,10 @@
 				DEVELOPMENT_TEAM = GGHGAE294R;
 				INFOPLIST_FILE = MapwizeUIApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.mapwize.MapwizeUIApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -433,7 +416,10 @@
 				DEVELOPMENT_TEAM = GGHGAE294R;
 				INFOPLIST_FILE = MapwizeUIApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.mapwize.MapwizeUIApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
