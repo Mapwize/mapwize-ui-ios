@@ -25,7 +25,16 @@ MapwizeUI is compatible with MapwizeForMapbox 1.8.0 and above. The library won't
 
 ### Cocoapod
 
-// TODO
+Add the MapwizeUI library to your Podfile 
+
+```
+pod 'MapwizeUI', '~> 1.0'
+```
+
+Then run a `pod install`
+
+All dependencies will be installed (MapwizeUI, MapwizeForMapbox, Mapbox and IndoorLocation)
+
 
 ### Manual
 

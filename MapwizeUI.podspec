@@ -9,4 +9,5 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '10.0'
   s.source       = { :git => "https://github.com/Mapwize/mapwize-ui-ios.git", :tag => "#{s.version}" }
   s.source_files  = "MapwizeUI/**/*.{h,m}"
+  s.dependency "MapwizeForMapbox", "~> 1.8"
 end
