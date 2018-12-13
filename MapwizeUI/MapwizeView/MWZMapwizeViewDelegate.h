@@ -12,6 +12,7 @@
 - (void) mapwizeViewDidTapOnFollowWithoutLocation:(MWZMapwizeView*) mapwizeView;
 - (void) mapwizeViewDidTapOnMenu:(MWZMapwizeView*) mapwizeView;
 
+@optional
 - (BOOL) mapwizeView:(MWZMapwizeView*) mapwizeView shouldShowInformationButtonFor:(id<MWZObject>) mapwizeObject;
 - (BOOL) mapwizeView:(MWZMapwizeView*) mapwizeView shouldShowFloorControllerFor:(NSArray<NSNumber*>*) floors;
 

@@ -10,6 +10,7 @@
         _menuButtonIsHidden = NO;
         _followUserButtonIsHidden = NO;
         _floorControllerIsHidden = NO;
+        _compassIsHidden = NO;
     }
     return self;
 }
