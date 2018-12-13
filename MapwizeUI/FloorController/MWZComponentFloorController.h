@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, retain) MapwizePlugin* mapwizePlugin;
 
-- (void) mapwizeFloorsDidChange:(NSArray<NSNumber*>*) floors;
+- (void) mapwizeFloorsDidChange:(NSArray<NSNumber*>*) floors showController:(BOOL) showController;
 - (void) mapwizeFloorDidChange:(NSNumber*) floor;
 
 @end

@@ -80,5 +80,11 @@ extension ViewController: MWZMapwizeViewDelegate {
         return false
     }
     
+    func mapwizeView(_ mapwizeView: MWZMapwizeView!, shouldShowFloorControllerFor floors: [NSNumber]!) -> Bool {
+        if (floors.count > 1) {
+            return true
+        }
+        return false
+    }
     
 }

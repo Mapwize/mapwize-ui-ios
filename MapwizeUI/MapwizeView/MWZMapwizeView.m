@@ -54,6 +54,8 @@ const CGFloat marginRight = 16;
     MWZComponentUniversesButton* universesButton;
     MWZComponentLanguagesButton* languagesButton;
     
+    MWZMapwizeViewUISettings* uiSettings;
+    
     MWZSearchData* searchData;
     id<MWZObject> selectedContent;
     
@@ -66,6 +68,7 @@ const CGFloat marginRight = 16;
         self->isInDirection = NO;
         self->searchData = [[MWZSearchData alloc] init];
         [self handleOptions:options settings:uiSettings];
+        self->uiSettings = uiSettings;
         [self instantiateMap:frame options:options uiSettings:uiSettings];
         [self instantiateUIComponents:uiSettings];
     }
@@ -928,9 +931,21 @@ const CGFloat marginRight = 16;
 }
 
 - (void) plugin:(MapwizePlugin*) plugin didChangeFloors:(NSArray<NSNumber*>*) floors {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self->floorController mapwizeFloorsDidChange:floors];
-    });
+    if (self->uiSettings.floorControllerIsHidden) {
+        return;
+    }
+    if ([self.delegate respondsToSelector:@selector(mapwizeView:shouldShowFloorControllerFor:)]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self->floorController mapwizeFloorsDidChange:floors
+                                           showController:[self.delegate mapwizeView:self shouldShowFloorControllerFor:floors]];
+        });
+    }
+    else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self->floorController mapwizeFloorsDidChange:floors
+                                           showController:true];
+        });
+    }
 }
 
 - (void) plugin:(MapwizePlugin*) plugin didTap:(MWZClickEvent*) clickEvent {
