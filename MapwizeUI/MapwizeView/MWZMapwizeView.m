@@ -437,6 +437,13 @@ const CGFloat marginRight = 16;
                                       attribute:NSLayoutAttributeLeft
                                      multiplier:1.0f
                                        constant: self.safeAreaInsets.left + 8.0f] setActive:YES];
+        [[NSLayoutConstraint constraintWithItem:searchBar
+                                      attribute:NSLayoutAttributeTop
+                                      relatedBy:NSLayoutRelationEqual
+                                         toItem:self.safeAreaLayoutGuide
+                                      attribute:NSLayoutAttributeTop
+                                     multiplier:1.0f
+                                       constant:8.0f] setActive:YES];
     } else {
         [[NSLayoutConstraint constraintWithItem:searchBar
                                       attribute:NSLayoutAttributeRight
@@ -450,6 +457,13 @@ const CGFloat marginRight = 16;
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:self
                                       attribute:NSLayoutAttributeLeft
+                                     multiplier:1.0f
+                                       constant:8.0f] setActive:YES];
+        [[NSLayoutConstraint constraintWithItem:searchBar
+                                      attribute:NSLayoutAttributeTop
+                                      relatedBy:NSLayoutRelationEqual
+                                         toItem:self
+                                      attribute:NSLayoutAttributeTop
                                      multiplier:1.0f
                                        constant:8.0f] setActive:YES];
     }
@@ -855,27 +869,6 @@ const CGFloat marginRight = 16;
         [_mapwizePlugin setIndoorLocationProvider:indoorLocationProvider];
     }
 }
-    
-#pragma mark SafeAreaInsets
-
-- (void) safeAreaInsetsDidChange {
-    if (searchBarTopConstraint == nil) {
-        searchBarTopConstraint = [NSLayoutConstraint constraintWithItem:searchBar
-                                                              attribute:NSLayoutAttributeTop
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:self
-                                                              attribute:NSLayoutAttributeTop
-                                                             multiplier:1.0f
-                                                               constant: self.safeAreaInsets.top + 8.0f];
-        [searchBarTopConstraint setActive:YES];
-    }
-    else {
-        searchBarTopConstraint.constant = self.safeAreaInsets.top + 8.0f;
-    }
-}
-
-
-
 
 #pragma mark MWZMapwizePluginDelegate
 

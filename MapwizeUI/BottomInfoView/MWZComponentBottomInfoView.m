@@ -176,6 +176,22 @@
                                                                                       constant:16.0f];
     directionConstraintToTitle.priority = 1000;
     [directionConstraintToTitle setActive:YES];
+    id directionConstraintToBottomItem;
+    if (@available(iOS 11.0, *)) {
+        directionConstraintToBottomItem = self.safeAreaLayoutGuide;
+    } else {
+        directionConstraintToBottomItem = self;
+    }
+    
+    NSLayoutConstraint* directionConstraintToBottom = [NSLayoutConstraint constraintWithItem:directionButton
+                                                                                   attribute:NSLayoutAttributeBottom
+                                                                                   relatedBy:NSLayoutRelationEqual
+                                                                                      toItem:directionConstraintToBottomItem
+                                                                                   attribute:NSLayoutAttributeBottom
+                                                                                  multiplier:1.0f
+                                                                                    constant:-16.0f];
+    directionConstraintToBottom.priority = 750;
+    [directionConstraintToBottom setActive:YES];
     
     UIImage* infoImage = [UIImage imageNamed:@"info" inBundle:bundle compatibleWithTraitCollection:nil];
     infoImage = [infoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -212,6 +228,16 @@
     [informationsConstraintToTitle setActive:YES];
     
     
+    NSLayoutConstraint* informationsConstraintToBottom = [NSLayoutConstraint constraintWithItem:informationsButton
+                                                                                      attribute:NSLayoutAttributeBottom
+                                                                                      relatedBy:NSLayoutRelationEqual
+                                                                                         toItem:directionButton
+                                                                                      attribute:NSLayoutAttributeBottom
+                                                                                     multiplier:1.0f
+                                                                                       constant:0];
+    
+    informationsConstraintToBottom.priority = 750;
+    [informationsConstraintToBottom setActive:YES];
     
     
 }
@@ -326,28 +352,6 @@
         }
     }
     
-}
-
-- (void) safeAreaInsetsDidChange {
-    NSLayoutConstraint* directionConstraintToBottom = [NSLayoutConstraint constraintWithItem:directionButton
-                                                                                   attribute:NSLayoutAttributeBottom
-                                                                                   relatedBy:NSLayoutRelationEqual
-                                                                                      toItem:self
-                                                                                   attribute:NSLayoutAttributeBottom
-                                                                                  multiplier:1.0f
-                                                                                    constant:-16.0f - self.safeAreaInsets.bottom];
-    directionConstraintToBottom.priority = 750;
-    [directionConstraintToBottom setActive:YES];
-    
-    NSLayoutConstraint* informationsConstraintToBottom = [NSLayoutConstraint constraintWithItem:informationsButton
-                                                                                   attribute:NSLayoutAttributeBottom
-                                                                                   relatedBy:NSLayoutRelationEqual
-                                                                                      toItem:self
-                                                                                   attribute:NSLayoutAttributeBottom
-                                                                                  multiplier:1.0f
-                                                                                    constant:-16.0f - self.safeAreaInsets.bottom];
-    informationsConstraintToBottom.priority = 750;
-    [informationsConstraintToBottom setActive:YES];
 }
 
 @end
