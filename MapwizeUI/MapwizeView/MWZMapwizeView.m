@@ -905,7 +905,7 @@ const CGFloat marginRight = 16;
             self->universesButtonLeftConstraint.constant = marginLeft * 2 + 50.f;
         }
         if (venue.universes.count > 0) {
-            [self handleUniverse:venue.universes[0]];
+            [self handleUniverseUpdate:venue.universes[0]];
         }
         [self->universesButton mapwizeDidEnterInVenue:venue];
         [self loadAccessibleUniversesInSearchData:venue];
@@ -953,7 +953,7 @@ const CGFloat marginRight = 16;
     }
 }
 
-- (void) handleUniverse: (MWZUniverse *) universe {
+- (void) handleUniverseUpdate: (MWZUniverse *) universe {
     if (_delegate && [_delegate respondsToSelector:@selector(mapwizeUniverseHasChanged:)]) {
         [_delegate mapwizeUniverseHasChanged:universe];
     }
@@ -1058,7 +1058,7 @@ const CGFloat marginRight = 16;
     if (selectedContent) {
         [self unselectContent:YES];
     }
-    [self handleUniverse:universe];
+    [self handleUniverseUpdate:universe];
     [_mapwizePlugin setUniverse:universe];
 }
 
