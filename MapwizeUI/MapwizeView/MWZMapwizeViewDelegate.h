@@ -13,7 +13,8 @@
 - (void) mapwizeViewDidTapOnMenu:(MWZMapwizeView*) mapwizeView;
 
 - (BOOL) mapwizeView:(MWZMapwizeView*) mapwizeView shouldShowInformationButtonFor:(id<MWZObject>) mapwizeObject;
-
+@optional
+- (void) mapwizeUniverseHasChanged:(MWZUniverse*)universe;
 @end
 
 #endif
