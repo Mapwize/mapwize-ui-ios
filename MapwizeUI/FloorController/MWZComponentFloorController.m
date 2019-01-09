@@ -34,8 +34,8 @@ const int MWZComponentFloorViewMarginSize = 5;
     return self;
 }
 
-- (void) mapwizeFloorsDidChange:(NSArray<NSNumber*>*) floors {
-    if (!floors || floors.count == 0) {
+- (void) mapwizeFloorsDidChange:(NSArray<NSNumber*>*) floors showController:(BOOL) showController {
+    if (!floors || floors.count == 0 || !showController) {
         [self close];
         return;
     }

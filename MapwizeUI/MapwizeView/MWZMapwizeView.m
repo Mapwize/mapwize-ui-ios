@@ -54,6 +54,8 @@ const CGFloat marginRight = 16;
     MWZComponentUniversesButton* universesButton;
     MWZComponentLanguagesButton* languagesButton;
     
+    MWZMapwizeViewUISettings* uiSettings;
+    
     MWZSearchData* searchData;
     id<MWZObject> selectedContent;
     
@@ -66,6 +68,7 @@ const CGFloat marginRight = 16;
         self->isInDirection = NO;
         self->searchData = [[MWZSearchData alloc] init];
         [self handleOptions:options settings:uiSettings];
+        self->uiSettings = uiSettings;
         [self instantiateMap:frame options:options uiSettings:uiSettings];
         [self instantiateUIComponents:uiSettings];
     }
@@ -136,8 +139,8 @@ const CGFloat marginRight = 16;
     [self instantiateDirectionBar: settings];
     [self instantiateBottomInfoView:settings];
     [self instantiateFollowUserButton: settings];
-    [self instantiateCompass];
-    [self instantiateFloorController];
+    [self instantiateCompass: settings];
+    [self instantiateFloorController: settings];
     [self instantiateLoadingBar:settings];
     [self instantiateLanguagesButton];
     [self instantiateUniversesButton];
@@ -288,7 +291,7 @@ const CGFloat marginRight = 16;
 - (void) showDefaultUI {
     if (selectedContent) {
         if ([selectedContent isKindOfClass:MWZPlace.class]) {
-            if (_delegate) {
+            if (_delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
                 [bottomInfoView selectContentWithPlace:(MWZPlace*) selectedContent
                                               language:[_mapwizePlugin getLanguage]
                                         showInfoButton:[_delegate mapwizeView:self shouldShowInformationButtonFor:(MWZPlace*) selectedContent]];
@@ -299,7 +302,7 @@ const CGFloat marginRight = 16;
                                         showInfoButton:NO];
             }
         }
-        if (_delegate) {
+        if (_delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
             [bottomInfoView selectContentWithPlaceList:(MWZPlaceList*) selectedContent
                                               language:[_mapwizePlugin getLanguage]
                                         showInfoButton:[_delegate mapwizeView:self shouldShowInformationButtonFor:(MWZPlaceList*) selectedContent]];
@@ -329,7 +332,7 @@ const CGFloat marginRight = 16;
     [directionBar hide];
 }
     
-- (void) instantiateFloorController {
+- (void) instantiateFloorController:(MWZMapwizeViewUISettings*) uiSettings {
     floorController = [[MWZComponentFloorController alloc] init];
     floorController.translatesAutoresizingMaskIntoConstraints = NO;
     floorController.showsVerticalScrollIndicator = NO;
@@ -358,16 +361,41 @@ const CGFloat marginRight = 16;
                                  multiplier:1.0f
                                    constant:-8.0f] setActive:YES];
     
-    [[NSLayoutConstraint constraintWithItem:floorController
-                                  attribute:NSLayoutAttributeTop
-                                  relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                     toItem:compassView
-                                  attribute:NSLayoutAttributeBottom
-                                 multiplier:1.0f
-                                   constant:8.0f] setActive:YES];
+    if (uiSettings.compassIsHidden) {
+        NSLayoutConstraint* toSearchBarConstraint = [NSLayoutConstraint constraintWithItem:floorController
+                                                                                 attribute:NSLayoutAttributeTop
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:searchBar
+                                                                                 attribute:NSLayoutAttributeBottom
+                                                                                multiplier:1.0f
+                                                                                  constant:8.0f];
+        toSearchBarConstraint.priority = 999;
+        [toSearchBarConstraint setActive:YES];
+        
+        [[NSLayoutConstraint constraintWithItem:floorController
+                                      attribute:NSLayoutAttributeTop
+                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                         toItem:directionBar
+                                      attribute:NSLayoutAttributeBottom
+                                     multiplier:1.0f
+                                       constant:8.0f] setActive:YES];
+    }
+    else {
+        [[NSLayoutConstraint constraintWithItem:floorController
+                                      attribute:NSLayoutAttributeTop
+                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                         toItem:compassView
+                                      attribute:NSLayoutAttributeBottom
+                                     multiplier:1.0f
+                                       constant:8.0f] setActive:YES];
+    }
+    
 }
 
-- (void) instantiateCompass {
+- (void) instantiateCompass:(MWZMapwizeViewUISettings*) uiSettings {
+    if (uiSettings.compassIsHidden) {
+        return;
+    }
     compassView = [[MWZComponentCompass alloc] initWithImage:_mapboxMap.compassView.image];
     compassView.translatesAutoresizingMaskIntoConstraints = NO;
     compassView.delegate = self;
@@ -834,7 +862,7 @@ const CGFloat marginRight = 16;
     [_mapwizePlugin addMarkerOnPlace:place];
     [_mapwizePlugin addPromotedPlace:place];
     
-    if (_delegate) {
+    if (_delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
         [bottomInfoView selectContentWithPlace:place
                                       language:[_mapwizePlugin getLanguage]
                                 showInfoButton:[_delegate mapwizeView:self shouldShowInformationButtonFor:place]];
@@ -851,7 +879,7 @@ const CGFloat marginRight = 16;
 - (void) selectPlaceList:(MWZPlaceList*) placeList {
     [self unselectContent:NO];
     [_mapwizePlugin addMarkersOnPlaceList:placeList];
-    if (_delegate) {
+    if (_delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
         [bottomInfoView selectContentWithPlaceList:placeList
                                       language:[_mapwizePlugin getLanguage]
                                 showInfoButton:[_delegate mapwizeView:self shouldShowInformationButtonFor:placeList]];
@@ -931,9 +959,21 @@ const CGFloat marginRight = 16;
 }
 
 - (void) plugin:(MapwizePlugin*) plugin didChangeFloors:(NSArray<NSNumber*>*) floors {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self->floorController mapwizeFloorsDidChange:floors];
-    });
+    if (self->uiSettings.floorControllerIsHidden) {
+        return;
+    }
+    if ([self.delegate respondsToSelector:@selector(mapwizeView:shouldShowFloorControllerFor:)]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self->floorController mapwizeFloorsDidChange:floors
+                                           showController:[self.delegate mapwizeView:self shouldShowFloorControllerFor:floors]];
+        });
+    }
+    else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self->floorController mapwizeFloorsDidChange:floors
+                                           showController:true];
+        });
+    }
 }
 
 - (void) plugin:(MapwizePlugin*) plugin didTap:(MWZClickEvent*) clickEvent {
