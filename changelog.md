@@ -1,5 +1,10 @@
 # Mapwize UI iOS Changelog
 
+## Version 1.0.3
+
+- Adding delegate method to handle universe change
+- Adding delegate method to show or hide the floor controller depends of the current floors list
+
 ## Version 1.0.2
 
 - Fixing issue with languages button

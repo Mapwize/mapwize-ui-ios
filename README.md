@@ -142,6 +142,13 @@ Example to display the information button only for Places and not for PlaceLists
 }
 ```
 
+The same kind of methods are available to display or hide the floor controller depends of the floors list and to listen universe change event :
+
+```objective-c
+- (BOOL) mapwizeView:(MWZMapwizeView*) mapwizeView shouldShowFloorControllerFor:(NSArray<NSNumber*>*) floors;
+- (void) mapwizeUniverseHasChanged:(MWZUniverse*)universe;
+```
+
 When the information button is clicked, the delegate call one of the following methods with the selected Mapwize object.
 
 ```objective-c
