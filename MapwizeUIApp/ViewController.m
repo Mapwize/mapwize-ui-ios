@@ -12,9 +12,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    MWZOptions* opts = [[MWZOptions alloc] init];
+    MWZUIOptions* opts = [[MWZUIOptions alloc] init];
     opts.centerOnPlaceId = @"5bc49413bf0ed600114db212";   // Center on Mapwize
     //opts.centerOnVenueId = @"56b20714c3fa800b00d8f0b5";   // Center on Euratechnologies
+    //opts.centerOnLocation = [[MWZLatLngFloor alloc] initWithLatitude:50.6331 longitude:3.0198 floor:@0]; // Center on marker in Euratechnologies
     
     MWZMapwizeViewUISettings* settings = [[MWZMapwizeViewUISettings alloc] init];
     settings.followUserButtonIsHidden = NO;

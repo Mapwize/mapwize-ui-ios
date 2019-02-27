@@ -20,6 +20,7 @@
 #import "MWZComponentLanguagesButton.h"
 #import "MWZComponentLanguagesButtonDelegate.h"
 #import "MWZMapwizeViewUISettings.h"
+#import "MWZUIOptions.h"
 
 @interface MWZMapwizeView () <MGLMapViewDelegate, MWZMapwizePluginDelegate,
     MWZComponentSearchBarDelegate, MWZComponentCompassDelegate,
@@ -62,12 +63,12 @@ const CGFloat marginRight = 16;
     BOOL isInDirection;
 }
 
-- (instancetype) initWithFrame:(CGRect)frame mapwizeOptions:(MWZOptions*) options uiSettings:(MWZMapwizeViewUISettings*) uiSettings {
+- (instancetype) initWithFrame:(CGRect)frame mapwizeOptions:(MWZUIOptions*) options uiSettings:(MWZMapwizeViewUISettings*) uiSettings {
     self = [super initWithFrame:frame];
     if (self) {
         self->isInDirection = NO;
         self->searchData = [[MWZSearchData alloc] init];
-        [self handleOptions:options settings:uiSettings];
+        [self handleOptions:options];
         self->uiSettings = uiSettings;
         [self instantiateMap:frame options:options uiSettings:uiSettings];
         [self instantiateUIComponents:uiSettings];
@@ -75,7 +76,7 @@ const CGFloat marginRight = 16;
     return self;
 }
 
-- (void) handleOptions:(MWZOptions*) options settings:(MWZMapwizeViewUISettings*) settings {
+- (void) handleOptions:(MWZUIOptions*) options {
     if (options.centerOnPlaceId) {
         [MWZApi getPlaceWithId:options.centerOnPlaceId success:^(MWZPlace *place) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -101,6 +102,16 @@ const CGFloat marginRight = 16;
         } failure:^(NSError *error) {
             // TODO handle error
         }];
+    }
+    else if (options.centerOnLocation != nil) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            MGLMapCamera* camera = [[MGLMapCamera alloc] init];
+            camera.centerCoordinate = options.centerOnLocation.coordinates;
+            camera.altitude = 500.0f;
+            [self.mapwizePlugin setFloor:options.centerOnLocation.floor];
+            [self.mapwizePlugin addMarker:options.centerOnLocation];
+            [self.mapboxMap setCamera:camera];
+        });
     }
 }
 
@@ -844,13 +855,11 @@ const CGFloat marginRight = 16;
 }
 
 - (void) unselectContent:(BOOL) closeInfo {
-    if (selectedContent) {
-        [_mapwizePlugin removeMarkers];
-        [_mapwizePlugin removePromotedPlacesForVenue:[_mapwizePlugin getVenue]];
-        selectedContent = nil;
-        if (closeInfo) {
-            [bottomInfoView unselectContent];
-        }
+    [_mapwizePlugin removeMarkers];
+    [_mapwizePlugin removePromotedPlacesForVenue:[_mapwizePlugin getVenue]];
+    selectedContent = nil;
+    if (closeInfo) {
+        [bottomInfoView unselectContent];
     }
 }
 
