@@ -66,6 +66,7 @@ const double progressBarWidth = 200.0;
     [UIView setAnimationCurve:UIViewAnimationCurveLinear];
     rightConstraint.constant = progressBarWidth / 4;
     [self setHidden:NO];
+
     [self.superview layoutIfNeeded];
     [UIView animateWithDuration:1.0f animations:^{
         self->rightConstraint.constant = self.frame.size.width + progressBarWidth * 3 / 4;

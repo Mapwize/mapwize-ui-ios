@@ -15,6 +15,16 @@ NS_ASSUME_NONNULL_BEGIN
     
 - (void) setIndoorLocationProvider:(ILIndoorLocationProvider*) indoorLocationProvider;
 
+- (void) grantAccess:(NSString*) accessKey success:(void (^)(void)) success failure:(void (^)(NSError* error)) failure;
+
+- (void) selectPlace:(MWZPlace*) place centerOn:(BOOL) centerOn;
+
+- (void) selectPlaceList:(MWZPlaceList*) placeList;
+
+- (void) unselectContent:(BOOL) closeInfo;
+
+- (void) setDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to isAccessible:(BOOL) isAccessible;
+
 @end
 
 NS_ASSUME_NONNULL_END

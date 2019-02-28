@@ -6,8 +6,10 @@
 @protocol MWZComponentDirectionBarDelegate <NSObject>
     
 - (void) didPressBack;
-- (void) didStartDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to;
+- (void) didUpdateDirectionInfo:(double) travelTime distance:(double) distance;
 - (void) didStopDirection;
+- (void) didStartLoading;
+- (void) didStopLoading;
     
 @end
 

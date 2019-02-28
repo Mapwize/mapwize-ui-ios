@@ -37,6 +37,10 @@ const CGFloat marginRight = 16;
 @implementation MWZMapwizeView {
     
     MWZComponentFollowUserButton* followUserButton;
+    NSLayoutConstraint* qrCodeButtonBottomConstraint;
+    NSLayoutConstraint* qrCodeButtonHeightConstraint;
+    NSLayoutConstraint* qrCodeButtonWidthConstraint;
+    NSLayoutConstraint* qrCodeButtonRightConstraint;
     NSLayoutConstraint* followUserButtonBottomConstraint;
     NSLayoutConstraint* followUserButtonHeightConstraint;
     NSLayoutConstraint* followUserButtonWidthConstraint;
@@ -135,21 +139,68 @@ const CGFloat marginRight = 16;
 }
 
 - (void) instantiateUIComponents:(MWZMapwizeViewUISettings*) settings {
-    [self instantiateSearchBar: settings];
-    [self instantiateDirectionBar: settings];
-    [self instantiateBottomInfoView:settings];
-    [self instantiateFollowUserButton: settings];
-    [self instantiateCompass: settings];
-    [self instantiateFloorController: settings];
-    [self instantiateLoadingBar:settings];
-    [self instantiateLanguagesButton];
-    [self instantiateUniversesButton];
+    [self addViews:settings];
+    [self setupConstraintsToSearchBar: settings];
+    [self setupConstraintsToDirectionBar: settings];
+    [self setupConstraintsToBottomInfoView:settings];
+    [self setupConstraintsToFollowUserButton: settings];
+    [self setupConstraintsToCompass: settings];
+    [self setupConstraintsToFloorController: settings];
+    [self setupConstraintsToLoadingBar:settings];
+    [self setupConstraintsToLanguagesButton];
+    [self setupConstraintsToUniversesButton];
 }
 
-- (void) instantiateLoadingBar:(MWZMapwizeViewUISettings*) settings {
+- (void) addViews:(MWZMapwizeViewUISettings*) settings {
     loadingBar = [[MWZComponentLoadingBar alloc] initWithColor:settings.mainColor];
     loadingBar.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:loadingBar];
+    
+    floorController = [[MWZComponentFloorController alloc] init];
+    floorController.translatesAutoresizingMaskIntoConstraints = NO;
+    floorController.showsVerticalScrollIndicator = NO;
+    [self addSubview:floorController];
+    
+    if (!uiSettings.compassIsHidden) {
+        compassView = [[MWZComponentCompass alloc] initWithImage:_mapboxMap.compassView.image];
+        compassView.translatesAutoresizingMaskIntoConstraints = NO;
+        compassView.delegate = self;
+        [self addSubview:compassView];
+    }
+    
+    followUserButton = [[MWZComponentFollowUserButton alloc] initWithColor:settings.mainColor];
+    followUserButton.translatesAutoresizingMaskIntoConstraints = NO;
+    followUserButton.delegate = self;
+    [self addSubview:followUserButton];
+    
+    languagesButton = [[MWZComponentLanguagesButton alloc] init];
+    languagesButton.translatesAutoresizingMaskIntoConstraints = NO;
+    languagesButton.delegate = self;
+    [self addSubview:languagesButton];
+    
+    universesButton = [[MWZComponentUniversesButton alloc] init];
+    universesButton.translatesAutoresizingMaskIntoConstraints = NO;
+    universesButton.delegate = self;
+    [self addSubview:universesButton];
+    
+    searchBar = [[MWZComponentSearchBar alloc] initWith:searchData uiSettings:uiSettings];
+    searchBar.translatesAutoresizingMaskIntoConstraints = NO;
+    searchBar.delegate = self;
+    [self addSubview:searchBar];
+    
+    directionBar = [[MWZComponentDirectionBar alloc] initWith:searchData color:settings.mainColor];
+    directionBar.translatesAutoresizingMaskIntoConstraints = NO;
+    directionBar.delegate = self;
+    [self addSubview:directionBar];
+    
+    bottomInfoView = [[MWZComponentBottomInfoView alloc] initWithColor:uiSettings.mainColor];
+    bottomInfoView.translatesAutoresizingMaskIntoConstraints = NO;
+    bottomInfoView.delegate = self;
+    [self addSubview:bottomInfoView];
+    
+}
+
+- (void) setupConstraintsToLoadingBar:(MWZMapwizeViewUISettings*) settings {
     [[NSLayoutConstraint constraintWithItem:loadingBar
                                   attribute:NSLayoutAttributeRight
                                   relatedBy:NSLayoutRelationEqual
@@ -187,11 +238,7 @@ const CGFloat marginRight = 16;
                                    constant:3.0f] setActive:YES];
 }
     
-- (void) instantiateDirectionBar:(MWZMapwizeViewUISettings*) settings {
-    directionBar = [[MWZComponentDirectionBar alloc] initWith:searchData color:settings.mainColor];
-    directionBar.translatesAutoresizingMaskIntoConstraints = NO;
-    directionBar.delegate = self;
-    [self addSubview:directionBar];
+- (void) setupConstraintsToDirectionBar:(MWZMapwizeViewUISettings*) settings {
     [[NSLayoutConstraint constraintWithItem:directionBar
                                   attribute:NSLayoutAttributeRight
                                   relatedBy:NSLayoutRelationEqual
@@ -332,11 +379,7 @@ const CGFloat marginRight = 16;
     [directionBar hide];
 }
     
-- (void) instantiateFloorController:(MWZMapwizeViewUISettings*) uiSettings {
-    floorController = [[MWZComponentFloorController alloc] init];
-    floorController.translatesAutoresizingMaskIntoConstraints = NO;
-    floorController.showsVerticalScrollIndicator = NO;
-    [self addSubview:floorController];
+- (void) setupConstraintsToFloorController:(MWZMapwizeViewUISettings*) uiSettings {
     [[NSLayoutConstraint constraintWithItem:floorController
                                   attribute:NSLayoutAttributeWidth
                                   relatedBy:NSLayoutRelationEqual
@@ -392,14 +435,10 @@ const CGFloat marginRight = 16;
     
 }
 
-- (void) instantiateCompass:(MWZMapwizeViewUISettings*) uiSettings {
+- (void) setupConstraintsToCompass:(MWZMapwizeViewUISettings*) uiSettings {
     if (uiSettings.compassIsHidden) {
         return;
     }
-    compassView = [[MWZComponentCompass alloc] initWithImage:_mapboxMap.compassView.image];
-    compassView.translatesAutoresizingMaskIntoConstraints = NO;
-    compassView.delegate = self;
-    [self addSubview:compassView];
     [[NSLayoutConstraint constraintWithItem:compassView
                                   attribute:NSLayoutAttributeWidth
                                   relatedBy:NSLayoutRelationEqual
@@ -445,11 +484,7 @@ const CGFloat marginRight = 16;
     
 }
 
-- (void) instantiateSearchBar:(MWZMapwizeViewUISettings*) uiSettings {
-    searchBar = [[MWZComponentSearchBar alloc] initWith:searchData uiSettings:uiSettings];
-    searchBar.translatesAutoresizingMaskIntoConstraints = NO;
-    searchBar.delegate = self;
-    [self addSubview:searchBar];
+- (void) setupConstraintsToSearchBar:(MWZMapwizeViewUISettings*) uiSettings {
     if (@available(iOS 11.0, *)) {
         [[NSLayoutConstraint constraintWithItem:searchBar
                                       attribute:NSLayoutAttributeRight
@@ -499,11 +534,7 @@ const CGFloat marginRight = 16;
     
 }
 
-- (void) instantiateBottomInfoView:(MWZMapwizeViewUISettings*) uiSettings {
-    bottomInfoView = [[MWZComponentBottomInfoView alloc] initWithColor:uiSettings.mainColor];
-    bottomInfoView.translatesAutoresizingMaskIntoConstraints = NO;
-    bottomInfoView.delegate = self;
-    [self addSubview:bottomInfoView];
+- (void) setupConstraintsToBottomInfoView:(MWZMapwizeViewUISettings*) uiSettings {
     [[NSLayoutConstraint constraintWithItem:bottomInfoView
                                   attribute:NSLayoutAttributeHeight
                                   relatedBy:NSLayoutRelationEqual
@@ -544,8 +575,6 @@ const CGFloat marginRight = 16;
                                        constant:0] setActive:YES];
     }
     
-    
-    
     [[NSLayoutConstraint constraintWithItem:bottomInfoView
                                  attribute:NSLayoutAttributeBottom
                                  relatedBy:NSLayoutRelationEqual
@@ -556,12 +585,7 @@ const CGFloat marginRight = 16;
     
 }
 
-- (void) instantiateFollowUserButton:(MWZMapwizeViewUISettings*) settings {
-    followUserButton = [[MWZComponentFollowUserButton alloc] initWithColor:settings.mainColor];
-    followUserButton.translatesAutoresizingMaskIntoConstraints = NO;
-    followUserButton.delegate = self;
-    [self addSubview:followUserButton];
-    
+- (void) setupConstraintsToFollowUserButton:(MWZMapwizeViewUISettings*) settings {
     followUserButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:followUserButton
                                                                     attribute:NSLayoutAttributeHeight
                                                                     relatedBy:NSLayoutRelationEqual
@@ -582,6 +606,16 @@ const CGFloat marginRight = 16;
                                                                   multiplier:1.0f
                                                                     constant:50.f];
     
+    NSLayoutConstraint* followUserMinY = [NSLayoutConstraint constraintWithItem:followUserButton
+                                                                   attribute:NSLayoutAttributeBottom
+                                                                   relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                      toItem:self
+                                                                   attribute:NSLayoutAttributeCenterY
+                                                                  multiplier:1.0f
+                                                                    constant:0.0f];
+    followUserMinY.priority = 950;
+    followUserMinY.active = YES;
+    
     if (@available(iOS 11.0, *)) {
         followUserButtonRightConstraint = [NSLayoutConstraint constraintWithItem:followUserButton
                                                                        attribute:NSLayoutAttributeRight
@@ -593,10 +627,10 @@ const CGFloat marginRight = 16;
         followUserButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:followUserButton
                                                                         attribute:NSLayoutAttributeBottom
                                                                         relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                           toItem:self
+                                                                           toItem:self.safeAreaLayoutGuide
                                                                         attribute:NSLayoutAttributeBottom
                                                                        multiplier:1.0f
-                                                                         constant:-self.safeAreaInsets.bottom - marginBottom];
+                                                                         constant:-marginBottom];
     } else {
         followUserButtonRightConstraint = [NSLayoutConstraint constraintWithItem:followUserButton
                                                                        attribute:NSLayoutAttributeRight
@@ -613,7 +647,6 @@ const CGFloat marginRight = 16;
                                                                        multiplier:1.0f
                                                                          constant:-marginBottom];
     }
-    
     
     followUserButtonBottomConstraint.priority = 1000;
     
@@ -641,12 +674,7 @@ const CGFloat marginRight = 16;
     [followUserButtonBottomConstraint setActive:YES];
 }
 
-- (void) instantiateLanguagesButton {
-    languagesButton = [[MWZComponentLanguagesButton alloc] init];
-    languagesButton.translatesAutoresizingMaskIntoConstraints = NO;
-    languagesButton.delegate = self;
-    [self addSubview:languagesButton];
-    
+- (void) setupConstraintsToLanguagesButton {
     NSLayoutConstraint* languagesButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:languagesButton
                                                                                        attribute:NSLayoutAttributeHeight
                                                                                        relatedBy:NSLayoutRelationEqual
@@ -662,6 +690,17 @@ const CGFloat marginRight = 16;
                                                                                       attribute:NSLayoutAttributeNotAnAttribute
                                                                                      multiplier:1.0f
                                                                                        constant:50.f];
+    
+    NSLayoutConstraint* languagesButtonMinY = [NSLayoutConstraint constraintWithItem:languagesButton
+                                                                      attribute:NSLayoutAttributeBottom
+                                                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                         toItem:self
+                                                                      attribute:NSLayoutAttributeCenterY
+                                                                     multiplier:1.0f
+                                                                       constant:0.0f];
+    languagesButtonMinY.priority = 950;
+    languagesButtonMinY.active = YES;
+    
     NSLayoutConstraint* languagesButtonRightConstraint;
     NSLayoutConstraint* languagesButtonBottomConstraint;
     if (@available(iOS 11.0, *)) {
@@ -676,10 +715,10 @@ const CGFloat marginRight = 16;
         languagesButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:languagesButton
                                                                        attribute:NSLayoutAttributeBottom
                                                                        relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                          toItem:self
+                                                                          toItem:self.safeAreaLayoutGuide
                                                                        attribute:NSLayoutAttributeBottom
                                                                       multiplier:1.0f
-                                                                        constant:-self.safeAreaInsets.bottom - marginBottom];
+                                                                        constant: -marginBottom];
     }
     else {
         languagesButtonRightConstraint = [NSLayoutConstraint constraintWithItem:languagesButton
@@ -725,12 +764,7 @@ const CGFloat marginRight = 16;
     [languagesButtonBottomConstraint setActive:YES];
 }
 
-- (void) instantiateUniversesButton {
-    universesButton = [[MWZComponentUniversesButton alloc] init];
-    universesButton.translatesAutoresizingMaskIntoConstraints = NO;
-    universesButton.delegate = self;
-    [self addSubview:universesButton];
-    
+- (void) setupConstraintsToUniversesButton {
     NSLayoutConstraint* universesButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:universesButton
                                                                                        attribute:NSLayoutAttributeHeight
                                                                                        relatedBy:NSLayoutRelationEqual
@@ -747,6 +781,16 @@ const CGFloat marginRight = 16;
                                                                   multiplier:1.0f
                                                                     constant:50.f];
 
+    NSLayoutConstraint* universeButtonMinY = [NSLayoutConstraint constraintWithItem:universesButton
+                                                                           attribute:NSLayoutAttributeBottom
+                                                                           relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                              toItem:self
+                                                                           attribute:NSLayoutAttributeCenterY
+                                                                          multiplier:1.0f
+                                                                            constant:0.0f];
+    universeButtonMinY.priority = 950;
+    universeButtonMinY.active = YES;
+    
     NSLayoutConstraint* universesButtonBottomConstraint;
     if (@available(iOS 11.0, *)) {
         universesButtonLeftConstraint = [NSLayoutConstraint constraintWithItem:universesButton
@@ -760,10 +804,10 @@ const CGFloat marginRight = 16;
         universesButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:universesButton
                                                                        attribute:NSLayoutAttributeBottom
                                                                        relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                          toItem:self
+                                                                          toItem:self.safeAreaLayoutGuide
                                                                        attribute:NSLayoutAttributeBottom
                                                                       multiplier:1.0f
-                                                                        constant:-self.safeAreaInsets.bottom - marginBottom];
+                                                                        constant:-marginBottom];
     }
     else {
         universesButtonLeftConstraint = [NSLayoutConstraint constraintWithItem:universesButton
@@ -896,6 +940,27 @@ const CGFloat marginRight = 16;
     if (_mapwizePlugin) {
         [_mapwizePlugin setIndoorLocationProvider:indoorLocationProvider];
     }
+}
+
+- (void) grantAccess:(NSString*) accessKey success:(void (^)(void)) success failure:(void (^)(NSError* error)) failure {
+    [_mapwizePlugin grantAccess:accessKey success:^{
+        if ([_mapwizePlugin getVenue]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self->universesButton mapwizeDidEnterInVenue:[_mapwizePlugin getVenue]];
+            });
+        }
+        success();
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+- (void) setDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to isAccessible:(BOOL) isAccessible {
+    isInDirection = YES;
+    [self showDirectionUI];
+    [directionBar setAccessibility:isAccessible];
+    [directionBar setFrom:from];
+    [directionBar setTo:to];
 }
 
 #pragma mark MWZMapwizePluginDelegate
@@ -1057,21 +1122,23 @@ const CGFloat marginRight = 16;
     [self showDefaultUI];
 }
     
-- (void) didStartDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to {
+- (void) didUpdateDirectionInfo:(double) travelTime distance:(double) distance {
     [self unselectContent:YES];
-    [_mapwizePlugin removePromotedPlacesForVenue:[_mapwizePlugin getVenue]];
-    if ([from isKindOfClass:MWZPlace.class]) {
-        [_mapwizePlugin addPromotedPlace:(MWZPlace*) from];
-    }
-    if ([to isKindOfClass:MWZPlace.class]) {
-        [_mapwizePlugin addPromotedPlace:(MWZPlace*) to];
-    }
-    [directionInfo setInfoWith:direction];
+    [directionInfo setInfoWith:travelTime directionDistance:distance];
 }
     
 - (void) didStopDirection {
     [_mapwizePlugin removePromotedPlacesForVenue:[_mapwizePlugin getVenue]];
     [directionInfo close];
+}
+
+- (void) didStartLoading {
+    [self bringSubviewToFront:loadingBar];
+    [loadingBar startAnimation];
+}
+
+- (void) didStopLoading {
+    [loadingBar stopAnimation];
 }
 
 #pragma mark MGLMapViewDelegate
@@ -1107,5 +1174,8 @@ const CGFloat marginRight = 16;
 - (void) didSelectLanguage:(NSString *)language {
     [_mapwizePlugin setLanguage:language forVenue:[_mapwizePlugin getVenue]];
 }
+
+
+
 
 @end
