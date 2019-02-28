@@ -119,6 +119,26 @@ The following parameters are available for map initialization:
 - `restrictContentToVenueId` to show only the related venue on the map. 
 - `restrictContentToOrganizationId` to show only the venues of that organization on the map. 
 
+### Public methods
+
+Friendly method to add new access to the map and refresh the UI
+`- (void) grantAccess:(NSString*) accessKey success:(void (^)(void)) success failure:(void (^)(NSError* error)) failure;`
+
+Setup the UI to display information about the selected place
+Promote the place and add a marker on it
+`- (void) selectPlace:(MWZPlace*) place centerOn:(BOOL) centerOn;`
+
+Setup the UI to display information about the selected placelist
+Add markers on places contained in the placelist and promote them
+`- (void) selectPlaceList:(MWZPlaceList*) placeList;`
+
+Hide the UI component, remove markers and unpromote place if needed
+`- (void) unselectContent:(BOOL) closeInfo;`
+
+Display a direction object and show the direction UI already configured
+`- (void) setDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to isAccessible:(BOOL) isAccessible;`
+
+
 ## Information button
 
 When users select a Place or a PlaceList, either by clicking on the map or using the search engine, you might want to give the possibility to the user to open a page of your app about it. Think about shops or exhibitors for example for which your app probably has a page with all the details about.

@@ -389,12 +389,12 @@
         [MWZApi searchWithParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self->resultList swapResults:searchResponse universes:self->searchData.accessibleUniverses activeUniverse:[self.mapwizePlugin getUniverse]];
-                [_delegate didStopLoading];
+                [self.delegate didStopLoading];
             });
         } failure:^(NSError *error) {
             // TODO Should handle this
             dispatch_async(dispatch_get_main_queue(), ^{
-                [_delegate didStopLoading];
+                [self.delegate didStopLoading];
             });
         }];
     }
@@ -406,11 +406,11 @@
         [MWZApi searchWithParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self->venueResultList swapResults:searchResponse];
-                [_delegate didStopLoading];
+                [self.delegate didStopLoading];
             });
         } failure:^(NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [_delegate didStopLoading];
+                [self.delegate didStopLoading];
             });
         }];
     }

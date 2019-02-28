@@ -67,6 +67,8 @@
 		8F860813219DAE0800281AB7 /* MWZMapwizeViewUISettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860811219DAE0800281AB7 /* MWZMapwizeViewUISettings.m */; };
 		8F860817219DC5F200281AB7 /* MWZComponentColors.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860815219DC5F200281AB7 /* MWZComponentColors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F860818219DC5F200281AB7 /* MWZComponentColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860816219DC5F200281AB7 /* MWZComponentColors.m */; };
+		8F8640D4222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8640D2222831130043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m */; };
+		8F8640D5222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8640D3222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -133,6 +135,8 @@
 		8F860811219DAE0800281AB7 /* MWZMapwizeViewUISettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZMapwizeViewUISettings.m; sourceTree = "<group>"; };
 		8F860815219DC5F200281AB7 /* MWZComponentColors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZComponentColors.h; sourceTree = "<group>"; };
 		8F860816219DC5F200281AB7 /* MWZComponentColors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZComponentColors.m; sourceTree = "<group>"; };
+		8F8640D2222831130043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZComponentTitleWithoutFloorCellTableViewCell.m; sourceTree = "<group>"; };
+		8F8640D3222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZComponentTitleWithoutFloorCellTableViewCell.h; sourceTree = "<group>"; };
 		A087F06AEC97B04A58BB7884 /* Pods_MapwizeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapwizeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -319,6 +323,8 @@
 		8F8607AF219D67AB00281AB7 /* ResultList */ = {
 			isa = PBXGroup;
 			children = (
+				8F8640D3222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h */,
+				8F8640D2222831130043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m */,
 				8F8607B4219D67AB00281AB7 /* MWZComponentResultList.h */,
 				8F8607B8219D67AB00281AB7 /* MWZComponentResultList.m */,
 				8F8607B2219D67AB00281AB7 /* MWZComponentResultListDelegate.h */,
@@ -362,6 +368,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F860812219DAE0800281AB7 /* MWZMapwizeViewUISettings.h in Headers */,
+				8F8640D5222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h in Headers */,
 				8F8607E7219D67AB00281AB7 /* MWZComponentResultList.h in Headers */,
 				8F8607DE219D67AB00281AB7 /* MWZComponentUniversesButton.h in Headers */,
 				8F8607CC219D67AB00281AB7 /* MWZComponentBorderedTextField.h in Headers */,
@@ -512,6 +519,7 @@
 				8F8607EA219D67AB00281AB7 /* MWZComponentTitleCell.m in Sources */,
 				8F860813219DAE0800281AB7 /* MWZMapwizeViewUISettings.m in Sources */,
 				8F8607DA219D67AB00281AB7 /* MWZComponentDirectionBar.m in Sources */,
+				8F8640D4222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m in Sources */,
 				8F8607E6219D67AB00281AB7 /* MWZComponentSubtitleCell.m in Sources */,
 				8F8607CB219D67AB00281AB7 /* MWZComponentIconTextButton.m in Sources */,
 				8F8607F0219D67AB00281AB7 /* MWZComponentFloorView.m in Sources */,

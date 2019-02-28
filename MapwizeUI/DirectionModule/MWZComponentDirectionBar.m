@@ -673,12 +673,12 @@
     [MWZApi searchWithParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self->resultList swapResults:searchResponse];
-            [_delegate didStopLoading];
+            [self.delegate didStopLoading];
         });
     } failure:^(NSError *error) {
         // TODO Should handle this
         dispatch_async(dispatch_get_main_queue(), ^{
-            [_delegate didStopLoading];
+            [self.delegate didStopLoading];
         });
     }];
 }
@@ -693,12 +693,12 @@
     [MWZApi searchWithParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self->resultList swapResults:searchResponse];
-            [_delegate didStopLoading];
+            [self.delegate didStopLoading];
         });
     } failure:^(NSError *error) {
         // TODO Should handle this
         dispatch_async(dispatch_get_main_queue(), ^{
-            [_delegate didStopLoading];
+            [self.delegate didStopLoading];
         });
     }];
 }
@@ -710,12 +710,12 @@
     [_delegate didStartLoading];;
     [MWZApi getDirectionWithFrom:fromDirectionPoint to:toDirectionPoint isAccessible:isAccessible success:^(MWZDirection *direction) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self startDirection:direction from:fromDirectionPoint to:toDirectionPoint newDirection:newDirection];
-            [_delegate didStopLoading];
+            [self startDirection:direction from:self->fromDirectionPoint to:self->toDirectionPoint newDirection:newDirection];
+            [self.delegate didStopLoading];
         });
     } failure:^(NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [_delegate didStopLoading];
+            [self.delegate didStopLoading];
         });
     }];
 }

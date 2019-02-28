@@ -944,9 +944,9 @@ const CGFloat marginRight = 16;
 
 - (void) grantAccess:(NSString*) accessKey success:(void (^)(void)) success failure:(void (^)(NSError* error)) failure {
     [_mapwizePlugin grantAccess:accessKey success:^{
-        if ([_mapwizePlugin getVenue]) {
+        if ([self.mapwizePlugin getVenue]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self->universesButton mapwizeDidEnterInVenue:[_mapwizePlugin getVenue]];
+                [self->universesButton mapwizeDidEnterInVenue:[self.mapwizePlugin getVenue]];
             });
         }
         success();
