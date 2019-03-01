@@ -68,6 +68,15 @@ MWZMapwizeViewUISettings contains the following attribute
 @property (nonatomic, assign) BOOL followUserButtonIsHidden;
 ```
 
+### Access to Mapbox map and Mapwize plugin
+
+Once the `(void) mapwizeViewDidLoad:(MWZMapwizeView*) mapwizeView` is called, you can retrieved the Mapbox map and the Mapwize plugin using the following properties on MWZMapwizeView object.
+
+```objective-c
+@property (nonatomic, retain) MGLMapView* mapboxMap;
+@property (nonatomic, retain) MapwizePlugin* mapwizePlugin;
+```
+
 ### Simple example
 
 ```objective-c
