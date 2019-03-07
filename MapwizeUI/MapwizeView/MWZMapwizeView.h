@@ -3,6 +3,7 @@
 #import <MapwizeForMapbox/MapwizeForMapbox.h>
 @protocol MWZMapwizeViewDelegate;
 @class MWZMapwizeViewUISettings;
+@class MWZUIOptions;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MWZMapwizeView : UIView
@@ -11,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain) MapwizePlugin* mapwizePlugin;
 @property (nonatomic, weak) id<MWZMapwizeViewDelegate> delegate;
 
-- (instancetype) initWithFrame:(CGRect)frame mapwizeOptions:(MWZOptions*) options uiSettings:(MWZMapwizeViewUISettings*) uiSettings;
+- (instancetype) initWithFrame:(CGRect)frame mapwizeOptions:(MWZUIOptions*) options uiSettings:(MWZMapwizeViewUISettings*) uiSettings;
     
 - (void) setIndoorLocationProvider:(ILIndoorLocationProvider*) indoorLocationProvider;
 

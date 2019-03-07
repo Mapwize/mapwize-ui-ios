@@ -8,9 +8,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let opts = MWZOptions()
+        let opts = MWZUIOptions()
         opts.centerOnPlaceId = "5bc49413bf0ed600114db212"
         //opts.centerOnVenueId = "56b20714c3fa800b00d8f0b5"
+        //opts.centerOnLocation = MWZLatLngFloor(latitude: 50.6331, longitude: 3.0198, floor: 0)
         
         let settings = MWZMapwizeViewUISettings()
         settings.followUserButtonIsHidden = false
