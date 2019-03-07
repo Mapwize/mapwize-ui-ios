@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
     
 - (void) show;
 - (void) hide;
+- (void) setAccessibility:(BOOL) isAccessible;
 - (void) setFrom:(id<MWZDirectionPoint>) fromValue;
 - (void) setTo:(id<MWZDirectionPoint>) toValue;
     

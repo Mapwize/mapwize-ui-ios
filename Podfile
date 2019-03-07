@@ -6,7 +6,7 @@ target 'MapwizeUI' do
   workspace 'MapwizeUIApp'
   project './MapwizeUI.xcodeproj'
   use_frameworks!
-  pod 'MapwizeForMapbox', '~> 1.8.1'
+  pod 'MapwizeForMapbox', '~> 2.0'
 end
 
 target 'MapwizeUIApp' do

@@ -25,7 +25,7 @@
                                          toItem:self
                                       attribute:NSLayoutAttributeLeft
                                      multiplier:1.0f
-                                       constant:12.0f] setActive:YES];
+                                       constant:16.0f] setActive:YES];
         
         [[NSLayoutConstraint constraintWithItem:imageView
                                       attribute:NSLayoutAttributeCenterY
@@ -67,7 +67,7 @@
                                          toItem:imageView
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
-                                       constant:4.0f] setActive:YES];
+                                       constant:12.0f] setActive:YES];
         
         [[NSLayoutConstraint constraintWithItem:labelView
                                       attribute:NSLayoutAttributeRight
@@ -75,7 +75,7 @@
                                          toItem:self
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
-                                       constant:-12.0f] setActive:YES];
+                                       constant:-16.0f] setActive:YES];
         
         [[NSLayoutConstraint constraintWithItem:labelView
                                       attribute:NSLayoutAttributeCenterY
@@ -103,7 +103,7 @@
             self.layer.backgroundColor = color.CGColor;
             self.layer.borderColor = color.CGColor;
         }
-        self.layer.cornerRadius = 16.0f;
+        self.layer.cornerRadius = 18.0f;
         self.layer.borderWidth = 0.5f;
         [imageView setImage:image];
         [labelView setText:text];

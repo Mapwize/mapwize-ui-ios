@@ -1,10 +1,9 @@
-#import "MWZComponentTitleCell.h"
+#import "MWZComponentTitleWithoutFloorCellTableViewCell.h"
 
-@implementation MWZComponentTitleCell
+@implementation MWZComponentTitleWithoutFloorCellTableViewCell
 
 @synthesize imageView;
 @synthesize titleView;
-@synthesize floorView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -41,12 +40,19 @@
                                  multiplier:1.0f
                                    constant:16.0f] setActive:YES];
     [[NSLayoutConstraint constraintWithItem:imageView
-                                  attribute:NSLayoutAttributeCenterY
+                                  attribute:NSLayoutAttributeTop
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:self
-                                  attribute:NSLayoutAttributeCenterY
+                                  attribute:NSLayoutAttributeTop
                                  multiplier:1.0f
-                                   constant:0.0f] setActive:YES];
+                                   constant:16.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:imageView
+                                  attribute:NSLayoutAttributeBottom
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeBottom
+                                 multiplier:1.0f
+                                   constant:-16.0f] setActive:YES];
     
     titleView = [[UILabel alloc] init];
     titleView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -66,51 +72,10 @@
                                  multiplier:1.0f
                                    constant:-16.0f] setActive:YES];
     [[NSLayoutConstraint constraintWithItem:titleView
-                                  attribute:NSLayoutAttributeTop
+                                  attribute:NSLayoutAttributeCenterY
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:self
-                                  attribute:NSLayoutAttributeTop
-                                 multiplier:1.0f
-                                   constant:8.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:titleView
-                                  attribute:NSLayoutAttributeHeight
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:nil
-                                  attribute:NSLayoutAttributeNotAnAttribute
-                                 multiplier:1.0f
-                                   constant:21.0f] setActive:YES];
-    
-    floorView = [[UILabel alloc] init];
-    floorView.translatesAutoresizingMaskIntoConstraints = NO;
-    floorView.textColor = [UIColor lightGrayColor];
-    floorView.font = [UIFont systemFontOfSize:15.0f];
-    [self addSubview:floorView];
-    [[NSLayoutConstraint constraintWithItem:floorView
-                                  attribute:NSLayoutAttributeLeft
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:imageView
-                                  attribute:NSLayoutAttributeRight
-                                 multiplier:1.0f
-                                   constant:16.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:floorView
-                                  attribute:NSLayoutAttributeRight
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self
-                                  attribute:NSLayoutAttributeRight
-                                 multiplier:1.0f
-                                   constant:-16.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:floorView
-                                  attribute:NSLayoutAttributeBottom
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self
-                                  attribute:NSLayoutAttributeBottom
-                                 multiplier:1.0f
-                                   constant:-8.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:floorView
-                                  attribute:NSLayoutAttributeTop
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:titleView
-                                  attribute:NSLayoutAttributeBottom
+                                  attribute:NSLayoutAttributeCenterY
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
     

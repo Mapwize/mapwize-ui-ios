@@ -10,6 +10,8 @@
 - (void) didSelectVenue:(MWZVenue*) venue;
 - (void) didSelectPlace:(MWZPlace*) place universe:(MWZUniverse*) universe;
 - (void) didSelectPlaceList:(MWZPlaceList*) placelist universe:(MWZUniverse*) universe;
+- (void) didStartLoading;
+- (void) didStopLoading;
 
 @end
 

@@ -19,7 +19,6 @@
     MWZComponentGroupedResultList* resultList;
     MWZComponentResultList* venueResultList;
     UITableView* activeResultList;
-    MWZComponentLoadingBar* loadingBar;
     MWZSearchData* searchData;
     
     BOOL isInSearch;
@@ -61,7 +60,7 @@
         menuImage = [UIImage imageNamed:@"" inBundle:bundle compatibleWithTraitCollection:nil];
     }
     backImage = [UIImage imageNamed:@"back" inBundle:bundle compatibleWithTraitCollection:nil];
-    directionImage = [UIImage imageNamed:@"directionOutline" inBundle:bundle compatibleWithTraitCollection:nil];
+    directionImage = [UIImage imageNamed:@"direction" inBundle:bundle compatibleWithTraitCollection:nil];
     menuButton = [[UIButton alloc] init];
     menuButton.translatesAutoresizingMaskIntoConstraints = NO;
     [menuButton setImage:menuImage forState:UIControlStateNormal];
@@ -100,6 +99,8 @@
                                  multiplier:1.0f
                                    constant:32.f] setActive:YES];
     
+    menuButton.contentEdgeInsets = UIEdgeInsetsMake(4.0f, 4.0f, 4.0f, 4.0f);
+    
     menuButtonWidth = [NSLayoutConstraint constraintWithItem:menuButton
                                   attribute:NSLayoutAttributeWidth
                                   relatedBy:NSLayoutRelationEqual
@@ -117,6 +118,7 @@
     directionButton.translatesAutoresizingMaskIntoConstraints = NO;
     [directionButton setImage:directionImage forState:UIControlStateNormal];
     [directionButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    directionButton.contentEdgeInsets = UIEdgeInsetsMake(6.0f, 6.0f, 6.0f, 6.0f);
     directionButton.alpha = 0.0f;
     [directionButton addTarget:self action:@selector(directionClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:directionButton];
@@ -240,13 +242,16 @@
     if ([_mapwizePlugin getVenue]) {
         resultList = [[MWZComponentGroupedResultList alloc] init];
         resultList.resultDelegate = self;
+        [resultList setLanguage:[_mapwizePlugin getLanguage]];
         activeResultList = resultList;
     }
     else {
         venueResultList = [[MWZComponentResultList alloc] init];
         venueResultList.resultDelegate = self;
+        [venueResultList setLanguage:[_mapwizePlugin getLanguage]];
         activeResultList = venueResultList;
     }
+    
     activeResultList.translatesAutoresizingMaskIntoConstraints = NO;
     activeResultList.alpha = 0.0f;
     [backView addSubview:activeResultList];
@@ -303,40 +308,6 @@
     constraintToBackView.priority = 800;
     [constraintToSearch setActive:YES];
     [constraintToBackView setActive:YES];
-    
-    loadingBar = [[MWZComponentLoadingBar alloc] init];
-    loadingBar.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:loadingBar];
-    [[NSLayoutConstraint constraintWithItem:loadingBar
-                                  attribute:NSLayoutAttributeRight
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self
-                                  attribute:NSLayoutAttributeRight
-                                 multiplier:1.0f
-                                   constant:-10.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:loadingBar
-                                  attribute:NSLayoutAttributeLeft
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self
-                                  attribute:NSLayoutAttributeLeft
-                                 multiplier:1.0f
-                                   constant:10.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:loadingBar
-                                  attribute:NSLayoutAttributeTop
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self
-                                  attribute:NSLayoutAttributeBottom
-                                 multiplier:1.0f
-                                   constant:2.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:loadingBar
-                                  attribute:NSLayoutAttributeHeight
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:nil
-                                  attribute:NSLayoutAttributeNotAnAttribute
-                                 multiplier:1.0f
-                                   constant:3.0f] setActive:YES];
-    
-    
     
     [self.superview layoutIfNeeded];
     [UIView animateWithDuration:0.3 animations:^{
@@ -409,7 +380,7 @@
 }
 
 - (void) search:(NSString*) query {
-    [loadingBar startAnimation];
+    [_delegate didStartLoading];
     if ([_mapwizePlugin getVenue]) {
         MWZSearchParams* params = [[MWZSearchParams alloc] init];
         params.venueId = [_mapwizePlugin getVenue].identifier;
@@ -418,12 +389,12 @@
         [MWZApi searchWithParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self->resultList swapResults:searchResponse universes:self->searchData.accessibleUniverses activeUniverse:[self.mapwizePlugin getUniverse]];
-                [self->loadingBar stopAnimation];
+                [self.delegate didStopLoading];
             });
         } failure:^(NSError *error) {
             // TODO Should handle this
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self->loadingBar stopAnimation];
+                [self.delegate didStopLoading];
             });
         }];
     }
@@ -435,11 +406,11 @@
         [MWZApi searchWithParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self->venueResultList swapResults:searchResponse];
-                [self->loadingBar stopAnimation];
+                [self.delegate didStopLoading];
             });
         } failure:^(NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self->loadingBar stopAnimation];
+                [self.delegate didStopLoading];
             });
         }];
     }
