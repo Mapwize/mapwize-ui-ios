@@ -2,6 +2,7 @@
 #import "MWZComponentResultList.h"
 #import "MWZComponentTitleCell.h"
 #import "MWZComponentSubtitleCell.h"
+#import "MWZComponentTitleWithoutFloorCellTableViewCell.h"
 #import "MWZComponentGroupedResultListDelegate.h"
 
 @interface MWZComponentGroupedResultList () <UITableViewDelegate, UITableViewDataSource>
@@ -14,11 +15,13 @@
     MWZUniverse* activeUniverse;
     NSMutableDictionary<NSString*, NSMutableArray<id<MWZObject>>*>* contentByUniverseId;
     NSLayoutConstraint* tableHeightConstraint;
+    NSString* language;
 }
 
 - (instancetype)init {
     self = [super init];
     if (self) {
+        language = @"en";
         self.backgroundColor = [UIColor whiteColor];
         self.clipsToBounds = NO;
         self.layer.masksToBounds = NO;
@@ -32,12 +35,17 @@
         self.delegate = self;
         self.separatorStyle = UITableViewCellSeparatorStyleNone;
         self.scrollEnabled = NO;
+        [self registerClass:[MWZComponentTitleWithoutFloorCellTableViewCell class] forCellReuseIdentifier:@"titleWithoutFloorCell"];
         [self registerClass:[MWZComponentTitleCell class] forCellReuseIdentifier:@"titleCell"];
         [self registerClass:[MWZComponentSubtitleCell class] forCellReuseIdentifier:@"subtitleCell"];
         contentByUniverseId = [[NSMutableDictionary alloc] init];
         universes = [[NSMutableArray alloc] init];
     }
     return self;
+}
+
+- (void) setLanguage:(NSString*) language {
+    self->language = language;
 }
 
 - (void) swapResults:(NSArray<id<MWZObject>>*) results universes:(NSArray<MWZUniverse*>*) universes activeUniverse:(MWZUniverse*) activeUniverse {
@@ -94,7 +102,7 @@
     NSMutableArray<id<MWZObject>>* content;
     
     if (universes.count == 0) {
-        MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleCell"];
+        MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
         cell.titleView.text = NSLocalizedString(@"No results", "");
         [cell.imageView setImage:nil];
         return cell;
@@ -105,27 +113,37 @@
         id<MWZObject> mapwizeObject = content[indexPath.row];
         if ([mapwizeObject isKindOfClass:MWZVenue.class]) {
             MWZVenue* venue = (MWZVenue*) mapwizeObject;
-            MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleCell"];
-            cell.titleView.text = [venue titleForLanguage:@"en"];
+            MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
+            cell.titleView.text = [venue titleForLanguage:language];
             [cell.imageView setImage:imageVenue];
             return cell;
         }
         if ([mapwizeObject isKindOfClass:MWZPlace.class]) {
             MWZPlace* place = (MWZPlace*) mapwizeObject;
-            MWZComponentSubtitleCell* cell = [self dequeueReusableCellWithIdentifier:@"subtitleCell"];
-            cell.titleView.text = [place titleForLanguage:@"en"];
-            cell.floorView.text = [NSString stringWithFormat:@"Floor %@", place.floor];
-            [cell.imageView setImage:imagePlace];
-            return cell;
+            if ([place subtitleForLanguage:language] && [[place subtitleForLanguage:language] length] > 0) {
+                MWZComponentSubtitleCell* cell = [self dequeueReusableCellWithIdentifier:@"subtitleCell"];
+                cell.titleView.text = [place titleForLanguage:language];
+                cell.subtitleView.text = [place subtitleForLanguage:language];
+                cell.floorView.text = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), place.floor];
+                [cell.imageView setImage:imagePlace];
+                return cell;
+            }
+            else {
+                MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleCell"];
+                cell.titleView.text = [place titleForLanguage:language];
+                cell.floorView.text = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), place.floor];
+                [cell.imageView setImage:imagePlace];
+                return cell;
+            }
         }
         if ([mapwizeObject isKindOfClass:MWZPlaceList.class]) {
             MWZPlaceList* placeList = (MWZPlaceList*) mapwizeObject;
-            MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleCell"];
-            cell.titleView.text = [placeList titleForLanguage:@"en"];
+            MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
+            cell.titleView.text = [placeList titleForLanguage:language];
             [cell.imageView setImage:imagePlacelist];
             return cell;
         }
-        MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleCell"];
+        MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
         return cell;
     }
 }

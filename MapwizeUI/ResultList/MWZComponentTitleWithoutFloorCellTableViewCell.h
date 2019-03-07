@@ -2,11 +2,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MWZComponentTitleCell : UITableViewCell
+@interface MWZComponentTitleWithoutFloorCellTableViewCell : UITableViewCell
 
 @property (nonatomic, retain) UIImageView* imageView;
 @property (nonatomic, retain) UILabel* titleView;
-@property (nonatomic, retain) UILabel* floorView;
 
 @end
 

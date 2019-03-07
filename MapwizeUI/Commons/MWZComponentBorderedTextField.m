@@ -13,11 +13,11 @@
 }
     
 - (CGRect) textRectForBounds:(CGRect)bounds {
-    return [super textRectForBounds:UIEdgeInsetsInsetRect(bounds, UIEdgeInsetsMake(0.0f, 5.0f, 0.0f, 5.0f))];
+    return [super textRectForBounds:UIEdgeInsetsInsetRect(bounds, UIEdgeInsetsMake(0.0f, 12.0f, 0.0f, 5.0f))];
 }
     
 - (CGRect) editingRectForBounds:(CGRect)bounds {
-    return [self textRectForBounds:UIEdgeInsetsInsetRect(bounds, UIEdgeInsetsMake(0.0f, 5.0f, 0.0f, 5.0f))];
+    return [self textRectForBounds:UIEdgeInsetsInsetRect(bounds, UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f))];
 }
     
 @end

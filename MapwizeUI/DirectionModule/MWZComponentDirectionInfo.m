@@ -229,13 +229,13 @@
                                    constant:0.0f] setActive:YES];
 }
     
-- (void) setInfoWith:(MWZDirection*) direction {
-    double traveltime = direction.traveltime / 60;
+- (void) setInfoWith:(double) directionTravelTime directionDistance:(double) directionDistance {
+    double traveltime = directionTravelTime / 60;
     if (traveltime == 0.0) {
         traveltime = 1.0;
     }
     traveltimeLabel.text = [NSString stringWithFormat:@"%.0f min", traveltime];
-    double distance = direction.distance;
+    double distance = directionDistance;
     distance = distance*1000/1000;
     NSMeasurement* measurment = [[NSMeasurement alloc] initWithDoubleValue:distance unit:NSUnitLength.meters];
     NSMeasurementFormatter* formatter = [[NSMeasurementFormatter alloc] init];

@@ -9,64 +9,66 @@
 /* Begin PBXBuildFile section */
 		6AE2F1AECD1A17FB83C5E2AE /* Pods_MapwizeUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A087F06AEC97B04A58BB7884 /* Pods_MapwizeUI.framework */; };
 		8F86077B219D66A100281AB7 /* MapwizeUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860779219D66A100281AB7 /* MapwizeUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8F8607BF219D67AB00281AB7 /* MWZComponentSearchBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860782219D67AB00281AB7 /* MWZComponentSearchBar.h */; };
+		8F8607BF219D67AB00281AB7 /* MWZComponentSearchBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860782219D67AB00281AB7 /* MWZComponentSearchBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8607C0219D67AB00281AB7 /* MWZComponentSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860783219D67AB00281AB7 /* MWZComponentSearchBar.m */; };
-		8F8607C1219D67AB00281AB7 /* MWZComponentSearchBarDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860784219D67AB00281AB7 /* MWZComponentSearchBarDelegate.h */; };
-		8F8607C2219D67AB00281AB7 /* MWZComponentCompass.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860786219D67AB00281AB7 /* MWZComponentCompass.h */; };
-		8F8607C3219D67AB00281AB7 /* MWZComponentCompassDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860787219D67AB00281AB7 /* MWZComponentCompassDelegate.h */; };
+		8F8607C1219D67AB00281AB7 /* MWZComponentSearchBarDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860784219D67AB00281AB7 /* MWZComponentSearchBarDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607C2219D67AB00281AB7 /* MWZComponentCompass.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860786219D67AB00281AB7 /* MWZComponentCompass.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607C3219D67AB00281AB7 /* MWZComponentCompassDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860787219D67AB00281AB7 /* MWZComponentCompassDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8607C4219D67AB00281AB7 /* MWZComponentCompass.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860788219D67AB00281AB7 /* MWZComponentCompass.m */; };
 		8F8607C5219D67AB00281AB7 /* MWZComponentBottomInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F86078A219D67AB00281AB7 /* MWZComponentBottomInfoView.m */; };
-		8F8607C6219D67AB00281AB7 /* MWZComponentBottomInfoView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86078B219D67AB00281AB7 /* MWZComponentBottomInfoView.h */; };
-		8F8607C7219D67AB00281AB7 /* MWZComponentBottomInfoViewDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86078C219D67AB00281AB7 /* MWZComponentBottomInfoViewDelegate.h */; };
+		8F8607C6219D67AB00281AB7 /* MWZComponentBottomInfoView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86078B219D67AB00281AB7 /* MWZComponentBottomInfoView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607C7219D67AB00281AB7 /* MWZComponentBottomInfoViewDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86078C219D67AB00281AB7 /* MWZComponentBottomInfoViewDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8607C8219D67AB00281AB7 /* MWZMapwizeView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86078E219D67AB00281AB7 /* MWZMapwizeView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8607C9219D67AB00281AB7 /* MWZMapwizeViewDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86078F219D67AB00281AB7 /* MWZMapwizeViewDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8607CA219D67AB00281AB7 /* MWZMapwizeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860790219D67AB00281AB7 /* MWZMapwizeView.m */; };
 		8F8607CB219D67AB00281AB7 /* MWZComponentIconTextButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860792219D67AB00281AB7 /* MWZComponentIconTextButton.m */; };
-		8F8607CC219D67AB00281AB7 /* MWZComponentBorderedTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860793219D67AB00281AB7 /* MWZComponentBorderedTextField.h */; };
-		8F8607CD219D67AB00281AB7 /* MWZComponentCurrentLocationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860794219D67AB00281AB7 /* MWZComponentCurrentLocationView.h */; };
-		8F8607CE219D67AB00281AB7 /* MWZComponentLoadingBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860795219D67AB00281AB7 /* MWZComponentLoadingBar.h */; };
-		8F8607CF219D67AB00281AB7 /* MWZComponentIconTextButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860796219D67AB00281AB7 /* MWZComponentIconTextButton.h */; };
+		8F8607CC219D67AB00281AB7 /* MWZComponentBorderedTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860793219D67AB00281AB7 /* MWZComponentBorderedTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607CD219D67AB00281AB7 /* MWZComponentCurrentLocationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860794219D67AB00281AB7 /* MWZComponentCurrentLocationView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607CE219D67AB00281AB7 /* MWZComponentLoadingBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860795219D67AB00281AB7 /* MWZComponentLoadingBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607CF219D67AB00281AB7 /* MWZComponentIconTextButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860796219D67AB00281AB7 /* MWZComponentIconTextButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8607D0219D67AB00281AB7 /* MWZComponentBorderedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860797219D67AB00281AB7 /* MWZComponentBorderedTextField.m */; };
 		8F8607D1219D67AB00281AB7 /* MWZComponentLoadingBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860798219D67AB00281AB7 /* MWZComponentLoadingBar.m */; };
 		8F8607D2219D67AB00281AB7 /* MWZComponentCurrentLocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860799219D67AB00281AB7 /* MWZComponentCurrentLocationView.m */; };
 		8F8607D3219D67AB00281AB7 /* MWZSearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F86079B219D67AB00281AB7 /* MWZSearchData.m */; };
 		8F8607D4219D67AB00281AB7 /* MWZIndoorLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F86079C219D67AB00281AB7 /* MWZIndoorLocation.m */; };
-		8F8607D5219D67AB00281AB7 /* MWZSearchData.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86079D219D67AB00281AB7 /* MWZSearchData.h */; };
-		8F8607D6219D67AB00281AB7 /* MWZIndoorLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86079E219D67AB00281AB7 /* MWZIndoorLocation.h */; };
-		8F8607D7219D67AB00281AB7 /* MWZComponentDirectionInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A0219D67AB00281AB7 /* MWZComponentDirectionInfo.h */; };
-		8F8607D8219D67AB00281AB7 /* MWZComponentDirectionBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A1219D67AB00281AB7 /* MWZComponentDirectionBar.h */; };
-		8F8607D9219D67AB00281AB7 /* MWZComponentDirectionBarDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A2219D67AB00281AB7 /* MWZComponentDirectionBarDelegate.h */; };
+		8F8607D5219D67AB00281AB7 /* MWZSearchData.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86079D219D67AB00281AB7 /* MWZSearchData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607D6219D67AB00281AB7 /* MWZIndoorLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86079E219D67AB00281AB7 /* MWZIndoorLocation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607D7219D67AB00281AB7 /* MWZComponentDirectionInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A0219D67AB00281AB7 /* MWZComponentDirectionInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607D8219D67AB00281AB7 /* MWZComponentDirectionBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A1219D67AB00281AB7 /* MWZComponentDirectionBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607D9219D67AB00281AB7 /* MWZComponentDirectionBarDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A2219D67AB00281AB7 /* MWZComponentDirectionBarDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8607DA219D67AB00281AB7 /* MWZComponentDirectionBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8607A3219D67AB00281AB7 /* MWZComponentDirectionBar.m */; };
 		8F8607DB219D67AB00281AB7 /* MWZComponentDirectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8607A4219D67AB00281AB7 /* MWZComponentDirectionInfo.m */; };
 		8F8607DC219D67AB00281AB7 /* MWZComponentUniversesButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8607A6219D67AB00281AB7 /* MWZComponentUniversesButton.m */; };
-		8F8607DD219D67AB00281AB7 /* MWZComponentUniversesButtonDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A7219D67AB00281AB7 /* MWZComponentUniversesButtonDelegate.h */; };
-		8F8607DE219D67AB00281AB7 /* MWZComponentUniversesButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A8219D67AB00281AB7 /* MWZComponentUniversesButton.h */; };
-		8F8607DF219D67AB00281AB7 /* MWZComponentFollowUserButtonDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607AA219D67AB00281AB7 /* MWZComponentFollowUserButtonDelegate.h */; };
-		8F8607E0219D67AB00281AB7 /* MWZComponentFollowUserButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607AB219D67AB00281AB7 /* MWZComponentFollowUserButton.h */; };
+		8F8607DD219D67AB00281AB7 /* MWZComponentUniversesButtonDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A7219D67AB00281AB7 /* MWZComponentUniversesButtonDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607DE219D67AB00281AB7 /* MWZComponentUniversesButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A8219D67AB00281AB7 /* MWZComponentUniversesButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607DF219D67AB00281AB7 /* MWZComponentFollowUserButtonDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607AA219D67AB00281AB7 /* MWZComponentFollowUserButtonDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607E0219D67AB00281AB7 /* MWZComponentFollowUserButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607AB219D67AB00281AB7 /* MWZComponentFollowUserButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8607E1219D67AB00281AB7 /* MWZComponentFollowUserButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8607AC219D67AB00281AB7 /* MWZComponentFollowUserButton.m */; };
-		8F8607E3219D67AB00281AB7 /* MWZComponentGroupedResultList.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607B0219D67AB00281AB7 /* MWZComponentGroupedResultList.h */; };
-		8F8607E4219D67AB00281AB7 /* MWZComponentTitleCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607B1219D67AB00281AB7 /* MWZComponentTitleCell.h */; };
-		8F8607E5219D67AB00281AB7 /* MWZComponentResultListDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607B2219D67AB00281AB7 /* MWZComponentResultListDelegate.h */; };
+		8F8607E3219D67AB00281AB7 /* MWZComponentGroupedResultList.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607B0219D67AB00281AB7 /* MWZComponentGroupedResultList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607E4219D67AB00281AB7 /* MWZComponentTitleCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607B1219D67AB00281AB7 /* MWZComponentTitleCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607E5219D67AB00281AB7 /* MWZComponentResultListDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607B2219D67AB00281AB7 /* MWZComponentResultListDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8607E6219D67AB00281AB7 /* MWZComponentSubtitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8607B3219D67AB00281AB7 /* MWZComponentSubtitleCell.m */; };
-		8F8607E7219D67AB00281AB7 /* MWZComponentResultList.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607B4219D67AB00281AB7 /* MWZComponentResultList.h */; };
-		8F8607E8219D67AB00281AB7 /* MWZComponentGroupedResultListDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607B5219D67AB00281AB7 /* MWZComponentGroupedResultListDelegate.h */; };
+		8F8607E7219D67AB00281AB7 /* MWZComponentResultList.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607B4219D67AB00281AB7 /* MWZComponentResultList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607E8219D67AB00281AB7 /* MWZComponentGroupedResultListDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607B5219D67AB00281AB7 /* MWZComponentGroupedResultListDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8607E9219D67AB00281AB7 /* MWZComponentGroupedResultList.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8607B6219D67AB00281AB7 /* MWZComponentGroupedResultList.m */; };
 		8F8607EA219D67AB00281AB7 /* MWZComponentTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8607B7219D67AB00281AB7 /* MWZComponentTitleCell.m */; };
 		8F8607EB219D67AB00281AB7 /* MWZComponentResultList.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8607B8219D67AB00281AB7 /* MWZComponentResultList.m */; };
-		8F8607EC219D67AB00281AB7 /* MWZComponentSubtitleCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607B9219D67AB00281AB7 /* MWZComponentSubtitleCell.h */; };
-		8F8607ED219D67AB00281AB7 /* MWZComponentFloorController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607BB219D67AB00281AB7 /* MWZComponentFloorController.h */; };
-		8F8607EE219D67AB00281AB7 /* MWZComponentFloorView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607BC219D67AB00281AB7 /* MWZComponentFloorView.h */; };
+		8F8607EC219D67AB00281AB7 /* MWZComponentSubtitleCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607B9219D67AB00281AB7 /* MWZComponentSubtitleCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607ED219D67AB00281AB7 /* MWZComponentFloorController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607BB219D67AB00281AB7 /* MWZComponentFloorController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607EE219D67AB00281AB7 /* MWZComponentFloorView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607BC219D67AB00281AB7 /* MWZComponentFloorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8607EF219D67AB00281AB7 /* MWZComponentFloorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8607BD219D67AB00281AB7 /* MWZComponentFloorController.m */; };
 		8F8607F0219D67AB00281AB7 /* MWZComponentFloorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8607BE219D67AB00281AB7 /* MWZComponentFloorView.m */; };
 		8F8607FE219D976200281AB7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8F860800219D976200281AB7 /* Localizable.strings */; };
-		8F86080A219D9CAA00281AB7 /* MWZComponentLanguagesButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860808219D9CAA00281AB7 /* MWZComponentLanguagesButton.h */; };
+		8F86080A219D9CAA00281AB7 /* MWZComponentLanguagesButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860808219D9CAA00281AB7 /* MWZComponentLanguagesButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F86080B219D9CAA00281AB7 /* MWZComponentLanguagesButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860809219D9CAA00281AB7 /* MWZComponentLanguagesButton.m */; };
-		8F86080D219D9CBF00281AB7 /* MWZComponentLanguagesButtonDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86080C219D9CBF00281AB7 /* MWZComponentLanguagesButtonDelegate.h */; };
+		8F86080D219D9CBF00281AB7 /* MWZComponentLanguagesButtonDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86080C219D9CBF00281AB7 /* MWZComponentLanguagesButtonDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F86080F219DA7A600281AB7 /* mwzimages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F86080E219DA7A600281AB7 /* mwzimages.xcassets */; };
 		8F860812219DAE0800281AB7 /* MWZMapwizeViewUISettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860810219DAE0800281AB7 /* MWZMapwizeViewUISettings.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F860813219DAE0800281AB7 /* MWZMapwizeViewUISettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860811219DAE0800281AB7 /* MWZMapwizeViewUISettings.m */; };
-		8F860817219DC5F200281AB7 /* MWZComponentColors.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860815219DC5F200281AB7 /* MWZComponentColors.h */; };
+		8F860817219DC5F200281AB7 /* MWZComponentColors.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860815219DC5F200281AB7 /* MWZComponentColors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F860818219DC5F200281AB7 /* MWZComponentColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860816219DC5F200281AB7 /* MWZComponentColors.m */; };
+		8F8640D4222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8640D2222831130043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m */; };
+		8F8640D5222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8640D3222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -133,6 +135,8 @@
 		8F860811219DAE0800281AB7 /* MWZMapwizeViewUISettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZMapwizeViewUISettings.m; sourceTree = "<group>"; };
 		8F860815219DC5F200281AB7 /* MWZComponentColors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZComponentColors.h; sourceTree = "<group>"; };
 		8F860816219DC5F200281AB7 /* MWZComponentColors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZComponentColors.m; sourceTree = "<group>"; };
+		8F8640D2222831130043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZComponentTitleWithoutFloorCellTableViewCell.m; sourceTree = "<group>"; };
+		8F8640D3222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZComponentTitleWithoutFloorCellTableViewCell.h; sourceTree = "<group>"; };
 		A087F06AEC97B04A58BB7884 /* Pods_MapwizeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapwizeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -319,6 +323,8 @@
 		8F8607AF219D67AB00281AB7 /* ResultList */ = {
 			isa = PBXGroup;
 			children = (
+				8F8640D3222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h */,
+				8F8640D2222831130043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m */,
 				8F8607B4219D67AB00281AB7 /* MWZComponentResultList.h */,
 				8F8607B8219D67AB00281AB7 /* MWZComponentResultList.m */,
 				8F8607B2219D67AB00281AB7 /* MWZComponentResultListDelegate.h */,
@@ -361,13 +367,12 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F860812219DAE0800281AB7 /* MWZMapwizeViewUISettings.h in Headers */,
+				8F8640D5222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h in Headers */,
 				8F8607E7219D67AB00281AB7 /* MWZComponentResultList.h in Headers */,
 				8F8607DE219D67AB00281AB7 /* MWZComponentUniversesButton.h in Headers */,
-				8F860812219DAE0800281AB7 /* MWZMapwizeViewUISettings.h in Headers */,
 				8F8607CC219D67AB00281AB7 /* MWZComponentBorderedTextField.h in Headers */,
 				8F8607E3219D67AB00281AB7 /* MWZComponentGroupedResultList.h in Headers */,
-				8F86077B219D66A100281AB7 /* MapwizeUI.h in Headers */,
-				8F8607C9219D67AB00281AB7 /* MWZMapwizeViewDelegate.h in Headers */,
 				8F8607D5219D67AB00281AB7 /* MWZSearchData.h in Headers */,
 				8F86080D219D9CBF00281AB7 /* MWZComponentLanguagesButtonDelegate.h in Headers */,
 				8F8607C6219D67AB00281AB7 /* MWZComponentBottomInfoView.h in Headers */,
@@ -377,7 +382,6 @@
 				8F8607CE219D67AB00281AB7 /* MWZComponentLoadingBar.h in Headers */,
 				8F8607D8219D67AB00281AB7 /* MWZComponentDirectionBar.h in Headers */,
 				8F860817219DC5F200281AB7 /* MWZComponentColors.h in Headers */,
-				8F8607C8219D67AB00281AB7 /* MWZMapwizeView.h in Headers */,
 				8F8607CD219D67AB00281AB7 /* MWZComponentCurrentLocationView.h in Headers */,
 				8F8607D6219D67AB00281AB7 /* MWZIndoorLocation.h in Headers */,
 				8F8607D9219D67AB00281AB7 /* MWZComponentDirectionBarDelegate.h in Headers */,
@@ -395,6 +399,9 @@
 				8F8607ED219D67AB00281AB7 /* MWZComponentFloorController.h in Headers */,
 				8F8607D7219D67AB00281AB7 /* MWZComponentDirectionInfo.h in Headers */,
 				8F86080A219D9CAA00281AB7 /* MWZComponentLanguagesButton.h in Headers */,
+				8F86077B219D66A100281AB7 /* MapwizeUI.h in Headers */,
+				8F8607C9219D67AB00281AB7 /* MWZMapwizeViewDelegate.h in Headers */,
+				8F8607C8219D67AB00281AB7 /* MWZMapwizeView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,6 +519,7 @@
 				8F8607EA219D67AB00281AB7 /* MWZComponentTitleCell.m in Sources */,
 				8F860813219DAE0800281AB7 /* MWZMapwizeViewUISettings.m in Sources */,
 				8F8607DA219D67AB00281AB7 /* MWZComponentDirectionBar.m in Sources */,
+				8F8640D4222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m in Sources */,
 				8F8607E6219D67AB00281AB7 /* MWZComponentSubtitleCell.m in Sources */,
 				8F8607CB219D67AB00281AB7 /* MWZComponentIconTextButton.m in Sources */,
 				8F8607F0219D67AB00281AB7 /* MWZComponentFloorView.m in Sources */,
@@ -676,7 +684,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = MapwizeUI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.mapwize.MapwizeUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -697,7 +709,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = MapwizeUI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.mapwize.MapwizeUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

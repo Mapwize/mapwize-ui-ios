@@ -68,6 +68,15 @@ MWZMapwizeViewUISettings contains the following attribute
 @property (nonatomic, assign) BOOL followUserButtonIsHidden;
 ```
 
+### Access to Mapbox map and Mapwize plugin
+
+Once the `(void) mapwizeViewDidLoad:(MWZMapwizeView*) mapwizeView` is called, you can retrieved the Mapbox map and the Mapwize plugin using the following properties on MWZMapwizeView object.
+
+```objective-c
+@property (nonatomic, retain) MGLMapView* mapboxMap;
+@property (nonatomic, retain) MapwizePlugin* mapwizePlugin;
+```
+
 ### Simple example
 
 ```objective-c
@@ -118,6 +127,26 @@ The following parameters are available for map initialization:
 
 - `restrictContentToVenueId` to show only the related venue on the map. 
 - `restrictContentToOrganizationId` to show only the venues of that organization on the map. 
+
+### Public methods
+
+Friendly method to add new access to the map and refresh the UI
+`- (void) grantAccess:(NSString*) accessKey success:(void (^)(void)) success failure:(void (^)(NSError* error)) failure;`
+
+Setup the UI to display information about the selected place
+Promote the place and add a marker on it
+`- (void) selectPlace:(MWZPlace*) place centerOn:(BOOL) centerOn;`
+
+Setup the UI to display information about the selected placelist
+Add markers on places contained in the placelist and promote them
+`- (void) selectPlaceList:(MWZPlaceList*) placeList;`
+
+Hide the UI component, remove markers and unpromote place if needed
+`- (void) unselectContent:(BOOL) closeInfo;`
+
+Display a direction object and show the direction UI already configured
+`- (void) setDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to isAccessible:(BOOL) isAccessible;`
+
 
 ## Information button
 

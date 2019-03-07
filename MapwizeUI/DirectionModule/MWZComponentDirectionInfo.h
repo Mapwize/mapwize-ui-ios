@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype) initWithColor:(UIColor*) color;
 
-- (void) setInfoWith:(MWZDirection*) direction;
+- (void) setInfoWith:(double) directionTravelTime directionDistance:(double) directionDistance;
 - (void) close;
     
 @end

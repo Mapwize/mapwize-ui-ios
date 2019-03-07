@@ -9,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<MWZComponentResultListDelegate> resultDelegate;
 
+- (void) setLanguage:(NSString*) language;
 - (void) swapResults:(NSArray<id<MWZObject>>*) results;
 
 @end
