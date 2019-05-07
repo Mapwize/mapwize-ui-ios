@@ -1011,9 +1011,12 @@ const CGFloat marginRight = 16;
         }
         [self->universesButton mapwizeDidEnterInVenue:venue];
         [self loadAccessibleUniversesInSearchData:venue];
-        if (self->selectedContent) {
+        if ([self->selectedContent isKindOfClass:[MWZPlace class]]) {
             [self selectPlace:(MWZPlace*)self->selectedContent centerOn:NO];
             [self.mapwizePlugin setFloor:((MWZPlace*) self->selectedContent).floor];
+        }
+        else if ([self->selectedContent isKindOfClass:[MWZPlaceList class]]) {
+            [self selectPlaceList:(MWZPlaceList*) self->selectedContent];
         }
     });
 }
