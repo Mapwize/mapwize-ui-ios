@@ -113,7 +113,9 @@ const CGFloat marginRight = 16;
             camera.centerCoordinate = options.centerOnLocation.coordinates;
             camera.altitude = 500.0f;
             [self.mapwizePlugin setFloor:options.centerOnLocation.floor];
-            [self.mapwizePlugin addMarker:options.centerOnLocation];
+            [self.mapwizePlugin addMarker:options.centerOnLocation completionHandler:^(MWZMapwizeAnnotation* annotation) {
+                
+            }];
             [self.mapboxMap setCamera:camera];
         });
     }
@@ -912,7 +914,9 @@ const CGFloat marginRight = 16;
     if (centerOn) {
         [_mapwizePlugin centerOnPlace:place];
     }
-    [_mapwizePlugin addMarkerOnPlace:place];
+    [_mapwizePlugin addMarkerOnPlace:place completionHandler:^(MWZMapwizeAnnotation* annotation) {
+        
+    }];
     [_mapwizePlugin addPromotedPlace:place];
     
     if (_delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
@@ -931,7 +935,9 @@ const CGFloat marginRight = 16;
 
 - (void) selectPlaceList:(MWZPlaceList*) placeList {
     [self unselectContent:NO];
-    [_mapwizePlugin addMarkersOnPlaceList:placeList];
+    [_mapwizePlugin addMarkersOnPlaceList:placeList completionHandler:^(NSArray<MWZMapwizeAnnotation*>* annotations) {
+        
+    }];
     if (_delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
         [bottomInfoView selectContentWithPlaceList:placeList
                                       language:[_mapwizePlugin getLanguage]
@@ -1023,6 +1029,7 @@ const CGFloat marginRight = 16;
 
 - (void) plugin:(MapwizePlugin*) plugin didExitVenue:(MWZVenue*) venue {
     dispatch_async(dispatch_get_main_queue(), ^{
+        [self->loadingBar stopAnimation];
         [self->languagesButton mapwizeDidExitVenue];
         [self->universesButton mapwizeDidExitVenue];
         [self->searchBar mapwizeDidExitVenue:venue];

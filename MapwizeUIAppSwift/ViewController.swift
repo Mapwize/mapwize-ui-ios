@@ -9,8 +9,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         let opts = MWZUIOptions()
-        opts.centerOnPlaceId = "5bc49413bf0ed600114db212"
-        //opts.centerOnVenueId = "56b20714c3fa800b00d8f0b5"
+        //opts.centerOnPlaceId = "5bc49413bf0ed600114db212"
+        opts.centerOnVenueId = "56b20714c3fa800b00d8f0b5"
         //opts.centerOnLocation = MWZLatLngFloor(latitude: 50.6331, longitude: 3.0198, floor: 0)
         
         let settings = MWZMapwizeViewUISettings()
@@ -27,9 +27,7 @@ class ViewController: UIViewController {
 extension ViewController: MWZMapwizeViewDelegate {
     
     func mapwizeViewDidLoad(_ mapwizeView: MWZMapwizeView!) {
-        // mapwize and mapbox are ready to be used. Accessible as follow
-        // mapwizeView.mapboxMap
-        // mapwizeView.mapwizePlugin
+        
     }
     
     func mapwizeViewDidTap(onFollowWithoutLocation mapwizeView: MWZMapwizeView!) {
