@@ -11,8 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype) init;
 
-- (void) mapwizeDidEnterInVenue:(MWZVenue*) venue;
-- (void) mapwizeDidExitVenue;
+- (void) mapwizeAccessibleUniversesDidChange:(NSArray<MWZUniverse*>*) accessibleUniverses;
 
 @end
 

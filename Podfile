@@ -1,12 +1,12 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+# platform :ios, '10.0'
 
 
 target 'MapwizeUI' do
   workspace 'MapwizeUIApp'
   project './MapwizeUI.xcodeproj'
   use_frameworks!
-  pod 'MapwizeForMapbox', '~> 2.0'
+  pod 'MapwizeForMapbox', path: '../../iOSRepositories/mapwize-for-mapbox-ios'
 end
 
 target 'MapwizeUIApp' do

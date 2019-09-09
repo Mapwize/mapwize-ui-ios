@@ -1,14 +1,17 @@
 #import <UIKit/UIKit.h>
 #import <MapwizeForMapbox/MapwizeForMapbox.h>
 
+#import "MWZComponentFloorControllerDelegate.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MWZComponentFloorController : UIScrollView
 
-@property (nonatomic, retain) MapwizePlugin* mapwizePlugin;
+@property (nonatomic,weak) id<MWZComponentFloorControllerDelegate> floorControllerDelegate;
 
-- (void) mapwizeFloorsDidChange:(NSArray<NSNumber*>*) floors showController:(BOOL) showController;
-- (void) mapwizeFloorDidChange:(NSNumber*) floor;
+- (void) mapwizeFloorsDidChange:(NSArray<MWZFloor*>*) floors showController:(BOOL) showController;
+- (void) mapwizeFloorWillChange:(MWZFloor*) floor;
+- (void) mapwizeFloorDidChange:(MWZFloor*) floor;
 
 @end
 

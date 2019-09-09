@@ -9,9 +9,13 @@
 - (void) didPressDirection;
 - (void) didSelectVenue:(MWZVenue*) venue;
 - (void) didSelectPlace:(MWZPlace*) place universe:(MWZUniverse*) universe;
-- (void) didSelectPlaceList:(MWZPlaceList*) placelist universe:(MWZUniverse*) universe;
+- (void) didSelectPlaceList:(MWZPlacelist*) placelist universe:(MWZUniverse*) universe;
 - (void) didStartLoading;
 - (void) didStopLoading;
+
+- (MWZVenue*) searchBarRequiresCurrentVenue:(MWZComponentSearchBar*) searchBar;
+- (NSString*) searchBarRequiresCurrentLanguage:(MWZComponentSearchBar*) searchBar;
+- (MWZUniverse*) searchBarRequiresCurrentUniverse:(MWZComponentSearchBar*) searchBar;
 
 @end
 

@@ -118,7 +118,6 @@
 				8F860750219D669200281AB7 /* Frameworks */,
 				8F860751219D669200281AB7 /* Resources */,
 				C77892832B1AF1FF74ACCDE4 /* [CP] Embed Pods Frameworks */,
-				68EB37C72FC6C5F8313177C2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -176,21 +175,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		68EB37C72FC6C5F8313177C2 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MapwizeUIApp/Pods-MapwizeUIApp-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		8CD5C7AE3266E03389581962 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -214,27 +198,16 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-MapwizeUIApp/Pods-MapwizeUIApp-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/IndoorLocation/IndoorLocation.framework",
-				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
-				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework.dSYM",
-				"${PODS_ROOT}/MapwizeForMapbox/MapwizeForMapbox.framework",
-				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
-				"${BUILT_PRODUCTS_DIR}/MapwizeUI/MapwizeUI.framework",
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MapwizeUIApp/Pods-MapwizeUIApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IndoorLocation.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
-				"${DWARF_DSYM_FOLDER_PATH}/Mapbox.framework.dSYM",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapwizeForMapbox.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapwizeUI.framework",
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MapwizeUIApp/Pods-MapwizeUIApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MapwizeUIApp/Pods-MapwizeUIApp-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MapwizeUIApp/Pods-MapwizeUIApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -401,7 +374,10 @@
 				DEVELOPMENT_TEAM = GGHGAE294R;
 				INFOPLIST_FILE = MapwizeUIApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.mapwize.MapwizeUIApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -417,7 +393,10 @@
 				DEVELOPMENT_TEAM = GGHGAE294R;
 				INFOPLIST_FILE = MapwizeUIApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.mapwize.MapwizeUIApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -12,10 +12,10 @@
 - (instancetype) initWithColor:(UIColor*) color {
     self = [super init];
     if (self) {
-        imageNone = [UIImage imageNamed:@"followOff" inBundle:[NSBundle bundleForClass:MWZFollowUserButton.class] compatibleWithTraitCollection:nil];
-        imageFollow = [UIImage imageNamed:@"followOff" inBundle:[NSBundle bundleForClass:MWZFollowUserButton.class] compatibleWithTraitCollection:nil];
+        imageNone = [UIImage imageNamed:@"followOff" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
+        imageFollow = [UIImage imageNamed:@"followOff" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
         imageFollow = [MWZComponentColors tintedBackgroundImageWithImage:imageFollow tint:color];
-        imageFollowHeading = [UIImage imageNamed:@"followHeading" inBundle:[NSBundle bundleForClass:MWZFollowUserButton.class] compatibleWithTraitCollection:nil];
+        imageFollowHeading = [UIImage imageNamed:@"followHeading" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
         imageFollowHeading = [MWZComponentColors tintedBackgroundImageWithImage:imageFollowHeading tint:color];
         [self setImage:imageNone forState:UIControlStateNormal];
         self.adjustsImageWhenHighlighted = NO;
@@ -27,27 +27,27 @@
 }
 
 -(void)buttonAction {
-    if (_mapwizePlugin.userLocation == nil) {
+    if ([_delegate followUserButtonRequiresUserLocation:self] == nil) {
         [_delegate didTapWithoutLocation];
         return;
     }
-    FollowUserMode mode = [_mapwizePlugin getFollowUserMode];
+    MWZFollowUserMode mode = [_delegate followUserButtonRequiresFollowUserMode:self];
     switch (mode) {
         case NONE:
-            [_mapwizePlugin setFollowUserMode:FOLLOW_USER];
+            [_delegate followUserButton:self didChangeFollowUserMode:FOLLOW_USER];
             break;
         case FOLLOW_USER:
-            [_mapwizePlugin setFollowUserMode:FOLLOW_USER_AND_HEADING];
+            [_delegate followUserButton:self didChangeFollowUserMode:FOLLOW_USER_AND_HEADING];
             break;
         case FOLLOW_USER_AND_HEADING:
-            [_mapwizePlugin setFollowUserMode:FOLLOW_USER];
+            [_delegate followUserButton:self didChangeFollowUserMode:FOLLOW_USER];
             break;
         default:
             break;
     }
 }
 
-- (void) setFollowUserMode:(FollowUserMode) mode {
+- (void) setFollowUserMode:(MWZFollowUserMode) mode {
     switch (mode) {
         case NONE:
             [self setImage:imageNone forState:UIControlStateNormal];

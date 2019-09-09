@@ -9,6 +9,8 @@
 #import "MWZMapwizeViewUISettings.h"
 @interface MWZComponentSearchBar () <UITextFieldDelegate, MWZComponentResultListDelegate, MWZComponentGroupedResultListDelegate>
 
+@property (nonatomic, weak) id<MWZMapwizeApi> mapwizeApi;
+
 @end
 
 @implementation MWZComponentSearchBar {
@@ -20,23 +22,23 @@
     MWZComponentResultList* venueResultList;
     UITableView* activeResultList;
     MWZSearchData* searchData;
-    
     BOOL isInSearch;
+    BOOL menuIsHidden;
     NSLayoutConstraint* backViewTopConstaint;
-    
     NSLayoutConstraint* menuButtonWidth;
     UIImage* menuImage;
     UIImage* backImage;
     UIImage* directionImage;
-    
-    BOOL menuIsHidden;
 }
 
-- (instancetype) initWith:(MWZSearchData*) searchData uiSettings:(MWZMapwizeViewUISettings*) uiSettings {
+- (instancetype) initWith:(MWZSearchData*) searchData
+               uiSettings:(MWZMapwizeViewUISettings*) uiSettings
+               mapwizeApi:(id<MWZMapwizeApi>) mapwizeApi {
     self = [super init];
     if (self) {
         self->searchData = searchData;
         self->menuIsHidden = uiSettings.menuButtonIsHidden;
+        self.mapwizeApi = mapwizeApi;
         [self setup];
     }
     return self;
@@ -239,16 +241,16 @@
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
     
-    if ([_mapwizePlugin getVenue]) {
+    if ([_delegate searchBarRequiresCurrentVenue:self]) {
         resultList = [[MWZComponentGroupedResultList alloc] init];
         resultList.resultDelegate = self;
-        [resultList setLanguage:[_mapwizePlugin getLanguage]];
+        [resultList setLanguage:[_delegate searchBarRequiresCurrentLanguage:self]];
         activeResultList = resultList;
     }
     else {
         venueResultList = [[MWZComponentResultList alloc] init];
         venueResultList.resultDelegate = self;
-        [venueResultList setLanguage:[_mapwizePlugin getLanguage]];
+        [venueResultList setLanguage:[_delegate searchBarRequiresCurrentLanguage:self]];
         activeResultList = venueResultList;
     }
     
@@ -371,8 +373,8 @@
 }
 
 - (void) loadEmptySearch {
-    if ([_mapwizePlugin getVenue]) {
-        [resultList swapResults:searchData.mainSearch universes:searchData.accessibleUniverses activeUniverse:[_mapwizePlugin getUniverse]];
+    if ([_delegate searchBarRequiresCurrentVenue:self]) {
+        [resultList swapResults:searchData.mainSearch universes:searchData.accessibleUniverses activeUniverse:[_delegate searchBarRequiresCurrentUniverse:self]];
     }
     else {
         [venueResultList swapResults:searchData.venues];
@@ -381,14 +383,15 @@
 
 - (void) search:(NSString*) query {
     [_delegate didStartLoading];
-    if ([_mapwizePlugin getVenue]) {
+    MWZVenue* venue = [_delegate searchBarRequiresCurrentVenue:self];
+    if (venue) {
         MWZSearchParams* params = [[MWZSearchParams alloc] init];
-        params.venueId = [_mapwizePlugin getVenue].identifier;
+        params.venueId = venue.identifier;
         params.query = query;
         params.objectClass = @[@"place", @"placeList"];
-        [MWZApi searchWithParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
+        [self.mapwizeApi searchWithSearchParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self->resultList swapResults:searchResponse universes:self->searchData.accessibleUniverses activeUniverse:[self.mapwizePlugin getUniverse]];
+                [self->resultList swapResults:searchResponse universes:self->searchData.accessibleUniverses activeUniverse:[self.delegate searchBarRequiresCurrentUniverse:self]];
                 [self.delegate didStopLoading];
             });
         } failure:^(NSError *error) {
@@ -400,10 +403,9 @@
     }
     else {
         MWZSearchParams* params = [[MWZSearchParams alloc] init];
-        params.venueId = [_mapwizePlugin getVenue].identifier;
         params.query = query;
         params.objectClass = @[@"venue"];
-        [MWZApi searchWithParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
+        [self.mapwizeApi searchWithSearchParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self->venueResultList swapResults:searchResponse];
                 [self.delegate didStopLoading];
@@ -432,14 +434,14 @@
 #pragma mark MapwizePluginBehaviour
 
 - (void) mapwizeWillEnterInVenue:(MWZVenue*) venue {
-    searchTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"Entering in %@...", ""), [venue titleForLanguage:[_mapwizePlugin getLanguage]]];
+    searchTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"Entering in %@...", ""), [venue titleForLanguage:[_delegate searchBarRequiresCurrentLanguage:self]]];
     [searchTextField setEnabled:NO];
     [menuButton setEnabled:NO];
     [directionButton setEnabled:NO];
 }
 
 - (void) mapwizeDidEnterInVenue:(MWZVenue*) venue {
-    searchTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"Search in %@...", ""), [venue titleForLanguage:[_mapwizePlugin getLanguage]]];
+    searchTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"Search in %@...", ""), [venue titleForLanguage:[_delegate searchBarRequiresCurrentLanguage:self]]];
     [searchTextField setEnabled:YES];
     [menuButton setEnabled:YES];
     [directionButton setEnabled:YES];
@@ -501,8 +503,8 @@
     if (!_delegate) {
         return;
     }
-    if ([mapwizeObject isKindOfClass:MWZPlaceList.class]) {
-        MWZPlaceList* placelist = (MWZPlaceList*) mapwizeObject;
+    if ([mapwizeObject isKindOfClass:MWZPlacelist.class]) {
+        MWZPlacelist* placelist = (MWZPlacelist*) mapwizeObject;
         [_delegate didSelectPlaceList:placelist universe:universe];
     }
     if ([mapwizeObject isKindOfClass:MWZPlace.class]) {

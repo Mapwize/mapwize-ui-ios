@@ -43,13 +43,18 @@
     
     UIColor* color;
     UIColor* haloColor;
+    
+    id<MWZMapwizeApi> mapwizeApi;
 }
 
-- (instancetype) initWith:(MWZSearchData*) searchData color:(UIColor*) color {
+- (instancetype) initWithMapwizeApi:(id<MWZMapwizeApi>) mapwizeApi
+                         searchData:(MWZSearchData*) searchData
+                              color:(UIColor*) color {
     self = [super init];
     if (self) {
         self->searchData = searchData;
         self->color = color;
+        self->mapwizeApi = mapwizeApi;
         [self addViews];
         [self setupConstraints];
     }
@@ -453,20 +458,19 @@
         [self closeResultList];
     }
     else {
-        [_mapwizePlugin setDirection:nil];
         [_delegate didStopDirection];
         [_delegate didPressBack];
     }
 }
   
-- (void) setFrom:(id<MWZDirectionPoint>) fromValue {
+- (void) setFrom:(id<MWZDirectionPoint> _Nullable) fromValue {
     fromDirectionPoint = fromValue;
     if (fromValue == nil) {
         fromTextField.text = @"";
     }
-    else if ([fromValue isKindOfClass:MWZPlace.class] || [fromValue isKindOfClass:MWZPlaceList.class]) {
+    else if ([fromValue isKindOfClass:MWZPlace.class] || [fromValue isKindOfClass:MWZPlacelist.class]) {
         id<MWZObject> mapwizeObject = (id<MWZObject>) fromValue;
-        fromTextField.text = [mapwizeObject titleForLanguage:[_mapwizePlugin getLanguage]];
+        fromTextField.text = [mapwizeObject titleForLanguage:[_delegate directionBarRequiresCurrentLanguage:self]];
     }
     else if ([fromValue isKindOfClass:MWZIndoorLocation.class]) {
         fromTextField.text = NSLocalizedString(@"Current location","");
@@ -474,14 +478,14 @@
     [self tryToStartDirection:YES];
 }
     
-- (void) setTo:(id<MWZDirectionPoint>) toValue {
+- (void) setTo:(id<MWZDirectionPoint> _Nullable) toValue {
     toDirectionPoint = toValue;
     if (toValue == nil) {
         toTextField.text = @"";
     }
-    else if ([toValue isKindOfClass:MWZPlace.class] || [toValue isKindOfClass:MWZPlaceList.class]) {
+    else if ([toValue isKindOfClass:MWZPlace.class] || [toValue isKindOfClass:MWZPlacelist.class]) {
         id<MWZObject> mapwizeObject = (id<MWZObject>) toValue;
-        toTextField.text = [mapwizeObject titleForLanguage:[_mapwizePlugin getLanguage]];
+        toTextField.text = [mapwizeObject titleForLanguage:[_delegate directionBarRequiresCurrentLanguage:self]];
     }
     else if ([toValue isKindOfClass:MWZIndoorLocation.class]) {
         toTextField.text = NSLocalizedString(@"Current location","");
@@ -527,7 +531,8 @@
                                    constant:0.0f] setActive:YES];
     
     UIView* viewToTopConstraint;
-    if (_mapwizePlugin.userLocation && _mapwizePlugin.userLocation.floor) {
+    ILIndoorLocation* userLocation = [_delegate directionBarRequiresUserLocation:self];
+    if (userLocation && userLocation.floor) {
         currentLocationView = [[MWZComponentCurrentLocationView alloc] init];
         currentLocationView.translatesAutoresizingMaskIntoConstraints = NO;
         viewToTopConstraint = currentLocationView;
@@ -564,7 +569,7 @@
     resultList = [[MWZComponentResultList alloc] init];
     resultList.translatesAutoresizingMaskIntoConstraints = NO;
     resultList.alpha = 0.0f;
-    [resultList setLanguage:[_mapwizePlugin getLanguage]];
+    [resultList setLanguage:[_delegate directionBarRequiresCurrentLanguage:self]];
     resultList.resultDelegate = self;
     [backView addSubview:resultList];
     [[NSLayoutConstraint constraintWithItem:resultList
@@ -630,7 +635,7 @@
 }
 
 - (void) currentLocationTapped:(UITapGestureRecognizer*) recognizer {
-    [self setFrom:[[MWZIndoorLocation alloc] initWith:_mapwizePlugin.userLocation]];
+    [self setFrom:[[MWZIndoorLocation alloc] initWith:[_delegate directionBarRequiresUserLocation:self]]];
     [self closeResultList];
 }
 
@@ -666,11 +671,11 @@
 - (void) searchFrom:(NSString*) query {
     [_delegate didStartLoading];
     MWZSearchParams* params = [[MWZSearchParams alloc] init];
-    params.venueId = [_mapwizePlugin getVenue].identifier;
+    params.venueId = [_delegate directionBarRequiresCurrentVenue:self].identifier;
     params.query = query;
     params.objectClass = @[@"place"];
-    params.universeId = [_mapwizePlugin getUniverse].identifier;
-    [MWZApi searchWithParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
+    params.universeId = [_delegate directionBarRequiresCurrentUniverse:self].identifier;
+    [mapwizeApi searchWithSearchParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self->resultList swapResults:searchResponse];
             [self.delegate didStopLoading];
@@ -686,11 +691,11 @@
 - (void) searchTo:(NSString*) query {
     [_delegate didStartLoading];
     MWZSearchParams* params = [[MWZSearchParams alloc] init];
-    params.venueId = [_mapwizePlugin getVenue].identifier;
+    params.venueId = [_delegate directionBarRequiresCurrentVenue:self].identifier;
     params.query = query;
     params.objectClass = @[@"place", @"placeList"];
-    params.universeId = [_mapwizePlugin getUniverse].identifier;
-    [MWZApi searchWithParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
+    params.universeId = [_delegate directionBarRequiresCurrentUniverse:self].identifier;
+    [mapwizeApi searchWithSearchParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self->resultList swapResults:searchResponse];
             [self.delegate didStopLoading];
@@ -708,7 +713,7 @@
         return;
     }
     [_delegate didStartLoading];;
-    [MWZApi getDirectionWithFrom:fromDirectionPoint to:toDirectionPoint isAccessible:isAccessible success:^(MWZDirection *direction) {
+    [mapwizeApi getDirectionWithFrom:fromDirectionPoint to:toDirectionPoint isAccessible:isAccessible success:^(MWZDirection *direction) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self startDirection:direction from:self->fromDirectionPoint to:self->toDirectionPoint newDirection:newDirection];
             [self.delegate didStopLoading];
@@ -726,7 +731,9 @@
     options.centerOnStart = newDirection;
     options.displayEndMarker = YES;
     
-    [self.mapwizePlugin stopNavigation];
+    [_delegate didFindDirection:direction from:from to:to isAccessible:isAccessible];
+    
+    /*[self.mapwizePlugin stopNavigation];
     if ([from isKindOfClass:MWZIndoorLocation.class] && self.mapwizePlugin.userLocation && self.mapwizePlugin.userLocation.floor) {
         [self.mapwizePlugin startNavigation:direction options:options navigationUpdateHandler:^(double duration, double distance, double locationDelta) {
             if (locationDelta > 10 && self.mapwizePlugin.userLocation && self.mapwizePlugin.userLocation.floor) {
@@ -753,7 +760,7 @@
         if ([from isKindOfClass:MWZPlace.class]) {
             [_mapwizePlugin addPromotedPlace:(MWZPlace*) from];
         }
-    }
+    }*/
 }
     
 #pragma mark TextFieldDelegate

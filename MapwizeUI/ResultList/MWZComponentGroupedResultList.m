@@ -136,8 +136,8 @@
                 return cell;
             }
         }
-        if ([mapwizeObject isKindOfClass:MWZPlaceList.class]) {
-            MWZPlaceList* placeList = (MWZPlaceList*) mapwizeObject;
+        if ([mapwizeObject isKindOfClass:MWZPlacelist.class]) {
+            MWZPlacelist* placeList = (MWZPlacelist*) mapwizeObject;
             MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
             cell.titleView.text = [placeList titleForLanguage:language];
             [cell.imageView setImage:imagePlacelist];

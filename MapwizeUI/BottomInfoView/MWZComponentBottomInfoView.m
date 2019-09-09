@@ -485,7 +485,7 @@
     [self animateTo:totalHeight];
 }
 
-- (void) selectContentWithPlaceList:(MWZPlaceList*) placeList language:(NSString*) language showInfoButton:(BOOL) showInfoButton {
+- (void) selectContentWithPlaceList:(MWZPlacelist*) placeList language:(NSString*) language showInfoButton:(BOOL) showInfoButton {
     NSBundle* bundle = [NSBundle bundleForClass:self.class];
     UIImage* imagePlacelist = [UIImage imageNamed:@"menu" inBundle:bundle compatibleWithTraitCollection:nil];
     imagePlacelist = [imagePlacelist imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];

@@ -20,16 +20,9 @@
     return self;
 }
 
-- (void) mapwizeDidEnterInVenue:(MWZVenue*) venue {
-    universes = venue.universes;
-    if (universes.count > 1) {
-        [self setHidden:NO];
-    }
-}
-
-- (void) mapwizeDidExitVenue {
-    universes = @[];
-    [self setHidden:YES];
+- (void) mapwizeAccessibleUniversesDidChange:(NSArray<MWZUniverse*>*) accessibleUniverses {
+    universes = accessibleUniverses;
+    [self setHidden:accessibleUniverses.count < 1];
 }
 
 -(void)buttonAction {

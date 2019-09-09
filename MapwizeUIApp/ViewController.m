@@ -71,7 +71,7 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)mapwizeView:(MWZMapwizeView *)mapwizeView didTapOnPlaceListInformationButton:(MWZPlaceList *)placeList {
+- (void)mapwizeView:(MWZMapwizeView *)mapwizeView didTapOnPlaceListInformationButton:(MWZPlacelist *)placeList {
     NSLog(@"didTapOnPlaceListInformations");
     NSString* message = [NSString stringWithFormat:@"Click on the placelist information button %@", placeList.translations[0].title];
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"User action"

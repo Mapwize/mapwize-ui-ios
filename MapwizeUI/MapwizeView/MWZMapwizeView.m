@@ -22,11 +22,11 @@
 #import "MWZMapwizeViewUISettings.h"
 #import "MWZUIOptions.h"
 
-@interface MWZMapwizeView () <MGLMapViewDelegate, MWZMapwizePluginDelegate,
+@interface MWZMapwizeView () <MGLMapViewDelegate, MWZMapViewDelegate,
     MWZComponentSearchBarDelegate, MWZComponentCompassDelegate,
     MWZComponentDirectionBarDelegate, MWZComponentBottomInfoViewDelegate,
     MWZComponentFollowUserButtonDelegate, MWZComponentUniversesButtonDelegate,
-    MWZComponentLanguagesButtonDelegate>
+    MWZComponentLanguagesButtonDelegate, MWZComponentFloorControllerDelegate>
 
 @end
 
@@ -70,17 +70,24 @@ const CGFloat marginRight = 16;
 - (instancetype) initWithFrame:(CGRect)frame mapwizeOptions:(MWZUIOptions*) options uiSettings:(MWZMapwizeViewUISettings*) uiSettings {
     self = [super initWithFrame:frame];
     if (self) {
-        self->isInDirection = NO;
-        self->searchData = [[MWZSearchData alloc] init];
-        [self handleOptions:options];
-        self->uiSettings = uiSettings;
-        [self instantiateMap:frame options:options uiSettings:uiSettings];
-        [self instantiateUIComponents:uiSettings];
+        [self initializeWithFrame:frame mapwizeConfiguration:[MWZMapwizeConfiguration sharedInstance] options:options uiSettings:uiSettings];
+        self.backgroundColor = UIColor.redColor;
     }
     return self;
 }
 
-- (void) handleOptions:(MWZUIOptions*) options {
+- (instancetype) initWithFrame:(CGRect)frame
+          mapwizeConfiguration:(MWZMapwizeConfiguration*) mapwizeConfiguration
+                mapwizeOptions:(MWZUIOptions*) options
+                    uiSettings:(MWZMapwizeViewUISettings*) uiSettings {
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self initializeWithFrame:frame mapwizeConfiguration:mapwizeConfiguration options:options uiSettings:uiSettings];
+    }
+    return self;
+}
+
+/*- (void) handleOptions:(MWZUIOptions*) options {
     if (options.centerOnPlaceId) {
         [MWZApi getPlaceWithId:options.centerOnPlaceId success:^(MWZPlace *place) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -112,17 +119,31 @@ const CGFloat marginRight = 16;
             MGLMapCamera* camera = [[MGLMapCamera alloc] init];
             camera.centerCoordinate = options.centerOnLocation.coordinates;
             camera.altitude = 500.0f;
-            [self.mapwizePlugin setFloor:options.centerOnLocation.floor];
-            [self.mapwizePlugin addMarker:options.centerOnLocation completionHandler:^(MWZMapwizeAnnotation* annotation) {
+            [self.mapView setFloor:options.centerOnLocation.floor];
+            [self.mapView addMarker:options.centerOnLocation completionHandler:^(MWZMapwizeAnnotation* annotation) {
                 
             }];
             [self.mapboxMap setCamera:camera];
         });
     }
-}
+}*/
 
-- (void) instantiateMap:(CGRect) frame options:(MWZOptions*) options uiSettings:(MWZMapwizeViewUISettings*) uiSettings {
-    NSDictionary *dict = [[NSBundle mainBundle] infoDictionary];
+- (void) initializeWithFrame:(CGRect) frame
+        mapwizeConfiguration:(MWZMapwizeConfiguration*) mapwizeConfiguration
+                     options:(MWZOptions*) options
+                  uiSettings:(MWZMapwizeViewUISettings*) uiSettings {
+    self->isInDirection = NO;
+    self->searchData = [[MWZSearchData alloc] init];
+    self->uiSettings = uiSettings;
+    _mapView = [[MWZMapView alloc] initWithFrame:frame options:options mapwizeConfiguration:mapwizeConfiguration];
+    _mapView.delegate = self;
+    _mapView.mapboxDelegate = self;
+    [self addSubview:_mapView];
+    
+    id<MWZMapwizeApi> mapwizeApi = [MWZMapwizeApiFactory getApiWithMapwizeConfiguration:mapwizeConfiguration];
+    [self instantiateUIComponents:uiSettings mapwizeApi:mapwizeApi];
+    
+    /*NSDictionary *dict = [[NSBundle mainBundle] infoDictionary];
     NSString* apiKey = dict[@"MWZMapwizeApiKey"];
     NSURL* styleUrl = [NSURL URLWithString:[NSString stringWithFormat:@"https://outdoor.mapwize.io/styles/mapwize/style.json?key=%@", apiKey]];
     _mapboxMap = [[MGLMapView alloc] initWithFrame:frame styleURL:styleUrl];
@@ -141,18 +162,11 @@ const CGFloat marginRight = 16;
     
     _mapwizePlugin = [[MapwizePlugin alloc] initWith:_mapboxMap options:options uiSettings:sdkUISettings];
     _mapwizePlugin.delegate = self;
-    _mapwizePlugin.mapboxDelegate = self;
+    _mapwizePlugin.mapboxDelegate = self;*/
 }
 
-- (void) injectMapwizeToComponents:(MapwizePlugin*) mapwizePlugin {
-    followUserButton.mapwizePlugin = mapwizePlugin;
-    searchBar.mapwizePlugin = mapwizePlugin;
-    floorController.mapwizePlugin = mapwizePlugin;
-    directionBar.mapwizePlugin = mapwizePlugin;
-}
-
-- (void) instantiateUIComponents:(MWZMapwizeViewUISettings*) settings {
-    [self addViews:settings];
+- (void) instantiateUIComponents:(MWZMapwizeViewUISettings*) settings mapwizeApi:(id<MWZMapwizeApi>) mapwizeApi {
+    [self addViews:settings mapwizeApi:mapwizeApi];
     [self setupConstraintsToSearchBar: settings];
     [self setupConstraintsToDirectionBar: settings];
     [self setupConstraintsToBottomInfoView:settings];
@@ -164,7 +178,7 @@ const CGFloat marginRight = 16;
     [self setupConstraintsToUniversesButton];
 }
 
-- (void) addViews:(MWZMapwizeViewUISettings*) settings {
+- (void) addViews:(MWZMapwizeViewUISettings*) settings mapwizeApi:(id<MWZMapwizeApi>) mapwizeApi {
     loadingBar = [[MWZComponentLoadingBar alloc] initWithColor:settings.mainColor];
     loadingBar.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:loadingBar];
@@ -172,10 +186,11 @@ const CGFloat marginRight = 16;
     floorController = [[MWZComponentFloorController alloc] init];
     floorController.translatesAutoresizingMaskIntoConstraints = NO;
     floorController.showsVerticalScrollIndicator = NO;
+    floorController.floorControllerDelegate = self;
     [self addSubview:floorController];
     
     if (!uiSettings.compassIsHidden) {
-        compassView = [[MWZComponentCompass alloc] initWithImage:_mapboxMap.compassView.image];
+        compassView = [[MWZComponentCompass alloc] initWithImage:_mapView.mapboxMapView.compassView.image];
         compassView.translatesAutoresizingMaskIntoConstraints = NO;
         compassView.delegate = self;
         [self addSubview:compassView];
@@ -196,12 +211,12 @@ const CGFloat marginRight = 16;
     universesButton.delegate = self;
     [self addSubview:universesButton];
     
-    searchBar = [[MWZComponentSearchBar alloc] initWith:searchData uiSettings:uiSettings];
+    searchBar = [[MWZComponentSearchBar alloc] initWith:searchData uiSettings:uiSettings mapwizeApi:mapwizeApi];
     searchBar.translatesAutoresizingMaskIntoConstraints = NO;
     searchBar.delegate = self;
     [self addSubview:searchBar];
     
-    directionBar = [[MWZComponentDirectionBar alloc] initWith:searchData color:settings.mainColor];
+    directionBar = [[MWZComponentDirectionBar alloc] initWithMapwizeApi:mapwizeApi searchData:searchData color:settings.mainColor];
     directionBar.translatesAutoresizingMaskIntoConstraints = NO;
     directionBar.delegate = self;
     [self addSubview:directionBar];
@@ -333,8 +348,8 @@ const CGFloat marginRight = 16;
     
 - (void) showDirectionUI {
     [directionBar setTo:(id<MWZDirectionPoint>)selectedContent];
-    if (_mapwizePlugin.userLocation && _mapwizePlugin.userLocation.floor) {
-        [directionBar setFrom:[[MWZIndoorLocation alloc] initWith:_mapwizePlugin.userLocation]];
+    if ([_mapView getUserLocation] && [_mapView getUserLocation].floor) {
+        [directionBar setFrom:[[MWZIndoorLocation alloc] initWith:[_mapView getUserLocation]]];
     }
     [universesButton setHidden:YES];
     [languagesButton setHidden:YES];
@@ -353,35 +368,34 @@ const CGFloat marginRight = 16;
         if ([selectedContent isKindOfClass:MWZPlace.class]) {
             if (_delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
                 [bottomInfoView selectContentWithPlace:(MWZPlace*) selectedContent
-                                              language:[_mapwizePlugin getLanguage]
+                                              language:[_mapView getLanguage]
                                         showInfoButton:[_delegate mapwizeView:self shouldShowInformationButtonFor:(MWZPlace*) selectedContent]];
             }
             else {
                 [bottomInfoView selectContentWithPlace:(MWZPlace*) selectedContent
-                                              language:[_mapwizePlugin getLanguage]
+                                              language:[_mapView getLanguage]
                                         showInfoButton:NO];
             }
         }
         if (_delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
-            [bottomInfoView selectContentWithPlaceList:(MWZPlaceList*) selectedContent
-                                              language:[_mapwizePlugin getLanguage]
-                                        showInfoButton:[_delegate mapwizeView:self shouldShowInformationButtonFor:(MWZPlaceList*) selectedContent]];
+            [bottomInfoView selectContentWithPlaceList:(MWZPlacelist*) selectedContent
+                                              language:[_mapView getLanguage]
+                                        showInfoButton:[_delegate mapwizeView:self shouldShowInformationButtonFor:(MWZPlacelist*) selectedContent]];
         }
         else {
-            [bottomInfoView selectContentWithPlaceList:(MWZPlaceList*) selectedContent
-                                              language:[_mapwizePlugin getLanguage]
+            [bottomInfoView selectContentWithPlaceList:(MWZPlacelist*) selectedContent
+                                              language:[_mapView getLanguage]
                                         showInfoButton:NO];
         }
     }
-    if ([_mapwizePlugin getVenue]) {
-        [languagesButton mapwizeDidEnterInVenue:[_mapwizePlugin getVenue]];
+    if ([_mapView getVenue]) {
+        [languagesButton mapwizeDidEnterInVenue:[_mapView getVenue]];
         if (self->languagesButton.isHidden) {
             self->universesButtonLeftConstraint.constant = marginLeft;
         }
         else {
             self->universesButtonLeftConstraint.constant = marginLeft * 2 + 50.f;
         }
-        [universesButton mapwizeDidEnterInVenue:[_mapwizePlugin getVenue]];
     }
     isInDirection = NO;
     [self layoutIfNeeded];
@@ -458,7 +472,7 @@ const CGFloat marginRight = 16;
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
-                                   constant:_mapboxMap.compassView.frame.size.width] setActive:YES];
+                                   constant:_mapView.mapboxMapView.compassView.frame.size.width] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:compassView
                                   attribute:NSLayoutAttributeHeight
@@ -466,7 +480,7 @@ const CGFloat marginRight = 16;
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
-                                   constant:_mapboxMap.compassView.frame.size.height] setActive:YES];
+                                   constant:_mapView.mapboxMapView.compassView.frame.size.height] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:compassView
                                   attribute:NSLayoutAttributeCenterX
@@ -870,7 +884,7 @@ const CGFloat marginRight = 16;
     MWZSearchParams* params = [[MWZSearchParams alloc] init];
     params.query = @"";
     params.objectClass = @[@"venue"];
-    [MWZApi searchWithParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
+    [_mapView.mapwizeApi searchWithSearchParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
         [self->searchData.venues addObjectsFromArray:searchResponse];
     } failure:^(NSError *error) {
         // Not very important to handle error here.
@@ -879,7 +893,7 @@ const CGFloat marginRight = 16;
 
 - (void) loadMainSearchesInSearchData:(MWZVenue*) venue {
     [self->searchData.mainSearch removeAllObjects];
-    [MWZApi getMainSearchesWithVenue:venue success:^(NSArray<id<MWZObject>> *mainSearches) {
+    [_mapView.mapwizeApi getMainSearchesWithVenue:venue success:^(NSArray<id<MWZObject>> *mainSearches) {
         [self->searchData.mainSearch addObjectsFromArray:mainSearches];
     } failure:^(NSError *error) {
         // Not very important to handle error here.
@@ -888,7 +902,7 @@ const CGFloat marginRight = 16;
 
 - (void) loadMainFromsInSearchData:(MWZVenue*) venue {
     [self->searchData.mainFrom removeAllObjects];
-    [MWZApi getMainFromsWithVenue:venue success:^(NSArray<MWZPlace *> *places) {
+    [_mapView.mapwizeApi getMainFromsWithVenue:venue success:^(NSArray<MWZPlace *> *places) {
          [self->searchData.mainFrom addObjectsFromArray:places];
     } failure:^(NSError *error) {
         // Not very important to handle error here.
@@ -901,73 +915,87 @@ const CGFloat marginRight = 16;
 }
 
 - (void) unselectContent:(BOOL) closeInfo {
-    [_mapwizePlugin removeMarkers];
-    [_mapwizePlugin removePromotedPlacesForVenue:[_mapwizePlugin getVenue]];
+    [_mapView removeMarkers];
+    [_mapView removePromotedPlaces];
     selectedContent = nil;
     if (closeInfo) {
         [bottomInfoView unselectContent];
     }
 }
 
+- (void) selectPlacePreview:(MWZPlacePreview*) placePreview centerOn:(BOOL) centerOn {
+    [self unselectContent:NO];
+    [_mapView addMarkerOnCoordinate:placePreview.defaultCenter];
+    if (centerOn) {
+        [_mapView centerOnPlacePreview:placePreview animated:true];
+    }
+    [placePreview getFullObjectAsyncWithSuccess:^(MWZPlace * _Nonnull place) {
+        [self.mapView addPromotedPlace:place];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
+            [self->bottomInfoView selectContentWithPlace:place
+                                          language:[self.mapView getLanguage]
+                                    showInfoButton:[self.delegate mapwizeView:self shouldShowInformationButtonFor:place]];
+        }
+        else {
+            [self->bottomInfoView selectContentWithPlace:place
+                                          language:[self.mapView getLanguage]
+                                    showInfoButton:NO];
+        }
+        
+        self->selectedContent = place;
+    } failure:^(NSError * _Nonnull error) {
+        
+    }];
+}
+
 - (void) selectPlace:(MWZPlace*) place centerOn:(BOOL) centerOn {
     [self unselectContent:NO];
     if (centerOn) {
-        [_mapwizePlugin centerOnPlace:place];
+        [_mapView centerOnPlace:place animated:YES];
     }
-    [_mapwizePlugin addMarkerOnPlace:place completionHandler:^(MWZMapwizeAnnotation* annotation) {
-        
-    }];
-    [_mapwizePlugin addPromotedPlace:place];
+    [_mapView addMarkerOnPlace:place];
+    [_mapView addPromotedPlace:place];
     
     if (_delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
         [bottomInfoView selectContentWithPlace:place
-                                      language:[_mapwizePlugin getLanguage]
+                                      language:[_mapView getLanguage]
                                 showInfoButton:[_delegate mapwizeView:self shouldShowInformationButtonFor:place]];
     }
     else {
         [bottomInfoView selectContentWithPlace:place
-                                      language:[_mapwizePlugin getLanguage]
+                                      language:[_mapView getLanguage]
                                 showInfoButton:NO];
     }
     
     selectedContent = place;
 }
 
-- (void) selectPlaceList:(MWZPlaceList*) placeList {
+- (void) selectPlaceList:(MWZPlacelist*) placeList {
     [self unselectContent:NO];
-    [_mapwizePlugin addMarkersOnPlaceList:placeList completionHandler:^(NSArray<MWZMapwizeAnnotation*>* annotations) {
+    [_mapView addMarkersOnPlacelist:placeList completionHandler:^(NSArray<MWZMapwizeAnnotation *> * _Nonnull handler) {
         
     }];
     if (_delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
         [bottomInfoView selectContentWithPlaceList:placeList
-                                      language:[_mapwizePlugin getLanguage]
+                                      language:[_mapView getLanguage]
                                 showInfoButton:[_delegate mapwizeView:self shouldShowInformationButtonFor:placeList]];
     }
     else {
         [bottomInfoView selectContentWithPlaceList:placeList
-                                      language:[_mapwizePlugin getLanguage]
+                                      language:[_mapView getLanguage]
                                 showInfoButton:NO];
     }
     selectedContent = placeList;
 }
 
 - (void) setIndoorLocationProvider:(ILIndoorLocationProvider*) indoorLocationProvider {
-    if (_mapwizePlugin) {
-        [_mapwizePlugin setIndoorLocationProvider:indoorLocationProvider];
+    if (_mapView) {
+        [_mapView setIndoorLocationProvider:indoorLocationProvider];
     }
 }
 
 - (void) grantAccess:(NSString*) accessKey success:(void (^)(void)) success failure:(void (^)(NSError* error)) failure {
-    [_mapwizePlugin grantAccess:accessKey success:^{
-        if ([self.mapwizePlugin getVenue]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self->universesButton mapwizeDidEnterInVenue:[self.mapwizePlugin getVenue]];
-            });
-        }
-        success();
-    } failure:^(NSError *error) {
-        failure(error);
-    }];
+    [_mapView grantAccess:accessKey success:success failure:failure];
 }
 
 - (void) setDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to isAccessible:(BOOL) isAccessible {
@@ -980,19 +1008,18 @@ const CGFloat marginRight = 16;
 
 #pragma mark MWZMapwizePluginDelegate
 
-- (void) mapwizePluginDidLoad:(MapwizePlugin*) mapwizePlugin {
-    [self injectMapwizeToComponents:mapwizePlugin];
+- (void) mapViewDidLoad:(MWZMapView *)mapView {
     [self loadVenuesInSearchData];
     if (_delegate) {
         [_delegate mapwizeViewDidLoad:self];
     }
 }
 
-- (void) plugin:(MapwizePlugin*) plugin didChangeFollowUserMode:(FollowUserMode) followUserMode {
+- (void) mapView:(MWZMapView *)mapView followUserModeDidChange:(MWZFollowUserMode)followUserMode {
     [followUserButton setFollowUserMode:followUserMode];
 }
 
-- (void) plugin:(MapwizePlugin*) plugin willEnterVenue:(MWZVenue*) venue {
+- (void) mapView:(MWZMapView *)mapView venueWillEnter:(MWZVenue *)venue {
     [self loadMainSearchesInSearchData:venue];
     [self loadMainFromsInSearchData:venue];
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -1001,7 +1028,7 @@ const CGFloat marginRight = 16;
     });
 }
 
-- (void) plugin:(MapwizePlugin*) plugin didEnterVenue:(MWZVenue*) venue {
+- (void) mapView:(MWZMapView *)mapView venueDidEnter:(MWZVenue *)venue {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self->searchBar mapwizeDidEnterInVenue:venue];
         [self->loadingBar stopAnimation];
@@ -1015,34 +1042,26 @@ const CGFloat marginRight = 16;
         if (venue.universes.count > 0) {
             [self handleUniverseUpdate:venue.universes[0]];
         }
-        [self->universesButton mapwizeDidEnterInVenue:venue];
         [self loadAccessibleUniversesInSearchData:venue];
         if ([self->selectedContent isKindOfClass:[MWZPlace class]]) {
             [self selectPlace:(MWZPlace*)self->selectedContent centerOn:NO];
-            [self.mapwizePlugin setFloor:((MWZPlace*) self->selectedContent).floor];
+            [self.mapView setFloor:((MWZPlace*) self->selectedContent).floor];
         }
-        else if ([self->selectedContent isKindOfClass:[MWZPlaceList class]]) {
-            [self selectPlaceList:(MWZPlaceList*) self->selectedContent];
+        else if ([self->selectedContent isKindOfClass:[MWZPlacelist class]]) {
+            [self selectPlaceList:(MWZPlacelist*) self->selectedContent];
         }
     });
 }
 
-- (void) plugin:(MapwizePlugin*) plugin didExitVenue:(MWZVenue*) venue {
+- (void) mapView:(MWZMapView *)mapView venueDidExit:(MWZVenue *)venue {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self->loadingBar stopAnimation];
         [self->languagesButton mapwizeDidExitVenue];
-        [self->universesButton mapwizeDidExitVenue];
         [self->searchBar mapwizeDidExitVenue:venue];
     });
 }
 
-- (void) plugin:(MapwizePlugin*) plugin didChangeFloor:(NSNumber*) floor {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self->floorController mapwizeFloorDidChange:floor];
-    });
-}
-
-- (void) plugin:(MapwizePlugin*) plugin didChangeFloors:(NSArray<NSNumber*>*) floors {
+- (void) mapView:(MWZMapView *)mapView floorsDidChange:(NSArray<MWZFloor *> *)floors {
     if (self->uiSettings.floorControllerIsHidden) {
         return;
     }
@@ -1060,21 +1079,31 @@ const CGFloat marginRight = 16;
     }
 }
 
-- (void) plugin:(MapwizePlugin*) plugin didTap:(MWZClickEvent*) clickEvent {
+- (void) mapView:(MWZMapView *)mapView floorDidChange:(MWZFloor *)floor {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self->floorController mapwizeFloorDidChange:floor];
+    });
+}
+
+- (void) mapView:(MWZMapView *)mapView didTap:(MWZClickEvent *)clickEvent {
     if (isInDirection) {
         return;
     }
     switch (clickEvent.eventType) {
         case PLACE_CLICK:
-            [self selectPlace:clickEvent.place centerOn:NO];
+            [self selectPlacePreview:clickEvent.placePreview centerOn:NO];
             break;
         case VENUE_CLICK:
-            [_mapwizePlugin centerOnVenue:clickEvent.venue forceEntering:YES];
+            [_mapView centerOnVenuePreview:clickEvent.venuePreview animated:YES];
             break;
         default:
             [self unselectContent:YES];
             break;
     }
+}
+
+- (void) mapView:(MWZMapView* _Nonnull) mapView accessibleUniversesDidChange:(NSArray<MWZUniverse*>* _Nonnull) accessibleUniverses {
+    [universesButton mapwizeAccessibleUniversesDidChange: accessibleUniverses];
 }
 
 - (void) handleUniverseUpdate: (MWZUniverse *) universe {
@@ -1090,8 +1119,8 @@ const CGFloat marginRight = 16;
         if ([selectedContent isKindOfClass:MWZPlace.class]) {
             [_delegate mapwizeView:self didTapOnPlaceInformationButton:(MWZPlace*)selectedContent];
         }
-        if ([selectedContent isKindOfClass:MWZPlaceList.class]) {
-            [_delegate mapwizeView:self didTapOnPlaceListInformationButton:(MWZPlaceList*)selectedContent];
+        if ([selectedContent isKindOfClass:MWZPlacelist.class]) {
+            [_delegate mapwizeView:self didTapOnPlaceListInformationButton:(MWZPlacelist*)selectedContent];
         }
     }
 }
@@ -1109,30 +1138,30 @@ const CGFloat marginRight = 16;
 }
 
 - (void) didSelectPlace:(MWZPlace *)place universe:(MWZUniverse *)universe {
-    if (![universe.identifier isEqualToString:[_mapwizePlugin getUniverse].identifier]) {
-        [_mapwizePlugin setUniverse:universe];
+    if (![universe.identifier isEqualToString:[self.mapView getUniverse].identifier]) {
+        [self.mapView setUniverse:universe];
     }
     [self selectPlace:place centerOn:YES];
 }
 
-- (void) didSelectPlaceList:(MWZPlaceList *)placelist universe:(MWZUniverse *)universe {
-    if (![universe.identifier isEqualToString:[_mapwizePlugin getUniverse].identifier]) {
-        [_mapwizePlugin setUniverse:universe];
+- (void) didSelectPlaceList:(MWZPlacelist *)placelist universe:(MWZUniverse *)universe {
+    if (![universe.identifier isEqualToString:[self.mapView getUniverse].identifier]) {
+        [self.mapView setUniverse:universe];
     }
     [self selectPlaceList:placelist];
 }
 
 - (void) didSelectVenue:(MWZVenue *)venue {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.mapwizePlugin centerOnVenue:venue forceEntering:YES];
+        [self.mapView centerOnVenue:venue animated:YES];
     });
 }
 
 #pragma mark MWZComponentCompassDelegate
 
 - (void) didPress:(MWZComponentCompass *)compass {
-    [_mapwizePlugin setFollowUserMode:NONE];
-    [_mapboxMap setDirection:0 animated:YES];
+    [_mapView setFollowUserMode:NONE];
+    [_mapView.mapboxMapView setDirection:0 animated:YES];
 }
     
 #pragma mark MWZComponentDirectionBarDelegate
@@ -1147,7 +1176,8 @@ const CGFloat marginRight = 16;
 }
     
 - (void) didStopDirection {
-    [_mapwizePlugin removePromotedPlacesForVenue:[_mapwizePlugin getVenue]];
+    [_mapView removeDirection];
+    [_mapView removePromotedPlaces];
     [directionInfo close];
 }
 
@@ -1160,6 +1190,48 @@ const CGFloat marginRight = 16;
     [loadingBar stopAnimation];
 }
 
+- (NSString *)searchBarRequiresCurrentLanguage:(MWZComponentSearchBar *)searchBar {
+    return [_mapView getLanguage];
+}
+
+
+- (MWZUniverse *)searchBarRequiresCurrentUniverse:(MWZComponentSearchBar *)searchBar {
+    return [_mapView getUniverse];
+}
+
+
+- (MWZVenue *)searchBarRequiresCurrentVenue:(MWZComponentSearchBar *)searchBar {
+    return [_mapView getVenue];
+}
+
+
+- (void)didFindDirection:(MWZDirection *)direction from:(id<MWZDirectionPoint>)from to:(id<MWZDirectionPoint>)to isAccessible:(BOOL) isAccessible {
+    [_mapView setDirection:direction];
+    [self unselectContent:YES];
+    [directionInfo setInfoWith:direction.traveltime directionDistance:direction.distance];
+}
+
+
+- (NSString *)directionBarRequiresCurrentLanguage:(MWZComponentDirectionBar *)directionBar {
+    return [_mapView getLanguage];
+}
+
+
+- (MWZUniverse *)directionBarRequiresCurrentUniverse:(MWZComponentDirectionBar *)directionBar {
+    return [_mapView getUniverse];
+}
+
+
+- (MWZVenue *)directionBarRequiresCurrentVenue:(MWZComponentDirectionBar *)directionBar {
+    return [_mapView getVenue];
+}
+
+
+- (ILIndoorLocation *)directionBarRequiresUserLocation:(MWZComponentDirectionBar *)directionBar {
+    return [_mapView getUserLocation];
+}
+
+
 #pragma mark MGLMapViewDelegate
 
 - (void) mapViewRegionIsChanging:(MGLMapView *)mapView {
@@ -1171,12 +1243,27 @@ const CGFloat marginRight = 16;
 }
 
 #pragma mark MWZComponentFollowUserButtonDelegate
-    
+
 - (void) didTapWithoutLocation {
     if (_delegate) {
         [_delegate mapwizeViewDidTapOnFollowWithoutLocation:self];
     }
 }
+
+- (void)followUserButton:(MWZComponentFollowUserButton *)followUserButton didChangeFollowUserMode:(MWZFollowUserMode)followUserMode {
+    [_mapView setFollowUserMode:followUserMode];
+}
+
+
+- (MWZFollowUserMode)followUserButtonRequiresFollowUserMode:(MWZComponentFollowUserButton *)followUserButton {
+    return [_mapView getFollowUserMode];
+}
+
+
+- (ILIndoorLocation *)followUserButtonRequiresUserLocation:(MWZComponentFollowUserButton *)followUserButton {
+    return [_mapView getUserLocation];
+}
+
 
 #pragma mark MWZComponentUniversesButtonDelegate
 
@@ -1185,16 +1272,17 @@ const CGFloat marginRight = 16;
         [self unselectContent:YES];
     }
     [self handleUniverseUpdate:universe];
-    [_mapwizePlugin setUniverse:universe];
+    [_mapView setUniverse:universe];
 }
 
 #pragma mark MWZComponentLanguagesButtonDelegate
 
 - (void) didSelectLanguage:(NSString *)language {
-    [_mapwizePlugin setLanguage:language forVenue:[_mapwizePlugin getVenue]];
+    [_mapView setLanguage:language forVenue:[_mapView getVenue]];
 }
 
-
-
+- (void)floorController:(MWZComponentFloorController *)floorController didSelect:(NSNumber *)floorOrder {
+    [_mapView setFloor:floorOrder];
+}
 
 @end

@@ -1,5 +1,6 @@
 #import "MWZComponentFloorController.h"
 #import "MWZComponentFloorView.h"
+#import "MWZFloor.h"
 
 const int MWZComponentFloorViewSize = 40;
 const int MWZComponentFloorViewMarginSize = 5;
@@ -34,31 +35,33 @@ const int MWZComponentFloorViewMarginSize = 5;
     return self;
 }
 
-- (void) mapwizeFloorsDidChange:(NSArray<NSNumber*>*) floors showController:(BOOL) showController {
+- (void) mapwizeFloorsDidChange:(NSArray<MWZFloor*>*) floors showController:(BOOL) showController {
     if (!floors || floors.count == 0 || !showController) {
         [self close];
         return;
     }
+    NSArray* reversedFloors = [[floors reverseObjectEnumerator] allObjects];
+    
     [floorViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     floorViews = [[NSMutableArray alloc] init];
     floorViewByFloor = [[NSMutableDictionary alloc] init];
     yAnchor = 0;
-    if (floors) {
-        for (NSNumber* floor in floors) {
+    if (reversedFloors) {
+        for (MWZFloor* floor in reversedFloors) {
             BOOL selected = NO;
-            if ([_mapwizePlugin getFloor] && [floor isEqualToNumber:[_mapwizePlugin getFloor]]) {
+            /*if ([_mapwizePlugin getFloor] && [floor isEqualToNumber:[_mapwizePlugin getFloor]]) {
                 selected = YES;
             }
             else {
                 selected = NO;
-            }
+            }*/
             MWZComponentFloorView* floorView = [[MWZComponentFloorView alloc] initWithFrame:CGRectMake(4, yAnchor, MWZComponentFloorViewSize, MWZComponentFloorViewSize) withIsSelected:selected];
-            floorView.text = [NSString stringWithFormat:@"%@", floor];
-            floorView.floor = floor;
+            floorView.text = [NSString stringWithFormat:@"%@", floor.name];
+            floorView.floor = floor.order;
             floorView.userInteractionEnabled = YES;
             [contentView addSubview:floorView];
             [floorViews addObject:floorView];
-            floorViewByFloor[floor] = floorView;
+            floorViewByFloor[floor.order] = floorView;
             UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
             [floorView addGestureRecognizer:singleFingerTap];
             
@@ -103,8 +106,8 @@ const int MWZComponentFloorViewMarginSize = 5;
     }];
 }
 
-- (void) mapwizeFloorDidChange:(NSNumber*) floor {
-    MWZComponentFloorView* floorView = floorViewByFloor[floor];
+- (void) mapwizeFloorDidChange:(MWZFloor*) floor {
+    MWZComponentFloorView* floorView = floorViewByFloor[floor.order];
     
     for (MWZComponentFloorView *view in floorViews) {
         [view setSelected:NO];
@@ -113,9 +116,13 @@ const int MWZComponentFloorViewMarginSize = 5;
     [floorView setSelected:YES];
 }
 
+- (void) mapwizeFloorWillChange:(MWZFloor*) floor {
+    
+}
+
 - (void)handleSingleTap:(UITapGestureRecognizer *)recognizer {
     MWZComponentFloorView* floorView = (MWZComponentFloorView*)recognizer.view;
-    [_mapwizePlugin setFloor:floorView.floor];
+    [_floorControllerDelegate floorController:self didSelect:floorView.floor];
 }
 
 - (void) layoutSubviews {

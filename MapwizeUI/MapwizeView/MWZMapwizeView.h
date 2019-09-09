@@ -8,19 +8,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MWZMapwizeView : UIView
 
-@property (nonatomic, retain) MGLMapView* mapboxMap;
-@property (nonatomic, retain) MapwizePlugin* mapwizePlugin;
+@property (nonatomic) MWZMapView* mapView;
 @property (nonatomic, weak) id<MWZMapwizeViewDelegate> delegate;
 
-- (instancetype) initWithFrame:(CGRect)frame mapwizeOptions:(MWZUIOptions*) options uiSettings:(MWZMapwizeViewUISettings*) uiSettings;
-    
+- (instancetype) initWithFrame:(CGRect)frame
+                mapwizeOptions:(MWZUIOptions*) options
+                    uiSettings:(MWZMapwizeViewUISettings*) uiSettings;
+
+- (instancetype) initWithFrame:(CGRect)frame
+          mapwizeConfiguration:(MWZMapwizeConfiguration*) mapwizeConfiguration
+                mapwizeOptions:(MWZUIOptions*) options
+                    uiSettings:(MWZMapwizeViewUISettings*) uiSettings;
+
 - (void) setIndoorLocationProvider:(ILIndoorLocationProvider*) indoorLocationProvider;
 
 - (void) grantAccess:(NSString*) accessKey success:(void (^)(void)) success failure:(void (^)(NSError* error)) failure;
 
 - (void) selectPlace:(MWZPlace*) place centerOn:(BOOL) centerOn;
 
-- (void) selectPlaceList:(MWZPlaceList*) placeList;
+- (void) selectPlaceList:(MWZPlacelist*) placeList;
 
 - (void) unselectContent:(BOOL) closeInfo;
 

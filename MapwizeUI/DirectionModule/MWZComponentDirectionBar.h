@@ -4,14 +4,13 @@
 @protocol MWZComponentDirectionBarDelegate;
 @class MWZSearchData;
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface MWZComponentDirectionBar : UIView
 
-@property (nonatomic, retain) MapwizePlugin* mapwizePlugin;
 @property (nonatomic, weak) id<MWZComponentDirectionBarDelegate> delegate;
     
-- (instancetype) initWith:(MWZSearchData*) searchData color:(UIColor*) color;
+- (instancetype) initWithMapwizeApi:(id<MWZMapwizeApi>) mapwizeApi
+                         searchData:(MWZSearchData*) searchData
+                              color:(UIColor*) color;
     
 - (void) show;
 - (void) hide;
@@ -20,5 +19,3 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) setTo:(id<MWZDirectionPoint>) toValue;
     
 @end
-
-NS_ASSUME_NONNULL_END

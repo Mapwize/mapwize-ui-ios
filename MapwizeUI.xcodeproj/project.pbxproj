@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6AE2F1AECD1A17FB83C5E2AE /* Pods_MapwizeUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A087F06AEC97B04A58BB7884 /* Pods_MapwizeUI.framework */; };
+		8F31F9E7232687DC00BB4956 /* MWZComponentFloorControllerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F31F9E6232687DC00BB4956 /* MWZComponentFloorControllerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F86077B219D66A100281AB7 /* MapwizeUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860779219D66A100281AB7 /* MapwizeUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8607BF219D67AB00281AB7 /* MWZComponentSearchBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860782219D67AB00281AB7 /* MWZComponentSearchBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8607C0219D67AB00281AB7 /* MWZComponentSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860783219D67AB00281AB7 /* MWZComponentSearchBar.m */; };
@@ -67,15 +68,16 @@
 		8F860813219DAE0800281AB7 /* MWZMapwizeViewUISettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860811219DAE0800281AB7 /* MWZMapwizeViewUISettings.m */; };
 		8F860817219DC5F200281AB7 /* MWZComponentColors.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860815219DC5F200281AB7 /* MWZComponentColors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F860818219DC5F200281AB7 /* MWZComponentColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860816219DC5F200281AB7 /* MWZComponentColors.m */; };
-		C6B8D5712226785400A3AD82 /* MWZUIOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C6B8D5702226785400A3AD82 /* MWZUIOptions.m */; };
-		C6B8D573222679EC00A3AD82 /* MWZUIOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = C6B8D5722226786E00A3AD82 /* MWZUIOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8640D4222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8640D2222831130043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m */; };
 		8F8640D5222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8640D3222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h */; };
+		C6B8D5712226785400A3AD82 /* MWZUIOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C6B8D5702226785400A3AD82 /* MWZUIOptions.m */; };
+		C6B8D573222679EC00A3AD82 /* MWZUIOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = C6B8D5722226786E00A3AD82 /* MWZUIOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2D0DF2659609D033DF11BC8B /* Pods-MapwizeUI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapwizeUI.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapwizeUI/Pods-MapwizeUI.release.xcconfig"; sourceTree = "<group>"; };
 		41A462D5A11F5E34086522F1 /* Pods-MapwizeUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapwizeUI.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapwizeUI/Pods-MapwizeUI.debug.xcconfig"; sourceTree = "<group>"; };
+		8F31F9E6232687DC00BB4956 /* MWZComponentFloorControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZComponentFloorControllerDelegate.h; sourceTree = "<group>"; };
 		8F860776219D66A100281AB7 /* MapwizeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapwizeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F860779219D66A100281AB7 /* MapwizeUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapwizeUI.h; sourceTree = "<group>"; };
 		8F86077A219D66A100281AB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -352,6 +354,7 @@
 				8F8607BD219D67AB00281AB7 /* MWZComponentFloorController.m */,
 				8F8607BC219D67AB00281AB7 /* MWZComponentFloorView.h */,
 				8F8607BE219D67AB00281AB7 /* MWZComponentFloorView.m */,
+				8F31F9E6232687DC00BB4956 /* MWZComponentFloorControllerDelegate.h */,
 			);
 			path = FloorController;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 				8F8607D6219D67AB00281AB7 /* MWZIndoorLocation.h in Headers */,
 				8F8607D9219D67AB00281AB7 /* MWZComponentDirectionBarDelegate.h in Headers */,
 				8F8607C3219D67AB00281AB7 /* MWZComponentCompassDelegate.h in Headers */,
+				8F31F9E7232687DC00BB4956 /* MWZComponentFloorControllerDelegate.h in Headers */,
 				8F8607E4219D67AB00281AB7 /* MWZComponentTitleCell.h in Headers */,
 				8F8607E5219D67AB00281AB7 /* MWZComponentResultListDelegate.h in Headers */,
 				8F8607CF219D67AB00281AB7 /* MWZComponentIconTextButton.h in Headers */,
@@ -424,7 +428,6 @@
 				8F860772219D66A100281AB7 /* Sources */,
 				8F860773219D66A100281AB7 /* Frameworks */,
 				8F860774219D66A100281AB7 /* Resources */,
-				170E82875B5AE23DA22EA933 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -479,21 +482,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		170E82875B5AE23DA22EA933 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MapwizeUI/Pods-MapwizeUI-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		19850933DC2F4D0FEC0231C9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

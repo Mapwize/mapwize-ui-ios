@@ -10,7 +10,13 @@
 - (void) didStopDirection;
 - (void) didStartLoading;
 - (void) didStopLoading;
-    
+- (void) didFindDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to isAccessible:(BOOL) isAccessible;
+
+- (MWZVenue*) directionBarRequiresCurrentVenue:(MWZComponentDirectionBar*) directionBar;
+- (NSString*) directionBarRequiresCurrentLanguage:(MWZComponentDirectionBar*) directionBar;
+- (MWZUniverse*) directionBarRequiresCurrentUniverse:(MWZComponentDirectionBar*) directionBar;
+- (ILIndoorLocation*) directionBarRequiresUserLocation:(MWZComponentDirectionBar*) directionBar;
+
 @end
 
 #endif
