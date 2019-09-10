@@ -730,37 +730,7 @@
     MWZDirectionOptions* options = [[MWZDirectionOptions alloc] init];
     options.centerOnStart = newDirection;
     options.displayEndMarker = YES;
-    
     [_delegate didFindDirection:direction from:from to:to isAccessible:isAccessible];
-    
-    /*[self.mapwizePlugin stopNavigation];
-    if ([from isKindOfClass:MWZIndoorLocation.class] && self.mapwizePlugin.userLocation && self.mapwizePlugin.userLocation.floor) {
-        [self.mapwizePlugin startNavigation:direction options:options navigationUpdateHandler:^(double duration, double distance, double locationDelta) {
-            if (locationDelta > 10 && self.mapwizePlugin.userLocation && self.mapwizePlugin.userLocation.floor) {
-                [self tryToStartDirection:NO];
-            }
-            else {
-                [self.delegate didUpdateDirectionInfo:direction.traveltime distance:direction.distance];
-            }
-        }];
-    }
-    else {
-        [self.mapwizePlugin setFollowUserMode:NONE];
-        [self.mapwizePlugin setDirection:direction options:options];
-        [self.delegate didUpdateDirectionInfo:direction.traveltime distance:direction.distance];
-    }
-    
-    if (newDirection) {
-        [self.mapwizePlugin removeMarkers];
-        [self.mapwizePlugin removePromotedPlacesForVenue:[self.mapwizePlugin getVenue]];
-        [self.delegate didUpdateDirectionInfo:direction.traveltime distance:direction.distance];
-        if ([to isKindOfClass:MWZPlace.class]) {
-            [_mapwizePlugin addPromotedPlace:(MWZPlace*) to];
-        }
-        if ([from isKindOfClass:MWZPlace.class]) {
-            [_mapwizePlugin addPromotedPlace:(MWZPlace*) from];
-        }
-    }*/
 }
     
 #pragma mark TextFieldDelegate

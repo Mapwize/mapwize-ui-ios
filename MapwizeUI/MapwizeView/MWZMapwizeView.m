@@ -1204,11 +1204,69 @@ const CGFloat marginRight = 16;
     return [_mapView getVenue];
 }
 
+- (void) startNavigation:(MWZDirection *)direction
+                    from:(id<MWZDirectionPoint>)from
+                      to:(id<MWZDirectionPoint>)to
+        directionOptions:(MWZDirectionOptions*) directionOptions
+            isAccessible:(BOOL) isAccessible {
+    [_mapView startNavigation:direction options:directionOptions navigationUpdateHandler:^(double duration, double distance, double locationDelta) {
+        if (locationDelta > 10 && [self.mapView getUserLocation] && [self.mapView getUserLocation].floor) {
+            MWZIndoorLocation* newFrom = [[MWZIndoorLocation alloc] initWith:[self.mapView getUserLocation]];
+            [self.mapView.mapwizeApi getDirectionWithFrom:newFrom to:to isAccessible:isAccessible success:^(MWZDirection * _Nonnull direction) {
+                [self startNavigation:direction from:newFrom to:to directionOptions:directionOptions isAccessible:isAccessible];
+            } failure:^(NSError * _Nonnull error) {
+                
+            }];
+        }
+        else {
+            [self->directionInfo setInfoWith:duration directionDistance:distance];
+        }
+    }];
+}
 
 - (void)didFindDirection:(MWZDirection *)direction from:(id<MWZDirectionPoint>)from to:(id<MWZDirectionPoint>)to isAccessible:(BOOL) isAccessible {
-    [_mapView setDirection:direction];
     [self unselectContent:YES];
-    [directionInfo setInfoWith:direction.traveltime directionDistance:direction.distance];
+    MWZDirectionOptions* directionOptions;
+    if ([from isKindOfClass:MWZIndoorLocation.class] && [_mapView getUserLocation] && [_mapView getUserLocation].floor) {
+        [self startNavigation:direction from:from to:to directionOptions:directionOptions isAccessible:isAccessible];
+    }
+    else {
+        [_mapView setFollowUserMode:NONE];
+        [_mapView setDirection:direction options:directionOptions];
+        [directionInfo setInfoWith:direction.traveltime directionDistance:direction.distance];
+    }
+    
+    [_mapView removeMarkers];
+    [_mapView removePromotedPlaces];
+    if ([to isKindOfClass:MWZPlace.class]) {
+        [_mapView addPromotedPlace:(MWZPlace*) to];
+    }
+    if ([from isKindOfClass:MWZPlace.class]) {
+        [_mapView addPromotedPlace:(MWZPlace*) from];
+    }
+    
+    /*[self.mapwizePlugin stopNavigation];
+     if ([from isKindOfClass:MWZIndoorLocation.class] && self.mapwizePlugin.userLocation && self.mapwizePlugin.userLocation.floor) {
+     [self.mapwizePlugin startNavigation:direction options:options navigationUpdateHandler:^(double duration, double distance, double locationDelta) {
+     if (locationDelta > 10 && self.mapwizePlugin.userLocation && self.mapwizePlugin.userLocation.floor) {
+     [self tryToStartDirection:NO];
+     }
+     else {
+     [self.delegate didUpdateDirectionInfo:direction.traveltime distance:direction.distance];
+     }
+     }];
+     }
+     else {
+     [self.mapwizePlugin setFollowUserMode:NONE];
+     [self.mapwizePlugin setDirection:direction options:options];
+     [self.delegate didUpdateDirectionInfo:direction.traveltime distance:direction.distance];
+     }
+     
+     if (newDirection) {
+     [self.mapwizePlugin removeMarkers];
+     [self.mapwizePlugin removePromotedPlacesForVenue:[self.mapwizePlugin getVenue]];
+     [self.delegate didUpdateDirectionInfo:direction.traveltime distance:direction.distance];
+     }*/
 }
 
 
