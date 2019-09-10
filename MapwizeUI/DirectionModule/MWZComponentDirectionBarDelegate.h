@@ -2,8 +2,9 @@
 #define MWZComponentDirectionBarDelegate_h
 
 #import <MapwizeForMapbox/MapwizeForMapbox.h>
+#import "MWZComponentRequireMapwizeInformationProtocol.h"
 
-@protocol MWZComponentDirectionBarDelegate <NSObject>
+@protocol MWZComponentDirectionBarDelegate <MWZComponentRequireMapwizeInformationProtocol>
     
 - (void) didPressBack;
 - (void) didUpdateDirectionInfo:(double) travelTime distance:(double) distance;
@@ -12,10 +13,10 @@
 - (void) didStopLoading;
 - (void) didFindDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to isAccessible:(BOOL) isAccessible;
 
-- (MWZVenue*) directionBarRequiresCurrentVenue:(MWZComponentDirectionBar*) directionBar;
+/*- (MWZVenue*) directionBarRequiresCurrentVenue:(MWZComponentDirectionBar*) directionBar;
 - (NSString*) directionBarRequiresCurrentLanguage:(MWZComponentDirectionBar*) directionBar;
 - (MWZUniverse*) directionBarRequiresCurrentUniverse:(MWZComponentDirectionBar*) directionBar;
-- (ILIndoorLocation*) directionBarRequiresUserLocation:(MWZComponentDirectionBar*) directionBar;
+- (ILIndoorLocation*) directionBarRequiresUserLocation:(MWZComponentDirectionBar*) directionBar;*/
 
 @end
 

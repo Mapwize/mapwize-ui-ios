@@ -2,8 +2,9 @@
 #define MWZComponentSearchBarDelegate_h
 
 #import <MapwizeForMapbox/MapwizeForMapbox.h>
+#import "MWZComponentRequireMapwizeInformationProtocol.h"
 
-@protocol MWZComponentSearchBarDelegate <NSObject>
+@protocol MWZComponentSearchBarDelegate <MWZComponentRequireMapwizeInformationProtocol>
 
 - (void) didPressMenu;
 - (void) didPressDirection;
@@ -12,10 +13,6 @@
 - (void) didSelectPlaceList:(MWZPlacelist*) placelist universe:(MWZUniverse*) universe;
 - (void) didStartLoading;
 - (void) didStopLoading;
-
-- (MWZVenue*) searchBarRequiresCurrentVenue:(MWZComponentSearchBar*) searchBar;
-- (NSString*) searchBarRequiresCurrentLanguage:(MWZComponentSearchBar*) searchBar;
-- (MWZUniverse*) searchBarRequiresCurrentUniverse:(MWZComponentSearchBar*) searchBar;
 
 @end
 

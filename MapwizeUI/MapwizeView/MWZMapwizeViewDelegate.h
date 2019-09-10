@@ -16,7 +16,7 @@
 @optional
 - (BOOL) mapwizeView:(MWZMapwizeView*) mapwizeView shouldShowInformationButtonFor:(id<MWZObject>) mapwizeObject;
 - (BOOL) mapwizeView:(MWZMapwizeView*) mapwizeView shouldShowFloorControllerFor:(NSArray<MWZFloor*>*) floors;
-- (void) mapwizeUniverseHasChanged:(MWZUniverse*)universe;
+- (void) mapwizeUniverseHasChanged:(MWZUniverse*)universe __attribute__((deprecated("Use MWZMapViewDelegate instead")));
 @end
 
 #endif

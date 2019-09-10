@@ -1,16 +1,20 @@
 #import "MWZComponentDirectionInfo.h"
 
-@implementation MWZComponentDirectionInfo {
-    UIImageView* distanceImageView;
-    UIImageView* traveltimeImageView;
-    UILabel* distanceLabel;
-    UILabel* traveltimeLabel;
-    UIImage* accessibilityOffImage;
-    UIImage* accessibilityOnImage;
-    UIImage* traveltimeImage;
-    UIView* distanceContentView;
-    UIView* traveltimeContentView;
-}
+@interface MWZComponentDirectionInfo ()
+
+@property (nonatomic) UIImageView* distanceImageView;
+@property (nonatomic) UIImageView* traveltimeImageView;
+@property (nonatomic) UILabel* distanceLabel;
+@property (nonatomic) UILabel* traveltimeLabel;
+@property (nonatomic) UIImage* accessibilityOffImage;
+@property (nonatomic) UIImage* accessibilityOnImage;
+@property (nonatomic) UIImage* traveltimeImage;
+@property (nonatomic) UIView* distanceContentView;
+@property (nonatomic) UIView* traveltimeContentView;
+
+@end
+
+@implementation MWZComponentDirectionInfo
 
 - (instancetype) initWithColor:(UIColor*) color {
     self = [super init];
@@ -30,39 +34,39 @@
     }
     return self;
 }
-    
+
 - (void) setupSubview:(UIColor*) color {
     
     NSBundle* bundle = [NSBundle bundleForClass:self.class];
-    accessibilityOnImage = [UIImage imageNamed:@"accessibilityOn" inBundle:bundle compatibleWithTraitCollection:nil];
-    accessibilityOnImage = [accessibilityOnImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    accessibilityOffImage = [UIImage imageNamed:@"accessibilityOff" inBundle:bundle compatibleWithTraitCollection:nil];
-    accessibilityOffImage = [accessibilityOffImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    traveltimeImage = [UIImage imageNamed:@"clock" inBundle:bundle compatibleWithTraitCollection:nil];
-    traveltimeImage = [traveltimeImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.accessibilityOnImage = [UIImage imageNamed:@"accessibilityOn" inBundle:bundle compatibleWithTraitCollection:nil];
+    self.accessibilityOnImage = [self.accessibilityOnImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.accessibilityOffImage = [UIImage imageNamed:@"accessibilityOff" inBundle:bundle compatibleWithTraitCollection:nil];
+    self.accessibilityOffImage = [self.accessibilityOffImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.traveltimeImage = [UIImage imageNamed:@"clock" inBundle:bundle compatibleWithTraitCollection:nil];
+    self.traveltimeImage = [self.traveltimeImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
-    distanceContentView = [[UIView alloc] init];
-    distanceContentView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:distanceContentView];
-    traveltimeContentView = [[UIView alloc] init];
-    traveltimeContentView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:traveltimeContentView];
+    self.distanceContentView = [[UIView alloc] init];
+    self.distanceContentView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:self.distanceContentView];
+    self.traveltimeContentView = [[UIView alloc] init];
+    self.traveltimeContentView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:self.traveltimeContentView];
     
-    [[NSLayoutConstraint constraintWithItem:distanceContentView
+    [[NSLayoutConstraint constraintWithItem:self.distanceContentView
                                   attribute:NSLayoutAttributeHeight
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
                                    constant:32.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:distanceContentView
+    [[NSLayoutConstraint constraintWithItem:self.distanceContentView
                                   attribute:NSLayoutAttributeTop
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:self
                                   attribute:NSLayoutAttributeTop
                                  multiplier:1.0f
                                    constant:16.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:distanceContentView
+    [[NSLayoutConstraint constraintWithItem:self.distanceContentView
                                   attribute:NSLayoutAttributeCenterX
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:self
@@ -70,21 +74,21 @@
                                  multiplier:0.5f
                                    constant:0.0f] setActive:YES];
     
-    [[NSLayoutConstraint constraintWithItem:traveltimeContentView
+    [[NSLayoutConstraint constraintWithItem:self.traveltimeContentView
                                   attribute:NSLayoutAttributeHeight
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
                                    constant:32.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:traveltimeContentView
+    [[NSLayoutConstraint constraintWithItem:self.traveltimeContentView
                                   attribute:NSLayoutAttributeTop
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:self
                                   attribute:NSLayoutAttributeTop
                                  multiplier:1.0f
                                    constant:16.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:traveltimeContentView
+    [[NSLayoutConstraint constraintWithItem:self.traveltimeContentView
                                   attribute:NSLayoutAttributeCenterX
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:self
@@ -92,149 +96,149 @@
                                  multiplier:1.5f
                                    constant:0.0f] setActive:YES];
     
-    distanceImageView = [[UIImageView alloc] init];
-    distanceImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [distanceImageView setTintColor:color];
-    [distanceImageView setImage:accessibilityOffImage];
-    [distanceImageView setContentMode:UIViewContentModeScaleAspectFit];
-    [distanceContentView addSubview:distanceImageView];
+    self.distanceImageView = [[UIImageView alloc] init];
+    self.distanceImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.distanceImageView setTintColor:color];
+    [self.distanceImageView setImage:self.accessibilityOffImage];
+    [self.distanceImageView setContentMode:UIViewContentModeScaleAspectFit];
+    [self.distanceContentView addSubview:self.distanceImageView];
     
-    traveltimeImageView = [[UIImageView alloc] init];
-    traveltimeImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [traveltimeImageView setImage:traveltimeImage];
-    [traveltimeImageView setTintColor:color];
-    [traveltimeImageView setContentMode:UIViewContentModeScaleAspectFit];
-    [traveltimeContentView addSubview:traveltimeImageView];
-    distanceLabel = [[UILabel alloc] init];
-    distanceLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    [distanceContentView addSubview:distanceLabel];
-    traveltimeLabel = [[UILabel alloc] init];
-    traveltimeLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    [traveltimeContentView addSubview:traveltimeLabel];
+    self.traveltimeImageView = [[UIImageView alloc] init];
+    self.traveltimeImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.traveltimeImageView setImage:self.traveltimeImage];
+    [self.traveltimeImageView setTintColor:color];
+    [self.traveltimeImageView setContentMode:UIViewContentModeScaleAspectFit];
+    [self.traveltimeContentView addSubview:self.traveltimeImageView];
+    self.distanceLabel = [[UILabel alloc] init];
+    self.distanceLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.distanceContentView addSubview:self.distanceLabel];
+    self.traveltimeLabel = [[UILabel alloc] init];
+    self.traveltimeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.traveltimeContentView addSubview:self.traveltimeLabel];
     
-    [[NSLayoutConstraint constraintWithItem:distanceImageView
+    [[NSLayoutConstraint constraintWithItem:self.distanceImageView
                                   attribute:NSLayoutAttributeHeight
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
                                    constant:32.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:distanceImageView
+    [[NSLayoutConstraint constraintWithItem:self.distanceImageView
                                   attribute:NSLayoutAttributeWidth
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
                                    constant:32.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:distanceImageView
+    [[NSLayoutConstraint constraintWithItem:self.distanceImageView
                                   attribute:NSLayoutAttributeLeft
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:distanceContentView
+                                     toItem:self.distanceContentView
                                   attribute:NSLayoutAttributeLeft
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:distanceImageView
+    [[NSLayoutConstraint constraintWithItem:self.distanceImageView
                                   attribute:NSLayoutAttributeTop
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:distanceContentView
+                                     toItem:self.distanceContentView
                                   attribute:NSLayoutAttributeTop
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
     
-    [[NSLayoutConstraint constraintWithItem:distanceLabel
+    [[NSLayoutConstraint constraintWithItem:self.distanceLabel
                                   attribute:NSLayoutAttributeHeight
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
                                    constant:32.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:distanceLabel
+    [[NSLayoutConstraint constraintWithItem:self.distanceLabel
                                   attribute:NSLayoutAttributeLeft
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:distanceImageView
+                                     toItem:self.distanceImageView
                                   attribute:NSLayoutAttributeRight
                                  multiplier:1.0f
                                    constant:8.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:distanceLabel
+    [[NSLayoutConstraint constraintWithItem:self.distanceLabel
                                   attribute:NSLayoutAttributeRight
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:distanceContentView
+                                     toItem:self.distanceContentView
                                   attribute:NSLayoutAttributeRight
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:distanceLabel
+    [[NSLayoutConstraint constraintWithItem:self.distanceLabel
                                   attribute:NSLayoutAttributeTop
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:distanceContentView
+                                     toItem:self.distanceContentView
                                   attribute:NSLayoutAttributeTop
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
     
-    [[NSLayoutConstraint constraintWithItem:traveltimeImageView
+    [[NSLayoutConstraint constraintWithItem:self.traveltimeImageView
                                   attribute:NSLayoutAttributeHeight
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
                                    constant:32.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:traveltimeImageView
+    [[NSLayoutConstraint constraintWithItem:self.traveltimeImageView
                                   attribute:NSLayoutAttributeWidth
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
                                    constant:32.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:traveltimeImageView
+    [[NSLayoutConstraint constraintWithItem:self.traveltimeImageView
                                   attribute:NSLayoutAttributeLeft
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:traveltimeContentView
+                                     toItem:self.traveltimeContentView
                                   attribute:NSLayoutAttributeLeft
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:traveltimeImageView
+    [[NSLayoutConstraint constraintWithItem:self.traveltimeImageView
                                   attribute:NSLayoutAttributeTop
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:traveltimeContentView
+                                     toItem:self.traveltimeContentView
                                   attribute:NSLayoutAttributeTop
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
     
-    [[NSLayoutConstraint constraintWithItem:traveltimeLabel
+    [[NSLayoutConstraint constraintWithItem:self.traveltimeLabel
                                   attribute:NSLayoutAttributeHeight
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
                                    constant:32.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:traveltimeLabel
+    [[NSLayoutConstraint constraintWithItem:self.traveltimeLabel
                                   attribute:NSLayoutAttributeLeft
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:traveltimeImageView
+                                     toItem:self.traveltimeImageView
                                   attribute:NSLayoutAttributeRight
                                  multiplier:1.0f
                                    constant:8.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:traveltimeLabel
+    [[NSLayoutConstraint constraintWithItem:self.traveltimeLabel
                                   attribute:NSLayoutAttributeRight
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:traveltimeContentView
+                                     toItem:self.traveltimeContentView
                                   attribute:NSLayoutAttributeRight
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:traveltimeLabel
+    [[NSLayoutConstraint constraintWithItem:self.traveltimeLabel
                                   attribute:NSLayoutAttributeTop
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:traveltimeContentView
+                                     toItem:self.traveltimeContentView
                                   attribute:NSLayoutAttributeTop
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
 }
-    
+
 - (void) setInfoWith:(double) directionTravelTime directionDistance:(double) directionDistance {
     double traveltime = directionTravelTime / 60;
     if (traveltime == 0.0) {
         traveltime = 1.0;
     }
-    traveltimeLabel.text = [NSString stringWithFormat:@"%.0f min", traveltime];
+    self.traveltimeLabel.text = [NSString stringWithFormat:@"%.0f min", traveltime];
     double distance = directionDistance;
     distance = distance*1000/1000;
     NSMeasurement* measurment = [[NSMeasurement alloc] initWithDoubleValue:distance unit:NSUnitLength.meters];
@@ -242,7 +246,7 @@
     formatter.unitOptions = NSMeasurementFormatterUnitOptionsNaturalScale;
     formatter.numberFormatter.maximumFractionDigits = 0;
     NSString* localizedString = [formatter stringFromMeasurement:measurment];
-    distanceLabel.text = localizedString;
+    self.distanceLabel.text = localizedString;
     
     if (@available(iOS 11.0, *)) {
         [self animateTo:64.0f + self.safeAreaInsets.bottom];
@@ -250,11 +254,11 @@
         [self animateTo:64.0f];
     }
 }
-    
+
 - (void) close {
     [self animateTo:0.0f];
 }
-    
+
 - (void) animateTo:(CGFloat) height {
     for (NSLayoutConstraint* c in self.constraints) {
         if (c.firstAttribute == NSLayoutAttributeHeight) {
