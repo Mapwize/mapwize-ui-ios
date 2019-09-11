@@ -77,6 +77,7 @@
 /* Begin PBXFileReference section */
 		2D0DF2659609D033DF11BC8B /* Pods-MapwizeUI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapwizeUI.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapwizeUI/Pods-MapwizeUI.release.xcconfig"; sourceTree = "<group>"; };
 		41A462D5A11F5E34086522F1 /* Pods-MapwizeUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapwizeUI.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapwizeUI/Pods-MapwizeUI.debug.xcconfig"; sourceTree = "<group>"; };
+		8F0C8DE623279DB3007B0A0C /* MWZComponentRequireMapwizeInformationProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZComponentRequireMapwizeInformationProtocol.h; sourceTree = "<group>"; };
 		8F31F9E6232687DC00BB4956 /* MWZComponentFloorControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZComponentFloorControllerDelegate.h; sourceTree = "<group>"; };
 		8F860776219D66A100281AB7 /* MapwizeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapwizeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F860779219D66A100281AB7 /* MapwizeUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapwizeUI.h; sourceTree = "<group>"; };
@@ -253,6 +254,7 @@
 				8F86078F219D67AB00281AB7 /* MWZMapwizeViewDelegate.h */,
 				8F860810219DAE0800281AB7 /* MWZMapwizeViewUISettings.h */,
 				8F860811219DAE0800281AB7 /* MWZMapwizeViewUISettings.m */,
+				8F0C8DE623279DB3007B0A0C /* MWZComponentRequireMapwizeInformationProtocol.h */,
 			);
 			path = MapwizeView;
 			sourceTree = "<group>";

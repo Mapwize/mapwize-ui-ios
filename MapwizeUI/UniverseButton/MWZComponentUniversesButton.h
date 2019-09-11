@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype) init;
 
+- (void) showIfNeeded;
 - (void) mapwizeAccessibleUniversesDidChange:(NSArray<MWZUniverse*>*) accessibleUniverses;
 
 @end

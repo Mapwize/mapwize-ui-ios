@@ -7,21 +7,21 @@
 
 @interface MWZComponentGroupedResultList () <UITableViewDelegate, UITableViewDataSource>
 
+@property (nonatomic) NSArray<MWZUniverse*>* accessibleUniverses;
+@property (nonatomic) NSMutableArray<MWZUniverse*>* universes;
+@property (nonatomic) MWZUniverse* activeUniverse;
+@property (nonatomic) NSMutableDictionary<NSString*, NSMutableArray<id<MWZObject>>*>* contentByUniverseId;
+@property (nonatomic) NSLayoutConstraint* tableHeightConstraint;
+@property (nonatomic) NSString* language;
+
 @end
 
-@implementation MWZComponentGroupedResultList {
-    NSArray<MWZUniverse*>* accessibleUniverses;
-    NSMutableArray<MWZUniverse*>* universes;
-    MWZUniverse* activeUniverse;
-    NSMutableDictionary<NSString*, NSMutableArray<id<MWZObject>>*>* contentByUniverseId;
-    NSLayoutConstraint* tableHeightConstraint;
-    NSString* language;
-}
+@implementation MWZComponentGroupedResultList
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        language = @"en";
+        _language = @"en";
         self.backgroundColor = [UIColor whiteColor];
         self.clipsToBounds = NO;
         self.layer.masksToBounds = NO;
@@ -38,53 +38,53 @@
         [self registerClass:[MWZComponentTitleWithoutFloorCellTableViewCell class] forCellReuseIdentifier:@"titleWithoutFloorCell"];
         [self registerClass:[MWZComponentTitleCell class] forCellReuseIdentifier:@"titleCell"];
         [self registerClass:[MWZComponentSubtitleCell class] forCellReuseIdentifier:@"subtitleCell"];
-        contentByUniverseId = [[NSMutableDictionary alloc] init];
-        universes = [[NSMutableArray alloc] init];
+        _contentByUniverseId = [[NSMutableDictionary alloc] init];
+        _universes = [[NSMutableArray alloc] init];
     }
     return self;
 }
 
 - (void) setLanguage:(NSString*) language {
-    self->language = language;
+    _language = language;
 }
 
 - (void) swapResults:(NSArray<id<MWZObject>>*) results universes:(NSArray<MWZUniverse*>*) universes activeUniverse:(MWZUniverse*) activeUniverse {
-    [contentByUniverseId removeAllObjects];
-    self->accessibleUniverses = universes;
+    [self.contentByUniverseId removeAllObjects];
+    self.accessibleUniverses = universes;
     for (id<MWZObject> mapwizeObject in results) {
         NSArray<MWZUniverse*>* placeUniverses = mapwizeObject.universes;
         for (MWZUniverse* universe in placeUniverses) {
-            NSMutableArray<id<MWZObject>>* objects = [contentByUniverseId objectForKey:universe.identifier];
+            NSMutableArray<id<MWZObject>>* objects = [self.contentByUniverseId objectForKey:universe.identifier];
             if (objects == nil) {
                 objects = [[NSMutableArray alloc] init];
-                [contentByUniverseId setObject:objects forKey:universe.identifier];
+                [self.contentByUniverseId setObject:objects forKey:universe.identifier];
             }
             [objects addObject:mapwizeObject];
         }
     }
-    self->universes = [[NSMutableArray alloc] init];
-    for (MWZUniverse* u in accessibleUniverses) {
-        for (NSString* identifier in contentByUniverseId.allKeys) {
+    self.universes = [[NSMutableArray alloc] init];
+    for (MWZUniverse* u in self.accessibleUniverses) {
+        for (NSString* identifier in self.contentByUniverseId.allKeys) {
             if ([u.identifier isEqualToString:identifier]) {
-                [self->universes addObject:u];
+                [self.universes addObject:u];
             }
         }
     }
-    self->activeUniverse = activeUniverse;
+    self.activeUniverse = activeUniverse;
     [self reloadData];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (universes.count > 0) {
-        return universes.count;
+    if (self.universes.count > 0) {
+        return self.universes.count;
     }
     return 1;
 }
 
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (universes.count > 1 || (universes.count == 1 && ![universes[0].identifier isEqualToString:activeUniverse.identifier])) {
-        return universes[section].name;
+    if (self.universes.count > 1 || (self.universes.count == 1 && ![self.universes[0].identifier isEqualToString:self.activeUniverse.identifier])) {
+        return self.universes[section].name;
         
     }
     return nil;
@@ -101,36 +101,36 @@
     
     NSMutableArray<id<MWZObject>>* content;
     
-    if (universes.count == 0) {
+    if (self.universes.count == 0) {
         MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
         cell.titleView.text = NSLocalizedString(@"No results", "");
         [cell.imageView setImage:nil];
         return cell;
     }
     else {
-        MWZUniverse* universe = universes[indexPath.section];
-        content = contentByUniverseId[universe.identifier];
+        MWZUniverse* universe = self.universes[indexPath.section];
+        content = self.contentByUniverseId[universe.identifier];
         id<MWZObject> mapwizeObject = content[indexPath.row];
         if ([mapwizeObject isKindOfClass:MWZVenue.class]) {
             MWZVenue* venue = (MWZVenue*) mapwizeObject;
             MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
-            cell.titleView.text = [venue titleForLanguage:language];
+            cell.titleView.text = [venue titleForLanguage:self.language];
             [cell.imageView setImage:imageVenue];
             return cell;
         }
         if ([mapwizeObject isKindOfClass:MWZPlace.class]) {
             MWZPlace* place = (MWZPlace*) mapwizeObject;
-            if ([place subtitleForLanguage:language] && [[place subtitleForLanguage:language] length] > 0) {
+            if ([place subtitleForLanguage:self.language] && [[place subtitleForLanguage:self.language] length] > 0) {
                 MWZComponentSubtitleCell* cell = [self dequeueReusableCellWithIdentifier:@"subtitleCell"];
-                cell.titleView.text = [place titleForLanguage:language];
-                cell.subtitleView.text = [place subtitleForLanguage:language];
+                cell.titleView.text = [place titleForLanguage:self.language];
+                cell.subtitleView.text = [place subtitleForLanguage:self.language];
                 cell.floorView.text = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), place.floor];
                 [cell.imageView setImage:imagePlace];
                 return cell;
             }
             else {
                 MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleCell"];
-                cell.titleView.text = [place titleForLanguage:language];
+                cell.titleView.text = [place titleForLanguage:self.language];
                 cell.floorView.text = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), place.floor];
                 [cell.imageView setImage:imagePlace];
                 return cell;
@@ -139,7 +139,7 @@
         if ([mapwizeObject isKindOfClass:MWZPlacelist.class]) {
             MWZPlacelist* placeList = (MWZPlacelist*) mapwizeObject;
             MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
-            cell.titleView.text = [placeList titleForLanguage:language];
+            cell.titleView.text = [placeList titleForLanguage:self.language];
             [cell.imageView setImage:imagePlacelist];
             return cell;
         }
@@ -150,18 +150,18 @@
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    if (universes.count > 0) {
-        MWZUniverse* universe = universes[section];
-        return contentByUniverseId[universe.identifier].count;
+    if (self.universes.count > 0) {
+        MWZUniverse* universe = self.universes[section];
+        return self.contentByUniverseId[universe.identifier].count;
     }
     return 1;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self deselectRowAtIndexPath:indexPath animated:NO];
-    if (universes.count > 0) {
-        MWZUniverse* universe = universes[indexPath.section];
-        id<MWZObject> mapwizeObject = contentByUniverseId[universe.identifier][indexPath.row];
+    if (self.universes.count > 0) {
+        MWZUniverse* universe = self.universes[indexPath.section];
+        id<MWZObject> mapwizeObject = self.contentByUniverseId[universe.identifier][indexPath.row];
         if (_resultDelegate) {
             [_resultDelegate didSelect:mapwizeObject universe:universe];
         }
@@ -176,22 +176,22 @@
 
 - (void) updateHeight {
     [self.layer removeAllAnimations];
-    if (tableHeightConstraint) {
-        if (tableHeightConstraint.constant != self.contentSize.height) {
-            tableHeightConstraint.constant = self.contentSize.height;
+    if (self.tableHeightConstraint) {
+        if (self.tableHeightConstraint.constant != self.contentSize.height) {
+            self.tableHeightConstraint.constant = self.contentSize.height;
         }
         
     }
     else {
-        tableHeightConstraint = [NSLayoutConstraint constraintWithItem:self
+        self.tableHeightConstraint = [NSLayoutConstraint constraintWithItem:self
                                                              attribute:NSLayoutAttributeHeight
                                                              relatedBy:NSLayoutRelationEqual
                                                                 toItem:nil
                                                              attribute:NSLayoutAttributeNotAnAttribute
                                                             multiplier:1.0f
                                                               constant:self.contentSize.height];
-        tableHeightConstraint.priority = 200;
-        [tableHeightConstraint setActive:YES];
+        self.tableHeightConstraint.priority = 200;
+        [self.tableHeightConstraint setActive:YES];
     }
 }
 

@@ -29,8 +29,8 @@
     self = [super init];
     
     if (self) {
-        self.color = color;
-        self.totalHeight = 0.0f;
+        _color = color;
+        _totalHeight = 0.0f;
         self.clipsToBounds = NO;
         self.layer.cornerRadius = 10;
         if (@available(iOS 11.0, *)) {

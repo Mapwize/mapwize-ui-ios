@@ -3,21 +3,25 @@
 #import "MWZComponentFollowUserButtonDelegate.h"
 #import "MWZComponentColors.h"
 
-@implementation MWZComponentFollowUserButton {
-    UIImage* imageNone;
-    UIImage* imageFollow;
-    UIImage* imageFollowHeading;
-}
+@interface MWZComponentFollowUserButton ()
+
+@property (nonatomic) UIImage* imageNone;
+@property (nonatomic) UIImage* imageFollow;
+@property (nonatomic) UIImage* imageFollowHeading;
+
+@end
+
+@implementation MWZComponentFollowUserButton
 
 - (instancetype) initWithColor:(UIColor*) color {
     self = [super init];
     if (self) {
-        imageNone = [UIImage imageNamed:@"followOff" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
-        imageFollow = [UIImage imageNamed:@"followOff" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
-        imageFollow = [MWZComponentColors tintedBackgroundImageWithImage:imageFollow tint:color];
-        imageFollowHeading = [UIImage imageNamed:@"followHeading" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
-        imageFollowHeading = [MWZComponentColors tintedBackgroundImageWithImage:imageFollowHeading tint:color];
-        [self setImage:imageNone forState:UIControlStateNormal];
+        _imageNone = [UIImage imageNamed:@"followOff" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
+        _imageFollow = [UIImage imageNamed:@"followOff" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
+        _imageFollow = [MWZComponentColors tintedBackgroundImageWithImage:_imageFollow tint:color];
+        _imageFollowHeading = [UIImage imageNamed:@"followHeading" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
+        _imageFollowHeading = [MWZComponentColors tintedBackgroundImageWithImage:_imageFollowHeading tint:color];
+        [self setImage:_imageNone forState:UIControlStateNormal];
         self.adjustsImageWhenHighlighted = NO;
         UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                           action:@selector(buttonAction)];
@@ -27,20 +31,20 @@
 }
 
 -(void)buttonAction {
-    if ([_delegate followUserButtonRequiresUserLocation:self] == nil) {
-        [_delegate didTapWithoutLocation];
+    if ([self.delegate followUserButtonRequiresUserLocation:self] == nil) {
+        [self.delegate didTapWithoutLocation];
         return;
     }
-    MWZFollowUserMode mode = [_delegate followUserButtonRequiresFollowUserMode:self];
+    MWZFollowUserMode mode = [self.delegate followUserButtonRequiresFollowUserMode:self];
     switch (mode) {
         case NONE:
-            [_delegate followUserButton:self didChangeFollowUserMode:FOLLOW_USER];
+            [self.delegate followUserButton:self didChangeFollowUserMode:FOLLOW_USER];
             break;
         case FOLLOW_USER:
-            [_delegate followUserButton:self didChangeFollowUserMode:FOLLOW_USER_AND_HEADING];
+            [self.delegate followUserButton:self didChangeFollowUserMode:FOLLOW_USER_AND_HEADING];
             break;
         case FOLLOW_USER_AND_HEADING:
-            [_delegate followUserButton:self didChangeFollowUserMode:FOLLOW_USER];
+            [self.delegate followUserButton:self didChangeFollowUserMode:FOLLOW_USER];
             break;
         default:
             break;
@@ -50,13 +54,13 @@
 - (void) setFollowUserMode:(MWZFollowUserMode) mode {
     switch (mode) {
         case NONE:
-            [self setImage:imageNone forState:UIControlStateNormal];
+            [self setImage:self.imageNone forState:UIControlStateNormal];
             break;
         case FOLLOW_USER:
-            [self setImage:imageFollow forState:UIControlStateNormal];
+            [self setImage:self.imageFollow forState:UIControlStateNormal];
             break;
         case FOLLOW_USER_AND_HEADING:
-            [self setImage:imageFollowHeading forState:UIControlStateNormal];
+            [self setImage:self.imageFollowHeading forState:UIControlStateNormal];
             break;
         default:
             break;

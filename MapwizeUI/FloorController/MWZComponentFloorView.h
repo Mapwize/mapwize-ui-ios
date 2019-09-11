@@ -9,6 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype) initWithFrame:(CGRect) frame withIsSelected:(BOOL) isSelected;
 
+- (void) setPreselected:(BOOL) preselected;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -2,33 +2,36 @@
 
 const double progressBarWidth = 200.0;
 
-@implementation MWZComponentLoadingBar {
-    UIView* progressBarIndicator;
-    UIColor* backgroundColor;
-    UIColor* progressColor;
-    
-    NSLayoutConstraint* rightConstraint;
-    NSLayoutConstraint* widthConstraint;
-}
+@interface MWZComponentLoadingBar ()
+
+@property (nonatomic) UIView* progressBarIndicator;
+@property (nonatomic) UIColor* backgroundColor;
+@property (nonatomic) UIColor* progressColor;
+@property (nonatomic) NSLayoutConstraint* rightConstraint;
+@property (nonatomic) NSLayoutConstraint* widthConstraint;
+
+@end
+
+@implementation MWZComponentLoadingBar
 
 - (instancetype) initWithColor:(UIColor*) color {
     self = [super init];
     if (self) {
         [self setHidden:YES];
-        progressBarIndicator = [[UIView alloc] init];
-        progressBarIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+        _progressBarIndicator = [[UIView alloc] init];
+        _progressBarIndicator.translatesAutoresizingMaskIntoConstraints = NO;
         self.clipsToBounds = YES;
-        progressBarIndicator.layer.cornerRadius = 1.5f;
+        _progressBarIndicator.layer.cornerRadius = 1.5f;
         self.layer.cornerRadius = 1.5f;
-        [self addSubview:progressBarIndicator];
-        [[NSLayoutConstraint constraintWithItem:progressBarIndicator
+        [self addSubview:_progressBarIndicator];
+        [[NSLayoutConstraint constraintWithItem:_progressBarIndicator
                                       attribute:NSLayoutAttributeTop
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:self
                                       attribute:NSLayoutAttributeTop
                                      multiplier:1.0f
                                        constant:0.0f] setActive:YES];
-        [[NSLayoutConstraint constraintWithItem:progressBarIndicator
+        [[NSLayoutConstraint constraintWithItem:_progressBarIndicator
                                       attribute:NSLayoutAttributeBottom
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:self
@@ -36,14 +39,14 @@ const double progressBarWidth = 200.0;
                                      multiplier:1.0f
                                        constant:0.0f] setActive:YES];
         
-        rightConstraint = [NSLayoutConstraint constraintWithItem:progressBarIndicator
+        _rightConstraint = [NSLayoutConstraint constraintWithItem:_progressBarIndicator
                                                        attribute:NSLayoutAttributeRight
                                                        relatedBy:NSLayoutRelationEqual
                                                           toItem:self
                                                        attribute:NSLayoutAttributeLeft
                                                       multiplier:1.0f
                                                         constant:progressBarWidth];
-        widthConstraint = [NSLayoutConstraint constraintWithItem:progressBarIndicator
+        _widthConstraint = [NSLayoutConstraint constraintWithItem:_progressBarIndicator
                                                        attribute:NSLayoutAttributeWidth
                                                        relatedBy:NSLayoutRelationEqual
                                                           toItem:nil
@@ -51,12 +54,12 @@ const double progressBarWidth = 200.0;
                                                       multiplier:1.0f
                                                         constant:progressBarWidth];
         
-        [rightConstraint setActive:YES];
-        [widthConstraint setActive:YES];
+        [_rightConstraint setActive:YES];
+        [_widthConstraint setActive:YES];
         
         
         [self setBackgroundColor:[color colorWithAlphaComponent:0.3f]];
-        [progressBarIndicator setBackgroundColor:[color colorWithAlphaComponent:1.0f]];
+        [_progressBarIndicator setBackgroundColor:[color colorWithAlphaComponent:1.0f]];
         
     }
     return self;
@@ -64,16 +67,16 @@ const double progressBarWidth = 200.0;
 
 - (void) startAnimation {
     [UIView setAnimationCurve:UIViewAnimationCurveLinear];
-    rightConstraint.constant = progressBarWidth / 4;
+    _rightConstraint.constant = progressBarWidth / 4;
     [self setHidden:NO];
 
     [self.superview layoutIfNeeded];
     [UIView animateWithDuration:1.0f animations:^{
-        self->rightConstraint.constant = self.frame.size.width + progressBarWidth * 3 / 4;
+        self.rightConstraint.constant = self.frame.size.width + progressBarWidth * 3 / 4;
         [self.superview layoutIfNeeded];
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:1.0f animations:^{
-            self->rightConstraint.constant = progressBarWidth / 4;
+            self.rightConstraint.constant = progressBarWidth / 4;
             [self.superview layoutIfNeeded];
         } completion:^(BOOL finished) {
             if (!self.isHidden) {

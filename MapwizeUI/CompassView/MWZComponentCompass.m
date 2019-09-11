@@ -16,7 +16,7 @@
 }
 
 - (void)handleCompassTap:(UITapGestureRecognizer*)gesture {
-    [_delegate didPress:self];
+    [self.delegate didPress:self];
 }
 
 - (void) updateCompass:(CLLocationDirection) direction {

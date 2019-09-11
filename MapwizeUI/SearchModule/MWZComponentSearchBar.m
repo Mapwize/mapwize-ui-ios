@@ -35,9 +35,9 @@
                mapwizeApi:(id<MWZMapwizeApi>) mapwizeApi {
     self = [super init];
     if (self) {
-        self.searchData = searchData;
-        self.menuIsHidden = uiSettings.menuButtonIsHidden;
-        self.mapwizeApi = mapwizeApi;
+        _searchData = searchData;
+        _menuIsHidden = uiSettings.menuButtonIsHidden;
+        _mapwizeApi = mapwizeApi;
         [self setup];
     }
     return self;

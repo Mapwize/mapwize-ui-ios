@@ -45,9 +45,9 @@
                               color:(UIColor*) color {
     self = [super init];
     if (self) {
-        self.searchData = searchData;
-        self.color = color;
-        self.mapwizeApi = mapwizeApi;
+        _searchData = searchData;
+        _color = color;
+        _mapwizeApi = mapwizeApi;
         [self addViews];
         [self setupConstraints];
     }
@@ -719,10 +719,6 @@
 }
 
 - (void) startDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to newDirection:(BOOL) newDirection {
-    
-    MWZDirectionOptions* options = [[MWZDirectionOptions alloc] init];
-    options.centerOnStart = newDirection;
-    options.displayEndMarker = YES;
     [self.delegate didFindDirection:direction from:from to:to isAccessible:self.isAccessible];
 }
 

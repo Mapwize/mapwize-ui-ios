@@ -28,27 +28,12 @@ MWZComponentDirectionBarDelegate, MWZComponentBottomInfoViewDelegate,
 MWZComponentFollowUserButtonDelegate, MWZComponentUniversesButtonDelegate,
 MWZComponentLanguagesButtonDelegate, MWZComponentFloorControllerDelegate>
 
-@property (nonatomic) MWZComponentFollowUserButton* followUserButton;
-@property (nonatomic) NSLayoutConstraint* qrCodeButtonBottomConstraint;
-@property (nonatomic) NSLayoutConstraint* qrCodeButtonHeightConstraint;
-@property (nonatomic) NSLayoutConstraint* qrCodeButtonWidthConstraint;
-@property (nonatomic) NSLayoutConstraint* qrCodeButtonRightConstraint;
 @property (nonatomic) NSLayoutConstraint* followUserButtonBottomConstraint;
 @property (nonatomic) NSLayoutConstraint* followUserButtonHeightConstraint;
 @property (nonatomic) NSLayoutConstraint* followUserButtonWidthConstraint;
 @property (nonatomic) NSLayoutConstraint* followUserButtonRightConstraint;
 @property (nonatomic) NSLayoutConstraint* searchBarTopConstraint;
 @property (nonatomic) NSLayoutConstraint* universesButtonLeftConstraint;
-
-@property (nonatomic) MWZComponentBottomInfoView* bottomInfoView;
-@property (nonatomic) MWZComponentCompass* compassView;
-@property (nonatomic) MWZComponentSearchBar* searchBar;
-@property (nonatomic) MWZComponentFloorController* floorController;
-@property (nonatomic) MWZComponentDirectionBar* directionBar;
-@property (nonatomic) MWZComponentDirectionInfo* directionInfo;
-@property (nonatomic) MWZComponentLoadingBar* loadingBar;
-@property (nonatomic) MWZComponentUniversesButton* universesButton;
-@property (nonatomic) MWZComponentLanguagesButton* languagesButton;
 
 @property (nonatomic) MWZMapwizeViewUISettings* uiSettings;
 
@@ -70,7 +55,6 @@ const CGFloat marginRight = 16;
     self = [super initWithFrame:frame];
     if (self) {
         [self initializeWithFrame:frame mapwizeConfiguration:[MWZMapwizeConfiguration sharedInstance] options:options uiSettings:uiSettings];
-        self.backgroundColor = UIColor.redColor;
     }
     return self;
 }
@@ -90,12 +74,12 @@ const CGFloat marginRight = 16;
         mapwizeConfiguration:(MWZMapwizeConfiguration*) mapwizeConfiguration
                      options:(MWZOptions*) options
                   uiSettings:(MWZMapwizeViewUISettings*) uiSettings {
-    self.isInDirection = NO;
-    self.searchData = [[MWZSearchData alloc] init];
-    self.uiSettings = uiSettings;
-    self.mapView = [[MWZMapView alloc] initWithFrame:frame options:options mapwizeConfiguration:mapwizeConfiguration];
-    self.mapView.delegate = self;
-    self.mapView.mapboxDelegate = self;
+    _isInDirection = NO;
+    _searchData = [[MWZSearchData alloc] init];
+    _uiSettings = uiSettings;
+    _mapView = [[MWZMapView alloc] initWithFrame:frame options:options mapwizeConfiguration:mapwizeConfiguration];
+    _mapView.delegate = self;
+    _mapView.mapboxDelegate = self;
     [self addSubview:self.mapView];
     
     id<MWZMapwizeApi> mapwizeApi = [MWZMapwizeApiFactory getApiWithMapwizeConfiguration:mapwizeConfiguration];
@@ -127,7 +111,7 @@ const CGFloat marginRight = 16;
     [self addSubview:self.floorController];
     
     if (!self.uiSettings.compassIsHidden) {
-        self.compassView = [[MWZComponentCompass alloc] initWithImage:self.mapView.mapboxMapView.compassView.image];
+        self.compassView = [[MWZComponentCompass alloc] initWithImage:[UIImage imageNamed:@"AppIcon"]];
         self.compassView.translatesAutoresizingMaskIntoConstraints = NO;
         self.compassView.delegate = self;
         [self addSubview:self.compassView];
@@ -333,6 +317,7 @@ const CGFloat marginRight = 16;
         else {
             self.universesButtonLeftConstraint.constant = marginLeft * 2 + 50.f;
         }
+        [self.universesButton showIfNeeded];
     }
     self.isInDirection = NO;
     [self layoutIfNeeded];
@@ -409,7 +394,7 @@ const CGFloat marginRight = 16;
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
-                                   constant:self.mapView.mapboxMapView.compassView.frame.size.width] setActive:YES];
+                                   constant:50.0] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.compassView
                                   attribute:NSLayoutAttributeHeight
@@ -417,7 +402,7 @@ const CGFloat marginRight = 16;
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
-                                   constant:self.mapView.mapboxMapView.compassView.frame.size.height] setActive:YES];
+                                   constant:50.0] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.compassView
                                   attribute:NSLayoutAttributeCenterX
@@ -427,20 +412,20 @@ const CGFloat marginRight = 16;
                                  multiplier:1.0f
                                    constant:0] setActive:YES];
     
-    NSLayoutConstraint* toSearchBarConstraint = [NSLayoutConstraint constraintWithItem:self.compassView
+    NSLayoutConstraint* toSearchBarConstraint = [NSLayoutConstraint constraintWithItem:_compassView
                                                                              attribute:NSLayoutAttributeTop
                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self.searchBar
+                                                                                toItem:_searchBar
                                                                              attribute:NSLayoutAttributeBottom
                                                                             multiplier:1.0f
                                                                               constant:8.0f];
     toSearchBarConstraint.priority = 999;
     [toSearchBarConstraint setActive:YES];
     
-    [[NSLayoutConstraint constraintWithItem:self.compassView
+    [[NSLayoutConstraint constraintWithItem:_compassView
                                   attribute:NSLayoutAttributeTop
                                   relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                     toItem:self.directionBar
+                                     toItem:_directionBar
                                   attribute:NSLayoutAttributeBottom
                                  multiplier:1.0f
                                    constant:8.0f] setActive:YES];
@@ -1018,6 +1003,12 @@ const CGFloat marginRight = 16;
     });
 }
 
+- (void) mapView:(MWZMapView *)mapView floorWillChange:(MWZFloor *)floor {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.floorController mapwizeFloorWillChange:floor];
+    });
+}
+
 - (void) mapView:(MWZMapView *)mapView didTap:(MWZClickEvent *)clickEvent {
     if (self.isInDirection) {
         return;
@@ -1140,13 +1131,15 @@ const CGFloat marginRight = 16;
 
 - (void)didFindDirection:(MWZDirection *)direction from:(id<MWZDirectionPoint>)from to:(id<MWZDirectionPoint>)to isAccessible:(BOOL) isAccessible {
     [self unselectContent:YES];
-    MWZDirectionOptions* directionOptions;
+    MWZDirectionOptions* options = [[MWZDirectionOptions alloc] init];
+    options.centerOnStart = YES;
+    options.displayEndMarker = YES;
     if ([from isKindOfClass:MWZIndoorLocation.class] && [self.mapView getUserLocation] && [self.mapView getUserLocation].floor) {
-        [self startNavigation:direction from:from to:to directionOptions:directionOptions isAccessible:isAccessible];
+        [self startNavigation:direction from:from to:to directionOptions:options isAccessible:isAccessible];
     }
     else {
         [self.mapView setFollowUserMode:NONE];
-        [self.mapView setDirection:direction options:directionOptions];
+        [self.mapView setDirection:direction options:options];
         [self.directionInfo setInfoWith:direction.traveltime directionDistance:direction.distance];
     }
     
@@ -1161,6 +1154,10 @@ const CGFloat marginRight = 16;
 }
 
 #pragma mark MGLMapViewDelegate
+
+- (void)mapView:(MGLMapView *)mapView regionIsChangingWithReason:(MGLCameraChangeReason)reason {
+    [self.compassView updateCompass:mapView.direction];
+}
 
 - (void) mapViewRegionIsChanging:(MGLMapView *)mapView {
     [self.compassView updateCompass:mapView.direction];

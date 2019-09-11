@@ -4,12 +4,32 @@
 @protocol MWZMapwizeViewDelegate;
 @class MWZMapwizeViewUISettings;
 @class MWZUIOptions;
+@class MWZComponentFollowUserButton;
+@class MWZComponentBottomInfoView;
+@class MWZComponentCompass;
+@class MWZComponentSearchBar;
+@class MWZComponentFloorController;
+@class MWZComponentDirectionBar;
+@class MWZComponentDirectionInfo;
+@class MWZComponentLoadingBar;
+@class MWZComponentUniversesButton;
+@class MWZComponentLanguagesButton;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MWZMapwizeView : UIView
 
 @property (nonatomic) MWZMapView* mapView;
 @property (nonatomic, weak) id<MWZMapwizeViewDelegate> delegate;
+@property (nonatomic) MWZComponentFollowUserButton* followUserButton;
+@property (nonatomic) MWZComponentBottomInfoView* bottomInfoView;
+@property (nonatomic) MWZComponentCompass* compassView;
+@property (nonatomic) MWZComponentSearchBar* searchBar;
+@property (nonatomic) MWZComponentFloorController* floorController;
+@property (nonatomic) MWZComponentDirectionBar* directionBar;
+@property (nonatomic) MWZComponentDirectionInfo* directionInfo;
+@property (nonatomic) MWZComponentLoadingBar* loadingBar;
+@property (nonatomic) MWZComponentUniversesButton* universesButton;
+@property (nonatomic) MWZComponentLanguagesButton* languagesButton;
 
 - (instancetype) initWithFrame:(CGRect)frame
                 mapwizeOptions:(MWZUIOptions*) options
