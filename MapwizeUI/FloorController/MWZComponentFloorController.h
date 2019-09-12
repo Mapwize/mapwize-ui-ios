@@ -9,6 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,weak) id<MWZComponentFloorControllerDelegate> floorControllerDelegate;
 
+- (instancetype) initWithColor:(UIColor*) color;
+
 - (void) mapwizeFloorsDidChange:(NSArray<MWZFloor*>*) floors showController:(BOOL) showController;
 - (void) mapwizeFloorWillChange:(MWZFloor*) floor;
 - (void) mapwizeFloorDidChange:(MWZFloor*) floor;

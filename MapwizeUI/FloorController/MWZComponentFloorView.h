@@ -6,8 +6,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) NSNumber* floor;
 @property (nonatomic, assign) BOOL selected;
+@property (nonatomic) UIColor* mainColor;
 
-- (instancetype) initWithFrame:(CGRect) frame withIsSelected:(BOOL) isSelected;
+- (instancetype) initWithFrame:(CGRect) frame
+                withIsSelected:(BOOL) isSelected
+                     mainColor:(UIColor*) mainColor;
 
 - (void) setPreselected:(BOOL) preselected;
 

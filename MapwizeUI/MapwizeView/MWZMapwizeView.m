@@ -104,14 +104,14 @@ const CGFloat marginRight = 16;
     self.loadingBar.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.loadingBar];
     
-    self.floorController = [[MWZComponentFloorController alloc] init];
+    self.floorController = [[MWZComponentFloorController alloc] initWithColor:_mapView.mapOptions.mainColor];
     self.floorController.translatesAutoresizingMaskIntoConstraints = NO;
     self.floorController.showsVerticalScrollIndicator = NO;
     self.floorController.floorControllerDelegate = self;
     [self addSubview:self.floorController];
     
     if (!self.uiSettings.compassIsHidden) {
-        self.compassView = [[MWZComponentCompass alloc] initWithImage:[UIImage imageNamed:@"AppIcon"]];
+        self.compassView = [[MWZComponentCompass alloc] initWithImage:[UIImage imageNamed:@"compass" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil]];
         self.compassView.translatesAutoresizingMaskIntoConstraints = NO;
         self.compassView.delegate = self;
         [self addSubview:self.compassView];
@@ -394,7 +394,7 @@ const CGFloat marginRight = 16;
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
-                                   constant:50.0] setActive:YES];
+                                   constant:40.0] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.compassView
                                   attribute:NSLayoutAttributeHeight
@@ -402,7 +402,7 @@ const CGFloat marginRight = 16;
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
-                                   constant:50.0] setActive:YES];
+                                   constant:40.0] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.compassView
                                   attribute:NSLayoutAttributeCenterX

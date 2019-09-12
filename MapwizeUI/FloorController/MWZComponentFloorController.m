@@ -14,6 +14,7 @@ const int MWZComponentFloorViewMarginSize = 5;
 @property (nonatomic, assign) int yAnchor;
 @property (nonatomic, assign) int lastFrameHeight;
 @property (nonatomic) MWZComponentFloorView* selectedView;
+@property (nonatomic) UIColor* mainColor;
 
 @end
 
@@ -39,6 +40,27 @@ const int MWZComponentFloorViewMarginSize = 5;
     return self;
 }
 
+- (instancetype) initWithColor:(UIColor*) color {
+    self = [super init];
+    if (self) {
+        _floorViews = [[NSMutableArray alloc] init];
+        _floorViewByFloor = [[NSMutableDictionary alloc] init];
+        _contentView = [[UIView alloc] init];
+        [self addSubview:_contentView];
+        _heightConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                             attribute:NSLayoutAttributeHeight
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:nil
+                                                             attribute:NSLayoutAttributeNotAnAttribute
+                                                            multiplier:1.0f
+                                                              constant:0.0f];
+        _heightConstraint.priority = 600;
+        [_heightConstraint setActive:YES];
+        _mainColor = color;
+    }
+    return self;
+}
+
 - (void) mapwizeFloorsDidChange:(NSArray<MWZFloor*>*) floors showController:(BOOL) showController {
     if (!floors || floors.count == 0 || !showController) {
         [self close];
@@ -59,7 +81,7 @@ const int MWZComponentFloorViewMarginSize = 5;
             else {
                 selected = NO;
             }*/
-            MWZComponentFloorView* floorView = [[MWZComponentFloorView alloc] initWithFrame:CGRectMake(4, self.yAnchor, MWZComponentFloorViewSize, MWZComponentFloorViewSize) withIsSelected:selected];
+            MWZComponentFloorView* floorView = [[MWZComponentFloorView alloc] initWithFrame:CGRectMake(4, self.yAnchor, MWZComponentFloorViewSize, MWZComponentFloorViewSize) withIsSelected:selected mainColor:_mainColor];
             floorView.text = [NSString stringWithFormat:@"%@", floor.name];
             floorView.floor = floor.order;
             floorView.userInteractionEnabled = YES;
