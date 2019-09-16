@@ -1097,6 +1097,7 @@ const CGFloat marginRight = 16;
 - (void) didStopDirection {
     [self.mapView removeDirection];
     [self.mapView removePromotedPlaces];
+    [self.mapView stopNavigation];
     [self.directionInfo close];
 }
 
@@ -1114,9 +1115,9 @@ const CGFloat marginRight = 16;
                       to:(id<MWZDirectionPoint>)to
         directionOptions:(MWZDirectionOptions*) directionOptions
             isAccessible:(BOOL) isAccessible {
-    [self.mapView startNavigation:direction options:directionOptions navigationUpdateHandler:^(double duration, double distance, double locationDelta) {
-        if (locationDelta > 10 && [self.mapView getUserLocation] && [self.mapView getUserLocation].floor) {
-            MWZIndoorLocation* newFrom = [[MWZIndoorLocation alloc] initWith:[self.mapView getUserLocation]];
+    [self.mapView startNavigation:direction options:directionOptions navigationUpdateHandler:^(double duration, double distance, double locationDelta, ILIndoorLocation* trueLocation) {
+        if (locationDelta > 10 && trueLocation && trueLocation.floor) {
+            MWZIndoorLocation* newFrom = [[MWZIndoorLocation alloc] initWith:trueLocation];
             [self.mapView.mapwizeApi getDirectionWithFrom:newFrom to:to isAccessible:isAccessible success:^(MWZDirection * _Nonnull direction) {
                 [self startNavigation:direction from:newFrom to:to directionOptions:directionOptions isAccessible:isAccessible];
             } failure:^(NSError * _Nonnull error) {

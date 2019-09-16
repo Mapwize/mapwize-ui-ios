@@ -235,7 +235,7 @@
 
 - (void) setInfoWith:(double) directionTravelTime directionDistance:(double) directionDistance {
     double traveltime = directionTravelTime / 60;
-    if (traveltime == 0.0) {
+    if (traveltime <= 1.0) {
         traveltime = 1.0;
     }
     self.traveltimeLabel.text = [NSString stringWithFormat:@"%.0f min", traveltime];
@@ -243,7 +243,7 @@
     distance = distance*1000/1000;
     NSMeasurement* measurment = [[NSMeasurement alloc] initWithDoubleValue:distance unit:NSUnitLength.meters];
     NSMeasurementFormatter* formatter = [[NSMeasurementFormatter alloc] init];
-    formatter.unitOptions = NSMeasurementFormatterUnitOptionsNaturalScale;
+    formatter.unitOptions = NSMeasurementFormatterUnitOptionsProvidedUnit;
     formatter.numberFormatter.maximumFractionDigits = 0;
     NSString* localizedString = [formatter stringFromMeasurement:measurment];
     self.distanceLabel.text = localizedString;
