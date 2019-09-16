@@ -705,7 +705,10 @@
     if (self.fromDirectionPoint == nil || self.toDirectionPoint == nil) {
         return;
     }
-    [self.delegate didStartLoading];;
+    [self.delegate didStartLoading];
+    if ([_fromDirectionPoint isKindOfClass:MWZIndoorLocation.class]) {
+        _fromDirectionPoint = [[MWZIndoorLocation alloc] initWith:[self.delegate componentRequiresUserLocation:self]];
+    }
     [self.mapwizeApi getDirectionWithFrom:self.fromDirectionPoint to:self.toDirectionPoint isAccessible:self.isAccessible success:^(MWZDirection *direction) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self startDirection:direction from:self.fromDirectionPoint to:self.toDirectionPoint newDirection:newDirection];

@@ -1136,7 +1136,7 @@ const CGFloat marginRight = 16;
     options.centerOnStart = YES;
     options.displayEndMarker = YES;
     if ([from isKindOfClass:MWZIndoorLocation.class] && [self.mapView getUserLocation] && [self.mapView getUserLocation].floor) {
-        [self startNavigation:direction from:from to:to directionOptions:options isAccessible:isAccessible];
+        [self startNavigation:direction from:[self.mapView getUserLocation] to:to directionOptions:options isAccessible:isAccessible];
     }
     else {
         [self.mapView setFollowUserMode:NONE];
