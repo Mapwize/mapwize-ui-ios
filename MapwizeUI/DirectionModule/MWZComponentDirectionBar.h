@@ -17,5 +17,6 @@
 - (void) setAccessibility:(BOOL) isAccessible;
 - (void) setFrom:(id<MWZDirectionPoint>) fromValue;
 - (void) setTo:(id<MWZDirectionPoint>) toValue;
-    
+- (void) didTapOnPlace:(MWZPlace*) place;
+
 @end

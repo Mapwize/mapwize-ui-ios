@@ -37,14 +37,14 @@
     }
     MWZFollowUserMode mode = [self.delegate followUserButtonRequiresFollowUserMode:self];
     switch (mode) {
-        case NONE:
-            [self.delegate followUserButton:self didChangeFollowUserMode:FOLLOW_USER];
+        case MWZFollowUserModeNone:
+            [self.delegate followUserButton:self didChangeFollowUserMode:MWZFollowUserModeFollowUser];
             break;
-        case FOLLOW_USER:
-            [self.delegate followUserButton:self didChangeFollowUserMode:FOLLOW_USER_AND_HEADING];
+        case MWZFollowUserModeFollowUser:
+            [self.delegate followUserButton:self didChangeFollowUserMode:MWZFollowUserModeFollowUserAndHeading];
             break;
-        case FOLLOW_USER_AND_HEADING:
-            [self.delegate followUserButton:self didChangeFollowUserMode:FOLLOW_USER];
+        case MWZFollowUserModeFollowUserAndHeading:
+            [self.delegate followUserButton:self didChangeFollowUserMode:MWZFollowUserModeFollowUser];
             break;
         default:
             break;
@@ -53,13 +53,13 @@
 
 - (void) setFollowUserMode:(MWZFollowUserMode) mode {
     switch (mode) {
-        case NONE:
+        case MWZFollowUserModeNone:
             [self setImage:self.imageNone forState:UIControlStateNormal];
             break;
-        case FOLLOW_USER:
+        case MWZFollowUserModeFollowUser:
             [self setImage:self.imageFollow forState:UIControlStateNormal];
             break;
-        case FOLLOW_USER_AND_HEADING:
+        case MWZFollowUserModeFollowUserAndHeading:
             [self setImage:self.imageFollowHeading forState:UIControlStateNormal];
             break;
         default:

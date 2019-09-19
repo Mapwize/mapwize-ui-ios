@@ -1011,16 +1011,25 @@ const CGFloat marginRight = 16;
 
 - (void) mapView:(MWZMapView *)mapView didTap:(MWZClickEvent *)clickEvent {
     if (self.isInDirection) {
+        if (clickEvent.eventType == MWZClickEventTypePlaceClick) {
+            [clickEvent.placePreview getFullObjectAsyncWithSuccess:^(MWZPlace * _Nonnull place) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.directionBar didTapOnPlace:place];
+                });
+            } failure:^(NSError * _Nonnull error) {
+                
+            }];
+        }
         return;
     }
     switch (clickEvent.eventType) {
-        case PLACE_CLICK:
+        case MWZClickEventTypePlaceClick:
             [self selectPlacePreview:clickEvent.placePreview centerOn:NO];
             break;
-        case VENUE_CLICK:
+        case MWZClickEventTypeVenueClick:
             [self.mapView centerOnVenuePreview:clickEvent.venuePreview animated:YES];
             break;
-        default:
+        case MWZClickEventTypeMapClick:
             [self unselectContent:YES];
             break;
     }
@@ -1079,7 +1088,7 @@ const CGFloat marginRight = 16;
 #pragma mark MWZComponentCompassDelegate
 
 - (void) didPress:(MWZComponentCompass *)compass {
-    [self.mapView setFollowUserMode:NONE];
+    [self.mapView setFollowUserMode:MWZFollowUserModeNone];
     [self.mapView.mapboxMapView setDirection:0 animated:YES];
 }
 
@@ -1115,9 +1124,9 @@ const CGFloat marginRight = 16;
                       to:(id<MWZDirectionPoint>)to
         directionOptions:(MWZDirectionOptions*) directionOptions
             isAccessible:(BOOL) isAccessible {
-    [self.mapView startNavigation:direction options:directionOptions navigationUpdateHandler:^(double duration, double distance, double locationDelta, ILIndoorLocation* trueLocation) {
-        if (locationDelta > 10 && trueLocation && trueLocation.floor) {
-            MWZIndoorLocation* newFrom = [[MWZIndoorLocation alloc] initWith:trueLocation];
+    [self.mapView startNavigation:direction options:directionOptions navigationUpdateHandler:^(MWZNavigationInfo *navigationInfo) {
+        if (navigationInfo.locationDelta > 10 && navigationInfo.originalLocation && navigationInfo.originalLocation.floor) {
+            MWZIndoorLocation* newFrom = [[MWZIndoorLocation alloc] initWith:navigationInfo.originalLocation];
             [self.mapView.mapwizeApi getDirectionWithFrom:newFrom to:to isAccessible:isAccessible success:^(MWZDirection * _Nonnull direction) {
                 [self startNavigation:direction from:newFrom to:to directionOptions:directionOptions isAccessible:isAccessible];
             } failure:^(NSError * _Nonnull error) {
@@ -1125,7 +1134,7 @@ const CGFloat marginRight = 16;
             }];
         }
         else {
-            [self.directionInfo setInfoWith:duration directionDistance:distance];
+            [self.directionInfo setInfoWith:navigationInfo.duration directionDistance:navigationInfo.distance];
         }
     }];
 }
@@ -1136,10 +1145,11 @@ const CGFloat marginRight = 16;
     options.centerOnStart = YES;
     options.displayEndMarker = YES;
     if ([from isKindOfClass:MWZIndoorLocation.class] && [self.mapView getUserLocation] && [self.mapView getUserLocation].floor) {
-        [self startNavigation:direction from:[self.mapView getUserLocation] to:to directionOptions:options isAccessible:isAccessible];
+        MWZIndoorLocation* newFrom = [[MWZIndoorLocation alloc] initWith:[self.mapView getUserLocation]];
+        [self startNavigation:direction from:newFrom to:to directionOptions:options isAccessible:isAccessible];
     }
     else {
-        [self.mapView setFollowUserMode:NONE];
+        [self.mapView setFollowUserMode:MWZFollowUserModeNone];
         [self.mapView setDirection:direction options:options];
         [self.directionInfo setInfoWith:direction.traveltime directionDistance:direction.distance];
     }

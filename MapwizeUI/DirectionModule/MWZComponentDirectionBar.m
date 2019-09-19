@@ -443,11 +443,11 @@
 
 - (void) backClick {
     if (self.isInFromSearch) {
-        [self setFrom:nil];
+        [self setTextFieldValue:_fromTextField forDirectionPoint:_fromDirectionPoint];
         [self closeResultList];
     }
     else if (self.isInToSearch) {
-        [self setTo:nil];
+        [self setTextFieldValue:_toTextField forDirectionPoint:_toDirectionPoint];
         [self closeResultList];
     }
     else {
@@ -458,32 +458,27 @@
 
 - (void) setFrom:(id<MWZDirectionPoint> _Nullable) fromValue {
     self.fromDirectionPoint = fromValue;
-    if (fromValue == nil) {
-        self.fromTextField.text = @"";
-    }
-    else if ([fromValue isKindOfClass:MWZPlace.class] || [fromValue isKindOfClass:MWZPlacelist.class]) {
-        id<MWZObject> mapwizeObject = (id<MWZObject>) fromValue;
-        self.fromTextField.text = [mapwizeObject titleForLanguage:[self.delegate componentRequiresCurrentLanguage:self]];
-    }
-    else if ([fromValue isKindOfClass:MWZIndoorLocation.class]) {
-        self.fromTextField.text = NSLocalizedString(@"Current location","");
-    }
+    [self setTextFieldValue:_fromTextField forDirectionPoint:_fromDirectionPoint];
     [self tryToStartDirection:YES];
 }
 
 - (void) setTo:(id<MWZDirectionPoint> _Nullable) toValue {
     self.toDirectionPoint = toValue;
-    if (toValue == nil) {
-        self.toTextField.text = @"";
-    }
-    else if ([toValue isKindOfClass:MWZPlace.class] || [toValue isKindOfClass:MWZPlacelist.class]) {
-        id<MWZObject> mapwizeObject = (id<MWZObject>) toValue;
-        self.toTextField.text = [mapwizeObject titleForLanguage:[self.delegate componentRequiresCurrentLanguage:self]];
-    }
-    else if ([toValue isKindOfClass:MWZIndoorLocation.class]) {
-        self.toTextField.text = NSLocalizedString(@"Current location","");
-    }
+    [self setTextFieldValue:_toTextField forDirectionPoint:_toDirectionPoint];
     [self tryToStartDirection:YES];
+}
+
+- (void) setTextFieldValue:(UITextField*) textField forDirectionPoint:(id<MWZDirectionPoint>) directionPoint {
+    if (directionPoint == nil) {
+        textField.text = @"";
+    }
+    else if ([directionPoint isKindOfClass:MWZPlace.class] || [directionPoint isKindOfClass:MWZPlacelist.class]) {
+        id<MWZObject> mapwizeObject = (id<MWZObject>) directionPoint;
+        textField.text = [mapwizeObject titleForLanguage:[self.delegate componentRequiresCurrentLanguage:self]];
+    }
+    else if ([directionPoint isKindOfClass:MWZIndoorLocation.class]) {
+        textField.text = NSLocalizedString(@"Current location","");
+    }
 }
 
 - (void) showResultList {
@@ -719,6 +714,15 @@
             [self.delegate didStopLoading];
         });
     }];
+}
+
+- (void) didTapOnPlace:(MWZPlace*) place {
+    if (!_fromDirectionPoint) {
+        [self setFrom:place];
+    }
+    else if (!_toDirectionPoint) {
+        [self setTo:place];
+    }
 }
 
 - (void) startDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to newDirection:(BOOL) newDirection {

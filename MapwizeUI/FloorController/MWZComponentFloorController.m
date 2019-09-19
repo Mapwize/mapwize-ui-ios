@@ -83,11 +83,11 @@ const int MWZComponentFloorViewMarginSize = 5;
             }*/
             MWZComponentFloorView* floorView = [[MWZComponentFloorView alloc] initWithFrame:CGRectMake(4, self.yAnchor, MWZComponentFloorViewSize, MWZComponentFloorViewSize) withIsSelected:selected mainColor:_mainColor];
             floorView.text = [NSString stringWithFormat:@"%@", floor.name];
-            floorView.floor = floor.order;
+            floorView.floor = floor.number;
             floorView.userInteractionEnabled = YES;
             [self.contentView addSubview:floorView];
             [self.floorViews addObject:floorView];
-            self.floorViewByFloor[floor.order] = floorView;
+            self.floorViewByFloor[floor.number] = floorView;
             UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
             [floorView addGestureRecognizer:singleFingerTap];
             
@@ -133,7 +133,7 @@ const int MWZComponentFloorViewMarginSize = 5;
 }
 
 - (void) mapwizeFloorDidChange:(MWZFloor*) floor {
-    MWZComponentFloorView* floorView = self.floorViewByFloor[floor.order];
+    MWZComponentFloorView* floorView = self.floorViewByFloor[floor.number];
     
     for (MWZComponentFloorView *view in self.floorViews) {
         [view setSelected:NO];
@@ -144,7 +144,7 @@ const int MWZComponentFloorViewMarginSize = 5;
 }
 
 - (void) mapwizeFloorWillChange:(MWZFloor*) floor {
-    MWZComponentFloorView* floorView = self.floorViewByFloor[floor.order];
+    MWZComponentFloorView* floorView = self.floorViewByFloor[floor.number];
     
     for (MWZComponentFloorView *view in self.floorViews) {
         [view setSelected:NO];
