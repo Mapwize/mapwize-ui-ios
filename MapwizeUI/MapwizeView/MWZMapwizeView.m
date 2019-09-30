@@ -1035,6 +1035,14 @@ const CGFloat marginRight = 16;
     }
 }
 
+- (BOOL) mapView:(MWZMapView* _Nonnull) mapView shouldRecomputeNavigation:(MWZNavigationInfo * _Nonnull)navigationInfo {
+    [self.directionInfo setInfoWith:navigationInfo.duration directionDistance:navigationInfo.distance];
+    if (navigationInfo.locationDelta > 10 && navigationInfo.originalLocation && navigationInfo.originalLocation.floor) {
+        return YES;
+    }
+    return NO;
+}
+
 - (void) mapView:(MWZMapView* _Nonnull) mapView accessibleUniversesDidChange:(NSArray<MWZUniverse*>* _Nonnull) accessibleUniverses {
     [self.universesButton mapwizeAccessibleUniversesDidChange: accessibleUniverses];
     [self loadAccessibleUniversesInSearchData:accessibleUniverses];
@@ -1122,21 +1130,9 @@ const CGFloat marginRight = 16;
 - (void) startNavigation:(MWZDirection *)direction
                     from:(id<MWZDirectionPoint>)from
                       to:(id<MWZDirectionPoint>)to
-        directionOptions:(MWZDirectionOptions*) directionOptions
-            isAccessible:(BOOL) isAccessible {
-    [self.mapView startNavigation:direction options:directionOptions navigationUpdateHandler:^(MWZNavigationInfo *navigationInfo) {
-        if (navigationInfo.locationDelta > 10 && navigationInfo.originalLocation && navigationInfo.originalLocation.floor) {
-            MWZIndoorLocation* newFrom = [[MWZIndoorLocation alloc] initWith:navigationInfo.originalLocation];
-            [self.mapView.mapwizeApi getDirectionWithFrom:newFrom to:to isAccessible:isAccessible success:^(MWZDirection * _Nonnull direction) {
-                [self startNavigation:direction from:newFrom to:to directionOptions:directionOptions isAccessible:isAccessible];
-            } failure:^(NSError * _Nonnull error) {
-                
-            }];
-        }
-        else {
-            [self.directionInfo setInfoWith:navigationInfo.duration directionDistance:navigationInfo.distance];
-        }
-    }];
+        directionOptions:(MWZDirectionOptions*)directionOptions
+            isAccessible:(BOOL)isAccessible {
+    [self.mapView startNavigation:to isAccessible:isAccessible options:directionOptions];
 }
 
 - (void)didFindDirection:(MWZDirection *)direction from:(id<MWZDirectionPoint>)from to:(id<MWZDirectionPoint>)to isAccessible:(BOOL) isAccessible {
