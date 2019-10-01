@@ -1043,7 +1043,7 @@ const CGFloat marginRight = 16;
     return NO;
 }
 
-- (void) mapView:(MWZMapView* _Nonnull) mapView accessibleUniversesDidChange:(NSArray<MWZUniverse*>* _Nonnull) accessibleUniverses {
+- (void) mapView:(MWZMapView* _Nonnull) mapView universesDidChange:(NSArray<MWZUniverse*>* _Nonnull) accessibleUniverses {
     [self.universesButton mapwizeAccessibleUniversesDidChange: accessibleUniverses];
     [self loadAccessibleUniversesInSearchData:accessibleUniverses];
 }
