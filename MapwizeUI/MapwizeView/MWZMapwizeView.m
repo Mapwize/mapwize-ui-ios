@@ -847,7 +847,7 @@ const CGFloat marginRight = 16;
 
 - (void) selectPlacePreview:(MWZPlacePreview*) placePreview centerOn:(BOOL) centerOn {
     [self unselectContent:NO];
-    [self.mapView addMarkerOnCoordinate:placePreview.defaultCenter];
+    [self.mapView addMarkerOnCoordinate:placePreview.defaultCenterCoordinate];
     if (centerOn) {
         [self.mapView centerOnPlacePreview:placePreview animated:true];
     }
