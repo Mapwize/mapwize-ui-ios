@@ -1,4 +1,4 @@
-#import <MapwizeForMapbox/MapwizeForMapbox.h>
+#import <MapwizeSDK/MapwizeSDK.h>
 #import "MWZComponentResultList.h"
 #import "MWZComponentTitleCell.h"
 #import "MWZComponentSubtitleCell.h"

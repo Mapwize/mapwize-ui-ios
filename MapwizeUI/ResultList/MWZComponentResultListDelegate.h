@@ -1,7 +1,7 @@
 #ifndef MWZComponentResultListDelegate_h
 #define MWZComponentResultListDelegate_h
 
-#import <MapwizeForMapbox/MapwizeForMapbox.h>
+#import <MapwizeSDK/MapwizeSDK.h>
 
 @protocol MWZComponentResultListDelegate <NSObject>
 

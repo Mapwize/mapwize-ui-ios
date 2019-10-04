@@ -1,7 +1,7 @@
 #ifndef MWZMapwizeViewDelegate_h
 #define MWZMapwizeViewDelegate_h
 
-#import <MapwizeForMapbox/MapwizeForMapbox.h>
+#import <MapwizeSDK/MapwizeSDK.h>
 @class MWZMapwizeView;
 @class MWZFloor;
 

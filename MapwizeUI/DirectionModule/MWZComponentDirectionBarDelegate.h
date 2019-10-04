@@ -1,7 +1,7 @@
 #ifndef MWZComponentDirectionBarDelegate_h
 #define MWZComponentDirectionBarDelegate_h
 
-#import <MapwizeForMapbox/MapwizeForMapbox.h>
+#import <MapwizeSDK/MapwizeSDK.h>
 #import "MWZComponentRequireMapwizeInformationProtocol.h"
 
 @protocol MWZComponentDirectionBarDelegate <MWZComponentRequireMapwizeInformationProtocol>

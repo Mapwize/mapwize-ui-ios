@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <MapwizeForMapbox/MapwizeForMapbox.h>
+#import <MapwizeSDK/MapwizeSDK.h>
 
 @protocol MWZComponentDirectionBarDelegate;
 @class MWZSearchData;

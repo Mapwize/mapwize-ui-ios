@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <MapwizeForMapbox/MapwizeForMapbox.h>
+#import <MapwizeSDK/MapwizeSDK.h>
 
 @interface MWZUIOptions : MWZOptions
 

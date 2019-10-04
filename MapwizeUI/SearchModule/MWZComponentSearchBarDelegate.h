@@ -1,7 +1,7 @@
 #ifndef MWZComponentSearchBarDelegate_h
 #define MWZComponentSearchBarDelegate_h
 
-#import <MapwizeForMapbox/MapwizeForMapbox.h>
+#import <MapwizeSDK/MapwizeSDK.h>
 #import "MWZComponentRequireMapwizeInformationProtocol.h"
 
 @protocol MWZComponentSearchBarDelegate <MWZComponentRequireMapwizeInformationProtocol>

@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <Mapbox/Mapbox.h>
-#import <MapwizeForMapbox/MapwizeForMapbox.h>
+#import <MapwizeSDK/MapwizeSDK.h>
 @protocol MWZMapwizeViewDelegate;
 @class MWZMapwizeViewUISettings;
 @class MWZUIOptions;

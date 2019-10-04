@@ -1,4 +1,4 @@
-#import <MapwizeForMapbox/MapwizeForMapbox.h>
+#import <MapwizeSDK/MapwizeSDK.h>
 
 #ifndef MWZComponentUniversesButtonDelegate_h
 #define MWZComponentUniversesButtonDelegate_h

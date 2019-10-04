@@ -1,5 +1,5 @@
+#import <MapwizeSDK/MapwizeSDK.h>
 #import "MWZComponentFollowUserButton.h"
-#import <MapwizeForMapbox/MapwizeForMapbox.h>
 #import "MWZComponentFollowUserButtonDelegate.h"
 #import "MWZComponentColors.h"
 
