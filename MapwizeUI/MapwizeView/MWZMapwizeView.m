@@ -298,7 +298,7 @@ const CGFloat marginRight = 16;
                                              showInfoButton:NO];
             }
         }
-        if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
+        else if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
             [self.bottomInfoView selectContentWithPlaceList:(MWZPlacelist*) self.selectedContent
                                                    language:[self.mapView getLanguage]
                                              showInfoButton:[self.delegate mapwizeView:self shouldShowInformationButtonFor:(MWZPlacelist*) self.selectedContent]];
