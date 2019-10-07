@@ -623,7 +623,12 @@
 }
 
 - (void) currentLocationTapped:(UITapGestureRecognizer*) recognizer {
-    [self setFrom:[[MWZIndoorLocation alloc] initWith:[self.delegate componentRequiresUserLocation:self]]];
+    if (_isInFromSearch) {
+        [self setFrom:[[MWZIndoorLocation alloc] initWith:[self.delegate componentRequiresUserLocation:self]]];
+    }
+    if (_isInToSearch) {
+        [self setTo:[[MWZIndoorLocation alloc] initWith:[self.delegate componentRequiresUserLocation:self]]];
+    }
     [self closeResultList];
 }
 
@@ -736,13 +741,9 @@
     if (!self.resultList) {
         [self showResultList];
     }
+    [self setTextFieldValue:_fromTextField forDirectionPoint:_fromDirectionPoint];
+    [self setTextFieldValue:_toTextField forDirectionPoint:_toDirectionPoint];
     textField.text = @"";
-    if (self.isInFromSearch) {
-        self.fromTextField.text = @"";
-    }
-    if (self.isInToSearch) {
-        self.toTextField.text = @"";
-    }
     
     if (textField == self.fromTextField) {
         self.isInToSearch = NO;

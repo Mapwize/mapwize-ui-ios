@@ -75,12 +75,6 @@ const int MWZComponentFloorViewMarginSize = 5;
     if (reversedFloors) {
         for (MWZFloor* floor in reversedFloors) {
             BOOL selected = NO;
-            /*if ([_mapwizePlugin getFloor] && [floor isEqualToNumber:[_mapwizePlugin getFloor]]) {
-                selected = YES;
-            }
-            else {
-                selected = NO;
-            }*/
             MWZComponentFloorView* floorView = [[MWZComponentFloorView alloc] initWithFrame:CGRectMake(4, self.yAnchor, MWZComponentFloorViewSize, MWZComponentFloorViewSize) withIsSelected:selected mainColor:_mainColor];
             floorView.text = [NSString stringWithFormat:@"%@", floor.name];
             floorView.floor = floor.number;
