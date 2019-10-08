@@ -108,9 +108,11 @@ const int MWZComponentFloorViewMarginSize = 5;
     [self scrollRectToVisible:self.selectedView.frame animated:NO];
     
     [self.superview layoutIfNeeded];
-    [UIView animateWithDuration:0.3f animations:^{
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         self.heightConstraint.constant = self.contentSize.height;
         [self.superview layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        
     }];
 }
 
@@ -120,9 +122,7 @@ const int MWZComponentFloorViewMarginSize = 5;
         self.heightConstraint.constant = 0;
         [self.superview layoutIfNeeded];
     } completion:^(BOOL finished) {
-        [self.floorViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-        [self.floorViews removeAllObjects];
-        [self.floorViewByFloor removeAllObjects];
+        
     }];
 }
 

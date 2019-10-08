@@ -79,6 +79,7 @@ const CGFloat marginRight = 16;
     _uiSettings = uiSettings;
     _mapView = [[MWZMapView alloc] initWithFrame:frame options:options mapwizeConfiguration:mapwizeConfiguration];
     _mapView.delegate = self;
+    _mapView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _mapView.mapboxDelegate = self;
     [self addSubview:self.mapView];
     
@@ -298,16 +299,19 @@ const CGFloat marginRight = 16;
                                              showInfoButton:NO];
             }
         }
-        else if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
-            [self.bottomInfoView selectContentWithPlaceList:(MWZPlacelist*) self.selectedContent
-                                                   language:[self.mapView getLanguage]
-                                             showInfoButton:[self.delegate mapwizeView:self shouldShowInformationButtonFor:(MWZPlacelist*) self.selectedContent]];
+        if ([self.selectedContent isKindOfClass:MWZPlacelist.class]) {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
+                [self.bottomInfoView selectContentWithPlaceList:(MWZPlacelist*) self.selectedContent
+                                                       language:[self.mapView getLanguage]
+                                                 showInfoButton:[self.delegate mapwizeView:self shouldShowInformationButtonFor:(MWZPlacelist*) self.selectedContent]];
+            }
+            else {
+                [self.bottomInfoView selectContentWithPlaceList:(MWZPlacelist*) self.selectedContent
+                                                       language:[self.mapView getLanguage]
+                                                 showInfoButton:NO];
+            }
         }
-        else {
-            [self.bottomInfoView selectContentWithPlaceList:(MWZPlacelist*) self.selectedContent
-                                                   language:[self.mapView getLanguage]
-                                             showInfoButton:NO];
-        }
+        
     }
     if ([self.mapView getVenue]) {
         [self.languagesButton mapwizeDidEnterInVenue:[self.mapView getVenue]];
@@ -951,6 +955,7 @@ const CGFloat marginRight = 16;
 }
 
 - (void) mapView:(MWZMapView *)mapView venueDidEnter:(MWZVenue *)venue {
+    NSLog(@"Floors did venue enter %@", venue.name);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.searchBar mapwizeDidEnterInVenue:venue];
         [self.loadingBar stopAnimation];
@@ -972,6 +977,7 @@ const CGFloat marginRight = 16;
 }
 
 - (void) mapView:(MWZMapView *)mapView venueDidExit:(MWZVenue *)venue {
+    NSLog(@"Floors did venue exit %@", venue.name);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.loadingBar stopAnimation];
         [self.languagesButton mapwizeDidExitVenue];
@@ -980,6 +986,7 @@ const CGFloat marginRight = 16;
 }
 
 - (void) mapView:(MWZMapView *)mapView floorsDidChange:(NSArray<MWZFloor *> *)floors {
+    NSLog(@"Floors did change %@", floors);
     if (self.uiSettings.floorControllerIsHidden) {
         return;
     }

@@ -457,7 +457,7 @@
         self.directionButton.alpha = 0.0f;
         [self.superview layoutIfNeeded];
     } completion:^(BOOL finished) {
-        [self.directionButton setHidden:YES];
+        //[self.directionButton setEnabled:NO];
     }];
 }
 
