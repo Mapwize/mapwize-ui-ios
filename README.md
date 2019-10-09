@@ -21,14 +21,14 @@ The Mapwize UI view comes with the following components:
 
 ## Installation
 
-MapwizeUI is compatible with MapwizeForMapbox 1.8.0 and above. The library won't work with lower version.
+MapwizeUI is compatible with MapwizeForMapbox 3.0.0 and above. The library won't work with lower version.
 
 ### Cocoapod
 
 Add the MapwizeUI library to your Podfile 
 
 ```
-pod 'MapwizeUI', '~> 1.0'
+pod 'MapwizeUI', '~> 2.0'
 ```
 
 Then run a `pod install`
@@ -57,7 +57,14 @@ The UIViewController that embeds the MWZMapwizeView must implement `MWZMapwizeVi
 MWZMapwizeView can be instantiated with the constructor :
 
 ```objective-c
-- (instancetype) initWithFrame:(CGRect)frame mapwizeOptions:(MWZOptions*) options uiSettings:(MWZMapwizeViewUISettings*) uiSettings
+- (instancetype) initWithFrame:(CGRect)frame
+                mapwizeOptions:(MWZUIOptions*) options
+                    uiSettings:(MWZMapwizeViewUISettings*) uiSettings;
+
+- (instancetype) initWithFrame:(CGRect)frame
+          mapwizeConfiguration:(MWZMapwizeConfiguration*) mapwizeConfiguration
+                mapwizeOptions:(MWZUIOptions*) options
+                    uiSettings:(MWZMapwizeViewUISettings*) uiSettings;
 ```
 
 MWZMapwizeViewUISettings contains the following attribute
@@ -68,13 +75,12 @@ MWZMapwizeViewUISettings contains the following attribute
 @property (nonatomic, assign) BOOL followUserButtonIsHidden;
 ```
 
-### Access to Mapbox map and Mapwize plugin
+### Access to MWZMapView
 
-Once the `(void) mapwizeViewDidLoad:(MWZMapwizeView*) mapwizeView` is called, you can retrieved the Mapbox map and the Mapwize plugin using the following properties on MWZMapwizeView object.
+Once the `(void) mapwizeViewDidLoad:(MWZMapwizeView*) mapwizeView` is called, you can retrieved the MWZMapView using `mapwizeView.mapwizeMap`
 
 ```objective-c
-@property (nonatomic, retain) MGLMapView* mapboxMap;
-@property (nonatomic, retain) MapwizePlugin* mapwizePlugin;
+@property (nonatomic) MWZMapView* mapwizeMap;
 ```
 
 ### Simple example
@@ -124,8 +130,8 @@ The following parameters are available for map initialization:
 - `floor` to set the default floor when entering a venue. Floors are Double and can be decimal values. This is ignored when using centerOnPlace.
 - `language` to set the default language for venues. It is a string with the 2 letter code for the language. Example: "fr" or "en".
 - `universeId` to set the default universe for the displayed venue. If using centerOnPlace, this needs to be an universe the place is in.
-
 - `restrictContentToVenueId` to show only the related venue on the map. 
+- `restrictContentToVenueIds` to show only the specified venues on the map. 
 - `restrictContentToOrganizationId` to show only the venues of that organization on the map. 
 
 ### Public methods
@@ -174,8 +180,8 @@ Example to display the information button only for Places and not for PlaceLists
 The same kind of methods are available to display or hide the floor controller depends of the floors list and to listen universe change event :
 
 ```objective-c
-- (BOOL) mapwizeView:(MWZMapwizeView*) mapwizeView shouldShowFloorControllerFor:(NSArray<NSNumber*>*) floors;
-- (void) mapwizeUniverseHasChanged:(MWZUniverse*)universe;
+- (BOOL) mapwizeView:(MWZMapwizeView*) mapwizeView shouldShowFloorControllerFor:(NSArray<MWZFloor*>*) floors;
+- (void) mapwizeUniverseHasChanged:(MWZUniverse*)universe; __attribute__((deprecated("Use MWZMapViewDelegate instead")));
 ```
 
 When the information button is clicked, the delegate call one of the following methods with the selected Mapwize object.

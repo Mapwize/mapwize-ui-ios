@@ -34,7 +34,7 @@
 		8F8607D3219D67AB00281AB7 /* MWZSearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F86079B219D67AB00281AB7 /* MWZSearchData.m */; };
 		8F8607D4219D67AB00281AB7 /* MWZIndoorLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F86079C219D67AB00281AB7 /* MWZIndoorLocation.m */; };
 		8F8607D5219D67AB00281AB7 /* MWZSearchData.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86079D219D67AB00281AB7 /* MWZSearchData.h */; };
-		8F8607D6219D67AB00281AB7 /* MWZIndoorLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86079E219D67AB00281AB7 /* MWZIndoorLocation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8F8607D6219D67AB00281AB7 /* MWZIndoorLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86079E219D67AB00281AB7 /* MWZIndoorLocation.h */; };
 		8F8607D7219D67AB00281AB7 /* MWZComponentDirectionInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A0219D67AB00281AB7 /* MWZComponentDirectionInfo.h */; };
 		8F8607D8219D67AB00281AB7 /* MWZComponentDirectionBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A1219D67AB00281AB7 /* MWZComponentDirectionBar.h */; };
 		8F8607D9219D67AB00281AB7 /* MWZComponentDirectionBarDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A2219D67AB00281AB7 /* MWZComponentDirectionBarDelegate.h */; };

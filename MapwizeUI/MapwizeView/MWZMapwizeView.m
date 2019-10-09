@@ -955,7 +955,6 @@ const CGFloat marginRight = 16;
 }
 
 - (void) mapView:(MWZMapView *)mapView venueDidEnter:(MWZVenue *)venue {
-    NSLog(@"Floors did venue enter %@", venue.name);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.searchBar mapwizeDidEnterInVenue:venue];
         [self.loadingBar stopAnimation];
@@ -977,7 +976,6 @@ const CGFloat marginRight = 16;
 }
 
 - (void) mapView:(MWZMapView *)mapView venueDidExit:(MWZVenue *)venue {
-    NSLog(@"Floors did venue exit %@", venue.name);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.loadingBar stopAnimation];
         [self.languagesButton mapwizeDidExitVenue];
@@ -986,7 +984,6 @@ const CGFloat marginRight = 16;
 }
 
 - (void) mapView:(MWZMapView *)mapView floorsDidChange:(NSArray<MWZFloor *> *)floors {
-    NSLog(@"Floors did change %@", floors);
     if (self.uiSettings.floorControllerIsHidden) {
         return;
     }
