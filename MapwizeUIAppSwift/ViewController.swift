@@ -9,15 +9,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         let opts = MWZUIOptions()
-        //opts.centerOnPlaceId = "5bc49413bf0ed600114db212"
-        opts.centerOnVenueId = "56b20714c3fa800b00d8f0b5"
-        //opts.centerOnLocation = MWZLatLngFloor(latitude: 50.6331, longitude: 3.0198, floor: 0)
-        
         let settings = MWZMapwizeViewUISettings()
-        settings.followUserButtonIsHidden = false
-        settings.menuButtonIsHidden = false
-        settings.mainColor = .orange
-        
         mapwizeView = MWZMapwizeView.init(frame: self.view.frame, mapwizeOptions: opts, uiSettings: settings)
         mapwizeView?.delegate = self
         self.view.addSubview(mapwizeView!)
@@ -34,7 +26,7 @@ extension ViewController: MWZMapwizeViewDelegate {
         print("onFollowWithoutLocation")
         let alert = UIAlertController.init(title: "User action",
                                            message: "Click on the follow user mode button but no location has been found",
-                                           preferredStyle: .actionSheet)
+                                           preferredStyle: .alert)
         let action = UIAlertAction.init(title: "Cancel", style: .destructive, handler: nil)
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
@@ -44,7 +36,7 @@ extension ViewController: MWZMapwizeViewDelegate {
         print("onMenu")
         let alert = UIAlertController.init(title: "User action",
                                            message: "Click on the menu",
-                                           preferredStyle: .actionSheet)
+                                           preferredStyle: .alert)
         let action = UIAlertAction.init(title: "Cancel", style: .destructive, handler: nil)
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
@@ -52,21 +44,21 @@ extension ViewController: MWZMapwizeViewDelegate {
     
     func mapwizeView(_ mapwizeView: MWZMapwizeView!, didTapOnPlaceInformationButton place: MWZPlace!) {
         print("didTapOnPlaceInformationButton")
-        let message = "Click on the place information button \(place.translations[0].title ?? "")"
+        let message = "Click on the place information button \(place.translations[0].title)"
         let alert = UIAlertController.init(title: "User action",
                                            message: message,
-                                           preferredStyle: .actionSheet)
+                                           preferredStyle: .alert)
         let action = UIAlertAction.init(title: "Cancel", style: .destructive, handler: nil)
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
     }
     
-    func mapwizeView(_ mapwizeView: MWZMapwizeView!, didTapOnPlaceListInformationButton placeList: MWZPlaceList!) {
+    func mapwizeView(_ mapwizeView: MWZMapwizeView!, didTapOnPlaceListInformationButton placeList: MWZPlacelist!) {
         print("didTapOnPlaceListInformationButton")
-        let message = "Click on the placelist information button \(placeList.translations[0].title ?? "")"
+        let message = "Click on the placelist information button \(placeList.translations[0].title)"
         let alert = UIAlertController.init(title: "User action",
                                            message: message,
-                                           preferredStyle: .actionSheet)
+                                           preferredStyle: .alert)
         let action = UIAlertAction.init(title: "Cancel", style: .destructive, handler: nil)
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
@@ -79,7 +71,7 @@ extension ViewController: MWZMapwizeViewDelegate {
         return false
     }
     
-    func mapwizeView(_ mapwizeView: MWZMapwizeView!, shouldShowFloorControllerFor floors: [NSNumber]!) -> Bool {
+    func mapwizeView(_ mapwizeView: MWZMapwizeView!, shouldShowFloorControllerFor floors: [MWZFloor]!) -> Bool {
         if (floors.count > 1) {
             return true
         }

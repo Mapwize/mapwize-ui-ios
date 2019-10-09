@@ -41,11 +41,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>MGLMapboxAccessToken</key>
-    <string>pk.mapwize</string>
-    <key>MGLMapboxMetricsEnabledSettingShownInApp</key>
-    <true/>
-    <key>MWZMapwizeApiKey</key>
-    <string>1f04d780dc30b774c0c10f53e3c7d4ea</string>
+	<key>MGLMapboxAccessToken</key>
+	<string>pk.mapwize</string>
+	<key>MGLMapboxMetricsEnabledSettingShownInApp</key>
+	<true/>
+	<key>MWZApiKey</key>
+	<string>YOUR_API_KEY</string>
 </dict>
 </plist>

@@ -11,12 +11,17 @@
         [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCompassTap:)]];
         self.accessibilityTraits = UIAccessibilityTraitButton;
         self.alpha = 0;
+        self.layer.masksToBounds = false;
+        self.layer.shadowOpacity = .3f;
+        self.layer.shadowRadius = 2;
+        self.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.layer.shadowOffset = CGSizeMake(0, 2);
     }
     return self;
 }
 
 - (void)handleCompassTap:(UITapGestureRecognizer*)gesture {
-    [_delegate didPress:self];
+    [self.delegate didPress:self];
 }
 
 - (void) updateCompass:(CLLocationDirection) direction {

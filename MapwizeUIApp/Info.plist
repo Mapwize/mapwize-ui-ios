@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Need location</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Need location</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -45,7 +49,7 @@
 	<string>pk.mapwize</string>
 	<key>MGLMapboxMetricsEnabledSettingShownInApp</key>
 	<true/>
-	<key>MWZMapwizeApiKey</key>
-	<string>1f04d780dc30b774c0c10f53e3c7d4ea</string>
+	<key>MWZApiKey</key>
+	<string>YOUR_API_KEY</string>
 </dict>
 </plist>

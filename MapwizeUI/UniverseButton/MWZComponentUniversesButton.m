@@ -1,13 +1,18 @@
 #import "MWZComponentUniversesButton.h"
 #import "MWZComponentUniversesButtonDelegate.h"
 
-@implementation MWZComponentUniversesButton {
-    NSArray<MWZUniverse*>* universes;
-}
+@interface MWZComponentUniversesButton ()
+
+@property (nonatomic) NSArray<MWZUniverse*>* universes;
+
+@end
+
+@implementation MWZComponentUniversesButton
 
 - (instancetype) init {
     self = [super init];
     if (self) {
+        _universes = @[];
         UIImage* image = [UIImage imageNamed:@"universe" inBundle:[NSBundle bundleForClass:MWZComponentUniversesButton.class] compatibleWithTraitCollection:nil];
         [self setImage:image forState:UIControlStateNormal];
         [self.imageView setContentMode:UIViewContentModeScaleAspectFit];
@@ -20,23 +25,20 @@
     return self;
 }
 
-- (void) mapwizeDidEnterInVenue:(MWZVenue*) venue {
-    universes = venue.universes;
-    if (universes.count > 1) {
-        [self setHidden:NO];
-    }
+- (void) showIfNeeded {
+    [self setHidden:self.universes.count <= 1];
 }
 
-- (void) mapwizeDidExitVenue {
-    universes = @[];
-    [self setHidden:YES];
+- (void) mapwizeAccessibleUniversesDidChange:(NSArray<MWZUniverse*>*) accessibleUniverses {
+    self.universes = accessibleUniverses;
+    [self setHidden:accessibleUniverses.count <= 1];
 }
 
 -(void)buttonAction {
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Universes", "")
                                                                    message:NSLocalizedString(@"Choose a universe to display it on the map", "")
                                                             preferredStyle:UIAlertControllerStyleAlert];
-    for (MWZUniverse* universe in universes) {
+    for (MWZUniverse* universe in self.universes) {
         [alert addAction:[UIAlertAction actionWithTitle:universe.name
                                                   style:UIAlertActionStyleDefault
                                                 handler:^(UIAlertAction * _Nonnull action) {

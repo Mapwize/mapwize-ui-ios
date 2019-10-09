@@ -1,10 +1,13 @@
 #import "MWZComponentLanguagesButton.h"
 #import "MWZComponentLanguagesButtonDelegate.h"
 
-@implementation MWZComponentLanguagesButton {
-    NSArray<NSString*>* languages;
-}
+@interface MWZComponentLanguagesButton ()
 
+@property (nonatomic) NSArray<NSString*>* languages;
+
+@end
+
+@implementation MWZComponentLanguagesButton
 - (instancetype) init {
     self = [super init];
     if (self) {
@@ -21,8 +24,8 @@
 }
 
 - (void) mapwizeDidEnterInVenue:(MWZVenue*) venue {
-    languages = venue.supportedLanguages;
-    if (languages.count > 1) {
+    self.languages = venue.supportedLanguages;
+    if (self.languages.count > 1) {
         [self setHidden:NO];
     }
     else {
@@ -31,7 +34,7 @@
 }
 
 - (void) mapwizeDidExitVenue {
-    languages = @[];
+    self.languages = @[];
     [self setHidden:YES];
 }
 
@@ -39,7 +42,7 @@
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Languages", "")
                                                                    message:NSLocalizedString(@"Choose your preferred language", "")
                                                             preferredStyle:UIAlertControllerStyleAlert];
-    for (NSString* language in languages) {
+    for (NSString* language in self.languages) {
         NSLocale* locale = [NSLocale localeWithLocaleIdentifier:language];
         NSString* displayLanguage = [locale displayNameForKey:NSLocaleIdentifier value:language];
         

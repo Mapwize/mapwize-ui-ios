@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <MapwizeForMapbox/MapwizeForMapbox.h>
+#import <MapwizeSDK/MapwizeSDK.h>
 
 @protocol MWZComponentUniversesButtonDelegate;
 
@@ -11,8 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype) init;
 
-- (void) mapwizeDidEnterInVenue:(MWZVenue*) venue;
-- (void) mapwizeDidExitVenue;
+- (void) showIfNeeded;
+- (void) mapwizeAccessibleUniversesDidChange:(NSArray<MWZUniverse*>*) accessibleUniverses;
 
 @end
 

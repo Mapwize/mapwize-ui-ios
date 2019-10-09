@@ -1,5 +1,18 @@
 # Mapwize UI iOS Changelog
 
+## 2.0.0
+
+- Changing dependency from MapwizeForMapbox to MapwizeSDK
+- Improving direction search module
+
+## 1.2.1
+
+- Fixing issue when canceling enter in venue
+
+## 1.2.0
+
+- Fixing issue with selected placelist
+
 ## 1.1.0
 
 - Adding support for MapwizeForMapbox 2.0.0

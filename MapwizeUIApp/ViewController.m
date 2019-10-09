@@ -13,14 +13,7 @@
     [super viewDidLoad];
     
     MWZUIOptions* opts = [[MWZUIOptions alloc] init];
-    opts.centerOnPlaceId = @"5bc49413bf0ed600114db212";   // Center on Mapwize
-    //opts.centerOnVenueId = @"56b20714c3fa800b00d8f0b5";   // Center on Euratechnologies
-    //opts.centerOnLocation = [[MWZLatLngFloor alloc] initWithLatitude:50.6331 longitude:3.0198 floor:@0]; // Center on marker in Euratechnologies
-    
     MWZMapwizeViewUISettings* settings = [[MWZMapwizeViewUISettings alloc] init];
-    settings.followUserButtonIsHidden = NO;
-    settings.menuButtonIsHidden = NO;
-    //settings.mainColor = [UIColor orangeColor];           // Change main color to Orange
     
     self.mapwizeView = [[MWZMapwizeView alloc] initWithFrame:self.view.frame
                                               mapwizeOptions:opts
@@ -64,19 +57,19 @@
     NSString* message = [NSString stringWithFormat:@"Click on the place information button %@", place.translations[0].title];
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"User action"
                                                                    message:message
-                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+                                                            preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDestructive handler:nil];
     [alert addAction:cancelAction];
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)mapwizeView:(MWZMapwizeView *)mapwizeView didTapOnPlaceListInformationButton:(MWZPlaceList *)placeList {
+- (void)mapwizeView:(MWZMapwizeView *)mapwizeView didTapOnPlaceListInformationButton:(MWZPlacelist *)placeList {
     NSLog(@"didTapOnPlaceListInformations");
     NSString* message = [NSString stringWithFormat:@"Click on the placelist information button %@", placeList.translations[0].title];
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"User action"
                                                                    message:message
-                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+                                                            preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDestructive handler:nil];
     [alert addAction:cancelAction];
@@ -87,7 +80,7 @@
     NSLog(@"mapwizeViewDidTapOnFollowWithoutLocation");
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"User action"
                                                                    message:@"Click on the follow user mode button but no location has been found"
-                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+                                                            preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDestructive handler:nil];
     [alert addAction:cancelAction];
@@ -98,7 +91,7 @@
     NSLog(@"mapwizeViewDidTapOnMenu");
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"User action"
                                                                     message:@"Click on the menu"
-                                                             preferredStyle:UIAlertControllerStyleActionSheet];
+                                                             preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDestructive handler:nil];
     [alert addAction:cancelAction];
