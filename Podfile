@@ -6,7 +6,7 @@ target 'MapwizeUI' do
   workspace 'MapwizeUIApp'
   project './MapwizeUI.xcodeproj'
   use_frameworks!
-  pod 'MapwizeSDK', path: '../../iOSRepositories/mapwize-for-mapbox-ios'
+  pod 'MapwizeSDK'
 end
 
 target 'MapwizeUIApp' do

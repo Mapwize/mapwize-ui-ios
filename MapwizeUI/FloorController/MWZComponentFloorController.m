@@ -1,6 +1,7 @@
 #import "MWZComponentFloorController.h"
 #import "MWZComponentFloorView.h"
-#import "MWZFloor.h"
+
+@import MapwizeSDK;
 
 const int MWZComponentFloorViewSize = 40;
 const int MWZComponentFloorViewMarginSize = 5;
