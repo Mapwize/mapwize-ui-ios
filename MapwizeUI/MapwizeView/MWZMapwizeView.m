@@ -915,6 +915,7 @@ const CGFloat marginRight = 16;
 }
 
 - (void) setIndoorLocationProvider:(ILIndoorLocationProvider*) indoorLocationProvider {
+    // TODO add more information about that
     if (self.mapView) {
         [self.mapView setIndoorLocationProvider:indoorLocationProvider];
     }

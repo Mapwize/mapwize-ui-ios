@@ -8,11 +8,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let opts = MWZUIOptions()
+        /*let opts = MWZUIOptions()
         let settings = MWZMapwizeViewUISettings()
         mapwizeView = MWZMapwizeView.init(frame: self.view.frame, mapwizeOptions: opts, uiSettings: settings)
         mapwizeView?.delegate = self
-        self.view.addSubview(mapwizeView!)
+        self.view.addSubview(mapwizeView!)*/
     }
 }
 
@@ -34,12 +34,15 @@ extension ViewController: MWZMapwizeViewDelegate {
     
     func mapwizeViewDidTap(onMenu mapwizeView: MWZMapwizeView!) {
         print("onMenu")
-        let alert = UIAlertController.init(title: "User action",
+        /*let alert = UIAlertController.init(title: "User action",
                                            message: "Click on the menu",
                                            preferredStyle: .alert)
         let action = UIAlertAction.init(title: "Cancel", style: .destructive, handler: nil)
         alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)*/
+        let searchVC = MWZSearchViewController()
+        searchVC.modalPresentationStyle = .fullScreen
+        self.present(searchVC, animated: true, completion: nil)
     }
     
     func mapwizeView(_ mapwizeView: MWZMapwizeView!, didTapOnPlaceInformationButton place: MWZPlace!) {

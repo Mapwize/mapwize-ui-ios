@@ -71,6 +71,18 @@
 		8F860818219DC5F200281AB7 /* MWZComponentColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860816219DC5F200281AB7 /* MWZComponentColors.m */; };
 		8F8640D4222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8640D2222831130043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m */; };
 		8F8640D5222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8640D3222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h */; };
+		8FDEC05A23683709005D12B1 /* MWZSearchViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDEC05823683709005D12B1 /* MWZSearchViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8FDEC05B23683709005D12B1 /* MWZSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDEC05923683709005D12B1 /* MWZSearchViewController.m */; };
+		8FDEC05E23684005005D12B1 /* MWZSearchQueryBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDEC05C23684005005D12B1 /* MWZSearchQueryBar.h */; };
+		8FDEC05F23684005005D12B1 /* MWZSearchQueryBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDEC05D23684005005D12B1 /* MWZSearchQueryBar.m */; };
+		8FDEC06323684703005D12B1 /* MWZMapViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDEC06123684703005D12B1 /* MWZMapViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8FDEC06423684703005D12B1 /* MWZMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDEC06223684703005D12B1 /* MWZMapViewController.m */; };
+		8FDEC068236849F3005D12B1 /* MapToSearchAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDEC066236849F3005D12B1 /* MapToSearchAnimator.h */; };
+		8FDEC069236849F3005D12B1 /* MapToSearchAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDEC067236849F3005D12B1 /* MapToSearchAnimator.m */; };
+		8FDEC06B2368755E005D12B1 /* MWZSearchQueryBarDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDEC06A2368755E005D12B1 /* MWZSearchQueryBarDelegate.h */; };
+		8FDEC06E23687C3F005D12B1 /* MWZMapViewMenuBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDEC06C23687C3F005D12B1 /* MWZMapViewMenuBar.h */; };
+		8FDEC06F23687C3F005D12B1 /* MWZMapViewMenuBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDEC06D23687C3F005D12B1 /* MWZMapViewMenuBar.m */; };
+		8FDEC07123687D50005D12B1 /* MWZMapViewMenuBarDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDEC07023687D50005D12B1 /* MWZMapViewMenuBarDelegate.h */; };
 		C6B8D5712226785400A3AD82 /* MWZUIOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C6B8D5702226785400A3AD82 /* MWZUIOptions.m */; };
 		C6B8D573222679EC00A3AD82 /* MWZUIOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = C6B8D5722226786E00A3AD82 /* MWZUIOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -143,6 +155,18 @@
 		8F860816219DC5F200281AB7 /* MWZComponentColors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZComponentColors.m; sourceTree = "<group>"; };
 		8F8640D2222831130043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZComponentTitleWithoutFloorCellTableViewCell.m; sourceTree = "<group>"; };
 		8F8640D3222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZComponentTitleWithoutFloorCellTableViewCell.h; sourceTree = "<group>"; };
+		8FDEC05823683709005D12B1 /* MWZSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZSearchViewController.h; sourceTree = "<group>"; };
+		8FDEC05923683709005D12B1 /* MWZSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZSearchViewController.m; sourceTree = "<group>"; };
+		8FDEC05C23684005005D12B1 /* MWZSearchQueryBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZSearchQueryBar.h; sourceTree = "<group>"; };
+		8FDEC05D23684005005D12B1 /* MWZSearchQueryBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZSearchQueryBar.m; sourceTree = "<group>"; };
+		8FDEC06123684703005D12B1 /* MWZMapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZMapViewController.h; sourceTree = "<group>"; };
+		8FDEC06223684703005D12B1 /* MWZMapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZMapViewController.m; sourceTree = "<group>"; };
+		8FDEC066236849F3005D12B1 /* MapToSearchAnimator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapToSearchAnimator.h; sourceTree = "<group>"; };
+		8FDEC067236849F3005D12B1 /* MapToSearchAnimator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapToSearchAnimator.m; sourceTree = "<group>"; };
+		8FDEC06A2368755E005D12B1 /* MWZSearchQueryBarDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZSearchQueryBarDelegate.h; sourceTree = "<group>"; };
+		8FDEC06C23687C3F005D12B1 /* MWZMapViewMenuBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZMapViewMenuBar.h; sourceTree = "<group>"; };
+		8FDEC06D23687C3F005D12B1 /* MWZMapViewMenuBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZMapViewMenuBar.m; sourceTree = "<group>"; };
+		8FDEC07023687D50005D12B1 /* MWZMapViewMenuBarDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZMapViewMenuBarDelegate.h; sourceTree = "<group>"; };
 		A087F06AEC97B04A58BB7884 /* Pods_MapwizeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapwizeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6B8D5702226785400A3AD82 /* MWZUIOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIOptions.m; sourceTree = "<group>"; };
 		C6B8D5722226786E00A3AD82 /* MWZUIOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIOptions.h; sourceTree = "<group>"; };
@@ -198,6 +222,9 @@
 		8F860778219D66A100281AB7 /* MapwizeUI */ = {
 			isa = PBXGroup;
 			children = (
+				8FDEC065236849D6005D12B1 /* Animator */,
+				8FDEC060236846F2005D12B1 /* MapViewController */,
+				8FDEC057236836DA005D12B1 /* SearchViewController */,
 				8F86078D219D67AB00281AB7 /* MapwizeView */,
 				8F860789219D67AB00281AB7 /* BottomInfoView */,
 				8F860781219D67AB00281AB7 /* SearchModule */,
@@ -372,6 +399,39 @@
 			path = LanguageButton;
 			sourceTree = "<group>";
 		};
+		8FDEC057236836DA005D12B1 /* SearchViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8FDEC05823683709005D12B1 /* MWZSearchViewController.h */,
+				8FDEC05923683709005D12B1 /* MWZSearchViewController.m */,
+				8FDEC05C23684005005D12B1 /* MWZSearchQueryBar.h */,
+				8FDEC05D23684005005D12B1 /* MWZSearchQueryBar.m */,
+				8FDEC06A2368755E005D12B1 /* MWZSearchQueryBarDelegate.h */,
+			);
+			path = SearchViewController;
+			sourceTree = "<group>";
+		};
+		8FDEC060236846F2005D12B1 /* MapViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8FDEC06123684703005D12B1 /* MWZMapViewController.h */,
+				8FDEC06223684703005D12B1 /* MWZMapViewController.m */,
+				8FDEC06C23687C3F005D12B1 /* MWZMapViewMenuBar.h */,
+				8FDEC06D23687C3F005D12B1 /* MWZMapViewMenuBar.m */,
+				8FDEC07023687D50005D12B1 /* MWZMapViewMenuBarDelegate.h */,
+			);
+			path = MapViewController;
+			sourceTree = "<group>";
+		};
+		8FDEC065236849D6005D12B1 /* Animator */ = {
+			isa = PBXGroup;
+			children = (
+				8FDEC066236849F3005D12B1 /* MapToSearchAnimator.h */,
+				8FDEC067236849F3005D12B1 /* MapToSearchAnimator.m */,
+			);
+			path = Animator;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -380,9 +440,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F860812219DAE0800281AB7 /* MWZMapwizeViewUISettings.h in Headers */,
+				8FDEC05A23683709005D12B1 /* MWZSearchViewController.h in Headers */,
 				8F8640D5222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h in Headers */,
+				8FDEC068236849F3005D12B1 /* MapToSearchAnimator.h in Headers */,
 				8F8607E7219D67AB00281AB7 /* MWZComponentResultList.h in Headers */,
 				8F8607DE219D67AB00281AB7 /* MWZComponentUniversesButton.h in Headers */,
+				8FDEC06E23687C3F005D12B1 /* MWZMapViewMenuBar.h in Headers */,
 				8F8607CC219D67AB00281AB7 /* MWZComponentBorderedTextField.h in Headers */,
 				C6B8D573222679EC00A3AD82 /* MWZUIOptions.h in Headers */,
 				8F8607E3219D67AB00281AB7 /* MWZComponentGroupedResultList.h in Headers */,
@@ -392,8 +455,10 @@
 				8F8607C7219D67AB00281AB7 /* MWZComponentBottomInfoViewDelegate.h in Headers */,
 				8F8607EC219D67AB00281AB7 /* MWZComponentSubtitleCell.h in Headers */,
 				8F8607C1219D67AB00281AB7 /* MWZComponentSearchBarDelegate.h in Headers */,
+				8FDEC06B2368755E005D12B1 /* MWZSearchQueryBarDelegate.h in Headers */,
 				8F8607CE219D67AB00281AB7 /* MWZComponentLoadingBar.h in Headers */,
 				8F8607D8219D67AB00281AB7 /* MWZComponentDirectionBar.h in Headers */,
+				8FDEC05E23684005005D12B1 /* MWZSearchQueryBar.h in Headers */,
 				8F860817219DC5F200281AB7 /* MWZComponentColors.h in Headers */,
 				8F8607CD219D67AB00281AB7 /* MWZComponentCurrentLocationView.h in Headers */,
 				8F8607D6219D67AB00281AB7 /* MWZIndoorLocation.h in Headers */,
@@ -408,6 +473,7 @@
 				8F8607E0219D67AB00281AB7 /* MWZComponentFollowUserButton.h in Headers */,
 				8F8607EE219D67AB00281AB7 /* MWZComponentFloorView.h in Headers */,
 				8F8607DF219D67AB00281AB7 /* MWZComponentFollowUserButtonDelegate.h in Headers */,
+				8FDEC06323684703005D12B1 /* MWZMapViewController.h in Headers */,
 				8F8607E8219D67AB00281AB7 /* MWZComponentGroupedResultListDelegate.h in Headers */,
 				8F8607DD219D67AB00281AB7 /* MWZComponentUniversesButtonDelegate.h in Headers */,
 				8F8607BF219D67AB00281AB7 /* MWZComponentSearchBar.h in Headers */,
@@ -416,6 +482,7 @@
 				8F86080A219D9CAA00281AB7 /* MWZComponentLanguagesButton.h in Headers */,
 				8F86077B219D66A100281AB7 /* MapwizeUI.h in Headers */,
 				8F8607C9219D67AB00281AB7 /* MWZMapwizeViewDelegate.h in Headers */,
+				8FDEC07123687D50005D12B1 /* MWZMapViewMenuBarDelegate.h in Headers */,
 				8F8607C8219D67AB00281AB7 /* MWZMapwizeView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -514,6 +581,7 @@
 				8F8607D4219D67AB00281AB7 /* MWZIndoorLocation.m in Sources */,
 				8F8607EB219D67AB00281AB7 /* MWZComponentResultList.m in Sources */,
 				8F8607D3219D67AB00281AB7 /* MWZSearchData.m in Sources */,
+				8FDEC05B23683709005D12B1 /* MWZSearchViewController.m in Sources */,
 				8F8607C0219D67AB00281AB7 /* MWZComponentSearchBar.m in Sources */,
 				8F8607EA219D67AB00281AB7 /* MWZComponentTitleCell.m in Sources */,
 				8F860813219DAE0800281AB7 /* MWZMapwizeViewUISettings.m in Sources */,
@@ -521,20 +589,24 @@
 				8F8640D4222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m in Sources */,
 				8F8607E6219D67AB00281AB7 /* MWZComponentSubtitleCell.m in Sources */,
 				8F8607CB219D67AB00281AB7 /* MWZComponentIconTextButton.m in Sources */,
+				8FDEC069236849F3005D12B1 /* MapToSearchAnimator.m in Sources */,
 				8F8607F0219D67AB00281AB7 /* MWZComponentFloorView.m in Sources */,
 				8F8607CA219D67AB00281AB7 /* MWZMapwizeView.m in Sources */,
 				8F8607D0219D67AB00281AB7 /* MWZComponentBorderedTextField.m in Sources */,
 				8F8607DC219D67AB00281AB7 /* MWZComponentUniversesButton.m in Sources */,
 				8F86080B219D9CAA00281AB7 /* MWZComponentLanguagesButton.m in Sources */,
+				8FDEC06423684703005D12B1 /* MWZMapViewController.m in Sources */,
 				8F8607E1219D67AB00281AB7 /* MWZComponentFollowUserButton.m in Sources */,
 				8F8607D2219D67AB00281AB7 /* MWZComponentCurrentLocationView.m in Sources */,
 				8F8607DB219D67AB00281AB7 /* MWZComponentDirectionInfo.m in Sources */,
 				C6B8D5712226785400A3AD82 /* MWZUIOptions.m in Sources */,
 				8F8607E9219D67AB00281AB7 /* MWZComponentGroupedResultList.m in Sources */,
+				8FDEC06F23687C3F005D12B1 /* MWZMapViewMenuBar.m in Sources */,
 				8F860818219DC5F200281AB7 /* MWZComponentColors.m in Sources */,
 				8F8607C4219D67AB00281AB7 /* MWZComponentCompass.m in Sources */,
 				8F8607C5219D67AB00281AB7 /* MWZComponentBottomInfoView.m in Sources */,
 				8F8607EF219D67AB00281AB7 /* MWZComponentFloorController.m in Sources */,
+				8FDEC05F23684005005D12B1 /* MWZSearchQueryBar.m in Sources */,
 				8F8607D1219D67AB00281AB7 /* MWZComponentLoadingBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

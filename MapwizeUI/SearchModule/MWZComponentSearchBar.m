@@ -340,6 +340,7 @@
     
 }
 
+
 - (void) closeResultList {
     self.isInSearch = NO;
     [self.searchTextField resignFirstResponder];
@@ -427,7 +428,9 @@
 }
 
 - (void) directionClick {
-    [self.delegate didPressDirection];
+    if (!_isInSearch) {
+        [self.delegate didPressDirection];
+    }
 }
 
 #pragma mark MapwizePluginBehaviour

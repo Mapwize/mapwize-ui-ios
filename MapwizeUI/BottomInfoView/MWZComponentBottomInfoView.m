@@ -413,20 +413,19 @@
     [_delegate didPressInformation];
 }
 
-- (void) selectContentWithPlace:(MWZPlace*) place language:(NSString*) language showInfoButton:(BOOL) showInfoButton {
-    NSBundle* bundle = [NSBundle bundleForClass:self.class];
-    UIImage* imagePlace = [UIImage imageNamed:@"place" inBundle:bundle compatibleWithTraitCollection:nil];
-    imagePlace = [imagePlace imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+- (void) setContentWithImage:(UIImage*) image
+                       title:(NSString*) title
+                    subtitle:(NSString*) subtitle
+                     details:(NSString*) details
+              showInfoButton:(BOOL) showInfoButton {
     
     if (@available(iOS 11.0, *)) {
         self.totalHeight = 16.0f + 24.0f + 16.0f + 36.0f + self.safeAreaInsets.bottom + 16.0f;
     } else {
         self.totalHeight = 16.0f + 24.0f + 16.0f + 36.0f + 16.0f;
     }
-    NSString* subtitleString = [place subtitleForLanguage:language];
     
-    if (!subtitleString || [subtitleString length] == 0) {
-        subtitleString = @"";
+    if (!subtitle || [subtitle length] == 0) {
         self.detailsToSubtitle.active = NO;
         self.detailsToTitle.active = YES;
     }
@@ -437,9 +436,9 @@
     }
     
     NSAttributedString *attributedString = nil;
-    if ([place detailsForLanguage:language] && [place detailsForLanguage:language].length > 0) {
+    if (details && details.length > 0) {
         attributedString = [[NSAttributedString alloc]
-                            initWithData: [[place detailsForLanguage:language] dataUsingEncoding:NSUnicodeStringEncoding]
+                            initWithData: [details dataUsingEncoding:NSUnicodeStringEncoding]
                             options: @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
                             documentAttributes: nil
                             error: nil
@@ -457,19 +456,19 @@
                       duration:0.3f
                        options:UIViewAnimationOptionTransitionCrossDissolve
                     animations:^{
-                        [self.icon setImage:imagePlace];
+                        [self.icon setImage:image];
                     } completion:nil];
     [UIView transitionWithView:self.title
                       duration:0.3f
                        options:UIViewAnimationOptionTransitionCrossDissolve
                     animations:^{
-                        [self.title setText:[place titleForLanguage:language]];
+                        [self.title setText:title];
                     } completion:nil];
     [UIView transitionWithView:self.subtitle
                       duration:0.3f
                        options:UIViewAnimationOptionTransitionCrossDissolve
                     animations:^{
-                        [self.subtitle setText:subtitleString];
+                        [self.subtitle setText:subtitle];
                     } completion:nil];
     
     self.details.attributedText = attributedString;
@@ -486,78 +485,34 @@
         self.maxHeight = self.superview.frame.size.height - 24;
     }
     [self animateTo:self.totalHeight];
+    
+}
+
+- (void) selectContentWithPlace:(MWZPlace*) place language:(NSString*) language showInfoButton:(BOOL) showInfoButton {
+    NSBundle* bundle = [NSBundle bundleForClass:self.class];
+    UIImage* imagePlace = [UIImage imageNamed:@"place" inBundle:bundle compatibleWithTraitCollection:nil];
+    imagePlace = [imagePlace imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    NSString* title = [place titleForLanguage:language];
+    NSString* subtitle = [place subtitleForLanguage:language];
+    if (!subtitle || [subtitle length] == 0) {
+        subtitle = @"";
+    }
+    NSString* details = [place detailsForLanguage:language];
+    [self setContentWithImage:imagePlace title:title subtitle:subtitle details:details showInfoButton:showInfoButton];
+    
 }
 
 - (void) selectContentWithPlaceList:(MWZPlacelist*) placeList language:(NSString*) language showInfoButton:(BOOL) showInfoButton {
     NSBundle* bundle = [NSBundle bundleForClass:self.class];
-    UIImage* imagePlacelist = [UIImage imageNamed:@"menu" inBundle:bundle compatibleWithTraitCollection:nil];
+    UIImage* imagePlacelist = [UIImage imageNamed:@"search_menu" inBundle:bundle compatibleWithTraitCollection:nil];
     imagePlacelist = [imagePlacelist imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    CGFloat totalHeight;
-    if (@available(iOS 11.0, *)) {
-        totalHeight = 16.0f + 24.0f + 16.0f + 32.0f + self.safeAreaInsets.bottom + 16.0f;
-    } else {
-        totalHeight = 16.0f + 24.0f + 16.0f + 32.0f + 16.0f;
+    NSString* title = [placeList titleForLanguage:language];
+    NSString* subtitle = [placeList subtitleForLanguage:language];
+    if (!subtitle || [subtitle length] == 0) {
+        subtitle = @"";
     }
-    NSString* subtitleString = [placeList subtitleForLanguage:language];
-    if (!subtitleString || [subtitleString length] == 0) {
-        subtitleString = @"";
-        self.detailsToSubtitle.active = NO;
-        self.detailsToTitle.active = YES;
-    }
-    else {
-        totalHeight += 16.0f;
-        self.detailsToSubtitle.active = YES;
-        self.detailsToTitle.active = NO;
-    }
-    NSAttributedString *attributedString = nil;
-    if ([placeList detailsForLanguage:language] && [placeList detailsForLanguage:language].length > 0) {
-        attributedString = [[NSAttributedString alloc]
-                            initWithData: [[placeList detailsForLanguage:language] dataUsingEncoding:NSUnicodeStringEncoding]
-                            options: @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
-                            documentAttributes: nil
-                            error: nil
-                            ];
-        [self.pullUpView setHidden:NO];
-        totalHeight += 40;
-    }
-    else {
-        [self.pullUpView setHidden:YES];
-    }
-    
-    [self.informationsButton setHidden:!showInfoButton];
-    [UIView transitionWithView:self.icon
-                      duration:0.3f
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{
-                        [self.icon setImage:imagePlacelist];
-                    } completion:nil];
-    [UIView transitionWithView:self.title
-                      duration:0.3f
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{
-                        [self.title setText:[placeList titleForLanguage:language]];
-                    } completion:nil];
-    [UIView transitionWithView:self.subtitle
-                      duration:0.3f
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{
-                        [self.subtitle setText:subtitleString];
-                    } completion:nil];
-    
-    self.details.attributedText = attributedString;
-    CGSize detailsSize = [self.details sizeThatFits:CGSizeMake(self.detailsScrollView.frame.size.width, CGFLOAT_MAX)];
-    self.detailsScrollView.contentSize = detailsSize;
-    CGSize size = [self.subtitle sizeThatFits:CGSizeMake(self.subtitle.frame.size.width, CGFLOAT_MAX)];
-    totalHeight += size.height;
-    self.minHeight = totalHeight;
-    self.maxHeight = totalHeight;
-    if (detailsSize.height > 0) {
-        self.maxHeight += detailsSize.height + 32;
-    }
-    if (self.maxHeight > self.superview.frame.size.height - 24) {
-        self.maxHeight = self.superview.frame.size.height - 24;
-    }
-    [self animateTo:totalHeight];
+    NSString *details = [placeList detailsForLanguage:language];
+    [self setContentWithImage:imagePlacelist title:title subtitle:subtitle details:details showInfoButton:showInfoButton];
 }
 
 
@@ -585,7 +540,6 @@
             }];
         }
     }
-    
 }
 
 @end
