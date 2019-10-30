@@ -8,8 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		6AE2F1AECD1A17FB83C5E2AE /* Pods_MapwizeUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A087F06AEC97B04A58BB7884 /* Pods_MapwizeUI.framework */; };
+		8F1B2A602369DBCA0001CEA1 /* MWZDefaultScene.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F1B2A5E2369DBCA0001CEA1 /* MWZDefaultScene.h */; };
+		8F1B2A612369DBCA0001CEA1 /* MWZDefaultScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F1B2A5F2369DBCA0001CEA1 /* MWZDefaultScene.m */; };
 		8F31F9E7232687DC00BB4956 /* MWZComponentFloorControllerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F31F9E6232687DC00BB4956 /* MWZComponentFloorControllerDelegate.h */; };
 		8F37AE1F234E216E00048291 /* MWZComponentRequireMapwizeInformationProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F0C8DE623279DB3007B0A0C /* MWZComponentRequireMapwizeInformationProtocol.h */; };
+		8F5C890D2369D3790043573C /* MWZSearchSceneDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F5C890C2369D3790043573C /* MWZSearchSceneDelegate.h */; };
 		8F86077B219D66A100281AB7 /* MapwizeUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860779219D66A100281AB7 /* MapwizeUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8607BF219D67AB00281AB7 /* MWZComponentSearchBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860782219D67AB00281AB7 /* MWZComponentSearchBar.h */; };
 		8F8607C0219D67AB00281AB7 /* MWZComponentSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860783219D67AB00281AB7 /* MWZComponentSearchBar.m */; };
@@ -77,6 +80,8 @@
 		8FA9B360236982A3003A870A /* MWZUIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9B35E236982A3003A870A /* MWZUIConstants.m */; };
 		8FA9B3642369C07B003A870A /* MWZSearchDirectionViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FA9B3622369C07B003A870A /* MWZSearchDirectionViewController.h */; };
 		8FA9B3652369C07B003A870A /* MWZSearchDirectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9B3632369C07B003A870A /* MWZSearchDirectionViewController.m */; };
+		8FA9B3682369CBE2003A870A /* MWZSearchScene.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FA9B3662369CBE2003A870A /* MWZSearchScene.h */; };
+		8FA9B3692369CBE2003A870A /* MWZSearchScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9B3672369CBE2003A870A /* MWZSearchScene.m */; };
 		8FDEC05A23683709005D12B1 /* MWZSearchViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDEC05823683709005D12B1 /* MWZSearchViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8FDEC05B23683709005D12B1 /* MWZSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDEC05923683709005D12B1 /* MWZSearchViewController.m */; };
 		8FDEC05E23684005005D12B1 /* MWZSearchQueryBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDEC05C23684005005D12B1 /* MWZSearchQueryBar.h */; };
@@ -97,7 +102,10 @@
 		2D0DF2659609D033DF11BC8B /* Pods-MapwizeUI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapwizeUI.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapwizeUI/Pods-MapwizeUI.release.xcconfig"; sourceTree = "<group>"; };
 		41A462D5A11F5E34086522F1 /* Pods-MapwizeUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapwizeUI.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapwizeUI/Pods-MapwizeUI.debug.xcconfig"; sourceTree = "<group>"; };
 		8F0C8DE623279DB3007B0A0C /* MWZComponentRequireMapwizeInformationProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZComponentRequireMapwizeInformationProtocol.h; sourceTree = "<group>"; };
+		8F1B2A5E2369DBCA0001CEA1 /* MWZDefaultScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZDefaultScene.h; sourceTree = "<group>"; };
+		8F1B2A5F2369DBCA0001CEA1 /* MWZDefaultScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZDefaultScene.m; sourceTree = "<group>"; };
 		8F31F9E6232687DC00BB4956 /* MWZComponentFloorControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZComponentFloorControllerDelegate.h; sourceTree = "<group>"; };
+		8F5C890C2369D3790043573C /* MWZSearchSceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZSearchSceneDelegate.h; sourceTree = "<group>"; };
 		8F860776219D66A100281AB7 /* MapwizeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapwizeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F860779219D66A100281AB7 /* MapwizeUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapwizeUI.h; sourceTree = "<group>"; };
 		8F86077A219D66A100281AB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -167,6 +175,9 @@
 		8FA9B35E236982A3003A870A /* MWZUIConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIConstants.m; sourceTree = "<group>"; };
 		8FA9B3622369C07B003A870A /* MWZSearchDirectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZSearchDirectionViewController.h; sourceTree = "<group>"; };
 		8FA9B3632369C07B003A870A /* MWZSearchDirectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZSearchDirectionViewController.m; sourceTree = "<group>"; };
+		8FA9B3662369CBE2003A870A /* MWZSearchScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZSearchScene.h; sourceTree = "<group>"; };
+		8FA9B3672369CBE2003A870A /* MWZSearchScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZSearchScene.m; sourceTree = "<group>"; };
+		8FD2D5942369DDD700F77DB2 /* MWZDefaultSceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZDefaultSceneDelegate.h; sourceTree = "<group>"; };
 		8FDEC05823683709005D12B1 /* MWZSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZSearchViewController.h; sourceTree = "<group>"; };
 		8FDEC05923683709005D12B1 /* MWZSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZSearchViewController.m; sourceTree = "<group>"; };
 		8FDEC05C23684005005D12B1 /* MWZSearchQueryBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZSearchQueryBar.h; sourceTree = "<group>"; };
@@ -213,6 +224,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8F1B2A5D2369DBA80001CEA1 /* DefaultScene */ = {
+			isa = PBXGroup;
+			children = (
+				8F1B2A5E2369DBCA0001CEA1 /* MWZDefaultScene.h */,
+				8F1B2A5F2369DBCA0001CEA1 /* MWZDefaultScene.m */,
+				8FD2D5942369DDD700F77DB2 /* MWZDefaultSceneDelegate.h */,
+				8FDEC06C23687C3F005D12B1 /* MWZMapViewMenuBar.h */,
+				8FDEC06D23687C3F005D12B1 /* MWZMapViewMenuBar.m */,
+				8FDEC07023687D50005D12B1 /* MWZMapViewMenuBarDelegate.h */,
+			);
+			path = DefaultScene;
+			sourceTree = "<group>";
+		};
 		8F86076C219D66A100281AB7 = {
 			isa = PBXGroup;
 			children = (
@@ -237,7 +261,8 @@
 				8FA9B3612369C044003A870A /* SearchDirectionViewController */,
 				8FDEC065236849D6005D12B1 /* Animator */,
 				8FDEC060236846F2005D12B1 /* MapViewController */,
-				8FDEC057236836DA005D12B1 /* SearchViewController */,
+				8F1B2A5D2369DBA80001CEA1 /* DefaultScene */,
+				8FDEC057236836DA005D12B1 /* SearchScene */,
 				8F86078D219D67AB00281AB7 /* MapwizeView */,
 				8F860789219D67AB00281AB7 /* BottomInfoView */,
 				8F860781219D67AB00281AB7 /* SearchModule */,
@@ -423,7 +448,7 @@
 			path = SearchDirectionViewController;
 			sourceTree = "<group>";
 		};
-		8FDEC057236836DA005D12B1 /* SearchViewController */ = {
+		8FDEC057236836DA005D12B1 /* SearchScene */ = {
 			isa = PBXGroup;
 			children = (
 				8FDEC05823683709005D12B1 /* MWZSearchViewController.h */,
@@ -433,8 +458,11 @@
 				8FDEC06A2368755E005D12B1 /* MWZSearchQueryBarDelegate.h */,
 				8FA9B35923688294003A870A /* MWZSearchViewControllerOptions.h */,
 				8FA9B35A23688294003A870A /* MWZSearchViewControllerOptions.m */,
+				8FA9B3662369CBE2003A870A /* MWZSearchScene.h */,
+				8FA9B3672369CBE2003A870A /* MWZSearchScene.m */,
+				8F5C890C2369D3790043573C /* MWZSearchSceneDelegate.h */,
 			);
-			path = SearchViewController;
+			path = SearchScene;
 			sourceTree = "<group>";
 		};
 		8FDEC060236846F2005D12B1 /* MapViewController */ = {
@@ -442,9 +470,6 @@
 			children = (
 				8FDEC06123684703005D12B1 /* MWZMapViewController.h */,
 				8FDEC06223684703005D12B1 /* MWZMapViewController.m */,
-				8FDEC06C23687C3F005D12B1 /* MWZMapViewMenuBar.h */,
-				8FDEC06D23687C3F005D12B1 /* MWZMapViewMenuBar.m */,
-				8FDEC07023687D50005D12B1 /* MWZMapViewMenuBarDelegate.h */,
 			);
 			path = MapViewController;
 			sourceTree = "<group>";
@@ -466,12 +491,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F860812219DAE0800281AB7 /* MWZMapwizeViewUISettings.h in Headers */,
+				8F1B2A602369DBCA0001CEA1 /* MWZDefaultScene.h in Headers */,
 				8FDEC05A23683709005D12B1 /* MWZSearchViewController.h in Headers */,
 				8F8640D5222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h in Headers */,
 				8FDEC068236849F3005D12B1 /* MapToSearchAnimator.h in Headers */,
 				8F8607E7219D67AB00281AB7 /* MWZComponentResultList.h in Headers */,
 				8F8607DE219D67AB00281AB7 /* MWZComponentUniversesButton.h in Headers */,
 				8FDEC06E23687C3F005D12B1 /* MWZMapViewMenuBar.h in Headers */,
+				8F5C890D2369D3790043573C /* MWZSearchSceneDelegate.h in Headers */,
 				8F8607CC219D67AB00281AB7 /* MWZComponentBorderedTextField.h in Headers */,
 				C6B8D573222679EC00A3AD82 /* MWZUIOptions.h in Headers */,
 				8F8607E3219D67AB00281AB7 /* MWZComponentGroupedResultList.h in Headers */,
@@ -506,6 +533,7 @@
 				8F8607DD219D67AB00281AB7 /* MWZComponentUniversesButtonDelegate.h in Headers */,
 				8F8607BF219D67AB00281AB7 /* MWZComponentSearchBar.h in Headers */,
 				8F8607ED219D67AB00281AB7 /* MWZComponentFloorController.h in Headers */,
+				8FA9B3682369CBE2003A870A /* MWZSearchScene.h in Headers */,
 				8F8607D7219D67AB00281AB7 /* MWZComponentDirectionInfo.h in Headers */,
 				8FA9B35F236982A3003A870A /* MWZUIConstants.h in Headers */,
 				8F86080A219D9CAA00281AB7 /* MWZComponentLanguagesButton.h in Headers */,
@@ -608,6 +636,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F8607D4219D67AB00281AB7 /* MWZIndoorLocation.m in Sources */,
+				8FA9B3692369CBE2003A870A /* MWZSearchScene.m in Sources */,
 				8FA9B3652369C07B003A870A /* MWZSearchDirectionViewController.m in Sources */,
 				8F8607EB219D67AB00281AB7 /* MWZComponentResultList.m in Sources */,
 				8F8607D3219D67AB00281AB7 /* MWZSearchData.m in Sources */,
@@ -625,6 +654,7 @@
 				8F8607CA219D67AB00281AB7 /* MWZMapwizeView.m in Sources */,
 				8F8607D0219D67AB00281AB7 /* MWZComponentBorderedTextField.m in Sources */,
 				8F8607DC219D67AB00281AB7 /* MWZComponentUniversesButton.m in Sources */,
+				8F1B2A612369DBCA0001CEA1 /* MWZDefaultScene.m in Sources */,
 				8F86080B219D9CAA00281AB7 /* MWZComponentLanguagesButton.m in Sources */,
 				8FDEC06423684703005D12B1 /* MWZMapViewController.m in Sources */,
 				8F8607E1219D67AB00281AB7 /* MWZComponentFollowUserButton.m in Sources */,

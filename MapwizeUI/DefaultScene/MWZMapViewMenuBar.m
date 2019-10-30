@@ -23,7 +23,7 @@
     
     self.menuButton = [[UIButton alloc] init];
     self.menuButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.menuButton addTarget:self action:@selector(menuButton) forControlEvents:UIControlEventTouchUpInside];
+    [self.menuButton addTarget:self action:@selector(didTapOnMenuButton) forControlEvents:UIControlEventTouchUpInside];
     [self.menuButton setImage:menuImage forState:UIControlStateNormal];
     [self addSubview:self.menuButton];
     
@@ -74,6 +74,7 @@
     [self.directionButton setImage:menuImage forState:UIControlStateNormal];
     [self.directionButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
     self.directionButton.contentEdgeInsets = UIEdgeInsetsMake(4.0f, 4.0f, 4.0f, 4.0f);
+    [self.directionButton addTarget:self action:@selector(didTapOnDirectionButton) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.directionButton];
     [[NSLayoutConstraint constraintWithItem:self.directionButton
                                   attribute:NSLayoutAttributeRight
@@ -161,6 +162,14 @@
 
 - (void) didTapOnSearch:(UITapGestureRecognizer*) recognizer {
     [_delegate didTapOnSearchButton];
+}
+
+- (void) didTapOnMenuButton {
+    [_delegate didTapOnMenuButton];
+}
+
+- (void) didTapOnDirectionButton {
+    [_delegate didTapOnDirectionButton];
 }
 
 @end
