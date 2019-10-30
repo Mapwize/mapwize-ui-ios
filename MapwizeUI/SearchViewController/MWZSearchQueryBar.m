@@ -13,7 +13,7 @@
     self.layer.cornerRadius = 10;
     self.layer.backgroundColor = [UIColor whiteColor].CGColor;
     self.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    self.layer.borderWidth = 1;
+    self.layer.borderWidth = 0.5;
     //self.layer.shadowOpacity = .3f;
     //self.layer.shadowRadius = 4;
     //self.layer.shadowColor = [UIColor blackColor].CGColor;

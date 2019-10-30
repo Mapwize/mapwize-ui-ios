@@ -15,7 +15,7 @@
     self.layer.shadowOpacity = .3f;
     self.layer.shadowRadius = 4;
     self.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.layer.shadowOffset = CGSizeMake(0, 2);
+    self.layer.shadowOffset = CGSizeMake(0, 0.5);
         
     
     NSBundle* bundle = [NSBundle bundleForClass:self.class];

@@ -24,11 +24,13 @@
         height = 10000;
         alpha = 1.0f;
         [searchVC.backgroundView setAlpha:0.0f];
+        [searchVC.searchQueryBar setAlpha:0.0f];
         [containerView addSubview:searchVC.view];
-        [UIView animateWithDuration:_duration/3 animations:^{
+        [UIView animateWithDuration:_duration/2 animations:^{
             [searchVC.backgroundView setAlpha:alpha];
+            [searchVC.searchQueryBar setAlpha:alpha];
         } completion:^(BOOL finished) {
-            [UIView animateWithDuration:self.duration*2/3 animations:^{
+            [UIView animateWithDuration:self.duration/2 animations:^{
                 searchVC.resultContainerViewHeightConstraint.constant = height;
                 [searchVC.view layoutIfNeeded];
             } completion:^(BOOL finished) {
@@ -43,12 +45,13 @@
         [searchVC.backgroundView setAlpha:1.0f];
         [containerView addSubview:[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view];
         [containerView addSubview:searchVC.view];
-        [UIView animateWithDuration:self.duration*2/3 animations:^{
+        [UIView animateWithDuration:self.duration/2 animations:^{
             searchVC.resultContainerViewHeightConstraint.constant = height;
             [searchVC.view layoutIfNeeded];
         } completion:^(BOOL finished) {
-            [UIView animateWithDuration:self.duration/3 animations:^{
+            [UIView animateWithDuration:self.duration/2 animations:^{
                 [searchVC.backgroundView setAlpha:alpha];
+                [searchVC.searchQueryBar setAlpha:alpha];
             } completion:^(BOOL finished) {
                 [transitionContext completeTransition:YES];
             }];
