@@ -12,6 +12,8 @@
 @protocol MWZMapViewMenuBarDelegate <NSObject>
 
 - (void) didTapOnSearchButton;
+- (void) didTapOnMenuButton;
+- (void) didTapOnDirectionButton;
 
 @end
 

@@ -117,6 +117,7 @@
     
     self.searchQueryLabel = [[UILabel alloc] init];
     self.searchQueryLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.searchQueryLabel.textColor = [UIColor lightGrayColor];
     self.searchQueryLabel.text = NSLocalizedString(@"Search a venue...", "");
     self.searchQueryLabel.userInteractionEnabled = YES;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnSearch:)];

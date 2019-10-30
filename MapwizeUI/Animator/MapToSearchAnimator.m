@@ -29,7 +29,7 @@
             [searchVC.backgroundView setAlpha:alpha];
         } completion:^(BOOL finished) {
             [UIView animateWithDuration:self.duration*2/3 animations:^{
-                searchVC.tableViewHeightConstraint.constant = height;
+                searchVC.resultContainerViewHeightConstraint.constant = height;
                 [searchVC.view layoutIfNeeded];
             } completion:^(BOOL finished) {
                 [transitionContext completeTransition:YES];
@@ -44,7 +44,7 @@
         [containerView addSubview:[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view];
         [containerView addSubview:searchVC.view];
         [UIView animateWithDuration:self.duration*2/3 animations:^{
-            searchVC.tableViewHeightConstraint.constant = height;
+            searchVC.resultContainerViewHeightConstraint.constant = height;
             [searchVC.view layoutIfNeeded];
         } completion:^(BOOL finished) {
             [UIView animateWithDuration:self.duration/3 animations:^{

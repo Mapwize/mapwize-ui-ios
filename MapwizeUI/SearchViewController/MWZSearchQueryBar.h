@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MWZSearchQueryBar : UIView
+@interface MWZSearchQueryBar : UIView <UITextFieldDelegate>
 
 @property (nonatomic) UIButton* backButton;
 @property (nonatomic) UIButton* clearButton;

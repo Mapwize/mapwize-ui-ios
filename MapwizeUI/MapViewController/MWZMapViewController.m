@@ -1,6 +1,7 @@
 #import "MWZMapViewController.h"
 #import "MWZSearchViewController.h"
 #import "MapToSearchAnimator.h"
+#import "MWZUIConstants.h"
 
 @interface MWZMapViewController ()
 
@@ -33,21 +34,21 @@
                                          toItem:self.view
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
-                                       constant:-self.view.safeAreaInsets.right - 8.0f] setActive:YES];
+                                       constant:-self.view.safeAreaInsets.right - MWZDefaultPadding] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeLeft
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:self.view
                                       attribute:NSLayoutAttributeLeft
                                      multiplier:1.0f
-                                       constant: self.view.safeAreaInsets.left + 8.0f] setActive:YES];
+                                       constant: self.view.safeAreaInsets.left + MWZDefaultPadding] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeTop
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:self.view.safeAreaLayoutGuide
                                       attribute:NSLayoutAttributeTop
                                      multiplier:1.0f
-                                       constant:8.0f] setActive:YES];
+                                       constant:MWZDefaultPadding] setActive:YES];
     } else {
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeRight
@@ -55,31 +56,43 @@
                                          toItem:self.view
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
-                                       constant:- 8.0f] setActive:YES];
+                                       constant:- MWZDefaultPadding] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeLeft
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:self.view
                                       attribute:NSLayoutAttributeLeft
                                      multiplier:1.0f
-                                       constant:8.0f] setActive:YES];
+                                       constant:MWZDefaultPadding] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeTop
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:self.view
                                       attribute:NSLayoutAttributeTop
                                      multiplier:1.0f
-                                       constant:8.0f] setActive:YES];
+                                       constant:MWZDefaultPadding] setActive:YES];
     }
 }
 
+#pragma mark MWZMapViewMenuBarDelegate
 - (void) didTapOnSearchButton {
     MWZSearchViewController* searchVC = [[MWZSearchViewController alloc] init];
     [searchVC setModalPresentationStyle:UIModalPresentationFullScreen];
     searchVC.transitioningDelegate = self;
+    MWZSearchViewControllerOptions* opts = [[MWZSearchViewControllerOptions alloc] init];
+    [searchVC setSearchOptions:opts];
     [self presentViewController:searchVC animated:YES completion:nil];
 }
 
+- (void) didTapOnMenuButton {
+    
+}
+
+- (void) didTapOnDirectionButton {
+    
+}
+
+#pragma mark UIViewControllerTransitioningDelegate
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
     self.mapToSearchAnimator.presenting = YES;
     return self.mapToSearchAnimator;

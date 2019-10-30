@@ -12,10 +12,12 @@
     self.clipsToBounds = NO;
     self.layer.cornerRadius = 10;
     self.layer.backgroundColor = [UIColor whiteColor].CGColor;
-    self.layer.shadowOpacity = .3f;
-    self.layer.shadowRadius = 4;
-    self.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.layer.shadowOffset = CGSizeMake(0, 2);
+    self.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.layer.borderWidth = 1;
+    //self.layer.shadowOpacity = .3f;
+    //self.layer.shadowRadius = 4;
+    //self.layer.shadowColor = [UIColor blackColor].CGColor;
+    //self.layer.shadowOffset = CGSizeMake(0, 2);
         
     NSBundle* bundle = [NSBundle bundleForClass:self.class];
     UIImage* backImage = [UIImage imageNamed:@"back" inBundle:bundle compatibleWithTraitCollection:nil];
@@ -117,9 +119,10 @@
     
     self.searchTextField = [[UITextField alloc] init];
     self.searchTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    self.searchTextField.textColor = [UIColor lightGrayColor];
     self.searchTextField.placeholder = NSLocalizedString(@"Search a venue...", "");
     //self.searchTextField.delegate = self;
-    //[self.searchTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [self.searchTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [self addSubview:self.searchTextField];
     [[NSLayoutConstraint constraintWithItem:self.searchTextField
                                   attribute:NSLayoutAttributeRight
@@ -157,6 +160,28 @@
 
 - (void) backClick {
     [_delegate didTapOnBackButton];
+}
+
+#pragma mark TextFieldDelegate
+
+- (void) textFieldDidBeginEditing:(UITextField *)textField {
+    /*self.isInSearch = YES;
+    [self showResultList];
+    textField.text = @"";
+    [self loadEmptySearch];*/
+}
+
+- (void) textFieldDidChange:(UITextField*) textField {
+    [_delegate searchQueryDidChange:textField.text];
+    /*if (!self.isInSearch) {
+        return;
+    }
+    if ([textField.text isEqualToString:@""]) {
+        [self loadEmptySearch];
+    }
+    else {
+        [self search:textField.text];
+    }*/
 }
 
 @end

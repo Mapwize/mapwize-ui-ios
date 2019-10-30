@@ -31,11 +31,21 @@
         self.dataSource = self;
         self.delegate = self;
         self.separatorStyle = UITableViewCellSeparatorStyleNone;
-        self.scrollEnabled = NO;
+        //self.scrollEnabled = NO;
         [self registerClass:[MWZComponentTitleWithoutFloorCellTableViewCell class] forCellReuseIdentifier:@"titleWithoutFloorCell"];
         [self registerClass:[MWZComponentTitleCell class] forCellReuseIdentifier:@"titleCell"];
         [self registerClass:[MWZComponentSubtitleCell class] forCellReuseIdentifier:@"subtitleCell"];
         _content = [[NSMutableArray alloc] init];
+        
+        self.tableHeightConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                                  attribute:NSLayoutAttributeHeight
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:nil
+                                                                  attribute:NSLayoutAttributeNotAnAttribute
+                                                                 multiplier:1.0f
+                                                                   constant:0];
+        self.tableHeightConstraint.priority = 200;
+        [self.tableHeightConstraint setActive:YES];
     }
     return self;
 }
@@ -130,23 +140,9 @@
 }
 
 - (void) updateHeight {
-    [self.layer removeAllAnimations];
-    if (self.tableHeightConstraint) {
-        if (self.tableHeightConstraint.constant != self.contentSize.height) {
-            self.tableHeightConstraint.constant = self.contentSize.height;
-        }
-        
-    }
-    else {
-        self.tableHeightConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                             attribute:NSLayoutAttributeHeight
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:nil
-                                                             attribute:NSLayoutAttributeNotAnAttribute
-                                                            multiplier:1.0f
-                                                              constant:self.contentSize.height];
-        self.tableHeightConstraint.priority = 200;
-        [self.tableHeightConstraint setActive:YES];
+    //[self.layer removeAllAnimations];
+    if (self.tableHeightConstraint.constant != self.contentSize.height) {
+        self.tableHeightConstraint.constant = self.contentSize.height;
     }
 }
 
