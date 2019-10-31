@@ -20,6 +20,7 @@
     
     NSBundle* bundle = [NSBundle bundleForClass:self.class];
     UIImage* menuImage = [UIImage imageNamed:@"search_menu" inBundle:bundle compatibleWithTraitCollection:nil];
+    UIImage* directionImage = [UIImage imageNamed:@"direction" inBundle:bundle compatibleWithTraitCollection:nil];
     
     self.menuButton = [[UIButton alloc] init];
     self.menuButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -71,8 +72,9 @@
     
     self.directionButton = [[UIButton alloc] init];
     self.directionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.directionButton setImage:menuImage forState:UIControlStateNormal];
+    [self.directionButton setImage:directionImage forState:UIControlStateNormal];
     [self.directionButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    [self.directionButton setHidden:YES];
     self.directionButton.contentEdgeInsets = UIEdgeInsetsMake(4.0f, 4.0f, 4.0f, 4.0f);
     [self.directionButton addTarget:self action:@selector(didTapOnDirectionButton) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.directionButton];

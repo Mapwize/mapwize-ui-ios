@@ -14,11 +14,7 @@
     self.layer.backgroundColor = [UIColor whiteColor].CGColor;
     self.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.layer.borderWidth = 0.5;
-    //self.layer.shadowOpacity = .3f;
-    //self.layer.shadowRadius = 4;
-    //self.layer.shadowColor = [UIColor blackColor].CGColor;
-    //self.layer.shadowOffset = CGSizeMake(0, 2);
-        
+    
     NSBundle* bundle = [NSBundle bundleForClass:self.class];
     UIImage* backImage = [UIImage imageNamed:@"back" inBundle:bundle compatibleWithTraitCollection:nil];
     
@@ -120,7 +116,7 @@
     self.searchTextField = [[UITextField alloc] init];
     self.searchTextField.translatesAutoresizingMaskIntoConstraints = NO;
     self.searchTextField.textColor = [UIColor lightGrayColor];
-    self.searchTextField.placeholder = NSLocalizedString(@"Search a venue...", "");
+    self.searchTextField.placeholder = NSLocalizedString(@"Search", "");
     self.searchTextField.delegate = self;
     [self.searchTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [self addSubview:self.searchTextField];

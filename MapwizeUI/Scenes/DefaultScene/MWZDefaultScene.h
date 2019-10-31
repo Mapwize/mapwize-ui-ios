@@ -15,8 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<MWZDefaultSceneDelegate> delegate;
 
-- (void) showContentWithPlace:(MWZPlace*) place language:(NSString*) language showInfoButton:(BOOL) showInfoButton;
-- (void) showContentWithPlaceList:(MWZPlacelist*) placeList language:(NSString*) language showInfoButton:(BOOL) showInfoButton;
+- (void) setDirectionButtonHidden:(BOOL) isHidden;
+- (void) setSearchBarTitleForVenue:(NSString*) venueName;
+- (void) showContent:(id<MWZObject>) object language:(NSString*) language showInfoButton:(BOOL) showInfoButton;
 - (void) hideContent;
 
 @end

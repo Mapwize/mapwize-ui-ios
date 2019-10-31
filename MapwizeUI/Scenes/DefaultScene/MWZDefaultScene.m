@@ -109,20 +109,47 @@
     
 }
 
+- (void) setDirectionButtonHidden:(BOOL) isHidden {
+    if (isHidden) {
+        [UIView animateWithDuration:0.3 animations:^{
+            [self.menuBar.directionButton setAlpha:0.0];
+        } completion:^(BOOL finished) {
+            [self.menuBar.directionButton setHidden:isHidden];
+        }];
+    }
+    else {
+        [self.menuBar.directionButton setAlpha:0.0];
+        [self.menuBar.directionButton setHidden:isHidden];
+        [UIView animateWithDuration:0.3 animations:^{
+            [self.menuBar.directionButton setAlpha:1.0];
+        }];
+    }
+}
+
+- (void) setSearchBarTitleForVenue:(NSString*) venueName {
+    if (venueName || venueName.length == 0) {
+        self.menuBar.searchQueryLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Search in %@...", ""), venueName];
+    }
+    else {
+        self.menuBar.searchQueryLabel.text = NSLocalizedString(@"Search a venue...", "");
+    }
+}
+
 - (void) setHidden:(BOOL) hidden {
     [self.menuBar setHidden:hidden];
 }
 
-- (void) showContentWithPlace:(MWZPlace*) place language:(NSString*) language showInfoButton:(BOOL) showInfoButton {
-    [self.bottomInfoView selectContentWithPlace:place language:language showInfoButton:showInfoButton];
-}
-
-- (void) showContentWithPlaceList:(MWZPlacelist*) placeList language:(NSString*) language showInfoButton:(BOOL) showInfoButton {
-    [self.bottomInfoView selectContentWithPlaceList:placeList language:language showInfoButton:showInfoButton];
+- (void) showContent:(id<MWZObject>) object language:(NSString*) language showInfoButton:(BOOL) showInfoButton {
+    if ([object isKindOfClass:MWZPlace.class]) {
+        [self.bottomInfoView selectContentWithPlace:(MWZPlace*)object language:language showInfoButton:showInfoButton];
+    }
+    if ([object isKindOfClass:MWZPlacelist.class]) {
+        [self.bottomInfoView selectContentWithPlaceList:(MWZPlacelist*)object language:language showInfoButton:showInfoButton];
+    }
 }
 
 - (void) hideContent {
-    
+    [self.bottomInfoView unselectContent];
 }
 
 #pragma mark MWZMapViewMenuBarDelegate

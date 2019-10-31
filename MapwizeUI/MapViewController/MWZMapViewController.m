@@ -11,6 +11,7 @@
 
 @property (nonatomic) NSArray<MWZVenue*>* mainVenues;
 @property (nonatomic) NSArray<id<MWZObject>>* mainSearches;
+@property (nonatomic) id<MWZObject> selectedContent;
 
 @end
 
@@ -103,13 +104,27 @@
 }
 
 #pragma mark Content selection
+- (void) unselectContent {
+    [self.defaultScene hideContent];
+    [self.mapView removeMarkers];
+    [self.mapView removePromotedPlaces];
+    self.selectedContent = nil;
+}
+
 - (void) selectPlace:(MWZPlace*) place {
-    [self.defaultScene showContentWithPlace:place language: [self.mapView getLanguage] showInfoButton:YES];
+    if (self.selectedContent) {
+        [self.mapView removeMarkers];
+        [self.mapView removePromotedPlaces];
+    }
+    [self.defaultScene showContent:place language:[self.mapView getLanguage] showInfoButton:YES];
+    [self.mapView addMarkerOnPlace:place];
+    [self.mapView addPromotedPlace:place];
+    self.selectedContent = place;
 }
 
 - (void) selectPlacePreview:(MWZPlacePreview*) placePreview {
     [placePreview getFullObjectAsyncWithSuccess:^(MWZPlace * _Nonnull place) {
-        [self.defaultScene showContentWithPlace:place language: [self.mapView getLanguage] showInfoButton:YES];
+        [self selectPlace:place];
     } failure:^(NSError * _Nonnull error) {
         
     }];
@@ -125,6 +140,7 @@
             [self selectPlacePreview:clickEvent.placePreview];
             break;
         default:
+            [self unselectContent];
             break;
     }
 }
@@ -134,11 +150,20 @@
 }
 
 - (void)mapView:(MWZMapView *_Nonnull)mapView venueDidEnter:(MWZVenue *_Nonnull)venue {
-    
+    [self.defaultScene setSearchBarTitleForVenue:[venue titleForLanguage:[mapView getLanguage]]];
+    [self.defaultScene setDirectionButtonHidden:NO];
+    if (self.selectedContent) {
+        [self.defaultScene showContent:self.selectedContent language:[self.mapView getLanguage] showInfoButton:YES];
+    }
 }
 
 - (void)mapView:(MWZMapView *_Nonnull)mapView venueDidExit:(MWZVenue *_Nonnull)venue {
+    [self.defaultScene setSearchBarTitleForVenue:@""];
+    [self.defaultScene setDirectionButtonHidden:YES];
     self.mainSearches = @[];
+    if (self.selectedContent) {
+        [self.defaultScene hideContent];
+    }
 }
 
 #pragma mark MWZDefaultSceneDelegate
