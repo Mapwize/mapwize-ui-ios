@@ -3,10 +3,11 @@
 #import "MWZSearchViewControllerOptions.h"
 #import "MWZComponentResultList.h"
 #import "MWZSearchSceneDelegate.h"
+#import "MWZScene.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MWZSearchScene : UIView <MWZSearchQueryBarDelegate>
+@interface MWZSearchScene : NSObject <MWZScene, MWZSearchQueryBarDelegate>
 
 @property (nonatomic) MWZSearchViewControllerOptions* searchOptions;
 @property (nonatomic) MWZSearchQueryBar* searchQueryBar;

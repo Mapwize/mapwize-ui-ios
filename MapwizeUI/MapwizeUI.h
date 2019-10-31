@@ -8,5 +8,4 @@ FOUNDATION_EXPORT const unsigned char MapwizeUIVersionString[];
 #import "MWZMapwizeViewDelegate.h"
 #import "MWZMapwizeViewUISettings.h"
 #import "MWZUIOptions.h"
-#import "MWZSearchViewController.h"
 #import "MWZMapViewController.h"

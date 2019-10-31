@@ -40,9 +40,7 @@ extension ViewController: MWZMapwizeViewDelegate {
         let action = UIAlertAction.init(title: "Cancel", style: .destructive, handler: nil)
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)*/
-        let searchVC = MWZSearchViewController()
-        searchVC.modalPresentationStyle = .fullScreen
-        self.present(searchVC, animated: true, completion: nil)
+        
     }
     
     func mapwizeView(_ mapwizeView: MWZMapwizeView!, didTapOnPlaceInformationButton place: MWZPlace!) {

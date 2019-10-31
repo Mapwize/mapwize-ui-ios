@@ -1,67 +1,38 @@
-#import "MWZSearchViewController.h"
-#import "MWZSearchQueryBarDelegate.h"
+#import "MWZSearchScene.h"
 #import "MWZUIConstants.h"
 
-@interface MWZSearchViewController () <MWZSearchQueryBarDelegate>
+@implementation MWZSearchScene
 
-@end
-
-@implementation MWZSearchViewController
-
-- (void) setSearchOptions:(MWZSearchViewControllerOptions *)searchOptions {
-    _searchOptions = searchOptions;
-    [self loadInitialResults];
-}
-
-- (void) loadInitialResults {
-    [self loadDefaultVenueResults];
-}
-- (void) loadDefaultVenueResults {
-    MWZApiFilter* filter = [[MWZApiFilter alloc] init];
-    [[MWZMapwizeApiFactory getApi] getVenuesWithFilter:filter success:^(NSArray<MWZVenue *> * _Nonnull venues) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.resultList swapResults:venues];
-        });
-    } failure:^(NSError * _Nonnull error) {
-        NSLog(@"Search venue failed %@", error);
-    }];
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self initialize];
-}
-
-- (void)initialize {
-    self.backgroundView = [[UIView alloc] initWithFrame:self.view.frame];
-    self.backgroundView.autoresizingMask = (UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight);
+- (void)addTo:(UIView *)view {
+    self.backgroundView = [[UIView alloc] initWithFrame:view.frame];
     [self.backgroundView setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:self.backgroundView];
+    self.backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+    [view addSubview:self.backgroundView];
     [[NSLayoutConstraint constraintWithItem:self.backgroundView
                                   attribute:NSLayoutAttributeRight
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self.view
+                                     toItem:view
                                   attribute:NSLayoutAttributeRight
                                  multiplier:1.0f
                                    constant:0.0] setActive:YES];
     [[NSLayoutConstraint constraintWithItem:self.backgroundView
                                   attribute:NSLayoutAttributeLeft
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self.view
+                                     toItem:view
                                   attribute:NSLayoutAttributeLeft
                                  multiplier:1.0f
                                    constant:0.0] setActive:YES];
     [[NSLayoutConstraint constraintWithItem:self.backgroundView
                                   attribute:NSLayoutAttributeTop
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self.view
+                                     toItem:view
                                   attribute:NSLayoutAttributeTop
                                  multiplier:1.0f
                                    constant:0.0] setActive:YES];
     [[NSLayoutConstraint constraintWithItem:self.backgroundView
                                   attribute:NSLayoutAttributeBottom
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self.view
+                                     toItem:view
                                   attribute:NSLayoutAttributeBottom
                                  multiplier:1.0f
                                    constant:0.0] setActive:YES];
@@ -69,26 +40,26 @@
     self.searchQueryBar = [[MWZSearchQueryBar alloc] initWithFrame:CGRectZero];
     self.searchQueryBar.translatesAutoresizingMaskIntoConstraints = NO;
     self.searchQueryBar.delegate = self;
-    [self.view addSubview:self.searchQueryBar];
+    [view addSubview:self.searchQueryBar];
     if (@available(iOS 11.0, *)) {
         [[NSLayoutConstraint constraintWithItem:self.searchQueryBar
                                       attribute:NSLayoutAttributeRight
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self.view
+                                         toItem:view
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
-                                       constant:-self.view.safeAreaInsets.right - MWZDefaultPadding] setActive:YES];
+                                       constant:-view.safeAreaInsets.right - MWZDefaultPadding] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.searchQueryBar
                                       attribute:NSLayoutAttributeLeft
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self.view
+                                         toItem:view
                                       attribute:NSLayoutAttributeLeft
                                      multiplier:1.0f
-                                       constant: self.view.safeAreaInsets.left + MWZDefaultPadding] setActive:YES];
+                                       constant:view.safeAreaInsets.left + MWZDefaultPadding] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.searchQueryBar
                                       attribute:NSLayoutAttributeTop
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self.view.safeAreaLayoutGuide
+                                         toItem:view.safeAreaLayoutGuide
                                       attribute:NSLayoutAttributeTop
                                      multiplier:1.0f
                                        constant:MWZDefaultPadding] setActive:YES];
@@ -96,21 +67,21 @@
         [[NSLayoutConstraint constraintWithItem:self.searchQueryBar
                                       attribute:NSLayoutAttributeRight
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self.view
+                                         toItem:view
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
                                        constant:- MWZDefaultPadding] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.searchQueryBar
                                       attribute:NSLayoutAttributeLeft
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self.view
+                                         toItem:view
                                       attribute:NSLayoutAttributeLeft
                                      multiplier:1.0f
                                        constant:MWZDefaultPadding] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.searchQueryBar
                                       attribute:NSLayoutAttributeTop
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self.view
+                                         toItem:view
                                       attribute:NSLayoutAttributeTop
                                      multiplier:1.0f
                                        constant:MWZDefaultPadding] setActive:YES];
@@ -119,22 +90,22 @@
     self.resultContainerView = [[UIView alloc] init];
     self.resultContainerView.clipsToBounds = YES;
     self.resultContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.resultContainerView];
+    [view addSubview:self.resultContainerView];
     if (@available(iOS 11.0, *)) {
         [[NSLayoutConstraint constraintWithItem:self.resultContainerView
                                       attribute:NSLayoutAttributeRight
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self.view
+                                         toItem:view
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
-                                       constant:-self.view.safeAreaInsets.right - 8.0f] setActive:YES];
+                                       constant:-view.safeAreaInsets.right - 8.0f] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.resultContainerView
                                       attribute:NSLayoutAttributeLeft
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self.view
+                                         toItem:view
                                       attribute:NSLayoutAttributeLeft
                                      multiplier:1.0f
-                                       constant: self.view.safeAreaInsets.left + 8.0f] setActive:YES];
+                                       constant:view.safeAreaInsets.left + 8.0f] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.resultContainerView
                                       attribute:NSLayoutAttributeTop
                                       relatedBy:NSLayoutRelationEqual
@@ -145,7 +116,7 @@
         [[NSLayoutConstraint constraintWithItem:self.resultContainerView
                                       attribute:NSLayoutAttributeBottom
                                       relatedBy:NSLayoutRelationLessThanOrEqual
-                                         toItem:self.view.safeAreaLayoutGuide
+                                         toItem:view.safeAreaLayoutGuide
                                       attribute:NSLayoutAttributeBottom
                                      multiplier:1.0f
                                        constant:-MWZDefaultPadding] setActive:YES];
@@ -162,14 +133,14 @@
         [[NSLayoutConstraint constraintWithItem:self.resultContainerView
                                       attribute:NSLayoutAttributeRight
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self.view
+                                         toItem:view
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
                                        constant:- MWZDefaultPadding] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.resultContainerView
                                       attribute:NSLayoutAttributeLeft
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self.view
+                                         toItem:view
                                       attribute:NSLayoutAttributeLeft
                                      multiplier:1.0f
                                        constant:MWZDefaultPadding] setActive:YES];
@@ -183,7 +154,7 @@
         [[NSLayoutConstraint constraintWithItem:self.resultContainerView
                                       attribute:NSLayoutAttributeBottom
                                       relatedBy:NSLayoutRelationLessThanOrEqual
-                                         toItem:self.view
+                                         toItem:view
                                       attribute:NSLayoutAttributeBottom
                                      multiplier:1.0f
                                        constant:-MWZDefaultPadding] setActive:YES];
@@ -263,9 +234,15 @@
                                      multiplier:1.0f
                                        constant:0.0f] setActive:YES];
     }
-    
-    [self.searchQueryBar.searchTextField becomeFirstResponder];
 }
+
+- (void)setHidden:(BOOL)hidden { 
+    [self.searchQueryBar setHidden:hidden];
+    [self.resultList setHidden:hidden];
+    [self.resultContainerView setHidden:hidden];
+    [self.backgroundView setHidden:hidden];
+}
+
 
 - (void) searchQueryDidChange:(NSString*) query {
     MWZSearchParams* searchParams = [[MWZSearchParams alloc] init];
@@ -281,8 +258,7 @@
 }
 
 - (void)didTapOnBackButton {
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
+    [_delegate didTapOnBackButton];
 }
 
 @end

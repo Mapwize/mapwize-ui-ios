@@ -3,38 +3,30 @@
 
 @implementation MWZDefaultScene
 
-- (instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self initialize];
-    }
-    return self;
-}
-
-- (void)initialize {
+- (void)addTo:(UIView *)view {
     self.menuBar = [[MWZMapViewMenuBar alloc] initWithFrame:CGRectZero];
     self.menuBar.translatesAutoresizingMaskIntoConstraints = NO;
     self.menuBar.delegate = self;
-    [self addSubview:self.menuBar];
+    [view addSubview:self.menuBar];
     if (@available(iOS 11.0, *)) {
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeRight
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self
+                                         toItem:view
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
-                                       constant:-self.safeAreaInsets.right - MWZDefaultPadding] setActive:YES];
+                                       constant:-view.safeAreaInsets.right - MWZDefaultPadding] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeLeft
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self
+                                         toItem:view
                                       attribute:NSLayoutAttributeLeft
                                      multiplier:1.0f
-                                       constant: self.safeAreaInsets.left + MWZDefaultPadding] setActive:YES];
+                                       constant:view.safeAreaInsets.left + MWZDefaultPadding] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeTop
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self.safeAreaLayoutGuide
+                                         toItem:view.safeAreaLayoutGuide
                                       attribute:NSLayoutAttributeTop
                                      multiplier:1.0f
                                        constant:MWZDefaultPadding] setActive:YES];
@@ -42,25 +34,29 @@
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeRight
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self
+                                         toItem:view
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
                                        constant:- MWZDefaultPadding] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeLeft
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self
+                                         toItem:view
                                       attribute:NSLayoutAttributeLeft
                                      multiplier:1.0f
                                        constant:MWZDefaultPadding] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeTop
                                       relatedBy:NSLayoutRelationEqual
-                                         toItem:self
+                                         toItem:view
                                       attribute:NSLayoutAttributeTop
                                      multiplier:1.0f
                                        constant:MWZDefaultPadding] setActive:YES];
     }
+}
+
+- (void) setHidden:(BOOL) hidden {
+    [self.menuBar setHidden:hidden];
 }
 
 - (void)didTapOnDirectionButton {
@@ -75,12 +71,14 @@
     [_delegate didTapOnSearchButton];
 }
 
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+/*- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
     UIView* v = [super hitTest:point withEvent:event];
     if (v == self) {
         return nil;
     }
     return v;
-}
+}*/
+
+
 
 @end

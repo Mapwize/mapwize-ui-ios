@@ -1,13 +1,11 @@
 #import "MWZMapViewController.h"
-#import "MWZSearchViewController.h"
-#import "MapToSearchAnimator.h"
 #import "MWZUIConstants.h"
 #import "MWZSearchScene.h"
 #import "MWZDefaultScene.h"
 
 @interface MWZMapViewController ()
 
-@property (nonatomic) MapToSearchAnimator* mapToSearchAnimator;
+@property (nonatomic) MWZSceneCoordinator* sceneCoordinator;
 @property (nonatomic) MWZSearchScene* searchScene;
 @property (nonatomic) MWZDefaultScene* defaultScene;
 
@@ -23,62 +21,32 @@
 - (void) initialize {
     
     self.mapView = [[MWZMapView alloc] initWithFrame:self.view.frame options:[[MWZOptions alloc] init]];
+    self.mapView.delegate = self;
     self.mapView.autoresizingMask = (UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight);
     [self.view addSubview:self.mapView];
-    self.mapToSearchAnimator = [[MapToSearchAnimator alloc] init];
 
-    self.defaultScene = [[MWZDefaultScene alloc] initWithFrame:self.view.frame];
-    self.defaultScene.autoresizingMask = (UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight);
-    //[self.defaultScene setHidden:YES];
-    self.defaultScene.delegate = self;
-    [self.view addSubview:self.defaultScene];
+    self.sceneCoordinator = [[MWZSceneCoordinator alloc] initWithContainerView:self.view];
     
-    self.searchScene = [[MWZSearchScene alloc] initWithFrame:self.view.frame];
-    self.searchScene.autoresizingMask = (UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight);
-    [self.searchScene setHidden:YES];
+    self.defaultScene = [[MWZDefaultScene alloc] init];
+    self.defaultScene.delegate = self;
+    self.sceneCoordinator.defaultScene = self.defaultScene;
+    
+    self.searchScene = [[MWZSearchScene alloc] init];
     self.searchScene.delegate = self;
-    [self.view addSubview:self.searchScene];
+    self.sceneCoordinator.searchScene = self.searchScene;
     
 }
 
 - (void) mapToSearchTransition {
-    [self.searchScene setHidden:NO];
-    int height = 10000;
-    float alpha = 1.0f;
-    [self.searchScene.backgroundView setAlpha:0.0f];
-    [self.searchScene.searchQueryBar setAlpha:0.0f];
-    [UIView animateWithDuration:0.3 animations:^{
-        [self.searchScene.backgroundView setAlpha:alpha];
-        [self.searchScene.searchQueryBar setAlpha:alpha];
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.3 animations:^{
-            self.searchScene.resultContainerViewHeightConstraint.constant = height;
-            [self.searchScene layoutIfNeeded];
-        } completion:^(BOOL finished) {
-            
-        }];
-    }];
+    [self.sceneCoordinator transitionFromDefaultToSearch];
 }
 
 - (void) searchToMapTransition {
-    int height = 0;
-    double alpha = 0.0f;
-    [self.searchScene.backgroundView setAlpha:1.0f];
-    [UIView animateWithDuration:0.3 animations:^{
-        self.searchScene.resultContainerViewHeightConstraint.constant = height;
-        [self.searchScene layoutIfNeeded];
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.3 animations:^{
-            [self.searchScene.backgroundView setAlpha:alpha];
-            [self.searchScene.searchQueryBar setAlpha:alpha];
-        } completion:^(BOOL finished) {
-            [self.searchScene setHidden:YES];
-        }];
-    }];
+    [self.sceneCoordinator transitionFromSearchToDefault];
 }
 
 - (void) directionToSearchTransition {
-    [self.searchScene setHidden:NO];
+    /*[self.searchScene setHidden:NO];
     [self.searchScene.backgroundView setAlpha:1.0];
     [self.searchScene.searchQueryBar setAlpha:1.0];
     [self.searchScene setTransform:CGAffineTransformMakeTranslation(self.view.frame.size.width,0)];
@@ -91,11 +59,11 @@
         } completion:^(BOOL finished) {
             
         }];
-    }];
+    }];*/
 }
 
 - (void) searchToDirectionTransition {
-    [UIView animateWithDuration:0.3 animations:^{
+    /*[UIView animateWithDuration:0.3 animations:^{
         [self.searchScene setTransform:CGAffineTransformMakeTranslation(self.view.frame.size.width,0)];
         [self.defaultScene setTransform:CGAffineTransformMakeTranslation(0,0)];
     } completion:^(BOOL finished) {
@@ -104,21 +72,24 @@
         } completion:^(BOOL finished) {
             [self.searchScene setHidden:YES];
         }];
-    }];
+    }];*/
 }
 
-#pragma mark MWZMapViewMenuBarDelegate
+#pragma mark MWZMapViewDelegate
+- (void)mapView:(MWZMapView *_Nonnull)mapView didTap:(MWZClickEvent *_Nonnull)clickEvent {
+    switch (clickEvent.eventType) {
+        case MWZClickEventTypeVenueClick:
+            [self.mapView centerOnVenuePreview:clickEvent.venuePreview animated:YES];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+#pragma mark MWZDefaultSceneDelegate
 - (void) didTapOnSearchButton {
     [self mapToSearchTransition];
-}
-
-- (void)didTapOnBackButton {
-    [self searchToMapTransition];
-    //[self searchToDirectionTransition];
-}
-
-- (void)searchQueryDidChange:(NSString *)query {
-    
 }
 
 - (void) didTapOnMenuButton {
@@ -129,17 +100,14 @@
     [self directionToSearchTransition];
 }
 
-#pragma mark UIViewControllerTransitioningDelegate
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-    self.mapToSearchAnimator.presenting = YES;
-    return self.mapToSearchAnimator;
+#pragma mark MWZSearchSceneDelegate
+- (void)didTapOnBackButton {
+    [self searchToMapTransition];
 }
 
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-    self.mapToSearchAnimator.presenting = NO;
-    return self.mapToSearchAnimator;
+- (void)searchQueryDidChange:(NSString *)query {
+    
 }
-
 
 
 @end

@@ -2,10 +2,11 @@
 #import "MWZMapViewMenuBar.h"
 #import "MWZMapViewMenuBarDelegate.h"
 #import "MWZDefaultSceneDelegate.h"
+#import "MWZScene.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MWZDefaultScene : UIView <MWZMapViewMenuBarDelegate>
+@interface MWZDefaultScene : NSObject <MWZScene, MWZMapViewMenuBarDelegate>
 
 @property (nonatomic) MWZMapViewMenuBar* menuBar;
 
