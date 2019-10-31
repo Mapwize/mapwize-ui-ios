@@ -5,6 +5,7 @@
 
 - (void) didTapOnBackButton;
 - (void) searchQueryDidChange:(NSString*) query;
+- (void) didSelect:(id<MWZObject>)mapwizeObject;
 
 @end
 

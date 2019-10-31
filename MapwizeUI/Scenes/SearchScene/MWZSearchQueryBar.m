@@ -121,7 +121,7 @@
     self.searchTextField.translatesAutoresizingMaskIntoConstraints = NO;
     self.searchTextField.textColor = [UIColor lightGrayColor];
     self.searchTextField.placeholder = NSLocalizedString(@"Search a venue...", "");
-    //self.searchTextField.delegate = self;
+    self.searchTextField.delegate = self;
     [self.searchTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [self addSubview:self.searchTextField];
     [[NSLayoutConstraint constraintWithItem:self.searchTextField
@@ -165,23 +165,11 @@
 #pragma mark TextFieldDelegate
 
 - (void) textFieldDidBeginEditing:(UITextField *)textField {
-    /*self.isInSearch = YES;
-    [self showResultList];
-    textField.text = @"";
-    [self loadEmptySearch];*/
+    
 }
 
 - (void) textFieldDidChange:(UITextField*) textField {
     [_delegate searchQueryDidChange:textField.text];
-    /*if (!self.isInSearch) {
-        return;
-    }
-    if ([textField.text isEqualToString:@""]) {
-        [self loadEmptySearch];
-    }
-    else {
-        [self search:textField.text];
-    }*/
 }
 
 @end

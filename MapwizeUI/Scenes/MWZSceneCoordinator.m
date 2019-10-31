@@ -56,6 +56,7 @@
             [self.searchScene.searchQueryBar setAlpha:alpha];
         } completion:^(BOOL finished) {
             [self.searchScene setHidden:YES];
+            [self.searchScene clearSearch];
         }];
     }];
 }

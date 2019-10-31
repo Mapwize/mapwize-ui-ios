@@ -170,6 +170,7 @@
     }
     
     self.resultList = [[MWZComponentResultList alloc] init];
+    self.resultList.resultDelegate = self;
     self.resultList.translatesAutoresizingMaskIntoConstraints = NO;
     [self.resultContainerView addSubview:self.resultList];
     if (@available(iOS 11.0, *)) {
@@ -243,22 +244,27 @@
     [self.backgroundView setHidden:hidden];
 }
 
+- (void) clearSearch {
+    [self.searchQueryBar.searchTextField setText:@""];
+    [self.resultList swapResults:@[]];
+}
 
-- (void) searchQueryDidChange:(NSString*) query {
-    MWZSearchParams* searchParams = [[MWZSearchParams alloc] init];
-    searchParams.objectClass = @[@"venue"];
-    searchParams.query = query;
-    [[MWZMapwizeApiFactory getApi] searchWithSearchParams:searchParams success:^(NSArray<id<MWZObject>> * _Nonnull searchResponse) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.resultList swapResults:searchResponse];
-        });
-    } failure:^(NSError * _Nonnull error) {
-        NSLog(@"Search venue failed %@", error);
-    }];
+- (void)showSearchResults:(NSArray<id<MWZObject>>*) results {
+    [self.resultList swapResults:results];
+}
+
+#pragma mark MWZSearchQueryBarDelegate
+- (void)searchQueryDidChange:(NSString*) query {
+    [_delegate searchQueryDidChange:query];
 }
 
 - (void)didTapOnBackButton {
     [_delegate didTapOnBackButton];
+}
+
+#pragma mark MWZComponentResultListDelegate
+- (void)didSelect:(id<MWZObject>)mapwizeObject {
+    [_delegate didSelect:mapwizeObject];
 }
 
 @end
