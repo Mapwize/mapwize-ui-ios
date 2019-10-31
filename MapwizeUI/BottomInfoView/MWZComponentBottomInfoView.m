@@ -40,7 +40,7 @@
         self.layer.shadowOpacity = .3f;
         self.layer.shadowRadius = 4;
         self.layer.shadowColor = [UIColor blackColor].CGColor;
-        self.layer.shadowOffset = CGSizeMake(0, -1);
+        self.layer.shadowOffset = CGSizeMake(0, -0.5);
         [self addViews];
         [self setupConstraintsToViews];
         [self setupGestureRecognizer];

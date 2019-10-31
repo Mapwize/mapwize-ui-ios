@@ -104,6 +104,22 @@
 }
 
 #pragma mark Content selection
+- (void) hideSelectedContent {
+    [self.defaultScene hideContent];
+    [self.mapView removeMarkers];
+    [self.mapView removePromotedPlaces];
+}
+
+- (void) showSelectedContent {
+    [self.defaultScene showContent:self.selectedContent language:[self.mapView getLanguage] showInfoButton:YES];
+    if ([self.selectedContent isKindOfClass:MWZPlace.class]) {
+        [self.mapView addMarkerOnPlace:(MWZPlace*)self.selectedContent];
+        [self.mapView addPromotedPlace:(MWZPlace*)self.selectedContent];
+    }
+    
+}
+
+
 - (void) unselectContent {
     [self.defaultScene hideContent];
     [self.mapView removeMarkers];
@@ -153,7 +169,7 @@
     [self.defaultScene setSearchBarTitleForVenue:[venue titleForLanguage:[mapView getLanguage]]];
     [self.defaultScene setDirectionButtonHidden:NO];
     if (self.selectedContent) {
-        [self.defaultScene showContent:self.selectedContent language:[self.mapView getLanguage] showInfoButton:YES];
+        [self showSelectedContent];
     }
 }
 
@@ -162,7 +178,7 @@
     [self.defaultScene setDirectionButtonHidden:YES];
     self.mainSearches = @[];
     if (self.selectedContent) {
-        [self.defaultScene hideContent];
+        [self hideSelectedContent];
     }
 }
 
