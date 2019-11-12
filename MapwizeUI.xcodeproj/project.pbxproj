@@ -74,6 +74,14 @@
 		8F860818219DC5F200281AB7 /* MWZComponentColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860816219DC5F200281AB7 /* MWZComponentColors.m */; };
 		8F8640D4222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8640D2222831130043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m */; };
 		8F8640D5222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8640D3222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h */; };
+		8F8B14AA237AA67300E03BCE /* MWZDirectionScene.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8B14A8237AA67300E03BCE /* MWZDirectionScene.h */; };
+		8F8B14AB237AA67300E03BCE /* MWZDirectionScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8B14A9237AA67300E03BCE /* MWZDirectionScene.m */; };
+		8F8B14AD237AA6A400E03BCE /* MWZDirectionSceneDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8B14AC237AA6A400E03BCE /* MWZDirectionSceneDelegate.h */; };
+		8F8B14B0237AA87C00E03BCE /* MWZDirectionHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8B14AE237AA87C00E03BCE /* MWZDirectionHeader.h */; };
+		8F8B14B1237AA87C00E03BCE /* MWZDirectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8B14AF237AA87C00E03BCE /* MWZDirectionHeader.m */; };
+		8F8B14B3237AB80200E03BCE /* MWZDirectionHeaderDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8B14B2237AB80200E03BCE /* MWZDirectionHeaderDelegate.h */; };
+		8F8B14B6237ABC0900E03BCE /* MWZPaddingLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8B14B4237ABC0900E03BCE /* MWZPaddingLabel.h */; };
+		8F8B14B7237ABC0900E03BCE /* MWZPaddingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8B14B5237ABC0900E03BCE /* MWZPaddingLabel.m */; };
 		8FA9B35B23688294003A870A /* MWZSearchViewControllerOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FA9B35923688294003A870A /* MWZSearchViewControllerOptions.h */; };
 		8FA9B35C23688294003A870A /* MWZSearchViewControllerOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9B35A23688294003A870A /* MWZSearchViewControllerOptions.m */; };
 		8FA9B35F236982A3003A870A /* MWZUIConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FA9B35D236982A3003A870A /* MWZUIConstants.h */; };
@@ -168,6 +176,14 @@
 		8F860816219DC5F200281AB7 /* MWZComponentColors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZComponentColors.m; sourceTree = "<group>"; };
 		8F8640D2222831130043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZComponentTitleWithoutFloorCellTableViewCell.m; sourceTree = "<group>"; };
 		8F8640D3222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZComponentTitleWithoutFloorCellTableViewCell.h; sourceTree = "<group>"; };
+		8F8B14A8237AA67300E03BCE /* MWZDirectionScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZDirectionScene.h; sourceTree = "<group>"; };
+		8F8B14A9237AA67300E03BCE /* MWZDirectionScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZDirectionScene.m; sourceTree = "<group>"; };
+		8F8B14AC237AA6A400E03BCE /* MWZDirectionSceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZDirectionSceneDelegate.h; sourceTree = "<group>"; };
+		8F8B14AE237AA87C00E03BCE /* MWZDirectionHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZDirectionHeader.h; sourceTree = "<group>"; };
+		8F8B14AF237AA87C00E03BCE /* MWZDirectionHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZDirectionHeader.m; sourceTree = "<group>"; };
+		8F8B14B2237AB80200E03BCE /* MWZDirectionHeaderDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZDirectionHeaderDelegate.h; sourceTree = "<group>"; };
+		8F8B14B4237ABC0900E03BCE /* MWZPaddingLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZPaddingLabel.h; sourceTree = "<group>"; };
+		8F8B14B5237ABC0900E03BCE /* MWZPaddingLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZPaddingLabel.m; sourceTree = "<group>"; };
 		8FA9B35923688294003A870A /* MWZSearchViewControllerOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZSearchViewControllerOptions.h; sourceTree = "<group>"; };
 		8FA9B35A23688294003A870A /* MWZSearchViewControllerOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZSearchViewControllerOptions.m; sourceTree = "<group>"; };
 		8FA9B35D236982A3003A870A /* MWZUIConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUIConstants.h; sourceTree = "<group>"; };
@@ -332,6 +348,8 @@
 				8F860792219D67AB00281AB7 /* MWZComponentIconTextButton.m */,
 				8F860794219D67AB00281AB7 /* MWZComponentCurrentLocationView.h */,
 				8F860799219D67AB00281AB7 /* MWZComponentCurrentLocationView.m */,
+				8F8B14B4237ABC0900E03BCE /* MWZPaddingLabel.h */,
+				8F8B14B5237ABC0900E03BCE /* MWZPaddingLabel.m */,
 			);
 			path = Commons;
 			sourceTree = "<group>";
@@ -435,6 +453,19 @@
 			path = LanguageButton;
 			sourceTree = "<group>";
 		};
+		8F8B14A7237AA5DF00E03BCE /* DirectionScene */ = {
+			isa = PBXGroup;
+			children = (
+				8F8B14A8237AA67300E03BCE /* MWZDirectionScene.h */,
+				8F8B14A9237AA67300E03BCE /* MWZDirectionScene.m */,
+				8F8B14AC237AA6A400E03BCE /* MWZDirectionSceneDelegate.h */,
+				8F8B14AE237AA87C00E03BCE /* MWZDirectionHeader.h */,
+				8F8B14AF237AA87C00E03BCE /* MWZDirectionHeader.m */,
+				8F8B14B2237AB80200E03BCE /* MWZDirectionHeaderDelegate.h */,
+			);
+			path = DirectionScene;
+			sourceTree = "<group>";
+		};
 		8FA9B3612369C044003A870A /* SearchDirectionViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -451,6 +482,7 @@
 				8FD2D596236AD28400F77DB2 /* MWZSceneCoordinator.h */,
 				8FD2D597236AD28400F77DB2 /* MWZSceneCoordinator.m */,
 				8F1B2A5D2369DBA80001CEA1 /* DefaultScene */,
+				8F8B14A7237AA5DF00E03BCE /* DirectionScene */,
 				8FDEC057236836DA005D12B1 /* SearchScene */,
 			);
 			path = Scenes;
@@ -487,8 +519,10 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F8B14B0237AA87C00E03BCE /* MWZDirectionHeader.h in Headers */,
 				8F860812219DAE0800281AB7 /* MWZMapwizeViewUISettings.h in Headers */,
 				8F1B2A602369DBCA0001CEA1 /* MWZDefaultScene.h in Headers */,
+				8F8B14B3237AB80200E03BCE /* MWZDirectionHeaderDelegate.h in Headers */,
 				8F8640D5222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h in Headers */,
 				8F8607E7219D67AB00281AB7 /* MWZComponentResultList.h in Headers */,
 				8F8607DE219D67AB00281AB7 /* MWZComponentUniversesButton.h in Headers */,
@@ -505,6 +539,7 @@
 				8F8607C7219D67AB00281AB7 /* MWZComponentBottomInfoViewDelegate.h in Headers */,
 				8F8607EC219D67AB00281AB7 /* MWZComponentSubtitleCell.h in Headers */,
 				8F8607C1219D67AB00281AB7 /* MWZComponentSearchBarDelegate.h in Headers */,
+				8F8B14B6237ABC0900E03BCE /* MWZPaddingLabel.h in Headers */,
 				8FDEC06B2368755E005D12B1 /* MWZSearchQueryBarDelegate.h in Headers */,
 				8F8607CE219D67AB00281AB7 /* MWZComponentLoadingBar.h in Headers */,
 				8FD2D59B236AD37200F77DB2 /* MWZScene.h in Headers */,
@@ -525,6 +560,8 @@
 				8F8607E0219D67AB00281AB7 /* MWZComponentFollowUserButton.h in Headers */,
 				8F8607EE219D67AB00281AB7 /* MWZComponentFloorView.h in Headers */,
 				8F8607DF219D67AB00281AB7 /* MWZComponentFollowUserButtonDelegate.h in Headers */,
+				8F8B14AD237AA6A400E03BCE /* MWZDirectionSceneDelegate.h in Headers */,
+				8F8B14AA237AA67300E03BCE /* MWZDirectionScene.h in Headers */,
 				8FDEC06323684703005D12B1 /* MWZMapViewController.h in Headers */,
 				8F8607E8219D67AB00281AB7 /* MWZComponentGroupedResultListDelegate.h in Headers */,
 				8F8607DD219D67AB00281AB7 /* MWZComponentUniversesButtonDelegate.h in Headers */,
@@ -639,6 +676,8 @@
 				8F8607D3219D67AB00281AB7 /* MWZSearchData.m in Sources */,
 				8FA9B360236982A3003A870A /* MWZUIConstants.m in Sources */,
 				8F8607C0219D67AB00281AB7 /* MWZComponentSearchBar.m in Sources */,
+				8F8B14B1237AA87C00E03BCE /* MWZDirectionHeader.m in Sources */,
+				8F8B14AB237AA67300E03BCE /* MWZDirectionScene.m in Sources */,
 				8F8607EA219D67AB00281AB7 /* MWZComponentTitleCell.m in Sources */,
 				8F860813219DAE0800281AB7 /* MWZMapwizeViewUISettings.m in Sources */,
 				8F8607DA219D67AB00281AB7 /* MWZComponentDirectionBar.m in Sources */,
@@ -666,6 +705,7 @@
 				8FDEC05F23684005005D12B1 /* MWZSearchQueryBar.m in Sources */,
 				8FA9B35C23688294003A870A /* MWZSearchViewControllerOptions.m in Sources */,
 				8F8607D1219D67AB00281AB7 /* MWZComponentLoadingBar.m in Sources */,
+				8F8B14B7237ABC0900E03BCE /* MWZPaddingLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

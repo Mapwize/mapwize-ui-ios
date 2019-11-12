@@ -21,6 +21,12 @@
     [_searchScene setHidden:YES];
 }
 
+-(void) setDirectionScene:(MWZDirectionScene*)directionScene {
+    _directionScene = directionScene;
+    [_directionScene addTo:_containerView];
+    [_directionScene setHidden:YES];
+}
+
 -(void) transitionFromDefaultToSearch {
     [self.searchScene setHidden:NO];
     int height = 10000;
@@ -58,6 +64,24 @@
             [self.searchScene setHidden:YES];
             [self.searchScene clearSearch];
         }];
+    }];
+}
+
+-(void) transitionFromDefaultToDirection {
+    [self.directionScene setHidden:NO];
+    [self.directionScene.directionHeader setTransform:CGAffineTransformMakeTranslation(0,-self.directionScene.directionHeader.frame.size.height)];
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.directionScene.directionHeader setTransform:CGAffineTransformMakeTranslation(0,0)];
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+-(void) transitionFromDirectionToDefault {
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.directionScene.directionHeader setTransform:CGAffineTransformMakeTranslation(0,-self.directionScene.directionHeader.frame.size.height)];
+    } completion:^(BOOL finished) {
+        [self.directionScene setHidden:YES];
     }];
 }
 

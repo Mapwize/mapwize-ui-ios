@@ -2,12 +2,14 @@
 #import "MWZUIConstants.h"
 #import "MWZSearchScene.h"
 #import "MWZDefaultScene.h"
+#import "MWZDirectionScene.h"
 
 @interface MWZMapViewController ()
 
 @property (nonatomic) MWZSceneCoordinator* sceneCoordinator;
 @property (nonatomic) MWZSearchScene* searchScene;
 @property (nonatomic) MWZDefaultScene* defaultScene;
+@property (nonatomic) MWZDirectionScene* directionScene;
 
 @property (nonatomic) NSArray<MWZVenue*>* mainVenues;
 @property (nonatomic) NSArray<id<MWZObject>>* mainSearches;
@@ -40,6 +42,10 @@
     self.searchScene.delegate = self;
     self.sceneCoordinator.searchScene = self.searchScene;
     
+    self.directionScene = [[MWZDirectionScene alloc] init];
+    self.directionScene.delegate = self;
+    self.sceneCoordinator.directionScene = self.directionScene;
+    
 }
 
 #pragma mark Search initialization
@@ -71,6 +77,14 @@
 
 - (void) searchToMapTransition {
     [self.sceneCoordinator transitionFromSearchToDefault];
+}
+
+- (void) defaultToDirectionTransition {
+    [self.sceneCoordinator transitionFromDefaultToDirection];
+}
+
+- (void) directionToDefaultTransition {
+    [self.sceneCoordinator transitionFromDirectionToDefault];
 }
 
 - (void) directionToSearchTransition {
@@ -198,7 +212,7 @@
 }
 
 - (void) didTapOnDirectionButton {
-    [self directionToSearchTransition];
+    [self defaultToDirectionTransition];
 }
 
 #pragma mark MWZSearchSceneDelegate
@@ -260,6 +274,11 @@
     
     
     // Direction state to
+}
+
+#pragma mark MWZDirectionSceneDelegate
+- (void)directionSceneDidTapOnBackButton:(MWZDirectionScene *)scene {
+    [self directionToDefaultTransition];
 }
 
 @end

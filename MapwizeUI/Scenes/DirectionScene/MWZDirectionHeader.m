@@ -1,0 +1,429 @@
+#import "MWZDirectionHeader.h"
+#import "MWZComponentBorderedTextField.h"
+#import "MWZPaddingLabel.h"
+
+@interface MWZDirectionHeader () <UITextFieldDelegate>
+
+@property (nonatomic) UIButton* backButton;
+@property (nonatomic) UIButton* swapButton;
+@property (nonatomic) UIButton* accessibilityOn;
+@property (nonatomic) UIButton* accessibilityOff;
+@property (nonatomic) MWZPaddingLabel* fromTextField;
+@property (nonatomic) MWZPaddingLabel* toTextField;
+@property (nonatomic) UIImageView* fromPictoImageView;
+@property (nonatomic) UIImageView* toPictoImageView;
+@property (nonatomic) UIImage* backImage;
+@property (nonatomic) UIImage* accessibilityOnImage;
+@property (nonatomic) UIImage* accessibilityOffImage;
+@property (nonatomic) UIImage* swapImage;
+@property (nonatomic) UIColor* color;
+@property (nonatomic) UIColor* haloColor;
+
+@end
+
+@implementation MWZDirectionHeader
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        _color = [UIColor greenColor];
+        [self initialize];
+        [self setupConstraints];
+    }
+    return self;
+}
+
+- (void) initialize {
+    NSBundle* bundle = [NSBundle bundleForClass:self.class];
+    self.backImage = [UIImage imageNamed:@"back" inBundle:bundle compatibleWithTraitCollection:nil];
+    self.swapImage = [UIImage imageNamed:@"swap" inBundle:bundle compatibleWithTraitCollection:nil];
+    self.accessibilityOnImage = [UIImage imageNamed:@"accessibilityOn" inBundle:bundle compatibleWithTraitCollection:nil];
+    self.accessibilityOnImage = [self.accessibilityOnImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.accessibilityOffImage = [UIImage imageNamed:@"accessibilityOff" inBundle:bundle compatibleWithTraitCollection:nil];
+    self.accessibilityOffImage = [self.accessibilityOffImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
+    self.fromPictoImageView = [[UIImageView alloc] init];
+    self.fromPictoImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.fromPictoImageView setImage:[UIImage imageNamed:@"followOff" inBundle:bundle compatibleWithTraitCollection:nil]];
+    [self addSubview:self.fromPictoImageView];
+    
+    self.toPictoImageView = [[UIImageView alloc] init];
+    self.toPictoImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.toPictoImageView setImage:[UIImage imageNamed:@"place" inBundle:bundle compatibleWithTraitCollection:nil]];
+    [self addSubview:self.toPictoImageView];
+    
+    self.accessibilityOff = [[UIButton alloc] init];
+    self.accessibilityOff.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.accessibilityOff setImage:self.accessibilityOffImage forState:UIControlStateNormal];
+    [self.accessibilityOff.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    CGFloat redComponent = CGColorGetComponents(self.color.CGColor)[0];
+    CGFloat greenComponent = CGColorGetComponents(self.color.CGColor)[1];
+    CGFloat blueComponent = CGColorGetComponents(self.color.CGColor)[2];
+    self.haloColor = [UIColor colorWithRed:redComponent green:greenComponent blue:blueComponent alpha:0.1f];
+    self.accessibilityOff.backgroundColor = self.haloColor;
+    self.accessibilityOff.layer.cornerRadius = 16.0;
+    self.accessibilityOff.layer.masksToBounds = YES;
+    self.accessibilityOff.contentEdgeInsets = UIEdgeInsetsMake(4.f, 4.f, 4.f, 4.f);
+    [self.accessibilityOff addTarget:self action:@selector(setAccessibilityOff) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.accessibilityOff];
+    
+    self.accessibilityOn = [[UIButton alloc] init];
+    self.accessibilityOn.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.accessibilityOn setImage:self.accessibilityOnImage forState:UIControlStateNormal];
+    [self.accessibilityOn.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    self.accessibilityOn.layer.cornerRadius = 16.0;
+    self.accessibilityOn.layer.masksToBounds = YES;
+    self.accessibilityOn.contentEdgeInsets = UIEdgeInsetsMake(4.f, 4.f, 4.f, 4.f);
+    [self.accessibilityOn addTarget:self action:@selector(setAccessibilityOn) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.accessibilityOn];
+    
+    self.swapButton = [[UIButton alloc] init];
+    self.swapButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.swapButton addTarget:self action:@selector(swapClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.swapButton setImage:self.swapImage forState:UIControlStateNormal];
+    [self addSubview:self.swapButton];
+    
+    self.backButton = [[UIButton alloc] init];
+    self.backButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.backButton setImage:self.backImage forState:UIControlStateNormal];
+    [self addSubview:self.backButton];
+    
+    self.toTextField = [[MWZPaddingLabel alloc] init];
+    self.toTextField.leftInset = 16;
+    self.toTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    self.toTextField.text = NSLocalizedString(@"Destination","");
+    self.toTextField.clipsToBounds = NO;
+    self.toTextField.layer.cornerRadius = 10;
+    self.toTextField.layer.backgroundColor = [UIColor whiteColor].CGColor;
+    self.toTextField.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.toTextField.layer.borderWidth = 0.5;
+    //self.toTextField.delegate = self;
+    [self addSubview:self.toTextField];
+    
+    self.fromTextField = [[MWZPaddingLabel alloc] init];
+    self.fromTextField.leftInset = 16;
+    self.fromTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    self.fromTextField.text = NSLocalizedString(@"Starting point","");
+    self.fromTextField.clipsToBounds = NO;
+    self.fromTextField.layer.cornerRadius = 10;
+    self.fromTextField.layer.backgroundColor = [UIColor whiteColor].CGColor;
+    self.fromTextField.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.fromTextField.layer.borderWidth = 0.5;
+    //self.fromTextField.delegate = self;
+    [self addSubview:self.fromTextField];
+}
+
+- (void) setupConstraints {
+    self.clipsToBounds = NO;
+    [self setBackgroundColor: [UIColor whiteColor]];
+    self.layer.backgroundColor = [UIColor whiteColor].CGColor;
+    self.layer.shadowOpacity = .3f;
+    self.layer.shadowRadius = 4;
+    self.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.layer.shadowOffset = CGSizeMake(0, 2);
+    self.layer.cornerRadius = 10;
+    id topLayoutGuide = self;
+    if (@available(iOS 11.0, *)) {
+        self.layer.maskedCorners = kCALayerMaxXMaxYCorner | kCALayerMinXMaxYCorner;
+        topLayoutGuide = self.safeAreaLayoutGuide;
+    }
+    
+    
+    
+    [[NSLayoutConstraint constraintWithItem:self.backButton
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:32.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.backButton
+                                  attribute:NSLayoutAttributeWidth
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:32.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.backButton
+                                  attribute:NSLayoutAttributeLeft
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeLeft
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.backButton
+                                  attribute:NSLayoutAttributeCenterY
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.fromTextField
+                                  attribute:NSLayoutAttributeCenterY
+                                 multiplier:1.0f
+                                   constant:0.0f] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.fromPictoImageView
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:16.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.fromPictoImageView
+                                  attribute:NSLayoutAttributeWidth
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:16.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.fromPictoImageView
+                                  attribute:NSLayoutAttributeLeft
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.backButton
+                                  attribute:NSLayoutAttributeRight
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.fromPictoImageView
+                                  attribute:NSLayoutAttributeCenterY
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.backButton
+                                  attribute:NSLayoutAttributeCenterY
+                                 multiplier:1.0f
+                                   constant:0.0f] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.fromTextField
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:40.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.fromTextField
+                                  attribute:NSLayoutAttributeRight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.swapButton
+                                  attribute:NSLayoutAttributeLeft
+                                 multiplier:1.0f
+                                   constant:-8.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.fromTextField
+                                  attribute:NSLayoutAttributeLeft
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.fromPictoImageView
+                                  attribute:NSLayoutAttributeRight
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.fromTextField
+                                  attribute:NSLayoutAttributeTop
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:topLayoutGuide
+                                  attribute:NSLayoutAttributeTop
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.toPictoImageView
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:16.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.toPictoImageView
+                                  attribute:NSLayoutAttributeWidth
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:16.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.toPictoImageView
+                                  attribute:NSLayoutAttributeLeft
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.backButton
+                                  attribute:NSLayoutAttributeRight
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.toPictoImageView
+                                  attribute:NSLayoutAttributeCenterY
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.toTextField
+                                  attribute:NSLayoutAttributeCenterY
+                                 multiplier:1.0f
+                                   constant:0.0f] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.toTextField
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:40.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.toTextField
+                                  attribute:NSLayoutAttributeRight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.swapButton
+                                  attribute:NSLayoutAttributeLeft
+                                 multiplier:1.0f
+                                   constant:-8.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.toTextField
+                                  attribute:NSLayoutAttributeLeft
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.toPictoImageView
+                                  attribute:NSLayoutAttributeRight
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.toTextField
+                                  attribute:NSLayoutAttributeTop
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.fromTextField
+                                  attribute:NSLayoutAttributeBottom
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+    
+    ////////////
+    
+    [[NSLayoutConstraint constraintWithItem:self.accessibilityOff
+                                  attribute:NSLayoutAttributeTop
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.toTextField
+                                  attribute:NSLayoutAttributeBottom
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.accessibilityOff
+                                  attribute:NSLayoutAttributeBottom
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeBottom
+                                 multiplier:1.0f
+                                   constant:-8.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.accessibilityOff
+                                  attribute:NSLayoutAttributeCenterX
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.toTextField
+                                  attribute:NSLayoutAttributeCenterX
+                                 multiplier:0.66f
+                                   constant:0.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.accessibilityOff
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:32.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.accessibilityOff
+                                  attribute:NSLayoutAttributeWidth
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:72.0f] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.accessibilityOn
+                                  attribute:NSLayoutAttributeTop
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.toTextField
+                                  attribute:NSLayoutAttributeBottom
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.accessibilityOn
+                                  attribute:NSLayoutAttributeBottom
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeBottom
+                                 multiplier:1.0f
+                                   constant:-8.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.accessibilityOn
+                                  attribute:NSLayoutAttributeCenterX
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.fromTextField
+                                  attribute:NSLayoutAttributeCenterX
+                                 multiplier:1.33f
+                                   constant:0.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.accessibilityOn
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:32.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.accessibilityOn
+                                  attribute:NSLayoutAttributeWidth
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:72.0f] setActive:YES];
+    
+    
+    [[NSLayoutConstraint constraintWithItem:self.swapButton
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:32.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.swapButton
+                                  attribute:NSLayoutAttributeWidth
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:32.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.swapButton
+                                  attribute:NSLayoutAttributeRight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeRight
+                                 multiplier:1.0f
+                                   constant:-8.0f] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.swapButton
+                                  attribute:NSLayoutAttributeTop
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.fromTextField
+                                  attribute:NSLayoutAttributeTop
+                                 multiplier:1.0f
+                                   constant:88.0f/2 - 16.0f] setActive:YES];
+    
+    /*self.heightConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                         attribute:NSLayoutAttributeHeight
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:nil
+                                                         attribute:NSLayoutAttributeNotAnAttribute
+                                                        multiplier:1.0f
+                                                          constant:0.f];
+    [self.heightConstraint setActive:YES];
+    
+    [self setAccessibility:NO];*/
+}
+
+- (void) setAccessibilityOn {
+    //[self setAccessibility:YES];
+}
+
+- (void) setAccessibilityOff {
+    //[self setAccessibility:NO];
+}
+
+- (void) backClick {
+    [_delegate directionHeaderDidTapOnBackButton:self];
+    /*if (self.isInFromSearch) {
+        [self setTextFieldValue:_fromTextField forDirectionPoint:_fromDirectionPoint];
+        [self closeResultList];
+    }
+    else if (self.isInToSearch) {
+        [self setTextFieldValue:_toTextField forDirectionPoint:_toDirectionPoint];
+        [self closeResultList];
+    }
+    else {
+        [self.delegate didStopDirection];
+        [self.delegate didPressBack];
+    }*/
+}
+
+- (void) swapClick {
+    /*id<MWZDirectionPoint> tmpFrom = self.fromDirectionPoint;
+    id<MWZDirectionPoint> tmpTo = self.toDirectionPoint;
+    [self setFrom:nil];
+    [self setTo:nil];
+    [self setFrom:tmpTo];
+    [self setTo:tmpFrom];*/
+}
+
+@end
