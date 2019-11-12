@@ -33,6 +33,8 @@
     float alpha = 1.0f;
     [self.searchScene.backgroundView setAlpha:0.0f];
     [self.searchScene.searchQueryBar setAlpha:0.0f];
+    [self.searchScene.searchQueryBar setTransform:CGAffineTransformMakeTranslation(0,0)];
+    [self.searchScene.backgroundView setTransform:CGAffineTransformMakeTranslation(0,0)];
     [self.searchScene.searchQueryBar.backButton setUserInteractionEnabled:NO];
     [UIView animateWithDuration:0.3 animations:^{
         [self.searchScene.backgroundView setAlpha:alpha];
@@ -91,16 +93,19 @@
     [self.searchScene.searchQueryBar setAlpha:1.0];
     [self.searchScene.backgroundView setTransform:CGAffineTransformMakeTranslation(self.containerView.frame.size.width,0)];
     [self.searchScene.searchQueryBar setTransform:CGAffineTransformMakeTranslation(self.containerView.frame.size.width,0)];
+    [self.searchScene.searchQueryBar.backButton setUserInteractionEnabled:NO];
     [UIView animateWithDuration:0.3 animations:^{
         [self.searchScene.searchQueryBar setTransform:CGAffineTransformMakeTranslation(0,0)];
         [self.searchScene.backgroundView setTransform:CGAffineTransformMakeTranslation(0,0)];
         [self.directionScene.directionHeader setTransform:CGAffineTransformMakeTranslation(-self.containerView.frame.size.width,0)];
     } completion:^(BOOL finished) {
-        
+        [self.searchScene.searchQueryBar.searchTextField becomeFirstResponder];
+        [self.searchScene.searchQueryBar.backButton setUserInteractionEnabled:YES];
     }];
 }
 
 -(void) transitionFromSearchToDirection {
+    [self.searchScene.searchQueryBar.searchTextField resignFirstResponder];
     [UIView animateWithDuration:0.3 animations:^{
         [self.searchScene.searchQueryBar setTransform:CGAffineTransformMakeTranslation(self.containerView.frame.size.width,0)];
         [self.searchScene.backgroundView setTransform:CGAffineTransformMakeTranslation(self.containerView.frame.size.width,0)];
