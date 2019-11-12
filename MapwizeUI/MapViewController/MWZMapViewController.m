@@ -4,6 +4,16 @@
 #import "MWZDefaultScene.h"
 #import "MWZDirectionScene.h"
 
+typedef NS_ENUM(NSUInteger, MWZViewState) {
+    MWZViewStateDefault,
+    MWZViewStateDirectionOff,
+    MWZViewStateDirectionOn,
+    MWZViewStateSearchVenues,
+    MWZViewStateSearchInVenue,
+    MWZViewStateSearchDirectionFrom,
+    MWZViewStateSearchDirectionTo
+};
+
 @interface MWZMapViewController ()
 
 @property (nonatomic) MWZSceneCoordinator* sceneCoordinator;
@@ -14,6 +24,8 @@
 @property (nonatomic) NSArray<MWZVenue*>* mainVenues;
 @property (nonatomic) NSArray<id<MWZObject>>* mainSearches;
 @property (nonatomic) id<MWZObject> selectedContent;
+
+@property (nonatomic, assign) MWZViewState state;
 
 @end
 
@@ -72,49 +84,43 @@
 
 #pragma mark Scene transitions
 - (void) mapToSearchTransition {
+    if ([_mapView getVenue]) {
+        self.state = MWZViewStateSearchInVenue;
+    }
+    else {
+        self.state = MWZViewStateSearchVenues;
+    }
     [self.sceneCoordinator transitionFromDefaultToSearch];
 }
 
 - (void) searchToMapTransition {
+    self.state = MWZViewStateDefault;
     [self.sceneCoordinator transitionFromSearchToDefault];
 }
 
 - (void) defaultToDirectionTransition {
+    self.state = MWZViewStateDirectionOff;
     [self.sceneCoordinator transitionFromDefaultToDirection];
 }
 
 - (void) directionToDefaultTransition {
+    self.state = MWZViewStateDefault;
     [self.sceneCoordinator transitionFromDirectionToDefault];
 }
 
-- (void) directionToSearchTransition {
-    /*[self.searchScene setHidden:NO];
-    [self.searchScene.backgroundView setAlpha:1.0];
-    [self.searchScene.searchQueryBar setAlpha:1.0];
-    [self.searchScene setTransform:CGAffineTransformMakeTranslation(self.view.frame.size.width,0)];
-    [UIView animateWithDuration:0.3 animations:^{
-        [self.searchScene setTransform:CGAffineTransformMakeTranslation(0,0)];
-        [self.defaultScene setTransform:CGAffineTransformMakeTranslation(-self.view.frame.size.width,0)];
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.3 animations:^{
-            [self.searchScene layoutIfNeeded];
-        } completion:^(BOOL finished) {
-            
-        }];
-    }];*/
+- (void) directionToSearchFromTransition {
+    self.state = MWZViewStateSearchDirectionFrom;
+    [self.sceneCoordinator transitionFromDirectionToSearch];
+}
+
+- (void) directionToSearchToTransition {
+    self.state = MWZViewStateSearchDirectionTo;
+    [self.sceneCoordinator transitionFromDirectionToSearch];
 }
 
 - (void) searchToDirectionTransition {
-    /*[UIView animateWithDuration:0.3 animations:^{
-        [self.searchScene setTransform:CGAffineTransformMakeTranslation(self.view.frame.size.width,0)];
-        [self.defaultScene setTransform:CGAffineTransformMakeTranslation(0,0)];
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.3 animations:^{
-            [self.searchScene layoutIfNeeded];
-        } completion:^(BOOL finished) {
-            [self.searchScene setHidden:YES];
-        }];
-    }];*/
+    self.state = MWZViewStateDirectionOff;
+    [self.sceneCoordinator transitionFromSearchToDirection];
 }
 
 #pragma mark Content selection
@@ -217,7 +223,18 @@
 
 #pragma mark MWZSearchSceneDelegate
 - (void)didTapOnBackButton {
-    [self searchToMapTransition];
+    // Search from default
+    if (self.state == MWZViewStateSearchVenues || self.state == MWZViewStateSearchInVenue) {
+        [self searchToMapTransition];
+    }
+    // Search from direction from
+    else if (self.state == MWZViewStateSearchDirectionFrom) {
+        [self searchToDirectionTransition];
+    }
+    // Search from direction to
+    else if (self.state == MWZViewStateSearchDirectionTo) {
+        [self searchToDirectionTransition];
+    }
 }
 
 - (void)searchQueryDidChange:(NSString *)query {
@@ -279,6 +296,14 @@
 #pragma mark MWZDirectionSceneDelegate
 - (void)directionSceneDidTapOnBackButton:(MWZDirectionScene *)scene {
     [self directionToDefaultTransition];
+}
+
+- (void)directionSceneDidTapOnFromButton:(MWZDirectionScene *)scene {
+    [self directionToSearchFromTransition];
+}
+
+- (void)directionSceneDidTapOnToButton:(MWZDirectionScene *)scene {
+    [self directionToSearchToTransition];
 }
 
 @end

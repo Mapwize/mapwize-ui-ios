@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 -(void) transitionFromSearchToDefault;
 -(void) transitionFromDefaultToDirection;
 -(void) transitionFromDirectionToDefault;
+-(void) transitionFromDirectionToSearch;
+-(void) transitionFromSearchToDirection;
 
 @end
 

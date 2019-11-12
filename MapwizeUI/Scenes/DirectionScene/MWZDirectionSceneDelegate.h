@@ -6,6 +6,8 @@
 @protocol MWZDirectionSceneDelegate <NSObject>
 
 - (void) directionSceneDidTapOnBackButton:(MWZDirectionScene*) scene;
+- (void) directionSceneDidTapOnFromButton:(MWZDirectionScene*) scene;
+- (void) directionSceneDidTapOnToButton:(MWZDirectionScene*) scene;
 
 @end
 

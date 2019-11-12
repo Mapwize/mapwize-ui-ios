@@ -39,4 +39,12 @@
     [_delegate directionSceneDidTapOnBackButton:self];
 }
 
+- (void)directionHeaderDidTapOnFromButton:(MWZDirectionHeader *)directionHeader {
+    [_delegate directionSceneDidTapOnFromButton:self];
+}
+
+- (void)directionHeaderDidTapOnToButton:(MWZDirectionHeader *)directionHeader {
+    [_delegate directionSceneDidTapOnToButton:self];
+}
+
 @end

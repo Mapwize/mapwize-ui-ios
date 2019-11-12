@@ -98,7 +98,10 @@
     self.toTextField.layer.backgroundColor = [UIColor whiteColor].CGColor;
     self.toTextField.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.toTextField.layer.borderWidth = 0.5;
-    //self.toTextField.delegate = self;
+    self.toTextField.userInteractionEnabled = YES;
+    UITapGestureRecognizer *toTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnTo:)];
+    toTapGesture.numberOfTapsRequired = 1;
+    [self.toTextField addGestureRecognizer:toTapGesture];
     [self addSubview:self.toTextField];
     
     self.fromTextField = [[MWZPaddingLabel alloc] init];
@@ -110,8 +113,19 @@
     self.fromTextField.layer.backgroundColor = [UIColor whiteColor].CGColor;
     self.fromTextField.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.fromTextField.layer.borderWidth = 0.5;
-    //self.fromTextField.delegate = self;
+    self.fromTextField.userInteractionEnabled = YES;
+    UITapGestureRecognizer *fromTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnFrom:)];
+    fromTapGesture.numberOfTapsRequired = 1;
+    [self.fromTextField addGestureRecognizer:fromTapGesture];
     [self addSubview:self.fromTextField];
+}
+
+- (void) didTapOnFrom:(UITapGestureRecognizer*) recognizer {
+    [_delegate directionHeaderDidTapOnFromButton:self];
+}
+
+- (void) didTapOnTo:(UITapGestureRecognizer*) recognizer {
+    [_delegate directionHeaderDidTapOnToButton:self];
 }
 
 - (void) setupConstraints {

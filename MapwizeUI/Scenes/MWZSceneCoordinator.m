@@ -85,4 +85,29 @@
     }];
 }
 
+-(void) transitionFromDirectionToSearch {
+    [self.searchScene setHidden:NO];
+    [self.searchScene.backgroundView setAlpha:1.0];
+    [self.searchScene.searchQueryBar setAlpha:1.0];
+    [self.searchScene.backgroundView setTransform:CGAffineTransformMakeTranslation(self.containerView.frame.size.width,0)];
+    [self.searchScene.searchQueryBar setTransform:CGAffineTransformMakeTranslation(self.containerView.frame.size.width,0)];
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.searchScene.searchQueryBar setTransform:CGAffineTransformMakeTranslation(0,0)];
+        [self.searchScene.backgroundView setTransform:CGAffineTransformMakeTranslation(0,0)];
+        [self.directionScene.directionHeader setTransform:CGAffineTransformMakeTranslation(-self.containerView.frame.size.width,0)];
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+-(void) transitionFromSearchToDirection {
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.searchScene.searchQueryBar setTransform:CGAffineTransformMakeTranslation(self.containerView.frame.size.width,0)];
+        [self.searchScene.backgroundView setTransform:CGAffineTransformMakeTranslation(self.containerView.frame.size.width,0)];
+        [self.directionScene.directionHeader setTransform:CGAffineTransformMakeTranslation(0,0)];
+    } completion:^(BOOL finished) {
+        [self.searchScene setHidden:YES];
+    }];
+}
+
 @end
