@@ -12,6 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<MWZDirectionSceneDelegate> delegate;
 @property (nonatomic) MWZDirectionHeader* directionHeader;
 
+-(void) setFromText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
+-(void) setToText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
+-(void) setAccessibleMode:(BOOL) isAccessible;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -91,12 +91,16 @@
     [self.searchScene setHidden:NO];
     [self.searchScene.backgroundView setAlpha:1.0];
     [self.searchScene.searchQueryBar setAlpha:1.0];
+    self.searchScene.resultContainerViewHeightConstraint.constant = 10000;
+    [self.containerView layoutIfNeeded];
     [self.searchScene.backgroundView setTransform:CGAffineTransformMakeTranslation(self.containerView.frame.size.width,0)];
+    [self.searchScene.resultContainerView setTransform:CGAffineTransformMakeTranslation(self.containerView.frame.size.width,0)];
     [self.searchScene.searchQueryBar setTransform:CGAffineTransformMakeTranslation(self.containerView.frame.size.width,0)];
     [self.searchScene.searchQueryBar.backButton setUserInteractionEnabled:NO];
     [UIView animateWithDuration:0.3 animations:^{
         [self.searchScene.searchQueryBar setTransform:CGAffineTransformMakeTranslation(0,0)];
         [self.searchScene.backgroundView setTransform:CGAffineTransformMakeTranslation(0,0)];
+        [self.searchScene.resultContainerView setTransform:CGAffineTransformMakeTranslation(0,0)];
         [self.directionScene.directionHeader setTransform:CGAffineTransformMakeTranslation(-self.containerView.frame.size.width,0)];
     } completion:^(BOOL finished) {
         [self.searchScene.searchQueryBar.searchTextField becomeFirstResponder];
@@ -109,6 +113,7 @@
     [UIView animateWithDuration:0.3 animations:^{
         [self.searchScene.searchQueryBar setTransform:CGAffineTransformMakeTranslation(self.containerView.frame.size.width,0)];
         [self.searchScene.backgroundView setTransform:CGAffineTransformMakeTranslation(self.containerView.frame.size.width,0)];
+        [self.searchScene.resultContainerView setTransform:CGAffineTransformMakeTranslation(self.containerView.frame.size.width,0)];
         [self.directionScene.directionHeader setTransform:CGAffineTransformMakeTranslation(0,0)];
     } completion:^(BOOL finished) {
         [self.searchScene setHidden:YES];

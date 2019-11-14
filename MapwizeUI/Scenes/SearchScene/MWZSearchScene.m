@@ -246,11 +246,11 @@
 
 - (void) clearSearch {
     [self.searchQueryBar.searchTextField setText:@""];
-    [self.resultList swapResults:@[]];
+    [self.resultList swapResults:@[] withLanguage:@""];
 }
 
-- (void)showSearchResults:(NSArray<id<MWZObject>>*) results {
-    [self.resultList swapResults:results];
+- (void)showSearchResults:(NSArray<id<MWZObject>>*) results withLanguage:(NSString*) language {
+    [self.resultList swapResults:results withLanguage:language];
 }
 
 #pragma mark MWZSearchQueryBarDelegate

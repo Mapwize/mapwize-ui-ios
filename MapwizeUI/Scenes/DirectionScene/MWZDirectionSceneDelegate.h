@@ -8,6 +8,7 @@
 - (void) directionSceneDidTapOnBackButton:(MWZDirectionScene*) scene;
 - (void) directionSceneDidTapOnFromButton:(MWZDirectionScene*) scene;
 - (void) directionSceneDidTapOnToButton:(MWZDirectionScene*) scene;
+- (void) directionSceneAccessibilityModeDidChange:(BOOL) isAccessible;
 
 @end
 

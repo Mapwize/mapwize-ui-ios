@@ -35,9 +35,9 @@
 		8F8607D1219D67AB00281AB7 /* MWZComponentLoadingBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860798219D67AB00281AB7 /* MWZComponentLoadingBar.m */; };
 		8F8607D2219D67AB00281AB7 /* MWZComponentCurrentLocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860799219D67AB00281AB7 /* MWZComponentCurrentLocationView.m */; };
 		8F8607D3219D67AB00281AB7 /* MWZSearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F86079B219D67AB00281AB7 /* MWZSearchData.m */; };
-		8F8607D4219D67AB00281AB7 /* MWZIndoorLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F86079C219D67AB00281AB7 /* MWZIndoorLocation.m */; };
+		8F8607D4219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F86079C219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.m */; };
 		8F8607D5219D67AB00281AB7 /* MWZSearchData.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86079D219D67AB00281AB7 /* MWZSearchData.h */; };
-		8F8607D6219D67AB00281AB7 /* MWZIndoorLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86079E219D67AB00281AB7 /* MWZIndoorLocation.h */; };
+		8F8607D6219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F86079E219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.h */; };
 		8F8607D7219D67AB00281AB7 /* MWZComponentDirectionInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A0219D67AB00281AB7 /* MWZComponentDirectionInfo.h */; };
 		8F8607D8219D67AB00281AB7 /* MWZComponentDirectionBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A1219D67AB00281AB7 /* MWZComponentDirectionBar.h */; };
 		8F8607D9219D67AB00281AB7 /* MWZComponentDirectionBarDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8607A2219D67AB00281AB7 /* MWZComponentDirectionBarDelegate.h */; };
@@ -137,9 +137,9 @@
 		8F860798219D67AB00281AB7 /* MWZComponentLoadingBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZComponentLoadingBar.m; sourceTree = "<group>"; };
 		8F860799219D67AB00281AB7 /* MWZComponentCurrentLocationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZComponentCurrentLocationView.m; sourceTree = "<group>"; };
 		8F86079B219D67AB00281AB7 /* MWZSearchData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZSearchData.m; sourceTree = "<group>"; };
-		8F86079C219D67AB00281AB7 /* MWZIndoorLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZIndoorLocation.m; sourceTree = "<group>"; };
+		8F86079C219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ILIndoorLocation+DirectionPoint.m"; sourceTree = "<group>"; };
 		8F86079D219D67AB00281AB7 /* MWZSearchData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZSearchData.h; sourceTree = "<group>"; };
-		8F86079E219D67AB00281AB7 /* MWZIndoorLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZIndoorLocation.h; sourceTree = "<group>"; };
+		8F86079E219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ILIndoorLocation+DirectionPoint.h"; sourceTree = "<group>"; };
 		8F8607A0219D67AB00281AB7 /* MWZComponentDirectionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZComponentDirectionInfo.h; sourceTree = "<group>"; };
 		8F8607A1219D67AB00281AB7 /* MWZComponentDirectionBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZComponentDirectionBar.h; sourceTree = "<group>"; };
 		8F8607A2219D67AB00281AB7 /* MWZComponentDirectionBarDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZComponentDirectionBarDelegate.h; sourceTree = "<group>"; };
@@ -361,8 +361,8 @@
 				8FA9B35E236982A3003A870A /* MWZUIConstants.m */,
 				8F860815219DC5F200281AB7 /* MWZComponentColors.h */,
 				8F860816219DC5F200281AB7 /* MWZComponentColors.m */,
-				8F86079E219D67AB00281AB7 /* MWZIndoorLocation.h */,
-				8F86079C219D67AB00281AB7 /* MWZIndoorLocation.m */,
+				8F86079E219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.h */,
+				8F86079C219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.m */,
 				8F86079D219D67AB00281AB7 /* MWZSearchData.h */,
 				8F86079B219D67AB00281AB7 /* MWZSearchData.m */,
 				C6B8D5722226786E00A3AD82 /* MWZUIOptions.h */,
@@ -547,7 +547,7 @@
 				8FDEC05E23684005005D12B1 /* MWZSearchQueryBar.h in Headers */,
 				8F860817219DC5F200281AB7 /* MWZComponentColors.h in Headers */,
 				8F8607CD219D67AB00281AB7 /* MWZComponentCurrentLocationView.h in Headers */,
-				8F8607D6219D67AB00281AB7 /* MWZIndoorLocation.h in Headers */,
+				8F8607D6219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.h in Headers */,
 				8F8607D9219D67AB00281AB7 /* MWZComponentDirectionBarDelegate.h in Headers */,
 				8FA9B35B23688294003A870A /* MWZSearchViewControllerOptions.h in Headers */,
 				8F8607C3219D67AB00281AB7 /* MWZComponentCompassDelegate.h in Headers */,
@@ -669,7 +669,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8F8607D4219D67AB00281AB7 /* MWZIndoorLocation.m in Sources */,
+				8F8607D4219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.m in Sources */,
 				8FA9B3692369CBE2003A870A /* MWZSearchScene.m in Sources */,
 				8FA9B3652369C07B003A870A /* MWZSearchDirectionViewController.m in Sources */,
 				8F8607EB219D67AB00281AB7 /* MWZComponentResultList.m in Sources */,

@@ -3,6 +3,7 @@
 #import "MWZSearchScene.h"
 #import "MWZDefaultScene.h"
 #import "MWZDirectionScene.h"
+#import "ILIndoorLocation+DirectionPoint.h"
 
 typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZViewStateDefault,
@@ -23,7 +24,12 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
 @property (nonatomic) NSArray<MWZVenue*>* mainVenues;
 @property (nonatomic) NSArray<id<MWZObject>>* mainSearches;
+@property (nonatomic) NSArray<MWZPlace*>* mainFroms;
 @property (nonatomic) id<MWZObject> selectedContent;
+
+@property (nonatomic) id<MWZDirectionPoint> fromDirectionPoint;
+@property (nonatomic) id<MWZDirectionPoint> toDirectionPoint;
+@property (nonatomic, assign) BOOL isAccessible;
 
 @property (nonatomic, assign) MWZViewState state;
 
@@ -75,10 +81,15 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 }
 
 - (void) fetchMainSearchesForVenues:(MWZVenue*) venue {
-    [self.mapView.mapwizeApi getMainSearchesWithVenue:venue success:^(NSArray<MWZPlace *> *places) {
-        self.mainSearches = places;
+    [self.mapView.mapwizeApi getMainSearchesWithVenue:venue success:^(NSArray<id<MWZObject>> *mainSearches) {
+        self.mainSearches = mainSearches;
     } failure:^(NSError *error) {
         self.mainSearches = @[];
+    }];
+    [self.mapView.mapwizeApi getMainFromsWithVenue:venue success:^(NSArray<MWZPlace *> *mainFroms) {
+        self.mainFroms = mainFroms;
+    } failure:^(NSError *error) {
+        self.mainFroms = @[];
     }];
 }
 
@@ -100,6 +111,9 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
 - (void) defaultToDirectionTransition {
     self.state = MWZViewStateDirectionOff;
+    [self setFromDirectionPoint:[self.mapView getUserLocation]];
+    [self setToDirectionPoint:(id<MWZDirectionPoint>)self.selectedContent];
+    [self setIsAccessible:self.isAccessible];
     [self.sceneCoordinator transitionFromDefaultToDirection];
 }
 
@@ -136,9 +150,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         [self.mapView addMarkerOnPlace:(MWZPlace*)self.selectedContent];
         [self.mapView addPromotedPlace:(MWZPlace*)self.selectedContent];
     }
-    
 }
-
 
 - (void) unselectContent {
     [self.defaultScene hideContent];
@@ -163,6 +175,65 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         [self selectPlace:place];
     } failure:^(NSError * _Nonnull error) {
         
+    }];
+}
+
+#pragma mark Direction methods
+- (void) setFromDirectionPoint:(id<MWZDirectionPoint>)fromDirectionPoint {
+    _fromDirectionPoint = fromDirectionPoint;
+    if (fromDirectionPoint == nil) {
+        [self.directionScene setFromText:NSLocalizedString(@"Starting point",@"") asPlaceHolder:YES];
+    }
+    else if ([fromDirectionPoint isKindOfClass:MWZPlace.class]) {
+        [self.directionScene setFromText:[(MWZPlace*)fromDirectionPoint titleForLanguage:[self.mapView getLanguage]] asPlaceHolder:NO];
+    }
+    else if ([fromDirectionPoint isKindOfClass:MWZPlacelist.class]) {
+        [self.directionScene setFromText:[(MWZPlacelist*)fromDirectionPoint titleForLanguage:[self.mapView getLanguage]] asPlaceHolder:NO];
+    }
+    else if ([fromDirectionPoint isKindOfClass:ILIndoorLocation.class]) {
+        [self.directionScene setFromText:NSLocalizedString(@"Current location", @"") asPlaceHolder:NO];
+    }
+}
+
+- (void) setToDirectionPoint:(id<MWZDirectionPoint>)toDirectionPoint {
+    _toDirectionPoint = toDirectionPoint;
+    if (toDirectionPoint == nil) {
+        [self.directionScene setToText:NSLocalizedString(@"Destination",@"") asPlaceHolder:YES];
+    }
+    else if ([toDirectionPoint isKindOfClass:MWZPlace.class]) {
+        [self.directionScene setToText:[(MWZPlace*)toDirectionPoint titleForLanguage:[self.mapView getLanguage]] asPlaceHolder:NO];
+    }
+    else if ([toDirectionPoint isKindOfClass:MWZPlacelist.class]) {
+        [self.directionScene setToText:[(MWZPlacelist*)toDirectionPoint titleForLanguage:[self.mapView getLanguage]] asPlaceHolder:NO];
+    }
+    else if ([toDirectionPoint isKindOfClass:ILIndoorLocation.class]) {
+        [self.directionScene setToText:NSLocalizedString(@"Current location", @"") asPlaceHolder:NO];
+    }
+}
+
+-(void) setIsAccessible:(BOOL)isAccessible {
+    _isAccessible = isAccessible;
+    [self.directionScene setAccessibleMode:isAccessible];
+}
+
+-(BOOL) shouldStartDirection {
+    return (self.state == MWZViewStateDirectionOn || self.state == MWZViewStateDirectionOff)
+            && self.fromDirectionPoint && self.toDirectionPoint;
+}
+
+- (void) startDirection {
+    if ([self.fromDirectionPoint isKindOfClass:ILIndoorLocation.class]) {
+        MWZDirectionOptions* options = [[MWZDirectionOptions alloc] init];
+        [self.mapView startNavigation:self.toDirectionPoint isAccessible:self.isAccessible options:options];
+    }
+    [self.mapView.mapwizeApi getDirectionWithFrom:self.fromDirectionPoint
+                                               to:self.toDirectionPoint
+                                     isAccessible:self.isAccessible success:^(MWZDirection * _Nonnull direction) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+        });
+    } failure:^(NSError * _Nonnull error) {
+        // TODO HANDLE DIRECTION NOT FOUND
     }];
 }
 
@@ -205,10 +276,10 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 #pragma mark MWZDefaultSceneDelegate
 - (void) didTapOnSearchButton {
     if ([self.mapView getVenue]) {
-       [self.searchScene showSearchResults:self.mainSearches];
+       [self.searchScene showSearchResults:self.mainSearches withLanguage:[self.mapView getLanguage]];
     }
     else {
-        [self.searchScene showSearchResults:self.mainVenues];
+        [self.searchScene showSearchResults:self.mainVenues withLanguage:[self.mapView getLanguage]];
     }
     [self mapToSearchTransition];
 }
@@ -223,74 +294,79 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
 #pragma mark MWZSearchSceneDelegate
 - (void)didTapOnBackButton {
-    // Search from default
     if (self.state == MWZViewStateSearchVenues || self.state == MWZViewStateSearchInVenue) {
         [self searchToMapTransition];
     }
-    // Search from direction from
     else if (self.state == MWZViewStateSearchDirectionFrom) {
         [self searchToDirectionTransition];
     }
-    // Search from direction to
     else if (self.state == MWZViewStateSearchDirectionTo) {
         [self searchToDirectionTransition];
     }
 }
 
 - (void)searchQueryDidChange:(NSString *)query {
-    // Default state
-    if ([query length] == 0) {
-        if ([self.mapView getVenue]) {
-           [self.searchScene showSearchResults:self.mainSearches];
-        }
-        else {
-            [self.searchScene showSearchResults:self.mainVenues];
+    MWZSearchParams* params = [[MWZSearchParams alloc] init];
+    
+    if (self.state == MWZViewStateSearchVenues) {
+        params.objectClass = @[@"venue"];
+        if ([query length] == 0) {
+            [self.searchScene showSearchResults:self.mainVenues withLanguage:[self.mapView getLanguage]];
+            return;
         }
     }
-    else {
-        MWZSearchParams* params = [[MWZSearchParams alloc] init];
-        params.query = query;
-        params.venueIds = self.mapView.mapOptions.restrictContentToVenueIds;
-        if ([self.mapView getVenue]) {
-            params.venueId = [self.mapView getVenue].identifier;
-            params.objectClass = @[@"place", @"placeList"];
+    if (self.state == MWZViewStateSearchInVenue || self.state == MWZViewStateSearchDirectionTo) {
+        params.venueId = [self.mapView getVenue].identifier;
+        params.objectClass = @[@"place", @"placeList"];
+        if ([query length] == 0) {
+            [self.searchScene showSearchResults:self.mainSearches withLanguage:[self.mapView getLanguage]];
+            return;
         }
-        else {
-            params.objectClass = @[@"venue"];
+    }
+    if (self.state == MWZViewStateSearchDirectionFrom) {
+        params.venueId = [self.mapView getVenue].identifier;
+        params.objectClass = @[@"place"];
+        if ([query length] == 0) {
+            [self.searchScene showSearchResults:self.mainFroms withLanguage:[self.mapView getLanguage]];
+            return;
         }
-        [self.mapView.mapwizeApi searchWithSearchParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.searchScene showSearchResults:searchResponse];
-            });
-        } failure:^(NSError *error) {
-            
-        }];
     }
     
-    // Direction state from
+    params.query = query;
+    params.venueIds = self.mapView.mapOptions.restrictContentToVenueIds;
     
-    
-    // Direction state to
+    [self.mapView.mapwizeApi searchWithSearchParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.searchScene showSearchResults:searchResponse withLanguage:[self.mapView getLanguage]];
+        });
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didSelect:(id<MWZObject>)mapwizeObject {
-    // Default state
-    if ([mapwizeObject isKindOfClass:MWZPlace.class]) {
-        [self.mapView centerOnPlace:(MWZPlace*)mapwizeObject animated:YES];
-        [self selectPlace:(MWZPlace*)mapwizeObject];
-    }
-    if ([mapwizeObject isKindOfClass:MWZPlacelist.class]) {
-        
-    }
-    if ([mapwizeObject isKindOfClass:MWZVenue.class]) {
+    if (self.state == MWZViewStateSearchVenues) {
         [self.mapView centerOnVenue:(MWZVenue*)mapwizeObject animated:YES];
+        [self searchToMapTransition];
     }
-    [self searchToMapTransition];
-    
-    // Direction state from
-    
-    
-    // Direction state to
+    else if (self.state == MWZViewStateSearchInVenue) {
+        if ([mapwizeObject isKindOfClass:MWZPlace.class]) {
+            [self.mapView centerOnPlace:(MWZPlace*)mapwizeObject animated:YES];
+            [self selectPlace:(MWZPlace*)mapwizeObject];
+        }
+        if ([mapwizeObject isKindOfClass:MWZPlacelist.class]) {
+            
+        }
+        [self searchToMapTransition];
+    }
+    else if (self.state == MWZViewStateSearchDirectionFrom) {
+        [self setFromDirectionPoint:(id<MWZDirectionPoint>)mapwizeObject];
+        [self searchToDirectionTransition];
+    }
+    else if (self.state == MWZViewStateSearchDirectionTo) {
+        [self setToDirectionPoint:(id<MWZDirectionPoint>)mapwizeObject];
+        [self searchToDirectionTransition];
+    }
 }
 
 #pragma mark MWZDirectionSceneDelegate
@@ -299,11 +375,21 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 }
 
 - (void)directionSceneDidTapOnFromButton:(MWZDirectionScene *)scene {
+    if ([self.mapView getVenue]) {
+       [self.searchScene showSearchResults:self.mainFroms withLanguage:[self.mapView getLanguage]];
+    }
     [self directionToSearchFromTransition];
 }
 
 - (void)directionSceneDidTapOnToButton:(MWZDirectionScene *)scene {
+    if ([self.mapView getVenue]) {
+       [self.searchScene showSearchResults:self.mainSearches withLanguage:[self.mapView getLanguage]];
+    }
     [self directionToSearchToTransition];
+}
+
+-(void)directionSceneAccessibilityModeDidChange:(BOOL)isAccessible {
+    self.isAccessible = isAccessible;
 }
 
 @end

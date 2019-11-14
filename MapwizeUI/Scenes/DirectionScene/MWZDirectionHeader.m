@@ -27,6 +27,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _color = [UIColor greenColor];
+        _haloColor = [UIColor yellowColor];
         [self initialize];
         [self setupConstraints];
     }
@@ -135,7 +136,7 @@
     self.layer.shadowOpacity = .3f;
     self.layer.shadowRadius = 4;
     self.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.layer.shadowOffset = CGSizeMake(0, 2);
+    self.layer.shadowOffset = CGSizeMake(0, 0.5);
     self.layer.cornerRadius = 10;
     id topLayoutGuide = self;
     if (@available(iOS 11.0, *)) {
@@ -394,25 +395,49 @@
                                   attribute:NSLayoutAttributeTop
                                  multiplier:1.0f
                                    constant:88.0f/2 - 16.0f] setActive:YES];
-    
-    /*self.heightConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                         attribute:NSLayoutAttributeHeight
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:nil
-                                                         attribute:NSLayoutAttributeNotAnAttribute
-                                                        multiplier:1.0f
-                                                          constant:0.f];
-    [self.heightConstraint setActive:YES];
-    
-    [self setAccessibility:NO];*/
+}
+
+-(void) setFromText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder {
+    [self.fromTextField setText:text];
+    if (asPlaceHolder) {
+        [self.fromTextField setTextColor:[UIColor lightGrayColor]];
+    }
+    else {
+        [self.fromTextField setTextColor:[UIColor blackColor]];
+    }
+}
+
+-(void) setToText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder {
+    [self.toTextField setText:text];
+    if (asPlaceHolder) {
+        [self.toTextField setTextColor:[UIColor lightGrayColor]];
+    }
+    else {
+        [self.toTextField setTextColor:[UIColor blackColor]];
+    }
+}
+
+-(void) setAccessibleMode:(BOOL) isAccessible {
+    if (isAccessible) {
+        [self.accessibilityOn setTintColor:self.color];
+        [self.accessibilityOff setTintColor:[UIColor blackColor]];
+        self.accessibilityOff.backgroundColor = [UIColor colorWithRed:197.f/255.f green:21.f/255.f blue:134.f/255.f alpha:0.0f];
+        self.accessibilityOn.backgroundColor = self.haloColor;
+    }
+    else {
+        self.accessibilityOff.backgroundColor = self.haloColor;
+        self.accessibilityOn.backgroundColor = [UIColor colorWithRed:197.f/255.f green:21.f/255.f blue:134.f/255.f alpha:0.0f];
+        [self.accessibilityOff setTintColor:self.color];
+        [self.accessibilityOn setTintColor:[UIColor blackColor]];
+    }
 }
 
 - (void) setAccessibilityOn {
-    //[self setAccessibility:YES];
+    [_delegate directionHeaderAccessibilityModeDidChange:YES];
 }
 
 - (void) setAccessibilityOff {
-    //[self setAccessibility:NO];
+    [_delegate directionHeaderAccessibilityModeDidChange:NO];
 }
 
 - (void) backClick {

@@ -35,6 +35,18 @@
     [self.directionHeader setHidden:hidden];
 }
 
+-(void) setFromText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder {
+    [self.directionHeader setFromText:text asPlaceHolder:asPlaceHolder];
+}
+
+-(void) setToText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder {
+    [self.directionHeader setToText:text asPlaceHolder:asPlaceHolder];
+}
+
+-(void) setAccessibleMode:(BOOL) isAccessible {
+    [self.directionHeader setAccessibleMode:isAccessible];
+}
+
 - (void)directionHeaderDidTapOnBackButton:(MWZDirectionHeader *)directionHeader {
     [_delegate directionSceneDidTapOnBackButton:self];
 }
@@ -45,6 +57,10 @@
 
 - (void)directionHeaderDidTapOnToButton:(MWZDirectionHeader *)directionHeader {
     [_delegate directionSceneDidTapOnToButton:self];
+}
+
+- (void) directionHeaderAccessibilityModeDidChange:(BOOL) isAccessible {
+    [_delegate directionSceneAccessibilityModeDidChange:isAccessible];
 }
 
 @end

@@ -4,7 +4,7 @@
 #import "MWZSearchData.h"
 #import "MWZComponentDirectionBarDelegate.h"
 #import "MWZComponentBorderedTextField.h"
-#import "MWZIndoorLocation.h"
+#import "ILIndoorLocation+DirectionPoint.h"
 #import "MWZComponentLoadingBar.h"
 #import "MWZComponentCurrentLocationView.h"
 
@@ -476,9 +476,9 @@
         id<MWZObject> mapwizeObject = (id<MWZObject>) directionPoint;
         textField.text = [mapwizeObject titleForLanguage:[self.delegate componentRequiresCurrentLanguage:self]];
     }
-    else if ([directionPoint isKindOfClass:MWZIndoorLocation.class]) {
+    /*else if ([directionPoint isKindOfClass:MWZIndoorLocation.class]) {
         textField.text = NSLocalizedString(@"Current location","");
-    }
+    }*/
 }
 
 - (void) showResultList {
@@ -557,7 +557,7 @@
     self.resultList = [[MWZComponentResultList alloc] init];
     self.resultList.translatesAutoresizingMaskIntoConstraints = NO;
     self.resultList.alpha = 0.0f;
-    [self.resultList setLanguage:[self.delegate componentRequiresCurrentLanguage:self]];
+    //[self.resultList setLanguage:[self.delegate componentRequiresCurrentLanguage:self]];
     self.resultList.resultDelegate = self;
     [self.backView addSubview:self.resultList];
     [[NSLayoutConstraint constraintWithItem:self.resultList
@@ -623,12 +623,12 @@
 }
 
 - (void) currentLocationTapped:(UITapGestureRecognizer*) recognizer {
-    if (_isInFromSearch) {
+    /*if (_isInFromSearch) {
         [self setFrom:[[MWZIndoorLocation alloc] initWith:[self.delegate componentRequiresUserLocation:self]]];
     }
     if (_isInToSearch) {
         [self setTo:[[MWZIndoorLocation alloc] initWith:[self.delegate componentRequiresUserLocation:self]]];
-    }
+    }*/
     [self closeResultList];
 }
 
@@ -654,11 +654,11 @@
 }
 
 - (void) loadEmptyFromSearch {
-    [self.resultList swapResults:self.searchData.mainFrom];
+    //[self.resultList swapResults:self.searchData.mainFrom];
 }
 
 - (void) loadEmptyToSearch {
-    [self.resultList swapResults:self.searchData.mainSearch];
+    //[self.resultList swapResults:self.searchData.mainSearch];
 }
 
 - (void) searchFrom:(NSString*) query {
@@ -670,7 +670,7 @@
     params.universeId = [self.delegate componentRequiresCurrentUniverse:self].identifier;
     [self.mapwizeApi searchWithSearchParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.resultList swapResults:searchResponse];
+            //[self.resultList swapResults:searchResponse];
             [self.delegate didStopLoading];
         });
     } failure:^(NSError *error) {
@@ -690,7 +690,7 @@
     params.universeId = [self.delegate componentRequiresCurrentUniverse:self].identifier;
     [self.mapwizeApi searchWithSearchParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.resultList swapResults:searchResponse];
+            //[self.resultList swapResults:searchResponse];
             [self.delegate didStopLoading];
         });
     } failure:^(NSError *error) {
@@ -706,9 +706,9 @@
         return;
     }
     [self.delegate didStartLoading];
-    if ([_fromDirectionPoint isKindOfClass:MWZIndoorLocation.class]) {
+    /*if ([_fromDirectionPoint isKindOfClass:MWZIndoorLocation.class]) {
         _fromDirectionPoint = [[MWZIndoorLocation alloc] initWith:[self.delegate componentRequiresUserLocation:self]];
-    }
+    }*/
     [self.mapwizeApi getDirectionWithFrom:self.fromDirectionPoint to:self.toDirectionPoint isAccessible:self.isAccessible success:^(MWZDirection *direction) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self startDirection:direction from:self.fromDirectionPoint to:self.toDirectionPoint newDirection:newDirection];

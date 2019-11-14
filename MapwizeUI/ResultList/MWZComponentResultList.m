@@ -50,11 +50,8 @@
     return self;
 }
 
-- (void) setLanguage:(NSString*) language {
+- (void) swapResults:(NSArray<id<MWZObject>>*) results withLanguage:(nonnull NSString *)language {
     _language = language;
-}
-
-- (void) swapResults:(NSArray<id<MWZObject>>*) results {
     [self.content removeAllObjects];
     [self.content addObjectsFromArray:results];
     [self reloadData];

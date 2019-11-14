@@ -16,7 +16,7 @@
 #import "MWZComponentFollowUserButtonDelegate.h"
 #import "MWZComponentUniversesButton.h"
 #import "MWZComponentUniversesButtonDelegate.h"
-#import "MWZIndoorLocation.h"
+#import "ILIndoorLocation+DirectionPoint.h"
 #import "MWZComponentLanguagesButton.h"
 #import "MWZComponentLanguagesButtonDelegate.h"
 #import "MWZMapwizeViewUISettings.h"
@@ -271,7 +271,7 @@ const CGFloat marginRight = 16;
 - (void) showDirectionUI {
     [self.directionBar setTo:(id<MWZDirectionPoint>)self.selectedContent];
     if ([self.mapView getUserLocation] && [self.mapView getUserLocation].floor) {
-        [self.directionBar setFrom:[[MWZIndoorLocation alloc] initWith:[self.mapView getUserLocation]]];
+        //[self.directionBar setFrom:[[MWZIndoorLocation alloc] initWith:[self.mapView getUserLocation]]];
     }
     [self.universesButton setHidden:YES];
     [self.languagesButton setHidden:YES];
@@ -1145,15 +1145,15 @@ const CGFloat marginRight = 16;
     MWZDirectionOptions* options = [[MWZDirectionOptions alloc] init];
     options.centerOnStart = YES;
     options.displayEndMarker = YES;
-    if ([from isKindOfClass:MWZIndoorLocation.class] && [self.mapView getUserLocation] && [self.mapView getUserLocation].floor) {
-        MWZIndoorLocation* newFrom = [[MWZIndoorLocation alloc] initWith:[self.mapView getUserLocation]];
+    /*if ([from isKindOfClass:MWZIndoorLocation.class] && [self.mapView getUserLocation] && [self.mapView getUserLocation].floor) {
+        //MWZIndoorLocation* newFrom = [[MWZIndoorLocation alloc] initWith:[self.mapView getUserLocation]];
         [self startNavigation:direction from:newFrom to:to directionOptions:options isAccessible:isAccessible];
-    }
-    else {
+    }*/
+    /*else {
         [self.mapView setFollowUserMode:MWZFollowUserModeNone];
         [self.mapView setDirection:direction options:options];
         [self.directionInfo setInfoWith:direction.traveltime directionDistance:direction.distance];
-    }
+    }*/
     
     [self.mapView removeMarkers];
     [self.mapView removePromotedPlaces];

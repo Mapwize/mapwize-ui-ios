@@ -7,6 +7,7 @@
 - (void) directionHeaderDidTapOnBackButton:(MWZDirectionHeader*) directionHeader;
 - (void) directionHeaderDidTapOnFromButton:(MWZDirectionHeader*) directionHeader;
 - (void) directionHeaderDidTapOnToButton:(MWZDirectionHeader*) directionHeader;
+- (void) directionHeaderAccessibilityModeDidChange:(BOOL) isAccessible;
 
 @end
 

@@ -249,7 +249,7 @@
     else {
         self.venueResultList = [[MWZComponentResultList alloc] init];
         self.venueResultList.resultDelegate = self;
-        [self.venueResultList setLanguage:[self.delegate componentRequiresCurrentLanguage:self]];
+        //[self.venueResultList setLanguage:[self.delegate componentRequiresCurrentLanguage:self]];
         self.activeResultList = self.venueResultList;
     }
     
@@ -377,7 +377,7 @@
         [self.resultList swapResults:self.searchData.mainSearch universes:self.searchData.accessibleUniverses activeUniverse:[self.delegate componentRequiresCurrentUniverse:self]];
     }
     else {
-        [self.venueResultList swapResults:self.searchData.venues];
+        //[self.venueResultList swapResults:self.searchData.venues];
     }
 }
 
@@ -407,7 +407,7 @@
         params.objectClass = @[@"venue"];
         [self.mapwizeApi searchWithSearchParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.venueResultList swapResults:searchResponse];
+                //[self.venueResultList swapResults:searchResponse];
                 [self.delegate didStopLoading];
             });
         } failure:^(NSError *error) {

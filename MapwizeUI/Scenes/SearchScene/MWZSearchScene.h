@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<MWZSearchSceneDelegate> delegate;
 
 - (void) clearSearch;
-- (void) showSearchResults:(NSArray<id<MWZObject>>*) results;
+- (void) showSearchResults:(NSArray<id<MWZObject>>*) results withLanguage:(NSString*) language;
 
 @end
 

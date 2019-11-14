@@ -3,9 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MWZIndoorLocation : ILIndoorLocation <MWZDirectionPoint>
-
-- (instancetype) initWith:(ILIndoorLocation*) indoorLocation;
+@interface ILIndoorLocation (MWZDirectionPoint) <MWZDirectionPoint>
     
 @end
 
