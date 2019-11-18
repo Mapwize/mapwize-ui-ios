@@ -1,6 +1,7 @@
 #import "MWZDirectionHeader.h"
 #import "MWZComponentBorderedTextField.h"
 #import "MWZPaddingLabel.h"
+#import "MWZPaddingTextField.h"
 
 @interface MWZDirectionHeader () <UITextFieldDelegate>
 
@@ -8,8 +9,10 @@
 @property (nonatomic) UIButton* swapButton;
 @property (nonatomic) UIButton* accessibilityOn;
 @property (nonatomic) UIButton* accessibilityOff;
-@property (nonatomic) MWZPaddingLabel* fromTextField;
-@property (nonatomic) MWZPaddingLabel* toTextField;
+@property (nonatomic) MWZPaddingLabel* fromLabel;
+@property (nonatomic) MWZPaddingLabel* toLabel;
+@property (nonatomic) MWZPaddingTextField* fromTextField;
+@property (nonatomic) MWZPaddingTextField* toTextField;
 @property (nonatomic) UIImageView* fromPictoImageView;
 @property (nonatomic) UIImageView* toPictoImageView;
 @property (nonatomic) UIImage* backImage;
@@ -90,35 +93,58 @@
     [self.backButton setImage:self.backImage forState:UIControlStateNormal];
     [self addSubview:self.backButton];
     
-    self.toTextField = [[MWZPaddingLabel alloc] init];
-    self.toTextField.leftInset = 16;
-    self.toTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    self.toTextField.text = NSLocalizedString(@"Destination","");
-    self.toTextField.clipsToBounds = NO;
-    self.toTextField.layer.cornerRadius = 10;
-    self.toTextField.layer.backgroundColor = [UIColor whiteColor].CGColor;
-    self.toTextField.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    self.toTextField.layer.borderWidth = 0.5;
-    self.toTextField.userInteractionEnabled = YES;
+    self.toLabel = [[MWZPaddingLabel alloc] init];
+    self.toLabel.leftInset = 16;
+    self.toLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.toLabel.text = NSLocalizedString(@"Destination",@"");
+    self.toLabel.clipsToBounds = NO;
+    self.toLabel.layer.cornerRadius = 10;
+    self.toLabel.layer.backgroundColor = [UIColor whiteColor].CGColor;
+    self.toLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.toLabel.layer.borderWidth = 0.5;
+    self.toLabel.userInteractionEnabled = YES;
     UITapGestureRecognizer *toTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnTo:)];
     toTapGesture.numberOfTapsRequired = 1;
-    [self.toTextField addGestureRecognizer:toTapGesture];
-    [self addSubview:self.toTextField];
+    [self.toLabel addGestureRecognizer:toTapGesture];
+    [self addSubview:self.toLabel];
     
-    self.fromTextField = [[MWZPaddingLabel alloc] init];
-    self.fromTextField.leftInset = 16;
-    self.fromTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    self.fromTextField.text = NSLocalizedString(@"Starting point","");
-    self.fromTextField.clipsToBounds = NO;
-    self.fromTextField.layer.cornerRadius = 10;
-    self.fromTextField.layer.backgroundColor = [UIColor whiteColor].CGColor;
-    self.fromTextField.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    self.fromTextField.layer.borderWidth = 0.5;
-    self.fromTextField.userInteractionEnabled = YES;
+    self.toTextField = [[MWZPaddingTextField alloc] init];
+    self.toTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    self.toTextField.placeholder = NSLocalizedString(@"Destination",@"");
+    self.toTextField.layer.cornerRadius = 10;
+    self.toTextField.layer.backgroundColor = [UIColor whiteColor].CGColor;
+    self.toTextField.layer.borderColor = [UIColor greenColor].CGColor;
+    self.toTextField.layer.borderWidth = 2;
+    self.toTextField.userInteractionEnabled = YES;
+    [self addSubview:self.toTextField];
+    [self.toTextField setHidden:YES];
+    [self.toTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    
+    self.fromLabel = [[MWZPaddingLabel alloc] init];
+    self.fromLabel.leftInset = 16;
+    self.fromLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.fromLabel.text = NSLocalizedString(@"Starting point",@"");
+    self.fromLabel.clipsToBounds = NO;
+    self.fromLabel.layer.cornerRadius = 10;
+    self.fromLabel.layer.backgroundColor = [UIColor whiteColor].CGColor;
+    self.fromLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.fromLabel.layer.borderWidth = 0.5;
+    self.fromLabel.userInteractionEnabled = YES;
     UITapGestureRecognizer *fromTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnFrom:)];
     fromTapGesture.numberOfTapsRequired = 1;
-    [self.fromTextField addGestureRecognizer:fromTapGesture];
+    [self.fromLabel addGestureRecognizer:fromTapGesture];
+    [self addSubview:self.fromLabel];
+    
+    self.fromTextField = [[MWZPaddingTextField alloc] init];
+    self.fromTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    self.fromTextField.placeholder = NSLocalizedString(@"Starting point",@"");
+    self.fromTextField.layer.cornerRadius = 10;
+    self.fromTextField.layer.backgroundColor = [UIColor whiteColor].CGColor;
+    self.fromTextField.layer.borderColor = [UIColor greenColor].CGColor;
+    self.fromTextField.layer.borderWidth = 2;
     [self addSubview:self.fromTextField];
+    [self.fromTextField setHidden:YES];
+    [self.fromTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 }
 
 - (void) didTapOnFrom:(UITapGestureRecognizer*) recognizer {
@@ -170,7 +196,7 @@
     [[NSLayoutConstraint constraintWithItem:self.backButton
                                   attribute:NSLayoutAttributeCenterY
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self.fromTextField
+                                     toItem:self.fromLabel
                                   attribute:NSLayoutAttributeCenterY
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
@@ -203,6 +229,35 @@
                                   attribute:NSLayoutAttributeCenterY
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.fromLabel
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:40.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.fromLabel
+                                  attribute:NSLayoutAttributeRight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.swapButton
+                                  attribute:NSLayoutAttributeLeft
+                                 multiplier:1.0f
+                                   constant:-8.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.fromLabel
+                                  attribute:NSLayoutAttributeLeft
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.fromPictoImageView
+                                  attribute:NSLayoutAttributeRight
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.fromLabel
+                                  attribute:NSLayoutAttributeTop
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:topLayoutGuide
+                                  attribute:NSLayoutAttributeTop
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.fromTextField
                                   attribute:NSLayoutAttributeHeight
@@ -257,10 +312,39 @@
     [[NSLayoutConstraint constraintWithItem:self.toPictoImageView
                                   attribute:NSLayoutAttributeCenterY
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self.toTextField
+                                     toItem:self.toLabel
                                   attribute:NSLayoutAttributeCenterY
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.toLabel
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:40.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.toLabel
+                                  attribute:NSLayoutAttributeRight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.swapButton
+                                  attribute:NSLayoutAttributeLeft
+                                 multiplier:1.0f
+                                   constant:-8.f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.toLabel
+                                  attribute:NSLayoutAttributeLeft
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.toPictoImageView
+                                  attribute:NSLayoutAttributeRight
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.toLabel
+                                  attribute:NSLayoutAttributeTop
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.fromLabel
+                                  attribute:NSLayoutAttributeBottom
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.toTextField
                                   attribute:NSLayoutAttributeHeight
@@ -286,7 +370,7 @@
     [[NSLayoutConstraint constraintWithItem:self.toTextField
                                   attribute:NSLayoutAttributeTop
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self.fromTextField
+                                     toItem:self.fromLabel
                                   attribute:NSLayoutAttributeBottom
                                  multiplier:1.0f
                                    constant:8.0f] setActive:YES];
@@ -296,7 +380,7 @@
     [[NSLayoutConstraint constraintWithItem:self.accessibilityOff
                                   attribute:NSLayoutAttributeTop
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self.toTextField
+                                     toItem:self.toLabel
                                   attribute:NSLayoutAttributeBottom
                                  multiplier:1.0f
                                    constant:8.0f] setActive:YES];
@@ -310,7 +394,7 @@
     [[NSLayoutConstraint constraintWithItem:self.accessibilityOff
                                   attribute:NSLayoutAttributeCenterX
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self.toTextField
+                                     toItem:self.toLabel
                                   attribute:NSLayoutAttributeCenterX
                                  multiplier:0.66f
                                    constant:0.0f] setActive:YES];
@@ -332,7 +416,7 @@
     [[NSLayoutConstraint constraintWithItem:self.accessibilityOn
                                   attribute:NSLayoutAttributeTop
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self.toTextField
+                                     toItem:self.toLabel
                                   attribute:NSLayoutAttributeBottom
                                  multiplier:1.0f
                                    constant:8.0f] setActive:YES];
@@ -346,7 +430,7 @@
     [[NSLayoutConstraint constraintWithItem:self.accessibilityOn
                                   attribute:NSLayoutAttributeCenterX
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self.fromTextField
+                                     toItem:self.fromLabel
                                   attribute:NSLayoutAttributeCenterX
                                  multiplier:1.33f
                                    constant:0.f] setActive:YES];
@@ -391,29 +475,55 @@
     [[NSLayoutConstraint constraintWithItem:self.swapButton
                                   attribute:NSLayoutAttributeTop
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self.fromTextField
+                                     toItem:self.fromLabel
                                   attribute:NSLayoutAttributeTop
                                  multiplier:1.0f
                                    constant:88.0f/2 - 16.0f] setActive:YES];
 }
 
+- (void) openFromSearch {
+    [self.fromLabel setHidden:YES];
+    [self.fromTextField setHidden:NO];
+    [self.fromTextField becomeFirstResponder];
+}
+
+- (void) closeFromSearch {
+    [self.fromLabel setHidden:NO];
+    [self.fromTextField setHidden:YES];
+    [self.fromTextField resignFirstResponder];
+    self.fromTextField.text = @"";
+}
+
+- (void) openToSearch {
+    [self.toLabel setHidden:YES];
+    [self.toTextField setHidden:NO];
+    [self.toTextField becomeFirstResponder];
+}
+
+- (void) closeToSearch {
+    [self.toLabel setHidden:NO];
+    [self.toTextField setHidden:YES];
+    [self.toTextField resignFirstResponder];
+    self.toTextField.text = @"";
+}
+
 -(void) setFromText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder {
-    [self.fromTextField setText:text];
+    [self.fromLabel setText:text];
     if (asPlaceHolder) {
-        [self.fromTextField setTextColor:[UIColor lightGrayColor]];
+        [self.fromLabel setTextColor:[UIColor lightGrayColor]];
     }
     else {
-        [self.fromTextField setTextColor:[UIColor blackColor]];
+        [self.fromLabel setTextColor:[UIColor blackColor]];
     }
 }
 
 -(void) setToText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder {
-    [self.toTextField setText:text];
+    [self.toLabel setText:text];
     if (asPlaceHolder) {
-        [self.toTextField setTextColor:[UIColor lightGrayColor]];
+        [self.toLabel setTextColor:[UIColor lightGrayColor]];
     }
     else {
-        [self.toTextField setTextColor:[UIColor blackColor]];
+        [self.toLabel setTextColor:[UIColor blackColor]];
     }
 }
 
@@ -442,27 +552,14 @@
 
 - (void) backClick {
     [_delegate directionHeaderDidTapOnBackButton:self];
-    /*if (self.isInFromSearch) {
-        [self setTextFieldValue:_fromTextField forDirectionPoint:_fromDirectionPoint];
-        [self closeResultList];
-    }
-    else if (self.isInToSearch) {
-        [self setTextFieldValue:_toTextField forDirectionPoint:_toDirectionPoint];
-        [self closeResultList];
-    }
-    else {
-        [self.delegate didStopDirection];
-        [self.delegate didPressBack];
-    }*/
 }
 
 - (void) swapClick {
-    /*id<MWZDirectionPoint> tmpFrom = self.fromDirectionPoint;
-    id<MWZDirectionPoint> tmpTo = self.toDirectionPoint;
-    [self setFrom:nil];
-    [self setTo:nil];
-    [self setFrom:tmpTo];
-    [self setTo:tmpFrom];*/
+    
+}
+
+- (void) textFieldDidChange:(UITextField*) textField {
+    [_delegate searchDirectionQueryDidChange:textField.text];
 }
 
 @end

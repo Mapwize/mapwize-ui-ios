@@ -115,6 +115,21 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     [self setToDirectionPoint:(id<MWZDirectionPoint>)self.selectedContent];
     [self setIsAccessible:self.isAccessible];
     [self.sceneCoordinator transitionFromDefaultToDirection];
+    if (self.fromDirectionPoint == nil) {
+        self.state = MWZViewStateSearchDirectionFrom;
+        [self.directionScene openFromSearch];
+        [self.directionScene setSearchResultsHidden:NO];
+        [self.directionScene showSearchResults:self.mainFroms withLanguage:[self.mapView getLanguage]];
+    }
+    else if (self.toDirectionPoint == nil) {
+        self.state = MWZViewStateSearchDirectionTo;
+        [self.directionScene openToSearch];
+        [self.directionScene setSearchResultsHidden:NO];
+        [self.directionScene showSearchResults:self.mainSearches withLanguage:[self.mapView getLanguage]];
+    }
+    else {
+        [self startDirection];
+    }
 }
 
 - (void) directionToDefaultTransition {
@@ -193,6 +208,20 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     else if ([fromDirectionPoint isKindOfClass:ILIndoorLocation.class]) {
         [self.directionScene setFromText:NSLocalizedString(@"Current location", @"") asPlaceHolder:NO];
     }
+    if (self.state == MWZViewStateSearchDirectionFrom) {
+        [self.directionScene closeFromSearch];
+        if (self.toDirectionPoint == nil) {
+            self.state = MWZViewStateSearchDirectionTo;
+            [self.directionScene openToSearch];
+            [self.directionScene showSearchResults:self.mainSearches withLanguage:[self.mapView getLanguage]];
+        }
+        else {
+            [self.directionScene setSearchResultsHidden:YES];
+        }
+    }
+    if ([self shouldStartDirection]) {
+        [self startDirection];
+    }
 }
 
 - (void) setToDirectionPoint:(id<MWZDirectionPoint>)toDirectionPoint {
@@ -208,6 +237,11 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     }
     else if ([toDirectionPoint isKindOfClass:ILIndoorLocation.class]) {
         [self.directionScene setToText:NSLocalizedString(@"Current location", @"") asPlaceHolder:NO];
+    }
+    [self.directionScene closeToSearch];
+    [self.directionScene setSearchResultsHidden:YES];
+    if ([self shouldStartDirection]) {
+        [self startDirection];
     }
 }
 
@@ -230,7 +264,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
                                                to:self.toDirectionPoint
                                      isAccessible:self.isAccessible success:^(MWZDirection * _Nonnull direction) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            
+            self.state = MWZViewStateDirectionOn;
         });
     } failure:^(NSError * _Nonnull error) {
         // TODO HANDLE DIRECTION NOT FOUND
@@ -361,35 +395,85 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     }
     else if (self.state == MWZViewStateSearchDirectionFrom) {
         [self setFromDirectionPoint:(id<MWZDirectionPoint>)mapwizeObject];
-        [self searchToDirectionTransition];
+        
     }
     else if (self.state == MWZViewStateSearchDirectionTo) {
         [self setToDirectionPoint:(id<MWZDirectionPoint>)mapwizeObject];
-        [self searchToDirectionTransition];
+        
     }
 }
 
 #pragma mark MWZDirectionSceneDelegate
 - (void)directionSceneDidTapOnBackButton:(MWZDirectionScene *)scene {
-    [self directionToDefaultTransition];
+    if (self.state == MWZViewStateSearchDirectionFrom || self.state == MWZViewStateSearchDirectionTo) {
+        [self.directionScene closeFromSearch];
+        [self.directionScene closeToSearch];
+        [self.directionScene setSearchResultsHidden:YES];
+        self.state = MWZViewStateDirectionOff;
+    }
+    else if (self.state == MWZViewStateDirectionOn) {
+        // Stop direction
+        [self directionToDefaultTransition];
+    }
+    else if (self.state == MWZViewStateDirectionOff) {
+        [self directionToDefaultTransition];
+    }
 }
 
 - (void)directionSceneDidTapOnFromButton:(MWZDirectionScene *)scene {
     if ([self.mapView getVenue]) {
-       [self.searchScene showSearchResults:self.mainFroms withLanguage:[self.mapView getLanguage]];
+        self.state = MWZViewStateSearchDirectionFrom;
+        [self.directionScene openFromSearch];
+        [self.directionScene closeToSearch];
+        [self.directionScene setSearchResultsHidden:NO];
+        [self.directionScene showSearchResults:self.mainFroms withLanguage:[self.mapView getLanguage]];
     }
-    [self directionToSearchFromTransition];
 }
 
 - (void)directionSceneDidTapOnToButton:(MWZDirectionScene *)scene {
     if ([self.mapView getVenue]) {
-       [self.searchScene showSearchResults:self.mainSearches withLanguage:[self.mapView getLanguage]];
+        self.state = MWZViewStateSearchDirectionTo;
+        [self.directionScene openToSearch];
+        [self.directionScene closeFromSearch];
+        [self.directionScene setSearchResultsHidden:NO];
+        [self.directionScene showSearchResults:self.mainSearches withLanguage:[self.mapView getLanguage]];
     }
-    [self directionToSearchToTransition];
 }
 
 -(void)directionSceneAccessibilityModeDidChange:(BOOL)isAccessible {
     self.isAccessible = isAccessible;
+}
+
+- (void) searchDirectionQueryDidChange:(NSString*) query {
+    MWZSearchParams* params = [[MWZSearchParams alloc] init];
+    
+    if (self.state == MWZViewStateSearchDirectionTo) {
+        params.venueId = [self.mapView getVenue].identifier;
+        params.objectClass = @[@"place", @"placeList"];
+        if ([query length] == 0) {
+            [self.searchScene showSearchResults:self.mainSearches withLanguage:[self.mapView getLanguage]];
+            return;
+        }
+    }
+    if (self.state == MWZViewStateSearchDirectionFrom) {
+        params.venueId = [self.mapView getVenue].identifier;
+        params.objectClass = @[@"place"];
+        if ([query length] == 0) {
+            [self.searchScene showSearchResults:self.mainFroms withLanguage:[self.mapView getLanguage]];
+            return;
+        }
+    }
+    
+    params.query = query;
+    params.venueIds = self.mapView.mapOptions.restrictContentToVenueIds;
+    
+    [self.mapView.mapwizeApi searchWithSearchParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.directionScene showSearchResults:searchResponse withLanguage:[self.mapView getLanguage]];
+        });
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 @end

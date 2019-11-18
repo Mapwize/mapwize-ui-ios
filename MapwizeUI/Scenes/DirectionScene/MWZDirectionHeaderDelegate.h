@@ -8,6 +8,7 @@
 - (void) directionHeaderDidTapOnFromButton:(MWZDirectionHeader*) directionHeader;
 - (void) directionHeaderDidTapOnToButton:(MWZDirectionHeader*) directionHeader;
 - (void) directionHeaderAccessibilityModeDidChange:(BOOL) isAccessible;
+- (void) searchDirectionQueryDidChange:(NSString*) query;
 
 @end
 

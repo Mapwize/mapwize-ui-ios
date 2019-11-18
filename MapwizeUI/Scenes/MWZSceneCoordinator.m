@@ -40,11 +40,12 @@
         [self.searchScene.backgroundView setAlpha:alpha];
         [self.searchScene.searchQueryBar setAlpha:alpha];
     } completion:^(BOOL finished) {
+        [self.searchScene.searchQueryBar.searchTextField becomeFirstResponder];
         [UIView animateWithDuration:0.3 animations:^{
             self.searchScene.resultContainerViewHeightConstraint.constant = height;
             [self.containerView layoutIfNeeded];
         } completion:^(BOOL finished) {
-            [self.searchScene.searchQueryBar.searchTextField becomeFirstResponder];
+            
             [self.searchScene.searchQueryBar.backButton setUserInteractionEnabled:YES];
         }];
     }];
