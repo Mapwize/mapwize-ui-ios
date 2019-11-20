@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.0.3
+
+- Updating MapwizeSDK to 3.0.10
+
 ## 2.0.2
 
 - Updating MapwizeSDK to 3.0.6
