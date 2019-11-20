@@ -17,6 +17,8 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
 @interface MWZMapViewController ()
 
+@property (nonatomic) MWZOptions* options;
+
 @property (nonatomic) MWZSceneCoordinator* sceneCoordinator;
 @property (nonatomic) MWZSearchScene* searchScene;
 @property (nonatomic) MWZDefaultScene* defaultScene;
@@ -37,17 +39,26 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
 @implementation MWZMapViewController
 
+-(instancetype) initWithOptions:(MWZOptions*) options {
+    self = [super init];
+    if (self) {
+        self.options = options;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initialize];
+    self.options = [[MWZOptions alloc] init];
+    [self initializeWithOptions:self.options];
     [self fetchDefaultVenueSearch];
 }
 
-- (void) initialize {
+- (void) initializeWithOptions:(MWZOptions*) options {
     
-    self.mapView = [[MWZMapView alloc] initWithFrame:self.view.frame options:[[MWZOptions alloc] init]];
+    self.mapView = [[MWZMapView alloc] initWithFrame:self.view.frame options:options];
     self.mapView.delegate = self;
-    self.mapView.autoresizingMask = (UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight);
+    self.mapView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     [self.view addSubview:self.mapView];
 
     self.sceneCoordinator = [[MWZSceneCoordinator alloc] initWithContainerView:self.view];
@@ -251,7 +262,10 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 }
 
 -(BOOL) shouldStartDirection {
-    return (self.state == MWZViewStateDirectionOn || self.state == MWZViewStateDirectionOff)
+    return (self.state == MWZViewStateDirectionOn
+            || self.state == MWZViewStateDirectionOff
+            || self.state == MWZViewStateSearchDirectionFrom
+            || self.state == MWZViewStateSearchDirectionTo)
             && self.fromDirectionPoint && self.toDirectionPoint;
 }
 
@@ -265,6 +279,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
                                      isAccessible:self.isAccessible success:^(MWZDirection * _Nonnull direction) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.state = MWZViewStateDirectionOn;
+            [self.mapView setDirection:direction];
         });
     } failure:^(NSError * _Nonnull error) {
         // TODO HANDLE DIRECTION NOT FOUND
@@ -273,6 +288,9 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
 #pragma mark MWZMapViewDelegate
 - (void)mapView:(MWZMapView *_Nonnull)mapView didTap:(MWZClickEvent *_Nonnull)clickEvent {
+    if (self.state != MWZViewStateDefault) {
+        return;
+    }
     switch (clickEvent.eventType) {
         case MWZClickEventTypeVenueClick:
             [self.mapView centerOnVenuePreview:clickEvent.venuePreview animated:YES];
@@ -409,10 +427,15 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         [self.directionScene closeFromSearch];
         [self.directionScene closeToSearch];
         [self.directionScene setSearchResultsHidden:YES];
-        self.state = MWZViewStateDirectionOff;
+        if ([self.mapView getDirection]) {
+            self.state = MWZViewStateDirectionOn;
+        }
+        else {
+            [self directionToDefaultTransition];
+        }
     }
     else if (self.state == MWZViewStateDirectionOn) {
-        // Stop direction
+        [self.mapView removeDirection];
         [self directionToDefaultTransition];
     }
     else if (self.state == MWZViewStateDirectionOff) {
@@ -431,7 +454,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 }
 
 - (void)directionSceneDidTapOnToButton:(MWZDirectionScene *)scene {
-    if ([self.mapView getVenue]) {
+    if ([self.mapView getVenue] && self.fromDirectionPoint) {
         self.state = MWZViewStateSearchDirectionTo;
         [self.directionScene openToSearch];
         [self.directionScene closeFromSearch];

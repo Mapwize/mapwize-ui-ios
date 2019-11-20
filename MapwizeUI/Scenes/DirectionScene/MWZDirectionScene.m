@@ -5,7 +5,7 @@
 - (void) addTo:(UIView*) view {
     self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
     self.backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.backgroundView.backgroundColor = [UIColor lightGrayColor];
+    self.backgroundView.backgroundColor = [UIColor whiteColor];
     [view addSubview:self.backgroundView];
     
     self.resultList = [[MWZComponentResultList alloc] init];
@@ -90,13 +90,13 @@
                                   attribute:NSLayoutAttributeBottom
                                  multiplier:1.0f
                                    constant:16.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:self.resultList
+    /*[[NSLayoutConstraint constraintWithItem:self.resultList
                                   attribute:NSLayoutAttributeBottom
-                                  relatedBy:NSLayoutRelationEqual
+                                  relatedBy:NSLayoutRelationLessThanOrEqual
                                      toItem:view
                                   attribute:NSLayoutAttributeBottom
                                  multiplier:1.0f
-                                   constant:16.0f] setActive:YES];
+                                   constant:16.0f] setActive:YES];*/
     
     [self setSearchResultsHidden:YES];
     
