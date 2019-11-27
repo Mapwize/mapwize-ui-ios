@@ -259,7 +259,9 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 -(void) setIsAccessible:(BOOL)isAccessible {
     _isAccessible = isAccessible;
     [self.directionScene setAccessibleMode:isAccessible];
-    if ([self shouldStartDirection]) {
+    if (self.state != MWZViewStateSearchDirectionFrom
+        && self.state != MWZViewStateSearchDirectionTo
+        && [self shouldStartDirection]) {
         [self startDirection];
     }
 }
