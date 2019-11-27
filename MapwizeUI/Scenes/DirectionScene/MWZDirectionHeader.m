@@ -481,6 +481,10 @@
                                    constant:88.0f/2 - 16.0f] setActive:YES];
 }
 
+- (void) setSwapButtonHidden:(BOOL) isHidden {
+    [self.swapButton setHidden:isHidden];
+}
+
 - (void) openFromSearch {
     [self.fromLabel setHidden:YES];
     [self.fromTextField setHidden:NO];

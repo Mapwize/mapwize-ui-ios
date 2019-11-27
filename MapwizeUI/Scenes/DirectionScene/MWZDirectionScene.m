@@ -123,6 +123,7 @@
 }
 
 - (void) setSearchResultsHidden:(BOOL) hidden {
+    [self.directionHeader setSwapButtonHidden:!hidden];
     if (hidden) {
         [UIView animateWithDuration:0.5 animations:^{
             [self.backgroundView setTransform:CGAffineTransformMakeTranslation(0,self.backgroundView.superview.frame.size.height)];
