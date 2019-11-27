@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) UIView* backgroundView;
 @property (nonatomic) NSLayoutConstraint* resultContainerViewHeightConstraint;
 
+@property (nonatomic) UIColor* mainColor;
+
 @property (nonatomic, weak) id<MWZSearchSceneDelegate> delegate;
 
 - (void) clearSearch;

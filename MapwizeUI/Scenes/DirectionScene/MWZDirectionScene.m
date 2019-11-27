@@ -2,6 +2,14 @@
 
 @implementation MWZDirectionScene
 
+- (instancetype) initWith:(UIColor*) mainColor {
+    self = [super init];
+    if (self) {
+        _mainColor = mainColor;
+    }
+    return self;
+}
+
 - (void) addTo:(UIView*) view {
     self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
     self.backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -13,7 +21,7 @@
     self.resultList.resultDelegate = self;
     [view addSubview:self.resultList];
     
-    self.directionHeader = [[MWZDirectionHeader alloc] initWithFrame:CGRectZero];
+    self.directionHeader = [[MWZDirectionHeader alloc] initWithFrame:CGRectZero color:self.mainColor];
     self.directionHeader.translatesAutoresizingMaskIntoConstraints = NO;
     self.directionHeader.delegate = self;
     [view addSubview:self.directionHeader];
@@ -123,7 +131,7 @@
 }
 
 - (void) setSearchResultsHidden:(BOOL) hidden {
-    [self.directionHeader setSwapButtonHidden:!hidden];
+    [self.directionHeader setButtonsHidden:!hidden];
     if (hidden) {
         [UIView animateWithDuration:0.5 animations:^{
             [self.backgroundView setTransform:CGAffineTransformMakeTranslation(0,self.backgroundView.superview.frame.size.height)];

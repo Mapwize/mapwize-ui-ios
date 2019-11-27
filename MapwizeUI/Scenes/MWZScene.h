@@ -6,6 +6,8 @@
 
 @protocol MWZScene <NSObject>
 
+- (instancetype) initWith:(UIColor*) mainColor;
+
 - (void) addTo:(UIView*) view;
 - (void) setHidden:(BOOL) hidden;
 

@@ -26,11 +26,11 @@
 
 @implementation MWZDirectionHeader
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame color:(UIColor*) mainColor {
     self = [super initWithFrame:frame];
     if (self) {
-        _color = [UIColor greenColor];
-        _haloColor = [UIColor yellowColor];
+        _color = mainColor;
+        _haloColor = mainColor;
         [self initialize];
         [self setupConstraints];
     }
@@ -113,7 +113,7 @@
     self.toTextField.placeholder = NSLocalizedString(@"Destination",@"");
     self.toTextField.layer.cornerRadius = 10;
     self.toTextField.layer.backgroundColor = [UIColor whiteColor].CGColor;
-    self.toTextField.layer.borderColor = [UIColor greenColor].CGColor;
+    self.toTextField.layer.borderColor = self.color.CGColor;
     self.toTextField.layer.borderWidth = 2;
     self.toTextField.userInteractionEnabled = YES;
     [self addSubview:self.toTextField];
@@ -140,7 +140,7 @@
     self.fromTextField.placeholder = NSLocalizedString(@"Starting point",@"");
     self.fromTextField.layer.cornerRadius = 10;
     self.fromTextField.layer.backgroundColor = [UIColor whiteColor].CGColor;
-    self.fromTextField.layer.borderColor = [UIColor greenColor].CGColor;
+    self.fromTextField.layer.borderColor = self.color.CGColor;
     self.fromTextField.layer.borderWidth = 2;
     [self addSubview:self.fromTextField];
     [self.fromTextField setHidden:YES];
@@ -481,8 +481,10 @@
                                    constant:88.0f/2 - 16.0f] setActive:YES];
 }
 
-- (void) setSwapButtonHidden:(BOOL) isHidden {
+- (void) setButtonsHidden:(BOOL) isHidden {
     [self.swapButton setHidden:isHidden];
+    [self.accessibilityOn setHidden:isHidden];
+    [self.accessibilityOff setHidden:isHidden];
 }
 
 - (void) openFromSearch {

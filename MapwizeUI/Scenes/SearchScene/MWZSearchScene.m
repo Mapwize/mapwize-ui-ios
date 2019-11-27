@@ -3,6 +3,14 @@
 
 @implementation MWZSearchScene
 
+- (instancetype) initWith:(UIColor*) mainColor {
+    self = [super init];
+    if (self) {
+        _mainColor = mainColor;
+    }
+    return self;
+}
+
 - (void)addTo:(UIView *)view {
     self.backgroundView = [[UIView alloc] initWithFrame:view.frame];
     [self.backgroundView setBackgroundColor:[UIColor whiteColor]];

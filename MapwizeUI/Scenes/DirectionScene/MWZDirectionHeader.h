@@ -9,7 +9,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<MWZDirectionHeaderDelegate> delegate;
 
-- (void) setSwapButtonHidden:(BOOL) isHidden;
+- (instancetype)initWithFrame:(CGRect)frame color:(UIColor*) mainColor;
+
+- (void) setButtonsHidden:(BOOL) isHidden;
 - (void) openFromSearch;
 - (void) closeFromSearch;
 - (void) openToSearch;

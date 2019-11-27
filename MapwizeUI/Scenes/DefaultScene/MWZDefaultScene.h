@@ -12,8 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) MWZMapViewMenuBar* menuBar;
 @property (nonatomic) MWZComponentBottomInfoView* bottomInfoView;
+@property (nonatomic) UIColor* mainColor;
 
 @property (nonatomic, weak) id<MWZDefaultSceneDelegate> delegate;
+
+
 
 - (void) setDirectionButtonHidden:(BOOL) isHidden;
 - (void) setSearchBarTitleForVenue:(NSString*) venueName;

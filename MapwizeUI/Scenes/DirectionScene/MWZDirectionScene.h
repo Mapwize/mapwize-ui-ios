@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) MWZComponentResultList* resultList;
 @property (nonatomic) UIView* backgroundView;
 
+@property (nonatomic) UIColor* mainColor;
+
 -(void) setFromText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
 -(void) setToText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
 -(void) setAccessibleMode:(BOOL) isAccessible;

@@ -3,6 +3,14 @@
 
 @implementation MWZDefaultScene
 
+- (instancetype) initWith:(UIColor*) mainColor {
+    self = [super init];
+    if (self) {
+        _mainColor = mainColor;
+    }
+    return self;
+}
+
 - (void)addTo:(UIView *)view {
     self.menuBar = [[MWZMapViewMenuBar alloc] initWithFrame:CGRectZero];
     self.menuBar.translatesAutoresizingMaskIntoConstraints = NO;
@@ -54,7 +62,7 @@
                                        constant:MWZDefaultPadding] setActive:YES];
     }
     
-    self.bottomInfoView = [[MWZComponentBottomInfoView alloc] initWithColor:[UIColor greenColor]];
+    self.bottomInfoView = [[MWZComponentBottomInfoView alloc] initWithColor:self.mainColor];
     self.bottomInfoView.translatesAutoresizingMaskIntoConstraints = NO;
     self.bottomInfoView.delegate = self;
     [view addSubview:self.bottomInfoView];

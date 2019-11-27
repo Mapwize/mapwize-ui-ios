@@ -63,15 +63,15 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
     self.sceneCoordinator = [[MWZSceneCoordinator alloc] initWithContainerView:self.view];
     
-    self.defaultScene = [[MWZDefaultScene alloc] init];
+    self.defaultScene = [[MWZDefaultScene alloc] initWith:self.options.mainColor];
     self.defaultScene.delegate = self;
     self.sceneCoordinator.defaultScene = self.defaultScene;
     
-    self.searchScene = [[MWZSearchScene alloc] init];
+    self.searchScene = [[MWZSearchScene alloc] initWith:self.options.mainColor];
     self.searchScene.delegate = self;
     self.sceneCoordinator.searchScene = self.searchScene;
     
-    self.directionScene = [[MWZDirectionScene alloc] init];
+    self.directionScene = [[MWZDirectionScene alloc] initWith:self.options.mainColor];
     self.directionScene.delegate = self;
     self.sceneCoordinator.directionScene = self.directionScene;
     
@@ -259,9 +259,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 -(void) setIsAccessible:(BOOL)isAccessible {
     _isAccessible = isAccessible;
     [self.directionScene setAccessibleMode:isAccessible];
-    if (self.state != MWZViewStateSearchDirectionFrom
-        && self.state != MWZViewStateSearchDirectionTo
-        && [self shouldStartDirection]) {
+    if ([self shouldStartDirection]) {
         [self startDirection];
     }
 }
