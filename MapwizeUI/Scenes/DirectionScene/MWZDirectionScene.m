@@ -174,6 +174,10 @@
     [_delegate directionSceneDidTapOnToButton:self];
 }
 
+- (void)directionHeaderDidTapOnSwapButton:(MWZDirectionHeader *)directionHeader {
+    [_delegate directionSceneDidTapOnSwapButton:self];
+}
+
 - (void) directionHeaderAccessibilityModeDidChange:(BOOL) isAccessible {
     [_delegate directionSceneAccessibilityModeDidChange:isAccessible];
 }

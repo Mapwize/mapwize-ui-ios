@@ -167,7 +167,7 @@
 
 #pragma mark MWZComponentBottomInfoViewDelegate
 - (void)didPressDirection {
-    
+    [_delegate didTapOnDirectionButton];
 }
 
 - (void)didPressInformation {

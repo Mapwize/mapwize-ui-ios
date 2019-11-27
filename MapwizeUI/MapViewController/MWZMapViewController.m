@@ -259,6 +259,9 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 -(void) setIsAccessible:(BOOL)isAccessible {
     _isAccessible = isAccessible;
     [self.directionScene setAccessibleMode:isAccessible];
+    if ([self shouldStartDirection]) {
+        [self startDirection];
+    }
 }
 
 -(BOOL) shouldStartDirection {
@@ -463,8 +466,18 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     }
 }
 
+- (void) directionSceneDidTapOnSwapButton:(id)directionHeader {
+    id tmpFrom = self.toDirectionPoint;
+    id tmpTo = self.fromDirectionPoint;
+    self.toDirectionPoint = nil;
+    self.fromDirectionPoint = nil;
+    [self setFromDirectionPoint:tmpFrom];
+    [self setToDirectionPoint:tmpTo];
+}
+
 -(void)directionSceneAccessibilityModeDidChange:(BOOL)isAccessible {
-    self.isAccessible = isAccessible;
+    [self setIsAccessible:isAccessible];
+    
 }
 
 - (void) searchDirectionQueryDidChange:(NSString*) query {

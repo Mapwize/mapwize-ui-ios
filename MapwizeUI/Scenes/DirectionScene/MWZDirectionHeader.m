@@ -555,7 +555,7 @@
 }
 
 - (void) swapClick {
-    
+    [_delegate directionHeaderDidTapOnSwapButton:self];
 }
 
 - (void) textFieldDidChange:(UITextField*) textField {
