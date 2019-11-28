@@ -50,6 +50,8 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.options = [[MWZOptions alloc] init];
+    //self.options.centerOnVenueId = @"5db29dc8e1160000167256e2";
+    //self.options.restrictContentToVenueIds = @[@"5db29dc8e1160000167256e2"];
     [self initializeWithOptions:self.options];
     [self fetchDefaultVenueSearch];
 }
@@ -118,6 +120,11 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 - (void) searchToMapTransition {
     self.state = MWZViewStateDefault;
     [self.sceneCoordinator transitionFromSearchToDefault];
+    if (self.selectedContent) {
+        [self.defaultScene showContent:self.selectedContent
+                              language:[self.mapView getLanguage]
+                        showInfoButton:YES];
+    }
 }
 
 - (void) defaultToDirectionTransition {
@@ -126,6 +133,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     [self setToDirectionPoint:(id<MWZDirectionPoint>)self.selectedContent];
     [self setIsAccessible:self.isAccessible];
     [self.sceneCoordinator transitionFromDefaultToDirection];
+    [self.defaultScene hideContent];
     if (self.fromDirectionPoint == nil) {
         self.state = MWZViewStateSearchDirectionFrom;
         [self.directionScene openFromSearch];
@@ -145,7 +153,13 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
 - (void) directionToDefaultTransition {
     self.state = MWZViewStateDefault;
+    [self.directionScene setDirectionInfoHidden:YES];
     [self.sceneCoordinator transitionFromDirectionToDefault];
+    if (self.selectedContent) {
+        [self.defaultScene showContent:self.selectedContent
+                              language:[self.mapView getLanguage]
+                        showInfoButton:YES];
+    }
 }
 
 - (void) directionToSearchFromTransition {
@@ -283,6 +297,10 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.state = MWZViewStateDirectionOn;
             [self.mapView setDirection:direction];
+            [self.directionScene setInfoWith:direction.traveltime
+                           directionDistance:direction.distance
+                                isAccessible:self.isAccessible];
+            [self.directionScene setDirectionInfoHidden:NO];
         });
     } failure:^(NSError * _Nonnull error) {
         // TODO HANDLE DIRECTION NOT FOUND

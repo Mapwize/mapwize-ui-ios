@@ -88,8 +88,6 @@
 		8FA9B35C23688294003A870A /* MWZSearchViewControllerOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9B35A23688294003A870A /* MWZSearchViewControllerOptions.m */; };
 		8FA9B35F236982A3003A870A /* MWZUIConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FA9B35D236982A3003A870A /* MWZUIConstants.h */; };
 		8FA9B360236982A3003A870A /* MWZUIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9B35E236982A3003A870A /* MWZUIConstants.m */; };
-		8FA9B3642369C07B003A870A /* MWZSearchDirectionViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FA9B3622369C07B003A870A /* MWZSearchDirectionViewController.h */; };
-		8FA9B3652369C07B003A870A /* MWZSearchDirectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9B3632369C07B003A870A /* MWZSearchDirectionViewController.m */; };
 		8FA9B3682369CBE2003A870A /* MWZSearchScene.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FA9B3662369CBE2003A870A /* MWZSearchScene.h */; };
 		8FA9B3692369CBE2003A870A /* MWZSearchScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9B3672369CBE2003A870A /* MWZSearchScene.m */; };
 		8FD2D598236AD28400F77DB2 /* MWZSceneCoordinator.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD2D596236AD28400F77DB2 /* MWZSceneCoordinator.h */; };
@@ -192,8 +190,6 @@
 		8FA9B35A23688294003A870A /* MWZSearchViewControllerOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZSearchViewControllerOptions.m; sourceTree = "<group>"; };
 		8FA9B35D236982A3003A870A /* MWZUIConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUIConstants.h; sourceTree = "<group>"; };
 		8FA9B35E236982A3003A870A /* MWZUIConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIConstants.m; sourceTree = "<group>"; };
-		8FA9B3622369C07B003A870A /* MWZSearchDirectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZSearchDirectionViewController.h; sourceTree = "<group>"; };
-		8FA9B3632369C07B003A870A /* MWZSearchDirectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZSearchDirectionViewController.m; sourceTree = "<group>"; };
 		8FA9B3662369CBE2003A870A /* MWZSearchScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZSearchScene.h; sourceTree = "<group>"; };
 		8FA9B3672369CBE2003A870A /* MWZSearchScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZSearchScene.m; sourceTree = "<group>"; };
 		8FD2D5942369DDD700F77DB2 /* MWZDefaultSceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZDefaultSceneDelegate.h; sourceTree = "<group>"; };
@@ -278,7 +274,6 @@
 			children = (
 				8FDEC060236846F2005D12B1 /* MapViewController */,
 				8FD2D595236AD26F00F77DB2 /* Scenes */,
-				8FA9B3612369C044003A870A /* SearchDirectionViewController */,
 				8F86078D219D67AB00281AB7 /* MapwizeView */,
 				8F860789219D67AB00281AB7 /* BottomInfoView */,
 				8F860781219D67AB00281AB7 /* SearchModule */,
@@ -472,15 +467,6 @@
 			path = DirectionScene;
 			sourceTree = "<group>";
 		};
-		8FA9B3612369C044003A870A /* SearchDirectionViewController */ = {
-			isa = PBXGroup;
-			children = (
-				8FA9B3622369C07B003A870A /* MWZSearchDirectionViewController.h */,
-				8FA9B3632369C07B003A870A /* MWZSearchDirectionViewController.m */,
-			);
-			path = SearchDirectionViewController;
-			sourceTree = "<group>";
-		};
 		8FD2D595236AD26F00F77DB2 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
@@ -540,7 +526,6 @@
 				8F8607E3219D67AB00281AB7 /* MWZComponentGroupedResultList.h in Headers */,
 				8F8607D5219D67AB00281AB7 /* MWZSearchData.h in Headers */,
 				8F86080D219D9CBF00281AB7 /* MWZComponentLanguagesButtonDelegate.h in Headers */,
-				8FA9B3642369C07B003A870A /* MWZSearchDirectionViewController.h in Headers */,
 				8FD2D598236AD28400F77DB2 /* MWZSceneCoordinator.h in Headers */,
 				8F8607C6219D67AB00281AB7 /* MWZComponentBottomInfoView.h in Headers */,
 				8F8607C7219D67AB00281AB7 /* MWZComponentBottomInfoViewDelegate.h in Headers */,
@@ -678,7 +663,6 @@
 			files = (
 				8F8607D4219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.m in Sources */,
 				8FA9B3692369CBE2003A870A /* MWZSearchScene.m in Sources */,
-				8FA9B3652369C07B003A870A /* MWZSearchDirectionViewController.m in Sources */,
 				8F8607EB219D67AB00281AB7 /* MWZComponentResultList.m in Sources */,
 				8F8607D3219D67AB00281AB7 /* MWZSearchData.m in Sources */,
 				8FA9B360236982A3003A870A /* MWZUIConstants.m in Sources */,

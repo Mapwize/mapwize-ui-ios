@@ -98,16 +98,71 @@
                                   attribute:NSLayoutAttributeBottom
                                  multiplier:1.0f
                                    constant:16.0f] setActive:YES];
-    /*[[NSLayoutConstraint constraintWithItem:self.resultList
+    
+    self.directionInfo = [[MWZComponentDirectionInfo alloc] initWithColor:self.mainColor];
+    self.directionInfo.translatesAutoresizingMaskIntoConstraints = NO;
+    [view addSubview:self.directionInfo];
+    [[NSLayoutConstraint constraintWithItem:self.directionInfo
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:0.f] setActive:YES];
+    
+    if (@available(iOS 11.0, *)) {
+        [[NSLayoutConstraint constraintWithItem:self.directionInfo
+                                      attribute:NSLayoutAttributeRight
+                                      relatedBy:NSLayoutRelationEqual
+                                         toItem:view
+                                      attribute:NSLayoutAttributeRight
+                                     multiplier:1.0f
+                                       constant:-view.safeAreaInsets.right] setActive:YES];
+    } else {
+        [[NSLayoutConstraint constraintWithItem:self.directionInfo
+                                      attribute:NSLayoutAttributeRight
+                                      relatedBy:NSLayoutRelationEqual
+                                         toItem:view
+                                      attribute:NSLayoutAttributeRight
+                                     multiplier:1.0f
+                                       constant:0] setActive:YES];
+    }
+    
+    if (@available(iOS 11.0, *)) {
+        [[NSLayoutConstraint constraintWithItem:self.directionInfo
+                                      attribute:NSLayoutAttributeLeft
+                                      relatedBy:NSLayoutRelationEqual
+                                         toItem:view
+                                      attribute:NSLayoutAttributeLeft
+                                     multiplier:1.0f
+                                       constant:-view.safeAreaInsets.right] setActive:YES];
+    } else {
+        [[NSLayoutConstraint constraintWithItem:self.directionInfo
+                                      attribute:NSLayoutAttributeLeft
+                                      relatedBy:NSLayoutRelationEqual
+                                         toItem:view
+                                      attribute:NSLayoutAttributeLeft
+                                     multiplier:1.0f
+                                       constant:0] setActive:YES];
+    }
+    
+    [[NSLayoutConstraint constraintWithItem:self.directionInfo
                                   attribute:NSLayoutAttributeBottom
-                                  relatedBy:NSLayoutRelationLessThanOrEqual
+                                  relatedBy:NSLayoutRelationEqual
                                      toItem:view
                                   attribute:NSLayoutAttributeBottom
                                  multiplier:1.0f
-                                   constant:16.0f] setActive:YES];*/
+                                   constant:0.0f] setActive:YES];
     
     [self setSearchResultsHidden:YES];
+    [self setDirectionInfoHidden:YES];
     
+}
+
+- (void) setInfoWith:(double) directionTravelTime
+   directionDistance:(double) directionDistance
+        isAccessible:(BOOL) isAccessible {
+    [self.directionInfo setInfoWith:directionTravelTime directionDistance:directionDistance];
 }
 
 - (void) openFromSearch {
@@ -128,6 +183,27 @@
 
 - (void) showSearchResults:(NSArray<id<MWZObject>>*) results withLanguage:(NSString*) language {
     [self.resultList swapResults:results withLanguage:language];
+}
+
+- (void) setDirectionInfoHidden:(BOOL) hidden {
+    if (hidden) {
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.directionInfo setTransform:CGAffineTransformMakeTranslation(0,self.directionInfo.frame.size.height)];
+        } completion:^(BOOL finished) {
+            [self.directionInfo setHidden:YES];
+        }];
+    }
+    else {
+        if ([self.directionInfo isHidden]) {
+            [self.directionInfo setTransform:CGAffineTransformMakeTranslation(0,self.directionInfo.frame.size.height)];
+            [self.directionInfo setHidden:NO];
+            [UIView animateWithDuration:0.5 animations:^{
+                [self.directionInfo setTransform:CGAffineTransformMakeTranslation(0,0)];
+            } completion:^(BOOL finished) {
+                
+            }];
+        }
+    }
 }
 
 - (void) setSearchResultsHidden:(BOOL) hidden {

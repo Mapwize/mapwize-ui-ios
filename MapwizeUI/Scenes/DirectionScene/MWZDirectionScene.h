@@ -5,6 +5,7 @@
 #import "MWZDirectionSceneDelegate.h"
 #import "MWZComponentResultList.h"
 #import "MWZComponentResultListDelegate.h"
+#import "MWZComponentDirectionInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -13,15 +14,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<MWZDirectionSceneDelegate> delegate;
 @property (nonatomic) MWZDirectionHeader* directionHeader;
+@property (nonatomic) MWZComponentDirectionInfo* directionInfo;
 @property (nonatomic) MWZComponentResultList* resultList;
 @property (nonatomic) UIView* backgroundView;
-
 @property (nonatomic) UIColor* mainColor;
 
--(void) setFromText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
--(void) setToText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
--(void) setAccessibleMode:(BOOL) isAccessible;
+- (void) setFromText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
+- (void) setToText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
+- (void) setAccessibleMode:(BOOL) isAccessible;
+- (void) setInfoWith:(double) directionTravelTime
+   directionDistance:(double) directionDistance
+        isAccessible:(BOOL) isAccessible;
 
+- (void) setDirectionInfoHidden:(BOOL) hidden;
 - (void) openFromSearch;
 - (void) closeFromSearch;
 - (void) openToSearch;
