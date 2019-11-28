@@ -75,6 +75,7 @@
     [self.directionScene.directionHeader setTransform:CGAffineTransformMakeTranslation(0,-self.directionScene.directionHeader.frame.size.height)];
     [UIView animateWithDuration:0.3 animations:^{
         [self.directionScene.directionHeader setTransform:CGAffineTransformMakeTranslation(0,0)];
+        [self.defaultScene.bottomInfoView setTransform:CGAffineTransformMakeTranslation(0,self.defaultScene.bottomInfoView.frame.size.height)];
     } completion:^(BOOL finished) {
         
     }];
@@ -85,6 +86,10 @@
         [self.directionScene.directionHeader setTransform:CGAffineTransformMakeTranslation(0,-self.directionScene.directionHeader.frame.size.height)];
     } completion:^(BOOL finished) {
         [self.directionScene setHidden:YES];
+        [UIView animateWithDuration:0.3 animations:^{
+            [self.defaultScene.bottomInfoView setTransform:CGAffineTransformMakeTranslation(0,0)];
+        } completion:^(BOOL finished) {
+        }];
     }];
 }
 

@@ -6,6 +6,7 @@
 - (instancetype) initWith:(UIColor*) mainColor {
     self = [super init];
     if (self) {
+        _sceneProperties = [[MWZDefaultSceneProperties alloc] init];
         _mainColor = mainColor;
     }
     return self;
@@ -117,6 +118,26 @@
     
 }
 
+- (void) setSceneProperties:(MWZDefaultSceneProperties *)sceneProperties {
+    
+    if (sceneProperties.venue) {
+        [self setSearchBarTitleForVenue:[sceneProperties.venue titleForLanguage:sceneProperties.language]];
+        if (!_sceneProperties.venue) {
+            [self setDirectionButtonHidden:NO];
+        }
+        if (sceneProperties.selectedContent) {
+            [self showContent:sceneProperties.selectedContent
+                     language:sceneProperties.language
+               showInfoButton:sceneProperties.infoButtonHidden];
+        }
+        else if (_sceneProperties.selectedContent) {
+            [self hideContent];
+        }
+    }
+    
+    _sceneProperties = sceneProperties;
+}
+
 - (void) setDirectionButtonHidden:(BOOL) isHidden {
     if (isHidden) {
         [UIView animateWithDuration:0.3 animations:^{
@@ -147,12 +168,18 @@
     [self.menuBar setHidden:hidden];
 }
 
-- (void) showContent:(id<MWZObject>) object language:(NSString*) language showInfoButton:(BOOL) showInfoButton {
+- (void) showContent:(id<MWZObject>) object
+            language:(NSString*) language
+      showInfoButton:(BOOL) showInfoButton {
     if ([object isKindOfClass:MWZPlace.class]) {
-        [self.bottomInfoView selectContentWithPlace:(MWZPlace*)object language:language showInfoButton:showInfoButton];
+        [self.bottomInfoView selectContentWithPlace:(MWZPlace*)object
+                                           language:language
+                                     showInfoButton:showInfoButton];
     }
     if ([object isKindOfClass:MWZPlacelist.class]) {
-        [self.bottomInfoView selectContentWithPlaceList:(MWZPlacelist*)object language:language showInfoButton:showInfoButton];
+        [self.bottomInfoView selectContentWithPlaceList:(MWZPlacelist*)object
+                                               language:language
+                                         showInfoButton:showInfoButton];
     }
 }
 

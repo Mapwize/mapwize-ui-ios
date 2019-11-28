@@ -499,7 +499,6 @@
     }
     NSString* details = [place detailsForLanguage:language];
     [self setContentWithImage:imagePlace title:title subtitle:subtitle details:details showInfoButton:showInfoButton];
-    
 }
 
 - (void) selectContentWithPlaceList:(MWZPlacelist*) placeList language:(NSString*) language showInfoButton:(BOOL) showInfoButton {

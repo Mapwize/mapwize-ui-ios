@@ -4,6 +4,7 @@
 #import "MWZDefaultScene.h"
 #import "MWZDirectionScene.h"
 #import "ILIndoorLocation+DirectionPoint.h"
+#import "MWZDefaultSceneProperties.h"
 
 typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZViewStateDefault,
@@ -50,14 +51,11 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.options = [[MWZOptions alloc] init];
-    //self.options.centerOnVenueId = @"5db29dc8e1160000167256e2";
-    //self.options.restrictContentToVenueIds = @[@"5db29dc8e1160000167256e2"];
     [self initializeWithOptions:self.options];
     [self fetchDefaultVenueSearch];
 }
 
 - (void) initializeWithOptions:(MWZOptions*) options {
-    
     self.mapView = [[MWZMapView alloc] initWithFrame:self.view.frame options:options];
     self.mapView.delegate = self;
     self.mapView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
@@ -120,11 +118,6 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 - (void) searchToMapTransition {
     self.state = MWZViewStateDefault;
     [self.sceneCoordinator transitionFromSearchToDefault];
-    if (self.selectedContent) {
-        [self.defaultScene showContent:self.selectedContent
-                              language:[self.mapView getLanguage]
-                        showInfoButton:YES];
-    }
 }
 
 - (void) defaultToDirectionTransition {
@@ -133,7 +126,6 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     [self setToDirectionPoint:(id<MWZDirectionPoint>)self.selectedContent];
     [self setIsAccessible:self.isAccessible];
     [self.sceneCoordinator transitionFromDefaultToDirection];
-    [self.defaultScene hideContent];
     if (self.fromDirectionPoint == nil) {
         self.state = MWZViewStateSearchDirectionFrom;
         [self.directionScene openFromSearch];
@@ -155,11 +147,6 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     self.state = MWZViewStateDefault;
     [self.directionScene setDirectionInfoHidden:YES];
     [self.sceneCoordinator transitionFromDirectionToDefault];
-    if (self.selectedContent) {
-        [self.defaultScene showContent:self.selectedContent
-                              language:[self.mapView getLanguage]
-                        showInfoButton:YES];
-    }
 }
 
 - (void) directionToSearchFromTransition {
@@ -179,13 +166,20 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
 #pragma mark Content selection
 - (void) hideSelectedContent {
-    [self.defaultScene hideContent];
+    MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
+    defaultProperties.selectedContent = nil;
+    [self.defaultScene setSceneProperties:defaultProperties];
     [self.mapView removeMarkers];
     [self.mapView removePromotedPlaces];
 }
 
 - (void) showSelectedContent {
-    [self.defaultScene showContent:self.selectedContent language:[self.mapView getLanguage] showInfoButton:YES];
+    MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
+    defaultProperties.selectedContent = self.selectedContent;
+    defaultProperties.language = [self.mapView getLanguage];
+    defaultProperties.infoButtonHidden = NO;
+    [self.defaultScene setSceneProperties:defaultProperties];
+    
     if ([self.selectedContent isKindOfClass:MWZPlace.class]) {
         [self.mapView addMarkerOnPlace:(MWZPlace*)self.selectedContent];
         [self.mapView addPromotedPlace:(MWZPlace*)self.selectedContent];
@@ -193,7 +187,9 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 }
 
 - (void) unselectContent {
-    [self.defaultScene hideContent];
+    MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
+    defaultProperties.selectedContent = nil;
+    [self.defaultScene setSceneProperties:defaultProperties];
     [self.mapView removeMarkers];
     [self.mapView removePromotedPlaces];
     self.selectedContent = nil;
@@ -204,10 +200,14 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         [self.mapView removeMarkers];
         [self.mapView removePromotedPlaces];
     }
-    [self.defaultScene showContent:place language:[self.mapView getLanguage] showInfoButton:YES];
     [self.mapView addMarkerOnPlace:place];
     [self.mapView addPromotedPlace:place];
     self.selectedContent = place;
+    MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
+    defaultProperties.selectedContent = self.selectedContent;
+    defaultProperties.language = [self.mapView getLanguage];
+    defaultProperties.infoButtonHidden = NO;
+    [self.defaultScene setSceneProperties:defaultProperties];
 }
 
 - (void) selectPlacePreview:(MWZPlacePreview*) placePreview {
@@ -330,20 +330,16 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 }
 
 - (void)mapView:(MWZMapView *_Nonnull)mapView venueDidEnter:(MWZVenue *_Nonnull)venue {
-    [self.defaultScene setSearchBarTitleForVenue:[venue titleForLanguage:[mapView getLanguage]]];
-    [self.defaultScene setDirectionButtonHidden:NO];
-    if (self.selectedContent) {
-        [self showSelectedContent];
-    }
+    MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
+    defaultProperties.venue = venue;
+    [self.defaultScene setSceneProperties:defaultProperties];
 }
 
 - (void)mapView:(MWZMapView *_Nonnull)mapView venueDidExit:(MWZVenue *_Nonnull)venue {
-    [self.defaultScene setSearchBarTitleForVenue:@""];
-    [self.defaultScene setDirectionButtonHidden:YES];
+    MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
+    defaultProperties.venue = nil;
+    [self.defaultScene setSceneProperties:defaultProperties];
     self.mainSearches = @[];
-    if (self.selectedContent) {
-        [self hideSelectedContent];
-    }
 }
 
 #pragma mark MWZDefaultSceneDelegate
