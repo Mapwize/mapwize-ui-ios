@@ -5,6 +5,7 @@
 #import "MWZDirectionScene.h"
 #import "ILIndoorLocation+DirectionPoint.h"
 #import "MWZDefaultSceneProperties.h"
+#import "MWZComponentFloorController.h"
 
 typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZViewStateDefault,
@@ -19,6 +20,8 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 @interface MWZMapViewController ()
 
 @property (nonatomic) MWZOptions* options;
+
+@property (nonatomic) MWZComponentFloorController* floorController;
 
 @property (nonatomic) MWZSceneCoordinator* sceneCoordinator;
 @property (nonatomic) MWZSearchScene* searchScene;
@@ -75,6 +78,66 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     self.directionScene.delegate = self;
     self.sceneCoordinator.directionScene = self.directionScene;
     
+    [self addFloorController];
+}
+
+- (void) addFloorController {
+    self.floorController = [[MWZComponentFloorController alloc] initWithColor:self.options.mainColor];
+    self.floorController.translatesAutoresizingMaskIntoConstraints = NO;
+    self.floorController.floorControllerDelegate = self;
+    [self.view addSubview:self.floorController];
+    [[NSLayoutConstraint constraintWithItem:self.floorController
+                                  attribute:NSLayoutAttributeWidth
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:96.f] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.floorController
+                                  attribute:NSLayoutAttributeTrailing
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.view
+                                  attribute:NSLayoutAttributeTrailing
+                                 multiplier:1.0f
+                                   constant:0] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.floorController
+                                  attribute:NSLayoutAttributeCenterY
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.view
+                                  attribute:NSLayoutAttributeCenterY
+                                 multiplier:1.0f
+                                   constant:0.0f] setActive:YES];
+    
+    /*if (uiSettings.compassIsHidden) {
+        NSLayoutConstraint* toSearchBarConstraint = [NSLayoutConstraint constraintWithItem:self.floorController
+                                                                                 attribute:NSLayoutAttributeTop
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:self.searchBar
+                                                                                 attribute:NSLayoutAttributeBottom
+                                                                                multiplier:1.0f
+                                                                                  constant:8.0f];
+        toSearchBarConstraint.priority = 999;
+        [toSearchBarConstraint setActive:YES];
+        
+        [[NSLayoutConstraint constraintWithItem:self.floorController
+                                      attribute:NSLayoutAttributeTop
+                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                         toItem:self.directionBar
+                                      attribute:NSLayoutAttributeBottom
+                                     multiplier:1.0f
+                                       constant:8.0f] setActive:YES];
+    }
+    else {
+        [[NSLayoutConstraint constraintWithItem:self.floorController
+                                      attribute:NSLayoutAttributeTop
+                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                         toItem:self.compassView
+                                      attribute:NSLayoutAttributeBottom
+                                     multiplier:1.0f
+                                       constant:8.0f] setActive:YES];
+    }*/
 }
 
 #pragma mark Search initialization
@@ -165,21 +228,12 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 }
 
 #pragma mark Content selection
-- (void) hideSelectedContent {
-    MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
-    defaultProperties.selectedContent = nil;
-    [self.defaultScene setSceneProperties:defaultProperties];
-    [self.mapView removeMarkers];
-    [self.mapView removePromotedPlaces];
-}
-
 - (void) showSelectedContent {
     MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.selectedContent = self.selectedContent;
     defaultProperties.language = [self.mapView getLanguage];
     defaultProperties.infoButtonHidden = NO;
     [self.defaultScene setSceneProperties:defaultProperties];
-    
     if ([self.selectedContent isKindOfClass:MWZPlace.class]) {
         [self.mapView addMarkerOnPlace:(MWZPlace*)self.selectedContent];
         [self.mapView addPromotedPlace:(MWZPlace*)self.selectedContent];
@@ -341,6 +395,24 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     [self.defaultScene setSceneProperties:defaultProperties];
     self.mainSearches = @[];
 }
+
+- (void)mapView:(MWZMapView *)mapView floorsDidChange:(NSArray<MWZFloor *> *)floors {
+    [self.floorController mapwizeFloorsDidChange:floors showController:YES];
+}
+
+- (void)mapView:(MWZMapView *)mapView floorDidChange:(MWZFloor*)floor {
+    [self.floorController mapwizeFloorDidChange:floor];
+}
+
+- (void)mapView:(MWZMapView *)mapView floorWillChange:(MWZFloor*)floor {
+    [self.floorController mapwizeFloorWillChange:floor];
+}
+
+#pragma mark MWZComponentFloorControllerDelegate
+- (void) floorController:(MWZComponentFloorController*) floorController didSelect:(NSNumber*) floorOrder {
+    [self.mapView setFloor:floorOrder];
+}
+
 
 #pragma mark MWZDefaultSceneDelegate
 - (void) didTapOnSearchButton {
@@ -525,5 +597,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         
     }];
 }
+
+
 
 @end

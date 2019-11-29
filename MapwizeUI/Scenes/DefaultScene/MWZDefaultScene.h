@@ -15,13 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) MWZComponentBottomInfoView* bottomInfoView;
 @property (nonatomic) UIColor* mainColor;
 @property (nonatomic, weak) id<MWZDefaultSceneDelegate> delegate;
-
 @property (nonatomic) MWZDefaultSceneProperties* sceneProperties;
-
-/*- (void) setDirectionButtonHidden:(BOOL) isHidden;
-- (void) setSearchBarTitleForVenue:(NSString*) venueName;
-- (void) showContent:(id<MWZObject>) object language:(NSString*) language showInfoButton:(BOOL) showInfoButton;
-- (void) hideContent;*/
 
 @end
 

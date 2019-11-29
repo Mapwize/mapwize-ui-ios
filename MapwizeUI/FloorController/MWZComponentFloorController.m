@@ -76,8 +76,8 @@ const int MWZComponentFloorViewMarginSize = 5;
     if (reversedFloors) {
         for (MWZFloor* floor in reversedFloors) {
             BOOL selected = NO;
-            MWZComponentFloorView* floorView = [[MWZComponentFloorView alloc] initWithFrame:CGRectMake(4, self.yAnchor, MWZComponentFloorViewSize, MWZComponentFloorViewSize) withIsSelected:selected mainColor:_mainColor];
-            floorView.text = [NSString stringWithFormat:@"%@", floor.name];
+            MWZComponentFloorView* floorView = [[MWZComponentFloorView alloc] initWithFrame:CGRectMake(4, self.yAnchor, 96, MWZComponentFloorViewSize) withIsSelected:selected mainColor:_mainColor];
+            floorView.text = [NSString stringWithFormat:@"%@", @"Siham"];//floor.name];
             floorView.floor = floor.number;
             floorView.userInteractionEnabled = YES;
             [self.contentView addSubview:floorView];
@@ -98,33 +98,56 @@ const int MWZComponentFloorViewMarginSize = 5;
     self.lastFrameHeight = self.frame.size.height;
     CGRect contentRect;
     if (self.yAnchor-MWZComponentFloorViewMarginSize < self.frame.size.height) {
-        contentRect = CGRectMake(0, self.frame.size.height-self.yAnchor+MWZComponentFloorViewMarginSize, MWZComponentFloorViewSize + 8, self.yAnchor-MWZComponentFloorViewMarginSize);
+        contentRect = CGRectMake(0, self.frame.size.height-self.yAnchor+MWZComponentFloorViewMarginSize, MWZComponentFloorViewSize, self.yAnchor-MWZComponentFloorViewMarginSize);
     }
     else {
-        contentRect = CGRectMake(0, 0, MWZComponentFloorViewSize + 8, self.yAnchor-MWZComponentFloorViewMarginSize);
+        contentRect = CGRectMake(0, 0, MWZComponentFloorViewSize, self.yAnchor-MWZComponentFloorViewMarginSize);
     }
     self.contentView.frame = contentRect;
     self.contentSize = contentRect.size;
     
     [self scrollRectToVisible:self.selectedView.frame animated:NO];
     
+    self.heightConstraint.constant = self.contentSize.height;
     [self.superview layoutIfNeeded];
-    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+    /*[UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         self.heightConstraint.constant = self.contentSize.height;
         [self.superview layoutIfNeeded];
     } completion:^(BOOL finished) {
         
-    }];
+    }];*/
+    [self show];
+}
+
+- (void) show {
+    for (MWZComponentFloorView* floorView in self.floorViews.reverseObjectEnumerator) {
+        [floorView setTransform:CGAffineTransformMakeTranslation(self.frame.size.width,0)];
+    }
+    float i = 0.0f;
+    for (MWZComponentFloorView* floorView in self.floorViews.reverseObjectEnumerator) {
+        [UIView animateWithDuration:0.2f delay:i options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            [floorView setTransform:CGAffineTransformMakeTranslation(0,0)];
+        } completion:^(BOOL finished) {
+            
+        }];
+        i += 0.05f;
+    }
+
 }
 
 - (void) close {
-    [self.superview layoutIfNeeded];
-    [UIView animateWithDuration:0.3f animations:^{
-        self.heightConstraint.constant = 0;
-        [self.superview layoutIfNeeded];
-    } completion:^(BOOL finished) {
-        
-    }];
+    for (MWZComponentFloorView* floorView in self.floorViews) {
+        [floorView setTransform:CGAffineTransformMakeTranslation(0,0)];
+    }
+    float i = 0.0f;
+    for (MWZComponentFloorView* floorView in self.floorViews) {
+        [UIView animateWithDuration:0.2f delay:i options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            [floorView setTransform:CGAffineTransformMakeTranslation(self.frame.size.width,0)];
+        } completion:^(BOOL finished) {
+            
+        }];
+        i += 0.05f;
+    }
 }
 
 - (void) mapwizeFloorDidChange:(MWZFloor*) floor {

@@ -4,12 +4,14 @@
 #import "MWZDefaultSceneDelegate.h"
 #import "MWZDirectionSceneDelegate.h"
 #import "MWZSceneCoordinator.h"
+#import "MWZComponentFloorControllerDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MWZMapViewController : UIViewController
 <UIViewControllerTransitioningDelegate, MWZSearchSceneDelegate,
-MWZDefaultSceneDelegate, MWZDirectionSceneDelegate, MWZMapViewDelegate>
+MWZDefaultSceneDelegate, MWZDirectionSceneDelegate, MWZMapViewDelegate,
+MWZComponentFloorControllerDelegate>
 
 @property (nonatomic) MWZMapView* mapView;
 

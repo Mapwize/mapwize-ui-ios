@@ -134,6 +134,10 @@
             [self hideContent];
         }
     }
+    else {
+        [self setSearchBarTitleForVenue:nil];
+        [self hideContent];
+    }
     
     _sceneProperties = sceneProperties;
 }
@@ -156,7 +160,7 @@
 }
 
 - (void) setSearchBarTitleForVenue:(NSString*) venueName {
-    if (venueName || venueName.length == 0) {
+    if (venueName && venueName.length > 0) {
         self.menuBar.searchQueryLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Search in %@...", ""), venueName];
     }
     else {
