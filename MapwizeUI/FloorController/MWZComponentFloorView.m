@@ -23,9 +23,6 @@
 
 - (void) drawRect:(CGRect)rect {
     [super drawRect:rect];
-    if (@available(iOS 11.0, *)) {
-        self.layer.maskedCorners = kCALayerMinXMaxYCorner | kCALayerMinXMinYCorner;
-    } 
     self.layer.masksToBounds = false;
     self.layer.cornerRadius = rect.size.height/2;
     self.layer.shadowOpacity = .3f;

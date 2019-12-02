@@ -64,6 +64,8 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     self.mapView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     [self.view addSubview:self.mapView];
 
+    [self addFloorController];
+    
     self.sceneCoordinator = [[MWZSceneCoordinator alloc] initWithContainerView:self.view];
     
     self.defaultScene = [[MWZDefaultScene alloc] initWith:self.options.mainColor];
@@ -77,8 +79,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     self.directionScene = [[MWZDirectionScene alloc] initWith:self.options.mainColor];
     self.directionScene.delegate = self;
     self.sceneCoordinator.directionScene = self.directionScene;
-    
-    [self addFloorController];
+
 }
 
 - (void) addFloorController {
@@ -92,7 +93,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
-                                   constant:60.f] setActive:YES];
+                                   constant:50.f] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.floorController
                                   attribute:NSLayoutAttributeTrailing
@@ -100,7 +101,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
                                      toItem:self.view
                                   attribute:NSLayoutAttributeTrailing
                                  multiplier:1.0f
-                                   constant:0] setActive:YES];
+                                   constant:-6.0f] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.floorController
                                   attribute:NSLayoutAttributeCenterY
@@ -204,10 +205,14 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     else {
         [self startDirection];
     }
+    [self unselectContent];
 }
 
 - (void) directionToDefaultTransition {
     self.state = MWZViewStateDefault;
+    if (self.toDirectionPoint && [self.toDirectionPoint isKindOfClass:MWZPlace.class]) {
+        [self selectPlace:(MWZPlace*)self.toDirectionPoint];
+    }
     [self.directionScene setDirectionInfoHidden:YES];
     [self.sceneCoordinator transitionFromDirectionToDefault];
 }
@@ -273,6 +278,30 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 }
 
 #pragma mark Direction methods
+- (void) promoteDirectionPoints {
+    [self.mapView removePromotedPlaces];
+    if (_toDirectionPoint) {
+        if ([_toDirectionPoint isKindOfClass:MWZPlace.class]) {
+            [self.mapView addPromotedPlace:(MWZPlace*)_toDirectionPoint];
+        }
+        if ([_toDirectionPoint isKindOfClass:MWZPlacelist.class]) {
+            [self.mapView addPromotedPlacelist:(MWZPlacelist*)_toDirectionPoint completionHandler:^(NSArray<MWZPlace *> * _Nonnull places) {
+                
+            }];
+        }
+    }
+    if (_fromDirectionPoint) {
+        if ([_fromDirectionPoint isKindOfClass:MWZPlace.class]) {
+            [self.mapView addPromotedPlace:(MWZPlace*)_fromDirectionPoint];
+        }
+        if ([_fromDirectionPoint isKindOfClass:MWZPlacelist.class]) {
+            [self.mapView addPromotedPlacelist:(MWZPlacelist*)_fromDirectionPoint completionHandler:^(NSArray<MWZPlace *> * _Nonnull places) {
+                
+            }];
+        }
+    }
+}
+
 - (void) setFromDirectionPoint:(id<MWZDirectionPoint>)fromDirectionPoint {
     _fromDirectionPoint = fromDirectionPoint;
     if (fromDirectionPoint == nil) {
@@ -295,22 +324,24 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
             [self.directionScene showSearchResults:self.mainSearches withLanguage:[self.mapView getLanguage]];
         }
         else {
+            self.state = MWZViewStateDirectionOff;
             [self.directionScene setSearchResultsHidden:YES];
         }
     }
+    [self promoteDirectionPoints];
     if ([self shouldStartDirection]) {
         [self startDirection];
     }
 }
 
 - (void) setToDirectionPoint:(id<MWZDirectionPoint>)toDirectionPoint {
+    [self.mapView removeMarkers];
     _toDirectionPoint = toDirectionPoint;
     if (toDirectionPoint == nil) {
         [self.directionScene setToText:NSLocalizedString(@"Destination",@"") asPlaceHolder:YES];
     }
     else if ([toDirectionPoint isKindOfClass:MWZPlace.class]) {
         [self.directionScene setToText:[(MWZPlace*)toDirectionPoint titleForLanguage:[self.mapView getLanguage]] asPlaceHolder:NO];
-        [self selectPlace:(MWZPlace*)toDirectionPoint];
     }
     else if ([toDirectionPoint isKindOfClass:MWZPlacelist.class]) {
         [self.directionScene setToText:[(MWZPlacelist*)toDirectionPoint titleForLanguage:[self.mapView getLanguage]] asPlaceHolder:NO];
@@ -320,6 +351,8 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     }
     [self.directionScene closeToSearch];
     [self.directionScene setSearchResultsHidden:YES];
+    self.state = MWZViewStateDirectionOff;
+    [self promoteDirectionPoints];
     if ([self shouldStartDirection]) {
         [self startDirection];
     }
@@ -350,12 +383,14 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
                                                to:self.toDirectionPoint
                                      isAccessible:self.isAccessible success:^(MWZDirection * _Nonnull direction) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.state = MWZViewStateDirectionOn;
-            [self.mapView setDirection:direction];
-            [self.directionScene setInfoWith:direction.traveltime
-                           directionDistance:direction.distance
-                                isAccessible:self.isAccessible];
-            [self.directionScene setDirectionInfoHidden:NO];
+            if (self.state == MWZViewStateDirectionOn || self.state == MWZViewStateDirectionOff) {
+                self.state = MWZViewStateDirectionOn;
+                [self.mapView setDirection:direction];
+                [self.directionScene setInfoWith:direction.traveltime
+                               directionDistance:direction.distance
+                                    isAccessible:self.isAccessible];
+                [self.directionScene setDirectionInfoHidden:NO];
+            }
         });
     } failure:^(NSError * _Nonnull error) {
         // TODO HANDLE DIRECTION NOT FOUND
@@ -524,11 +559,8 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
             [self directionToDefaultTransition];
         }
     }
-    else if (self.state == MWZViewStateDirectionOn) {
+    else if (self.state == MWZViewStateDirectionOn || self.state == MWZViewStateDirectionOff) {
         [self.mapView removeDirection];
-        [self directionToDefaultTransition];
-    }
-    else if (self.state == MWZViewStateDirectionOff) {
         [self directionToDefaultTransition];
     }
 }

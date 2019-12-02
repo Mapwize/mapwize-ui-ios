@@ -2,13 +2,13 @@
 #import "MWZComponentBorderedTextField.h"
 #import "MWZPaddingLabel.h"
 #import "MWZPaddingTextField.h"
-
-@interface MWZDirectionHeader () <UITextFieldDelegate>
+#import "MWZDirectionModeSegment.h"
+#import "MWZDirectionMode.h"
+#import "MWZDirectionModeSegmentDelegate.h"
+@interface MWZDirectionHeader () <UITextFieldDelegate, MWZDirectionModeSegmentDelegate>
 
 @property (nonatomic) UIButton* backButton;
 @property (nonatomic) UIButton* swapButton;
-@property (nonatomic) UIButton* accessibilityOn;
-@property (nonatomic) UIButton* accessibilityOff;
 @property (nonatomic) MWZPaddingLabel* fromLabel;
 @property (nonatomic) MWZPaddingLabel* toLabel;
 @property (nonatomic) MWZPaddingTextField* fromTextField;
@@ -21,6 +21,7 @@
 @property (nonatomic) UIImage* swapImage;
 @property (nonatomic) UIColor* color;
 @property (nonatomic) UIColor* haloColor;
+@property (nonatomic) MWZDirectionModeSegment* modeControl;
 
 @end
 
@@ -55,31 +56,6 @@
     self.toPictoImageView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.toPictoImageView setImage:[UIImage imageNamed:@"place" inBundle:bundle compatibleWithTraitCollection:nil]];
     [self addSubview:self.toPictoImageView];
-    
-    self.accessibilityOff = [[UIButton alloc] init];
-    self.accessibilityOff.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.accessibilityOff setImage:self.accessibilityOffImage forState:UIControlStateNormal];
-    [self.accessibilityOff.imageView setContentMode:UIViewContentModeScaleAspectFit];
-    CGFloat redComponent = CGColorGetComponents(self.color.CGColor)[0];
-    CGFloat greenComponent = CGColorGetComponents(self.color.CGColor)[1];
-    CGFloat blueComponent = CGColorGetComponents(self.color.CGColor)[2];
-    self.haloColor = [UIColor colorWithRed:redComponent green:greenComponent blue:blueComponent alpha:0.1f];
-    self.accessibilityOff.backgroundColor = self.haloColor;
-    self.accessibilityOff.layer.cornerRadius = 16.0;
-    self.accessibilityOff.layer.masksToBounds = YES;
-    self.accessibilityOff.contentEdgeInsets = UIEdgeInsetsMake(4.f, 4.f, 4.f, 4.f);
-    [self.accessibilityOff addTarget:self action:@selector(setAccessibilityOff) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.accessibilityOff];
-    
-    self.accessibilityOn = [[UIButton alloc] init];
-    self.accessibilityOn.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.accessibilityOn setImage:self.accessibilityOnImage forState:UIControlStateNormal];
-    [self.accessibilityOn.imageView setContentMode:UIViewContentModeScaleAspectFit];
-    self.accessibilityOn.layer.cornerRadius = 16.0;
-    self.accessibilityOn.layer.masksToBounds = YES;
-    self.accessibilityOn.contentEdgeInsets = UIEdgeInsetsMake(4.f, 4.f, 4.f, 4.f);
-    [self.accessibilityOn addTarget:self action:@selector(setAccessibilityOn) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.accessibilityOn];
     
     self.swapButton = [[UIButton alloc] init];
     self.swapButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -145,6 +121,14 @@
     [self addSubview:self.fromTextField];
     [self.fromTextField setHidden:YES];
     [self.fromTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    
+    self.modeControl = [[MWZDirectionModeSegment alloc] initWithItems:@[
+        [[MWZDirectionMode alloc] initWithImage:self.accessibilityOffImage isAccessible:NO],
+        [[MWZDirectionMode alloc] initWithImage:self.accessibilityOnImage isAccessible:YES]
+    ] color:self.color];
+    self.modeControl.delegate = self;
+    self.modeControl.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:self.modeControl];
 }
 
 - (void) didTapOnFrom:(UITapGestureRecognizer*) recognizer {
@@ -375,81 +359,6 @@
                                  multiplier:1.0f
                                    constant:8.0f] setActive:YES];
     
-    ////////////
-    
-    [[NSLayoutConstraint constraintWithItem:self.accessibilityOff
-                                  attribute:NSLayoutAttributeTop
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self.toLabel
-                                  attribute:NSLayoutAttributeBottom
-                                 multiplier:1.0f
-                                   constant:8.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:self.accessibilityOff
-                                  attribute:NSLayoutAttributeBottom
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self
-                                  attribute:NSLayoutAttributeBottom
-                                 multiplier:1.0f
-                                   constant:-8.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:self.accessibilityOff
-                                  attribute:NSLayoutAttributeCenterX
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self.toLabel
-                                  attribute:NSLayoutAttributeCenterX
-                                 multiplier:0.66f
-                                   constant:0.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:self.accessibilityOff
-                                  attribute:NSLayoutAttributeHeight
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:nil
-                                  attribute:NSLayoutAttributeNotAnAttribute
-                                 multiplier:1.0f
-                                   constant:32.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:self.accessibilityOff
-                                  attribute:NSLayoutAttributeWidth
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:nil
-                                  attribute:NSLayoutAttributeNotAnAttribute
-                                 multiplier:1.0f
-                                   constant:72.0f] setActive:YES];
-    
-    [[NSLayoutConstraint constraintWithItem:self.accessibilityOn
-                                  attribute:NSLayoutAttributeTop
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self.toLabel
-                                  attribute:NSLayoutAttributeBottom
-                                 multiplier:1.0f
-                                   constant:8.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:self.accessibilityOn
-                                  attribute:NSLayoutAttributeBottom
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self
-                                  attribute:NSLayoutAttributeBottom
-                                 multiplier:1.0f
-                                   constant:-8.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:self.accessibilityOn
-                                  attribute:NSLayoutAttributeCenterX
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self.fromLabel
-                                  attribute:NSLayoutAttributeCenterX
-                                 multiplier:1.33f
-                                   constant:0.f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:self.accessibilityOn
-                                  attribute:NSLayoutAttributeHeight
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:nil
-                                  attribute:NSLayoutAttributeNotAnAttribute
-                                 multiplier:1.0f
-                                   constant:32.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:self.accessibilityOn
-                                  attribute:NSLayoutAttributeWidth
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:nil
-                                  attribute:NSLayoutAttributeNotAnAttribute
-                                 multiplier:1.0f
-                                   constant:72.0f] setActive:YES];
-    
-    
     [[NSLayoutConstraint constraintWithItem:self.swapButton
                                   attribute:NSLayoutAttributeHeight
                                   relatedBy:NSLayoutRelationEqual
@@ -479,12 +388,48 @@
                                   attribute:NSLayoutAttributeTop
                                  multiplier:1.0f
                                    constant:88.0f/2 - 16.0f] setActive:YES];
+    
+    
+    [[NSLayoutConstraint constraintWithItem:self.modeControl
+                                  attribute:NSLayoutAttributeTop
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.toLabel
+                                  attribute:NSLayoutAttributeBottom
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.modeControl
+                                  attribute:NSLayoutAttributeBottom
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeBottom
+                                 multiplier:1.0f
+                                   constant:-8.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.modeControl
+                                  attribute:NSLayoutAttributeLeft
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeLeft
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.modeControl
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:32.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.modeControl
+                                  attribute:NSLayoutAttributeRight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeRight
+                                 multiplier:1.0f
+                                   constant:-8.0f] setActive:YES];
 }
 
 - (void) setButtonsHidden:(BOOL) isHidden {
     [self.swapButton setHidden:isHidden];
-    [self.accessibilityOn setHidden:isHidden];
-    [self.accessibilityOff setHidden:isHidden];
+    [self.modeControl setHidden:isHidden];
 }
 
 - (void) openFromSearch {
@@ -533,19 +478,12 @@
     }
 }
 
+-(void) directionModeSegment:(MWZDirectionModeSegment *)segment didChangeMode:(MWZDirectionMode *)mode {
+    [_delegate directionHeaderAccessibilityModeDidChange:mode.isAccessible];
+}
+
 -(void) setAccessibleMode:(BOOL) isAccessible {
-    if (isAccessible) {
-        [self.accessibilityOn setTintColor:self.color];
-        [self.accessibilityOff setTintColor:[UIColor blackColor]];
-        self.accessibilityOff.backgroundColor = [UIColor colorWithRed:197.f/255.f green:21.f/255.f blue:134.f/255.f alpha:0.0f];
-        self.accessibilityOn.backgroundColor = self.haloColor;
-    }
-    else {
-        self.accessibilityOff.backgroundColor = self.haloColor;
-        self.accessibilityOn.backgroundColor = [UIColor colorWithRed:197.f/255.f green:21.f/255.f blue:134.f/255.f alpha:0.0f];
-        [self.accessibilityOff setTintColor:self.color];
-        [self.accessibilityOn setTintColor:[UIColor blackColor]];
-    }
+    
 }
 
 - (void) setAccessibilityOn {

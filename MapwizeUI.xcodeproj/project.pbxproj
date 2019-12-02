@@ -78,6 +78,11 @@
 		8F8640D5222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8640D3222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h */; };
 		8F87E07B238FC95A00B18EB1 /* MWZDefaultSceneProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F87E079238FC95A00B18EB1 /* MWZDefaultSceneProperties.h */; };
 		8F87E07C238FC95A00B18EB1 /* MWZDefaultSceneProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F87E07A238FC95A00B18EB1 /* MWZDefaultSceneProperties.m */; };
+		8F87E07F23951A7F00B18EB1 /* MWZDirectionModeSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F87E07D23951A7F00B18EB1 /* MWZDirectionModeSegment.h */; };
+		8F87E08023951A7F00B18EB1 /* MWZDirectionModeSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F87E07E23951A7F00B18EB1 /* MWZDirectionModeSegment.m */; };
+		8F87E0832395416500B18EB1 /* MWZDirectionMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F87E0812395416400B18EB1 /* MWZDirectionMode.h */; };
+		8F87E0842395416500B18EB1 /* MWZDirectionMode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F87E0822395416400B18EB1 /* MWZDirectionMode.m */; };
+		8F87E086239555D800B18EB1 /* MWZDirectionModeSegmentDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F87E085239555D800B18EB1 /* MWZDirectionModeSegmentDelegate.h */; };
 		8F8B14AA237AA67300E03BCE /* MWZDirectionScene.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8B14A8237AA67300E03BCE /* MWZDirectionScene.h */; };
 		8F8B14AB237AA67300E03BCE /* MWZDirectionScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8B14A9237AA67300E03BCE /* MWZDirectionScene.m */; };
 		8F8B14AD237AA6A400E03BCE /* MWZDirectionSceneDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8B14AC237AA6A400E03BCE /* MWZDirectionSceneDelegate.h */; };
@@ -182,6 +187,11 @@
 		8F8640D3222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZComponentTitleWithoutFloorCellTableViewCell.h; sourceTree = "<group>"; };
 		8F87E079238FC95A00B18EB1 /* MWZDefaultSceneProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZDefaultSceneProperties.h; sourceTree = "<group>"; };
 		8F87E07A238FC95A00B18EB1 /* MWZDefaultSceneProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZDefaultSceneProperties.m; sourceTree = "<group>"; };
+		8F87E07D23951A7F00B18EB1 /* MWZDirectionModeSegment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZDirectionModeSegment.h; sourceTree = "<group>"; };
+		8F87E07E23951A7F00B18EB1 /* MWZDirectionModeSegment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZDirectionModeSegment.m; sourceTree = "<group>"; };
+		8F87E0812395416400B18EB1 /* MWZDirectionMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZDirectionMode.h; sourceTree = "<group>"; };
+		8F87E0822395416400B18EB1 /* MWZDirectionMode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZDirectionMode.m; sourceTree = "<group>"; };
+		8F87E085239555D800B18EB1 /* MWZDirectionModeSegmentDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZDirectionModeSegmentDelegate.h; sourceTree = "<group>"; };
 		8F8B14A8237AA67300E03BCE /* MWZDirectionScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZDirectionScene.h; sourceTree = "<group>"; };
 		8F8B14A9237AA67300E03BCE /* MWZDirectionScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZDirectionScene.m; sourceTree = "<group>"; };
 		8F8B14AC237AA6A400E03BCE /* MWZDirectionSceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZDirectionSceneDelegate.h; sourceTree = "<group>"; };
@@ -469,6 +479,11 @@
 				8F8B14AE237AA87C00E03BCE /* MWZDirectionHeader.h */,
 				8F8B14AF237AA87C00E03BCE /* MWZDirectionHeader.m */,
 				8F8B14B2237AB80200E03BCE /* MWZDirectionHeaderDelegate.h */,
+				8F87E07D23951A7F00B18EB1 /* MWZDirectionModeSegment.h */,
+				8F87E07E23951A7F00B18EB1 /* MWZDirectionModeSegment.m */,
+				8F87E0812395416400B18EB1 /* MWZDirectionMode.h */,
+				8F87E0822395416400B18EB1 /* MWZDirectionMode.m */,
+				8F87E085239555D800B18EB1 /* MWZDirectionModeSegmentDelegate.h */,
 			);
 			path = DirectionScene;
 			sourceTree = "<group>";
@@ -531,6 +546,7 @@
 				C6B8D573222679EC00A3AD82 /* MWZUIOptions.h in Headers */,
 				8F8607E3219D67AB00281AB7 /* MWZComponentGroupedResultList.h in Headers */,
 				8F8607D5219D67AB00281AB7 /* MWZSearchData.h in Headers */,
+				8F87E07F23951A7F00B18EB1 /* MWZDirectionModeSegment.h in Headers */,
 				8F86080D219D9CBF00281AB7 /* MWZComponentLanguagesButtonDelegate.h in Headers */,
 				8FD2D598236AD28400F77DB2 /* MWZSceneCoordinator.h in Headers */,
 				8F8607C6219D67AB00281AB7 /* MWZComponentBottomInfoView.h in Headers */,
@@ -544,6 +560,7 @@
 				8FD2D59B236AD37200F77DB2 /* MWZScene.h in Headers */,
 				8F8607D8219D67AB00281AB7 /* MWZComponentDirectionBar.h in Headers */,
 				8FDEC05E23684005005D12B1 /* MWZSearchQueryBar.h in Headers */,
+				8F87E0832395416500B18EB1 /* MWZDirectionMode.h in Headers */,
 				8F860817219DC5F200281AB7 /* MWZComponentColors.h in Headers */,
 				8F8607CD219D67AB00281AB7 /* MWZComponentCurrentLocationView.h in Headers */,
 				8F8607D6219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.h in Headers */,
@@ -566,6 +583,7 @@
 				8F8607DD219D67AB00281AB7 /* MWZComponentUniversesButtonDelegate.h in Headers */,
 				8F8607BF219D67AB00281AB7 /* MWZComponentSearchBar.h in Headers */,
 				8F8607ED219D67AB00281AB7 /* MWZComponentFloorController.h in Headers */,
+				8F87E086239555D800B18EB1 /* MWZDirectionModeSegmentDelegate.h in Headers */,
 				8FA9B3682369CBE2003A870A /* MWZSearchScene.h in Headers */,
 				8F8607D7219D67AB00281AB7 /* MWZComponentDirectionInfo.h in Headers */,
 				8FA9B35F236982A3003A870A /* MWZUIConstants.h in Headers */,
@@ -682,6 +700,7 @@
 				8F8607DA219D67AB00281AB7 /* MWZComponentDirectionBar.m in Sources */,
 				8F74A7F42382DEE80036B830 /* MWZPaddingTextField.m in Sources */,
 				8F8640D4222831140043E9E5 /* MWZComponentTitleWithoutFloorCellTableViewCell.m in Sources */,
+				8F87E08023951A7F00B18EB1 /* MWZDirectionModeSegment.m in Sources */,
 				8F8607E6219D67AB00281AB7 /* MWZComponentSubtitleCell.m in Sources */,
 				8F8607CB219D67AB00281AB7 /* MWZComponentIconTextButton.m in Sources */,
 				8F8607F0219D67AB00281AB7 /* MWZComponentFloorView.m in Sources */,
@@ -700,6 +719,7 @@
 				8FDEC06F23687C3F005D12B1 /* MWZMapViewMenuBar.m in Sources */,
 				8F860818219DC5F200281AB7 /* MWZComponentColors.m in Sources */,
 				8F8607C4219D67AB00281AB7 /* MWZComponentCompass.m in Sources */,
+				8F87E0842395416500B18EB1 /* MWZDirectionMode.m in Sources */,
 				8F8607C5219D67AB00281AB7 /* MWZComponentBottomInfoView.m in Sources */,
 				8F8607EF219D67AB00281AB7 /* MWZComponentFloorController.m in Sources */,
 				8FDEC05F23684005005D12B1 /* MWZSearchQueryBar.m in Sources */,
