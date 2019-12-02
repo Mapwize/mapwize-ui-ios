@@ -92,7 +92,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
-                                   constant:96.f] setActive:YES];
+                                   constant:60.f] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.floorController
                                   attribute:NSLayoutAttributeTrailing
@@ -310,6 +310,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     }
     else if ([toDirectionPoint isKindOfClass:MWZPlace.class]) {
         [self.directionScene setToText:[(MWZPlace*)toDirectionPoint titleForLanguage:[self.mapView getLanguage]] asPlaceHolder:NO];
+        [self selectPlace:(MWZPlace*)toDirectionPoint];
     }
     else if ([toDirectionPoint isKindOfClass:MWZPlacelist.class]) {
         [self.directionScene setToText:[(MWZPlacelist*)toDirectionPoint titleForLanguage:[self.mapView getLanguage]] asPlaceHolder:NO];

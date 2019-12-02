@@ -128,7 +128,7 @@
         if (sceneProperties.selectedContent) {
             [self showContent:sceneProperties.selectedContent
                      language:sceneProperties.language
-               showInfoButton:sceneProperties.infoButtonHidden];
+               showInfoButton:!sceneProperties.infoButtonHidden];
         }
         else if (_sceneProperties.selectedContent) {
             [self hideContent];

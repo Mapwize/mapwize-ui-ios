@@ -115,7 +115,7 @@
     
     self.searchTextField = [[UITextField alloc] init];
     self.searchTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    self.searchTextField.textColor = [UIColor lightGrayColor];
+    //self.searchTextField.textColor = [UIColor lightGrayColor];
     self.searchTextField.placeholder = NSLocalizedString(@"Search", "");
     self.searchTextField.delegate = self;
     [self.searchTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];

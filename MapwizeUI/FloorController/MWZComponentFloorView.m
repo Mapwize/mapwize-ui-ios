@@ -37,11 +37,11 @@
 - (void) setPreselected:(BOOL) preselected {
     if (preselected) {
         //self.layer.backgroundColor = [UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:1.0f].CGColor;
-        [self addHaloLayer];
+        //[self addHaloLayer];
     }
     else {
         self.layer.backgroundColor = [UIColor whiteColor].CGColor;
-        [self removeHaloLayer];
+        //[self removeHaloLayer];
     }
     self.layer.masksToBounds = false;
     self.layer.shadowOpacity = .3f;

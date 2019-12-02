@@ -3,8 +3,9 @@
 
 @import MapwizeSDK;
 
-const int MWZComponentFloorViewSize = 40;
-const int MWZComponentFloorViewMarginSize = 5;
+const int MWZComponentFloorViewWidth = 60;
+const int MWZComponentFloorViewHeight = 40;
+const int MWZComponentFloorViewMarginSize = 4;
 
 @interface MWZComponentFloorController ()
 
@@ -76,8 +77,8 @@ const int MWZComponentFloorViewMarginSize = 5;
     if (reversedFloors) {
         for (MWZFloor* floor in reversedFloors) {
             BOOL selected = NO;
-            MWZComponentFloorView* floorView = [[MWZComponentFloorView alloc] initWithFrame:CGRectMake(4, self.yAnchor, 96, MWZComponentFloorViewSize) withIsSelected:selected mainColor:_mainColor];
-            floorView.text = [NSString stringWithFormat:@"%@", @"Siham"];//floor.name];
+            MWZComponentFloorView* floorView = [[MWZComponentFloorView alloc] initWithFrame:CGRectMake(4, self.yAnchor, MWZComponentFloorViewWidth, MWZComponentFloorViewHeight) withIsSelected:selected mainColor:_mainColor];
+            floorView.text = [NSString stringWithFormat:@"%@", floor.name];
             floorView.floor = floor.number;
             floorView.userInteractionEnabled = YES;
             [self.contentView addSubview:floorView];
@@ -89,7 +90,7 @@ const int MWZComponentFloorViewMarginSize = 5;
             if (selected) {
                 self.selectedView = floorView;
             }
-            self.yAnchor += MWZComponentFloorViewSize + MWZComponentFloorViewMarginSize;
+            self.yAnchor += MWZComponentFloorViewHeight + MWZComponentFloorViewMarginSize;
         }
     }
     
@@ -98,10 +99,10 @@ const int MWZComponentFloorViewMarginSize = 5;
     self.lastFrameHeight = self.frame.size.height;
     CGRect contentRect;
     if (self.yAnchor-MWZComponentFloorViewMarginSize < self.frame.size.height) {
-        contentRect = CGRectMake(0, self.frame.size.height-self.yAnchor+MWZComponentFloorViewMarginSize, MWZComponentFloorViewSize, self.yAnchor-MWZComponentFloorViewMarginSize);
+        contentRect = CGRectMake(0, self.frame.size.height-self.yAnchor+MWZComponentFloorViewMarginSize, MWZComponentFloorViewHeight, self.yAnchor-MWZComponentFloorViewMarginSize);
     }
     else {
-        contentRect = CGRectMake(0, 0, MWZComponentFloorViewSize, self.yAnchor-MWZComponentFloorViewMarginSize);
+        contentRect = CGRectMake(0, 0, MWZComponentFloorViewHeight, self.yAnchor-MWZComponentFloorViewMarginSize);
     }
     self.contentView.frame = contentRect;
     self.contentSize = contentRect.size;
@@ -110,12 +111,6 @@ const int MWZComponentFloorViewMarginSize = 5;
     
     self.heightConstraint.constant = self.contentSize.height;
     [self.superview layoutIfNeeded];
-    /*[UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        self.heightConstraint.constant = self.contentSize.height;
-        [self.superview layoutIfNeeded];
-    } completion:^(BOOL finished) {
-        
-    }];*/
     [self show];
 }
 
@@ -181,10 +176,10 @@ const int MWZComponentFloorViewMarginSize = 5;
     if (self.lastFrameHeight != self.frame.size.height) {
         CGRect contentRect;
         if (self.frame.size.height > self.yAnchor - MWZComponentFloorViewMarginSize) {
-            contentRect = CGRectMake(0, self.frame.size.height-self.yAnchor+MWZComponentFloorViewMarginSize, MWZComponentFloorViewSize + 8, self.yAnchor-MWZComponentFloorViewMarginSize);
+            contentRect = CGRectMake(0, self.frame.size.height-self.yAnchor+MWZComponentFloorViewMarginSize, MWZComponentFloorViewHeight + 8, self.yAnchor-MWZComponentFloorViewMarginSize);
         }
         else {
-            contentRect = CGRectMake(0, 0, MWZComponentFloorViewSize + 8, self.yAnchor-MWZComponentFloorViewMarginSize);
+            contentRect = CGRectMake(0, 0, MWZComponentFloorViewHeight + 8, self.yAnchor-MWZComponentFloorViewMarginSize);
         }
         self.contentSize = contentRect.size;
         self.contentView.frame = contentRect;
