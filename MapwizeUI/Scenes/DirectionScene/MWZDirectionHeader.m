@@ -59,12 +59,14 @@
     
     self.swapButton = [[UIButton alloc] init];
     self.swapButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.swapButton addTarget:self action:@selector(clickDown:) forControlEvents:UIControlEventTouchDown];
     [self.swapButton addTarget:self action:@selector(swapClick) forControlEvents:UIControlEventTouchUpInside];
     [self.swapButton setImage:self.swapImage forState:UIControlStateNormal];
     [self addSubview:self.swapButton];
     
     self.backButton = [[UIButton alloc] init];
     self.backButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.backButton addTarget:self action:@selector(clickDown:) forControlEvents:UIControlEventTouchDown];
     [self.backButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
     [self.backButton setImage:self.backImage forState:UIControlStateNormal];
     [self addSubview:self.backButton];
@@ -496,6 +498,14 @@
 
 - (void) backClick {
     [_delegate directionHeaderDidTapOnBackButton:self];
+}
+
+- (void) clickDown:(UIButton*) sender {
+    [UIButton animateWithDuration:0.2 animations:^{
+        [sender setTransform:CGAffineTransformMakeScale(0.9, 0.9)];
+    } completion:^(BOOL finished) {
+        [sender setTransform:CGAffineTransformIdentity];
+    }];
 }
 
 - (void) swapClick {
