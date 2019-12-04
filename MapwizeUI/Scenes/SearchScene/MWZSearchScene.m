@@ -177,7 +177,7 @@
         [_resultContainerViewHeightConstraint setActive:YES];
     }
     
-    self.resultList = [[MWZComponentResultList alloc] init];
+    self.resultList = [[MWZComponentGroupedResultList alloc] init];
     self.resultList.resultDelegate = self;
     self.resultList.translatesAutoresizingMaskIntoConstraints = NO;
     [self.resultContainerView addSubview:self.resultList];
@@ -262,11 +262,24 @@
 
 - (void) clearSearch {
     [self.searchQueryBar.searchTextField setText:@""];
-    [self.resultList swapResults:@[] withLanguage:@""];
+    [self showSearchResults:@[]
+                  universes:@[]
+             activeUniverse:[[MWZUniverse alloc] init]
+               withLanguage:@"en"];
 }
 
-- (void)showSearchResults:(NSArray<id<MWZObject>>*) results withLanguage:(NSString*) language {
-    [self.resultList swapResults:results withLanguage:language];
+- (void) showResults:(NSArray<id<MWZObject>> *)results withLanguage:(NSString *)language {
+    [self.resultList swapResults:results language:language];
+}
+
+- (void) showSearchResults:(NSArray<id<MWZObject>>*) results
+                 universes:(NSArray<MWZUniverse*>*) universes
+            activeUniverse:(MWZUniverse*) activeUniverse
+              withLanguage:(NSString*) language {
+    [self.resultList swapResults:results
+                       universes:universes
+                  activeUniverse:activeUniverse
+                        language:language];
 }
 
 #pragma mark MWZSearchQueryBarDelegate
@@ -279,8 +292,8 @@
 }
 
 #pragma mark MWZComponentResultListDelegate
-- (void)didSelect:(id<MWZObject>)mapwizeObject {
-    [_delegate didSelect:mapwizeObject];
+- (void)didSelect:(id<MWZObject>)mapwizeObject universe:(MWZUniverse *)universe {
+    [_delegate didSelect:mapwizeObject universe:universe];
 }
 
 @end

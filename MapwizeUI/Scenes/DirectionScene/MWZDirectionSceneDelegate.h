@@ -2,6 +2,7 @@
 #define MWZDirectionSceneDelegate_h
 
 @class MWZDirectionScene;
+@class MWZUniverse;
 @protocol MWZObject;
 
 @protocol MWZDirectionSceneDelegate <NSObject>
@@ -12,7 +13,7 @@
 - (void) directionSceneDidTapOnSwapButton:(MWZDirectionScene*) scene;
 - (void) directionSceneAccessibilityModeDidChange:(BOOL) isAccessible;
 - (void) searchDirectionQueryDidChange:(NSString*) query;
-- (void) didSelect:(id<MWZObject>)mapwizeObject;
+- (void) didSelect:(id<MWZObject>)mapwizeObject universe:(MWZUniverse*) universe;
 
 @end
 

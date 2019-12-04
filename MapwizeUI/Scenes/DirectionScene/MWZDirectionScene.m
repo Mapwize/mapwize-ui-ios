@@ -14,13 +14,7 @@
     self.topConstraintView = [[UIView alloc] init];
     self.topConstraintView.translatesAutoresizingMaskIntoConstraints = NO;
     [view addSubview:self.topConstraintView];
-    /*[NSLayoutConstraint constraintWithItem:self.topConstraintView
-                                 attribute:NSLayoutAttributeTop
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:view
-                                 attribute:NSLayoutAttributeTop
-                                multiplier:1.0f
-                                  constant:0.0f]*/
+    
     self.topConstraintViewMarginTop = [NSLayoutConstraint constraintWithItem:self.topConstraintView
                                                                    attribute:NSLayoutAttributeTop
                                                                    relatedBy:NSLayoutRelationEqual
@@ -35,7 +29,7 @@
     self.backgroundView.backgroundColor = [UIColor whiteColor];
     [view addSubview:self.backgroundView];
     
-    self.resultList = [[MWZComponentResultList alloc] init];
+    self.resultList = [[MWZComponentGroupedResultList alloc] init];
     self.resultList.translatesAutoresizingMaskIntoConstraints = NO;
     self.resultList.resultDelegate = self;
     [view addSubview:self.resultList];
@@ -174,7 +168,6 @@
                                    constant:0.0f] setActive:YES];
     
     [self setSearchResultsHidden:YES];
-    [self setDirectionInfoHidden:YES];
     
 }
 
@@ -208,8 +201,14 @@
     [self.directionHeader closeToSearch];
 }
 
-- (void) showSearchResults:(NSArray<id<MWZObject>>*) results withLanguage:(NSString*) language {
-    [self.resultList swapResults:results withLanguage:language];
+- (void) showSearchResults:(NSArray<id<MWZObject>>*) results
+                 universes:(NSArray<MWZUniverse*>*) universes
+            activeUniverse:(MWZUniverse*) activeUniverse
+              withLanguage:(NSString*) language {
+    [self.resultList swapResults:results
+                       universes:universes
+                  activeUniverse:activeUniverse
+                        language:language];
 }
 
 - (void) setDirectionInfoHidden:(BOOL) hidden {
@@ -299,8 +298,8 @@
     [_delegate searchDirectionQueryDidChange:query];
 }
 
-- (void)didSelect:(id<MWZObject>)mapwizeObject {
-    [_delegate didSelect:mapwizeObject];
+- (void)didSelect:(id<MWZObject>)mapwizeObject universe:(MWZUniverse *)universe {
+    [_delegate didSelect:mapwizeObject universe:universe];
 }
 
 @end

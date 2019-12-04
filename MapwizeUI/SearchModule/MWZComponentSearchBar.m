@@ -374,7 +374,7 @@
 
 - (void) loadEmptySearch {
     if ([self.delegate componentRequiresCurrentVenue:self]) {
-        [self.resultList swapResults:self.searchData.mainSearch universes:self.searchData.accessibleUniverses activeUniverse:[self.delegate componentRequiresCurrentUniverse:self]];
+        /*[self.resultList swapResults:self.searchData.mainSearch universes:self.searchData.accessibleUniverses activeUniverse:[self.delegate componentRequiresCurrentUniverse:self]];*/
     }
     else {
         //[self.venueResultList swapResults:self.searchData.venues];
@@ -391,7 +391,7 @@
         params.objectClass = @[@"place", @"placeList"];
         [self.mapwizeApi searchWithSearchParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.resultList swapResults:searchResponse universes:self.searchData.accessibleUniverses activeUniverse:[self.delegate componentRequiresCurrentUniverse:self]];
+                /*[self.resultList swapResults:searchResponse universes:self.searchData.accessibleUniverses activeUniverse:[self.delegate componentRequiresCurrentUniverse:self]];*/
                 [self.delegate didStopLoading];
             });
         } failure:^(NSError *error) {

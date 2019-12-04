@@ -2,7 +2,7 @@
 
 @implementation MWZSceneCoordinator
 
--(instancetype) initWithContainerView:(UIView*) containerView {
+-(instancetype) initWithContainerView:(UIView*)containerView {
     self = [super init];
     if (self) {
         _containerView = containerView;
@@ -90,12 +90,9 @@
         self.directionScene.topConstraintViewMarginTop.constant = 0.0f;
         [self.directionScene.directionHeader setTransform:CGAffineTransformMakeTranslation(0,-self.directionScene.directionHeader.frame.size.height)];
         [self.containerView layoutIfNeeded];
+        [self.defaultScene.bottomInfoView setTransform:CGAffineTransformMakeTranslation(0,0)];
     } completion:^(BOOL finished) {
         [self.directionScene setHidden:YES];
-        [UIView animateWithDuration:0.3 animations:^{
-            [self.defaultScene.bottomInfoView setTransform:CGAffineTransformMakeTranslation(0,0)];
-        } completion:^(BOOL finished) {
-        }];
     }];
 }
 

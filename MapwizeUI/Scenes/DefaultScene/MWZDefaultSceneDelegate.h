@@ -6,6 +6,7 @@
 - (void) didTapOnSearchButton;
 - (void) didTapOnMenuButton;
 - (void) didTapOnDirectionButton;
+- (void) didTapOnInformationButton;
 
 @end
 

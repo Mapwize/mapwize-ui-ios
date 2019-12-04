@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <MapwizeSDK/MapwizeSDK.h>
+#import "MWZMapViewControllerDelegate.h"
 #import "MWZSearchSceneDelegate.h"
 #import "MWZDefaultSceneDelegate.h"
 #import "MWZDirectionSceneDelegate.h"
@@ -20,6 +21,7 @@ MWZComponentFollowUserButtonDelegate, MGLMapViewDelegate,
 MWZComponentUniversesButtonDelegate,MWZComponentLanguagesButtonDelegate>
 
 @property (nonatomic) MWZMapView* mapView;
+@property (nonatomic, weak) id<MWZMapViewControllerDelegate> delegate;
 
 @end
 

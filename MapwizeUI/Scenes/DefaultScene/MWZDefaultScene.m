@@ -217,7 +217,7 @@
 }
 
 - (void)didPressInformation {
-    
+    [_delegate didTapOnInformationButton];
 }
 
 @end

@@ -4,20 +4,21 @@
 #import "MWZScene.h"
 #import "MWZDirectionSceneDelegate.h"
 #import "MWZComponentResultList.h"
-#import "MWZComponentResultListDelegate.h"
+#import "MWZComponentGroupedResultListDelegate.h"
 #import "MWZComponentDirectionInfo.h"
+#import "MWZComponentGroupedResultList.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 
-@interface MWZDirectionScene : NSObject <MWZScene, MWZDirectionHeaderDelegate, MWZComponentResultListDelegate>
+@interface MWZDirectionScene : NSObject <MWZScene, MWZDirectionHeaderDelegate, MWZComponentGroupedResultListDelegate>
 
 @property (nonatomic, weak) id<MWZDirectionSceneDelegate> delegate;
 @property (nonatomic) UIView* topConstraintView;
 @property (nonatomic) NSLayoutConstraint* topConstraintViewMarginTop;
 @property (nonatomic) MWZDirectionHeader* directionHeader;
 @property (nonatomic) MWZComponentDirectionInfo* directionInfo;
-@property (nonatomic) MWZComponentResultList* resultList;
+@property (nonatomic) MWZComponentGroupedResultList* resultList;
 @property (nonatomic) UIView* backgroundView;
 @property (nonatomic) UIColor* mainColor;
 
@@ -33,7 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) closeFromSearch;
 - (void) openToSearch;
 - (void) closeToSearch;
-- (void) showSearchResults:(NSArray<id<MWZObject>>*) results withLanguage:(NSString*) language;
+- (void) showSearchResults:(NSArray<id<MWZObject>>*) results
+                 universes:(NSArray<MWZUniverse*>*) universes
+            activeUniverse:(MWZUniverse*) activeUniverse
+              withLanguage:(NSString*) language;
 - (void) setSearchResultsHidden:(BOOL) hidden;
 
 @end
