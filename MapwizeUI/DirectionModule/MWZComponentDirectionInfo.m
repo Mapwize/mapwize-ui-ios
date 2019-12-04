@@ -263,7 +263,7 @@
     for (NSLayoutConstraint* c in self.constraints) {
         if (c.firstAttribute == NSLayoutAttributeHeight) {
             [self.superview layoutIfNeeded];
-            [UIView animateWithDuration:0.3 animations:^{
+            [UIView animateWithDuration:0.5 animations:^{
                 c.constant = height;
                 [self.superview layoutIfNeeded];
                 [self layoutIfNeeded];

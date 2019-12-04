@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MWZDirectionScene : NSObject <MWZScene, MWZDirectionHeaderDelegate, MWZComponentResultListDelegate>
 
 @property (nonatomic, weak) id<MWZDirectionSceneDelegate> delegate;
+@property (nonatomic) UIView* topConstraintView;
+@property (nonatomic) NSLayoutConstraint* topConstraintViewMarginTop;
 @property (nonatomic) MWZDirectionHeader* directionHeader;
 @property (nonatomic) MWZComponentDirectionInfo* directionInfo;
 @property (nonatomic) MWZComponentResultList* resultList;

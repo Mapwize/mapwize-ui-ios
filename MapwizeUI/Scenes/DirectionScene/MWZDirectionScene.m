@@ -11,6 +11,25 @@
 }
 
 - (void) addTo:(UIView*) view {
+    self.topConstraintView = [[UIView alloc] init];
+    self.topConstraintView.translatesAutoresizingMaskIntoConstraints = NO;
+    [view addSubview:self.topConstraintView];
+    /*[NSLayoutConstraint constraintWithItem:self.topConstraintView
+                                 attribute:NSLayoutAttributeTop
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:view
+                                 attribute:NSLayoutAttributeTop
+                                multiplier:1.0f
+                                  constant:0.0f]*/
+    self.topConstraintViewMarginTop = [NSLayoutConstraint constraintWithItem:self.topConstraintView
+                                                                   attribute:NSLayoutAttributeTop
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:view
+                                                                   attribute:NSLayoutAttributeTop
+                                                                  multiplier:1.0f
+                                                                    constant:0.0f];
+    [self.topConstraintViewMarginTop setActive:YES];
+    
     self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
     self.backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
     self.backgroundView.backgroundColor = [UIColor whiteColor];
@@ -159,6 +178,14 @@
     
 }
 
+- (UIView*) getTopViewToConstraint {
+    return self.topConstraintView;
+}
+
+- (UIView*) getBottomViewToConstraint {
+    return self.directionInfo;
+}
+
 - (void) setInfoWith:(double) directionTravelTime
    directionDistance:(double) directionDistance
         isAccessible:(BOOL) isAccessible {
@@ -187,11 +214,12 @@
 
 - (void) setDirectionInfoHidden:(BOOL) hidden {
     if (hidden) {
-        [UIView animateWithDuration:0.5 animations:^{
+        [self.directionInfo close];
+        /*[UIView animateWithDuration:0.5 animations:^{
             [self.directionInfo setTransform:CGAffineTransformMakeTranslation(0,self.directionInfo.frame.size.height)];
         } completion:^(BOOL finished) {
             [self.directionInfo setHidden:YES];
-        }];
+        }];*/
     }
     else {
         if ([self.directionInfo isHidden]) {

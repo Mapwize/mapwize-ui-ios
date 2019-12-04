@@ -6,6 +6,10 @@
 #import "ILIndoorLocation+DirectionPoint.h"
 #import "MWZDefaultSceneProperties.h"
 #import "MWZComponentFloorController.h"
+#import "MWZComponentFollowUserButton.h"
+#import "MWZComponentCompass.h"
+#import "MWZComponentUniversesButton.h"
+#import "MWZComponentLanguagesButton.h"
 
 typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZViewStateDefault,
@@ -22,6 +26,10 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 @property (nonatomic) MWZOptions* options;
 
 @property (nonatomic) MWZComponentFloorController* floorController;
+@property (nonatomic) MWZComponentFollowUserButton* followUserButton;
+@property (nonatomic) MWZComponentCompass* compassView;
+@property (nonatomic) MWZComponentUniversesButton* universesButton;
+@property (nonatomic) MWZComponentLanguagesButton* languagesButton;
 
 @property (nonatomic) MWZSceneCoordinator* sceneCoordinator;
 @property (nonatomic) MWZSearchScene* searchScene;
@@ -38,6 +46,8 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 @property (nonatomic, assign) BOOL isAccessible;
 
 @property (nonatomic, assign) MWZViewState state;
+
+@property (nonatomic) NSLayoutConstraint* universesButtonLeftConstraint;
 
 @end
 
@@ -62,10 +72,14 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     self.mapView = [[MWZMapView alloc] initWithFrame:self.view.frame options:options];
     self.mapView.delegate = self;
     self.mapView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+    self.mapView.mapboxDelegate = self;
     [self.view addSubview:self.mapView];
-
-    [self addFloorController];
     
+    [self addFloorController];
+    [self addCompassView];
+    [self addFollowUserButton];
+    [self addLanguagesButton];
+    [self addUniversesButton];
     self.sceneCoordinator = [[MWZSceneCoordinator alloc] initWithContainerView:self.view];
     
     self.defaultScene = [[MWZDefaultScene alloc] initWith:self.options.mainColor];
@@ -79,14 +93,357 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     self.directionScene = [[MWZDirectionScene alloc] initWith:self.options.mainColor];
     self.directionScene.delegate = self;
     self.sceneCoordinator.directionScene = self.directionScene;
-
+    
+    [self applyFloorControllerConstraint];
+    [self applyCompassConstraints];
+    [self applyFollowUserButtonConstraints];
+    [self applyLanguagesButtonConstraints];
+    [self applyUniversesButtonConstraints];
+    
 }
 
-- (void) addFloorController {
-    self.floorController = [[MWZComponentFloorController alloc] initWithColor:self.options.mainColor];
-    self.floorController.translatesAutoresizingMaskIntoConstraints = NO;
-    self.floorController.floorControllerDelegate = self;
-    [self.view addSubview:self.floorController];
+- (void) addLanguagesButton {
+    self.languagesButton = [[MWZComponentLanguagesButton alloc] init];
+    self.languagesButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.languagesButton.delegate = self;
+    [self.view addSubview:self.languagesButton];
+}
+
+- (void) applyLanguagesButtonConstraints {
+    NSLayoutConstraint* languagesButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:self.languagesButton
+                                                                                       attribute:NSLayoutAttributeHeight
+                                                                                       relatedBy:NSLayoutRelationEqual
+                                                                                          toItem:nil
+                                                                                       attribute:NSLayoutAttributeNotAnAttribute
+                                                                                      multiplier:1.0f
+                                                                                        constant:50.f];
+    
+    NSLayoutConstraint* languagesButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:self.languagesButton
+                                                                                      attribute:NSLayoutAttributeWidth
+                                                                                      relatedBy:NSLayoutRelationEqual
+                                                                                         toItem:nil
+                                                                                      attribute:NSLayoutAttributeNotAnAttribute
+                                                                                     multiplier:1.0f
+                                                                                       constant:50.f];
+    
+    NSLayoutConstraint* languagesButtonMinY = [NSLayoutConstraint constraintWithItem:self.languagesButton
+                                                                           attribute:NSLayoutAttributeBottom
+                                                                           relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                              toItem:self.view
+                                                                           attribute:NSLayoutAttributeCenterY
+                                                                          multiplier:1.0f
+                                                                            constant:0.0f];
+    languagesButtonMinY.priority = 950;
+    languagesButtonMinY.active = YES;
+    
+    NSLayoutConstraint* languagesButtonRightConstraint;
+    NSLayoutConstraint* languagesButtonBottomConstraint;
+    if (@available(iOS 11.0, *)) {
+        languagesButtonRightConstraint = [NSLayoutConstraint constraintWithItem:self.languagesButton
+                                                                      attribute:NSLayoutAttributeLeft
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.view
+                                                                      attribute:NSLayoutAttributeLeft
+                                                                     multiplier:1.0f
+                                                                       constant:self.view.safeAreaInsets.left + 16.0f];
+        
+        languagesButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:self.languagesButton
+                                                                       attribute:NSLayoutAttributeBottom
+                                                                       relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                          toItem:self.view.safeAreaLayoutGuide
+                                                                       attribute:NSLayoutAttributeBottom
+                                                                      multiplier:1.0f
+                                                                        constant: -32.0f];
+    }
+    else {
+        languagesButtonRightConstraint = [NSLayoutConstraint constraintWithItem:self.languagesButton
+                                                                      attribute:NSLayoutAttributeLeft
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.view
+                                                                      attribute:NSLayoutAttributeLeft
+                                                                     multiplier:1.0f
+                                                                       constant:16.0f];
+        
+        languagesButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:self.languagesButton
+                                                                       attribute:NSLayoutAttributeBottom
+                                                                       relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                          toItem:self.view
+                                                                       attribute:NSLayoutAttributeBottom
+                                                                      multiplier:1.0f
+                                                                        constant:-32.0f];
+    }
+    
+    languagesButtonBottomConstraint.priority = 1000;
+    
+    [[NSLayoutConstraint constraintWithItem:self.languagesButton
+                                  attribute:NSLayoutAttributeBottom
+                                  relatedBy:NSLayoutRelationLessThanOrEqual
+                                     toItem:[self.directionScene getBottomViewToConstraint]
+                                  attribute:NSLayoutAttributeTop
+                                 multiplier:1.0f
+                                   constant:-16.0f] setActive:YES];
+    
+    NSLayoutConstraint* languagesToBottomViewConstraint = [NSLayoutConstraint constraintWithItem:self.languagesButton
+                                                                                       attribute:NSLayoutAttributeBottom
+                                                                                       relatedBy:NSLayoutRelationEqual
+                                                                                          toItem:[self.defaultScene getBottomViewToConstraint]
+                                                                                       attribute:NSLayoutAttributeTop
+                                                                                      multiplier:1.0f
+                                                                                        constant:-16.0f];
+    languagesToBottomViewConstraint.priority = 800;
+    [languagesToBottomViewConstraint setActive:YES];
+    
+    [languagesButtonHeightConstraint setActive:YES];
+    [languagesButtonWidthConstraint setActive:YES];
+    [languagesButtonRightConstraint setActive:YES];
+    [languagesButtonBottomConstraint setActive:YES];
+}
+
+- (void) addUniversesButton {
+    self.universesButton = [[MWZComponentUniversesButton alloc] init];
+    self.universesButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.universesButton.delegate = self;
+    [self.view addSubview:self.universesButton];
+}
+
+- (void) applyUniversesButtonConstraints {
+    NSLayoutConstraint* universesButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:self.universesButton
+                                                                                       attribute:NSLayoutAttributeHeight
+                                                                                       relatedBy:NSLayoutRelationEqual
+                                                                                          toItem:nil
+                                                                                       attribute:NSLayoutAttributeNotAnAttribute
+                                                                                      multiplier:1.0f
+                                                                                        constant:50.f];
+    
+    NSLayoutConstraint* universesButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:self.universesButton
+                                                                                      attribute:NSLayoutAttributeWidth
+                                                                                      relatedBy:NSLayoutRelationEqual
+                                                                                         toItem:nil
+                                                                                      attribute:NSLayoutAttributeNotAnAttribute
+                                                                                     multiplier:1.0f
+                                                                                       constant:50.f];
+    
+    NSLayoutConstraint* universeButtonMinY = [NSLayoutConstraint constraintWithItem:self.universesButton
+                                                                          attribute:NSLayoutAttributeBottom
+                                                                          relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                             toItem:self.view
+                                                                          attribute:NSLayoutAttributeCenterY
+                                                                         multiplier:1.0f
+                                                                           constant:0.0f];
+    universeButtonMinY.priority = 950;
+    universeButtonMinY.active = YES;
+    
+    NSLayoutConstraint* universesButtonBottomConstraint;
+    if (@available(iOS 11.0, *)) {
+        self.universesButtonLeftConstraint = [NSLayoutConstraint constraintWithItem:self.universesButton
+                                                                          attribute:NSLayoutAttributeLeft
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:self.view
+                                                                          attribute:NSLayoutAttributeLeft
+                                                                         multiplier:1.0f
+                                                                           constant:16.0f * 2 + 50.f];
+        
+        universesButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:self.universesButton
+                                                                       attribute:NSLayoutAttributeBottom
+                                                                       relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                          toItem:self.view.safeAreaLayoutGuide
+                                                                       attribute:NSLayoutAttributeBottom
+                                                                      multiplier:1.0f
+                                                                        constant:-32.0f];
+    }
+    else {
+        self.universesButtonLeftConstraint = [NSLayoutConstraint constraintWithItem:self.universesButton
+                                                                          attribute:NSLayoutAttributeLeft
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:self.view
+                                                                          attribute:NSLayoutAttributeLeft
+                                                                         multiplier:1.0f
+                                                                           constant:16.0f * 2 + 50.f];
+        
+        universesButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:self.universesButton
+                                                                       attribute:NSLayoutAttributeBottom
+                                                                       relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                          toItem:self.view
+                                                                       attribute:NSLayoutAttributeBottom
+                                                                      multiplier:1.0f
+                                                                        constant:-32.0f];
+    }
+    
+    universesButtonBottomConstraint.priority = 1000;
+    
+    [[NSLayoutConstraint constraintWithItem:self.universesButton
+                                  attribute:NSLayoutAttributeBottom
+                                  relatedBy:NSLayoutRelationLessThanOrEqual
+                                     toItem:[self.directionScene getBottomViewToConstraint]
+                                  attribute:NSLayoutAttributeTop
+                                 multiplier:1.0f
+                                   constant:-16.0f] setActive:YES];
+    
+    NSLayoutConstraint* universesToBottomViewConstraint = [NSLayoutConstraint constraintWithItem:self.universesButton
+                                                                                       attribute:NSLayoutAttributeBottom
+                                                                                       relatedBy:NSLayoutRelationEqual
+                                                                                          toItem:[self.defaultScene getBottomViewToConstraint]
+                                                                                       attribute:NSLayoutAttributeTop
+                                                                                      multiplier:1.0f
+                                                                                        constant:-16.0f];
+    universesToBottomViewConstraint.priority = 800;
+    [universesToBottomViewConstraint setActive:YES];
+    
+    [universesButtonHeightConstraint setActive:YES];
+    [universesButtonWidthConstraint setActive:YES];
+    [self.universesButtonLeftConstraint setActive:YES];
+    [universesButtonBottomConstraint setActive:YES];
+}
+
+- (void) addFollowUserButton {
+    self.followUserButton = [[MWZComponentFollowUserButton alloc] initWithColor:self.options.mainColor];
+    self.followUserButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.followUserButton.delegate = self;
+    [self.view addSubview:self.followUserButton];
+}
+
+- (void) applyFollowUserButtonConstraints {
+    [[NSLayoutConstraint constraintWithItem:self.followUserButton
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:50.f] setActive:YES];
+    
+    /*if (settings.followUserButtonIsHidden) {
+     self.followUserButtonHeightConstraint.constant = 0.0f;
+     }*/
+    
+    [[NSLayoutConstraint constraintWithItem:self.followUserButton
+                                  attribute:NSLayoutAttributeWidth
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:50.f] setActive:YES];
+    
+    NSLayoutConstraint* followUserMinY = [NSLayoutConstraint constraintWithItem:self.followUserButton
+                                                                      attribute:NSLayoutAttributeBottom
+                                                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                         toItem:self.view
+                                                                      attribute:NSLayoutAttributeCenterY
+                                                                     multiplier:1.0f
+                                                                       constant:0.0f];
+    followUserMinY.priority = 950;
+    followUserMinY.active = YES;
+    
+    NSLayoutConstraint* followUserButtonRightConstraint;
+    NSLayoutConstraint* followUserButtonBottomConstraint;
+    if (@available(iOS 11.0, *)) {
+        followUserButtonRightConstraint = [NSLayoutConstraint constraintWithItem:self.followUserButton
+                                                                       attribute:NSLayoutAttributeRight
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:self.view
+                                                                       attribute:NSLayoutAttributeRight
+                                                                      multiplier:1.0f
+                                                                        constant:-self.view.safeAreaInsets.right - 16.0];
+        followUserButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:self.followUserButton
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                        relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                           toItem:self.view.safeAreaLayoutGuide
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1.0f
+                                                                         constant:-32.0f];
+    } else {
+        followUserButtonRightConstraint = [NSLayoutConstraint constraintWithItem:self.followUserButton
+                                                                       attribute:NSLayoutAttributeRight
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:self.view
+                                                                       attribute:NSLayoutAttributeRight
+                                                                      multiplier:1.0f
+                                                                        constant:-16.0f];
+        followUserButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:self.followUserButton
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                        relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                           toItem:self.view
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1.0f
+                                                                         constant:-32.0f];
+    }
+    
+    followUserButtonBottomConstraint.priority = 1000;
+    
+    [[NSLayoutConstraint constraintWithItem:self.followUserButton
+                                  attribute:NSLayoutAttributeBottom
+                                  relatedBy:NSLayoutRelationLessThanOrEqual
+                                     toItem:[self.directionScene getBottomViewToConstraint]
+                                  attribute:NSLayoutAttributeTop
+                                 multiplier:1.0f
+                                   constant:-16.0f] setActive:YES];
+    
+    NSLayoutConstraint* toBottomViewConstraint = [NSLayoutConstraint constraintWithItem:self.followUserButton
+                                                                              attribute:NSLayoutAttributeBottom
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:[self.defaultScene getBottomViewToConstraint]
+                                                                              attribute:NSLayoutAttributeTop
+                                                                             multiplier:1.0f
+                                                                               constant:-16.0f];
+    toBottomViewConstraint.priority = 800;
+    [toBottomViewConstraint setActive:YES];
+    
+    [followUserButtonRightConstraint setActive:YES];
+    [followUserButtonBottomConstraint setActive:YES];
+}
+
+- (void) addCompassView {
+    [self.mapView.mapboxMapView.compassView setHidden:YES];
+    self.compassView = [[MWZComponentCompass alloc] initWithImage:[UIImage imageNamed:@"compass" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil]];
+    self.compassView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.compassView.delegate = self;
+    [self.view addSubview:self.compassView];
+}
+
+- (void) applyCompassConstraints {
+    [[NSLayoutConstraint constraintWithItem:self.compassView
+                                  attribute:NSLayoutAttributeWidth
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:40.0] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.compassView
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:40.0] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.compassView
+                                  attribute:NSLayoutAttributeCenterX
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.followUserButton
+                                  attribute:NSLayoutAttributeCenterX
+                                 multiplier:1.0f
+                                   constant:0] setActive:YES];
+    
+    NSLayoutConstraint* toSearchBarConstraint = [NSLayoutConstraint constraintWithItem:self.compassView
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:[self.defaultScene getTopViewToConstraint]
+                                                                             attribute:NSLayoutAttributeBottom
+                                                                            multiplier:1.0f
+                                                                              constant:8.0f];
+    toSearchBarConstraint.priority = 999;
+    [toSearchBarConstraint setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.compassView
+                                  attribute:NSLayoutAttributeTop
+                                  relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                     toItem:[self.directionScene getTopViewToConstraint]
+                                  attribute:NSLayoutAttributeBottom
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+}
+
+- (void) applyFloorControllerConstraint {
     [[NSLayoutConstraint constraintWithItem:self.floorController
                                   attribute:NSLayoutAttributeWidth
                                   relatedBy:NSLayoutRelationEqual
@@ -96,12 +453,12 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
                                    constant:50.f] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.floorController
-                                  attribute:NSLayoutAttributeTrailing
+                                  attribute:NSLayoutAttributeCenterX
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self.view
-                                  attribute:NSLayoutAttributeTrailing
+                                     toItem:self.followUserButton
+                                  attribute:NSLayoutAttributeCenterX
                                  multiplier:1.0f
-                                   constant:-6.0f] setActive:YES];
+                                   constant:0] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.floorController
                                   attribute:NSLayoutAttributeCenterY
@@ -112,33 +469,40 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
                                    constant:0.0f] setActive:YES];
     
     /*if (uiSettings.compassIsHidden) {
-        NSLayoutConstraint* toSearchBarConstraint = [NSLayoutConstraint constraintWithItem:self.floorController
-                                                                                 attribute:NSLayoutAttributeTop
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:self.searchBar
-                                                                                 attribute:NSLayoutAttributeBottom
-                                                                                multiplier:1.0f
-                                                                                  constant:8.0f];
-        toSearchBarConstraint.priority = 999;
-        [toSearchBarConstraint setActive:YES];
-        
-        [[NSLayoutConstraint constraintWithItem:self.floorController
-                                      attribute:NSLayoutAttributeTop
-                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                         toItem:self.directionBar
-                                      attribute:NSLayoutAttributeBottom
-                                     multiplier:1.0f
-                                       constant:8.0f] setActive:YES];
-    }
-    else {
-        [[NSLayoutConstraint constraintWithItem:self.floorController
-                                      attribute:NSLayoutAttributeTop
-                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                         toItem:self.compassView
-                                      attribute:NSLayoutAttributeBottom
-                                     multiplier:1.0f
-                                       constant:8.0f] setActive:YES];
-    }*/
+     NSLayoutConstraint* toSearchBarConstraint = [NSLayoutConstraint constraintWithItem:self.floorController
+     attribute:NSLayoutAttributeTop
+     relatedBy:NSLayoutRelationEqual
+     toItem:self.searchBar
+     attribute:NSLayoutAttributeBottom
+     multiplier:1.0f
+     constant:8.0f];
+     toSearchBarConstraint.priority = 999;
+     [toSearchBarConstraint setActive:YES];
+     
+     [[NSLayoutConstraint constraintWithItem:self.floorController
+     attribute:NSLayoutAttributeTop
+     relatedBy:NSLayoutRelationGreaterThanOrEqual
+     toItem:self.directionBar
+     attribute:NSLayoutAttributeBottom
+     multiplier:1.0f
+     constant:8.0f] setActive:YES];
+     }
+     else {
+     [[NSLayoutConstraint constraintWithItem:self.floorController
+     attribute:NSLayoutAttributeTop
+     relatedBy:NSLayoutRelationGreaterThanOrEqual
+     toItem:self.compassView
+     attribute:NSLayoutAttributeBottom
+     multiplier:1.0f
+     constant:8.0f] setActive:YES];
+     }*/
+}
+
+- (void) addFloorController {
+    self.floorController = [[MWZComponentFloorController alloc] initWithColor:self.options.mainColor];
+    self.floorController.translatesAutoresizingMaskIntoConstraints = NO;
+    self.floorController.floorControllerDelegate = self;
+    [self.view addSubview:self.floorController];
 }
 
 #pragma mark Search initialization
@@ -371,7 +735,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
             || self.state == MWZViewStateDirectionOff
             || self.state == MWZViewStateSearchDirectionFrom
             || self.state == MWZViewStateSearchDirectionTo)
-            && self.fromDirectionPoint && self.toDirectionPoint;
+    && self.fromDirectionPoint && self.toDirectionPoint;
 }
 
 - (void) startDirection {
@@ -423,6 +787,14 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.venue = venue;
     [self.defaultScene setSceneProperties:defaultProperties];
+    [self.languagesButton mapwizeDidEnterInVenue:venue];
+    if (self.languagesButton.isHidden) {
+        self.universesButtonLeftConstraint.constant = 16.0f;
+    }
+    else {
+        self.universesButtonLeftConstraint.constant =  16.0f * 2 + 50.f;
+    }
+    [self.universesButton showIfNeeded];
 }
 
 - (void)mapView:(MWZMapView *_Nonnull)mapView venueDidExit:(MWZVenue *_Nonnull)venue {
@@ -444,6 +816,24 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     [self.floorController mapwizeFloorWillChange:floor];
 }
 
+- (void) mapView:(MWZMapView* _Nonnull) mapView universesDidChange:(NSArray<MWZUniverse*>* _Nonnull) accessibleUniverses {
+    [self.universesButton mapwizeAccessibleUniversesDidChange: accessibleUniverses];
+}
+
+#pragma mark MGLMapViewDelegate
+- (void) mapView:(MGLMapView *)mapView regionIsChangingWithReason:(MGLCameraChangeReason)reason {
+    [self.compassView updateCompass:mapView.direction];
+}
+
+- (void) mapViewRegionIsChanging:(MGLMapView *)mapView {
+    [self.compassView updateCompass:mapView.direction];
+}
+
+- (void) mapView:(MGLMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
+    [self.compassView updateCompass:mapView.direction];
+}
+
+
 #pragma mark MWZComponentFloorControllerDelegate
 - (void) floorController:(MWZComponentFloorController*) floorController didSelect:(NSNumber*) floorOrder {
     [self.mapView setFloor:floorOrder];
@@ -453,7 +843,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 #pragma mark MWZDefaultSceneDelegate
 - (void) didTapOnSearchButton {
     if ([self.mapView getVenue]) {
-       [self.searchScene showSearchResults:self.mainSearches withLanguage:[self.mapView getLanguage]];
+        [self.searchScene showSearchResults:self.mainSearches withLanguage:[self.mapView getLanguage]];
     }
     else {
         [self.searchScene showSearchResults:self.mainVenues withLanguage:[self.mapView getLanguage]];
@@ -631,6 +1021,39 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     }];
 }
 
+#pragma mark MWZComponentCompassDelegate
+
+- (void) didPress:(MWZComponentCompass *)compass {
+    [self.mapView setFollowUserMode:MWZFollowUserModeNone];
+    [self.mapView.mapboxMapView setDirection:0 animated:YES];
+}
+
+#pragma mark MWZComponentFollowUserButtonDelegate
+- (void)didTapWithoutLocation {
+    
+}
+
+- (void)followUserButton:(MWZComponentFollowUserButton *)followUserButton didChangeFollowUserMode:(MWZFollowUserMode)followUserMode {
+    
+}
+
+- (MWZFollowUserMode)followUserButtonRequiresFollowUserMode:(MWZComponentFollowUserButton *)followUserButton {
+    return [self.mapView getFollowUserMode];
+}
+
+- (ILIndoorLocation *)followUserButtonRequiresUserLocation:(MWZComponentFollowUserButton *)followUserButton {
+    return [self.mapView getUserLocation];
+}
+
+#pragma mark MWZComponentUniversesDelegate
+- (void)didSelectUniverse:(MWZUniverse *)universe {
+    [self.mapView setUniverse:universe];
+}
+
+#pragma mark MWZComponentLanguagesDelegate
+- (void)didSelectLanguage:(NSString *)language {
+    [self.mapView setLanguage:language forVenue:[self.mapView getVenue]];
+}
 
 
 @end

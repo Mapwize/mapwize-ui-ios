@@ -5,13 +5,19 @@
 #import "MWZDirectionSceneDelegate.h"
 #import "MWZSceneCoordinator.h"
 #import "MWZComponentFloorControllerDelegate.h"
+#import "MWZComponentCompassDelegate.h"
+#import "MWZComponentFollowUserButtonDelegate.h"
+#import "MWZComponentLanguagesButtonDelegate.h"
+#import "MWZComponentUniversesButtonDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MWZMapViewController : UIViewController
 <UIViewControllerTransitioningDelegate, MWZSearchSceneDelegate,
 MWZDefaultSceneDelegate, MWZDirectionSceneDelegate, MWZMapViewDelegate,
-MWZComponentFloorControllerDelegate>
+MWZComponentFloorControllerDelegate, MWZComponentCompassDelegate,
+MWZComponentFollowUserButtonDelegate, MGLMapViewDelegate,
+MWZComponentUniversesButtonDelegate,MWZComponentLanguagesButtonDelegate>
 
 @property (nonatomic) MWZMapView* mapView;
 

@@ -73,17 +73,23 @@
 -(void) transitionFromDefaultToDirection {
     [self.directionScene setHidden:NO];
     [self.directionScene.directionHeader setTransform:CGAffineTransformMakeTranslation(0,-self.directionScene.directionHeader.frame.size.height)];
+    [self.containerView layoutIfNeeded];
     [UIView animateWithDuration:0.3 animations:^{
+        self.directionScene.topConstraintViewMarginTop.constant = self.directionScene.directionHeader.frame.size.height;
         [self.directionScene.directionHeader setTransform:CGAffineTransformMakeTranslation(0,0)];
         [self.defaultScene.bottomInfoView setTransform:CGAffineTransformMakeTranslation(0,self.defaultScene.bottomInfoView.frame.size.height)];
+        [self.containerView layoutIfNeeded];
     } completion:^(BOOL finished) {
         
     }];
 }
 
 -(void) transitionFromDirectionToDefault {
+    [self.containerView layoutIfNeeded];
     [UIView animateWithDuration:0.3 animations:^{
+        self.directionScene.topConstraintViewMarginTop.constant = 0.0f;
         [self.directionScene.directionHeader setTransform:CGAffineTransformMakeTranslation(0,-self.directionScene.directionHeader.frame.size.height)];
+        [self.containerView layoutIfNeeded];
     } completion:^(BOOL finished) {
         [self.directionScene setHidden:YES];
         [UIView animateWithDuration:0.3 animations:^{

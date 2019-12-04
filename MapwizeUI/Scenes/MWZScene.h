@@ -10,6 +10,8 @@
 
 - (void) addTo:(UIView*) view;
 - (void) setHidden:(BOOL) hidden;
+- (UIView*) getTopViewToConstraint;
+- (UIView*) getBottomViewToConstraint;
 
 @end
 

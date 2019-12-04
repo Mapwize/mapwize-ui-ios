@@ -1,6 +1,8 @@
 #ifndef MWZComponentFollowUserButtonDelegate_h
 #define MWZComponentFollowUserButtonDelegate_h
 
+@class MWZComponentFollowUserButton;
+
 @protocol MWZComponentFollowUserButtonDelegate <NSObject>
     
 - (void) didTapWithoutLocation;

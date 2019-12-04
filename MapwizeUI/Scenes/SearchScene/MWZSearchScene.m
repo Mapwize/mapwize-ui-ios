@@ -245,6 +245,14 @@
     }
 }
 
+- (UIView*) getTopViewToConstraint {
+    return nil;
+}
+
+- (UIView*) getBottomViewToConstraint {
+    return nil;
+}
+
 - (void)setHidden:(BOOL)hidden { 
     [self.searchQueryBar setHidden:hidden];
     [self.resultList setHidden:hidden];

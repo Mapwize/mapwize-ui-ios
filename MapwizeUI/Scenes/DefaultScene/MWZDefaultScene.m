@@ -115,7 +115,14 @@
                                   attribute:NSLayoutAttributeBottom
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
-    
+}
+
+- (UIView*) getTopViewToConstraint {
+    return self.menuBar;
+}
+
+- (UIView*) getBottomViewToConstraint {
+    return self.bottomInfoView;
 }
 
 - (void) setSceneProperties:(MWZDefaultSceneProperties *)sceneProperties {
