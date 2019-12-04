@@ -607,7 +607,12 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.selectedContent = self.selectedContent;
     defaultProperties.language = [self.mapView getLanguage];
-    defaultProperties.infoButtonHidden = NO;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
+        defaultProperties.infoButtonHidden = [self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
+    }
+    else {
+        defaultProperties.infoButtonHidden = NO;
+    }
     [self.defaultScene setSceneProperties:defaultProperties];
     if ([self.selectedContent isKindOfClass:MWZPlace.class]) {
         [self.mapView addMarkerOnPlace:(MWZPlace*)self.selectedContent];
@@ -635,7 +640,12 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.selectedContent = self.selectedContent;
     defaultProperties.language = [self.mapView getLanguage];
-    defaultProperties.infoButtonHidden = NO;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
+        defaultProperties.infoButtonHidden = [self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
+    }
+    else {
+        defaultProperties.infoButtonHidden = NO;
+    }
     [self.defaultScene setSceneProperties:defaultProperties];
 }
 
@@ -814,7 +824,11 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 }
 
 - (void)mapView:(MWZMapView *)mapView floorsDidChange:(NSArray<MWZFloor *> *)floors {
-    [self.floorController mapwizeFloorsDidChange:floors showController:YES];
+    BOOL showFloorController = YES;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowFloorControllerFor:)]) {
+        showFloorController = [self.delegate mapwizeView:self shouldShowFloorControllerFor:floors];
+    }
+    [self.floorController mapwizeFloorsDidChange:floors showController:showFloorController];
 }
 
 - (void)mapView:(MWZMapView *)mapView floorDidChange:(MWZFloor*)floor {
