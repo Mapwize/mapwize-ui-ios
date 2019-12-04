@@ -10,10 +10,11 @@
 #import "MWZComponentFollowUserButtonDelegate.h"
 #import "MWZComponentLanguagesButtonDelegate.h"
 #import "MWZComponentUniversesButtonDelegate.h"
-
+#import "MWZUIOptions.h"
+#import "MWZMapwizeViewUISettings.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MWZMapViewController : UIViewController
+@interface MWZMapViewController : UIView
 <UIViewControllerTransitioningDelegate, MWZSearchSceneDelegate,
 MWZDefaultSceneDelegate, MWZDirectionSceneDelegate, MWZMapViewDelegate,
 MWZComponentFloorControllerDelegate, MWZComponentCompassDelegate,
@@ -22,6 +23,28 @@ MWZComponentUniversesButtonDelegate,MWZComponentLanguagesButtonDelegate>
 
 @property (nonatomic) MWZMapView* mapView;
 @property (nonatomic, weak) id<MWZMapViewControllerDelegate> delegate;
+
+- (instancetype) initWithFrame:(CGRect)frame
+                mapwizeOptions:(MWZUIOptions*) options
+                    uiSettings:(MWZMapwizeViewUISettings*) uiSettings;
+
+- (instancetype) initWithFrame:(CGRect)frame
+          mapwizeConfiguration:(MWZMapwizeConfiguration*) mapwizeConfiguration
+                mapwizeOptions:(MWZUIOptions*) options
+                    uiSettings:(MWZMapwizeViewUISettings*) uiSettings;
+
+- (void) setIndoorLocationProvider:(ILIndoorLocationProvider*) indoorLocationProvider;
+
+- (void) grantAccess:(NSString*) accessKey success:(void (^)(void)) success failure:(void (^)(NSError* error)) failure;
+
+- (void) selectPlace:(MWZPlace*) place;
+
+- (void) selectPlaceList:(MWZPlacelist*) placeList;
+
+- (void) unselectContent;
+
+- (void) setDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to isAccessible:(BOOL) isAccessible;
+
 
 @end
 

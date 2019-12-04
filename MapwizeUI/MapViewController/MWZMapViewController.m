@@ -23,7 +23,8 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
 @interface MWZMapViewController ()
 
-@property (nonatomic) MWZOptions* options;
+@property (nonatomic) MWZUIOptions* options;
+@property (nonatomic) MWZMapwizeViewUISettings* settings;
 
 @property (nonatomic) MWZComponentFloorController* floorController;
 @property (nonatomic) MWZComponentFollowUserButton* followUserButton;
@@ -53,34 +54,44 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
 @implementation MWZMapViewController
 
--(instancetype) initWithOptions:(MWZOptions*) options {
-    self = [super init];
+- (instancetype) initWithFrame:(CGRect)frame
+                mapwizeOptions:(MWZUIOptions*) options
+                    uiSettings:(MWZMapwizeViewUISettings*) uiSettings {
+    self = [super initWithFrame:frame];
     if (self) {
-        self.options = options;
+        _options = options;
+        _settings = uiSettings;
+        [self initializeWithOptions:options mapwizeConfiguration:[MWZMapwizeConfiguration sharedInstance]];
     }
     return self;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.options = [[MWZOptions alloc] init];
-    [self initializeWithOptions:self.options];
-    [self fetchDefaultVenueSearch];
+- (instancetype) initWithFrame:(CGRect)frame
+          mapwizeConfiguration:(MWZMapwizeConfiguration*) mapwizeConfiguration
+                mapwizeOptions:(MWZUIOptions*) options
+                    uiSettings:(MWZMapwizeViewUISettings*) uiSettings {
+    self = [super initWithFrame:frame];
+    if (self) {
+        _settings = uiSettings;
+        [self initializeWithOptions:options mapwizeConfiguration:mapwizeConfiguration];
+    }
+    return self;
 }
 
-- (void) initializeWithOptions:(MWZOptions*) options {
-    self.mapView = [[MWZMapView alloc] initWithFrame:self.view.frame options:options];
+- (void) initializeWithOptions:(MWZUIOptions*) options
+          mapwizeConfiguration:(MWZMapwizeConfiguration*) configuration {
+    self.mapView = [[MWZMapView alloc] initWithFrame:self.frame options:options mapwizeConfiguration:configuration];
     self.mapView.delegate = self;
     self.mapView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     self.mapView.mapboxDelegate = self;
-    [self.view addSubview:self.mapView];
+    [self addSubview:self.mapView];
     
     [self addFloorController];
     [self addCompassView];
     [self addFollowUserButton];
     [self addLanguagesButton];
     [self addUniversesButton];
-    self.sceneCoordinator = [[MWZSceneCoordinator alloc] initWithContainerView:self.view];
+    self.sceneCoordinator = [[MWZSceneCoordinator alloc] initWithContainerView:self];
     
     self.defaultScene = [[MWZDefaultScene alloc] initWith:self.options.mainColor];
     self.defaultScene.delegate = self;
@@ -100,13 +111,30 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     [self applyLanguagesButtonConstraints];
     [self applyUniversesButtonConstraints];
     
+    [self fetchDefaultVenueSearch];
+    
+    if (options.centerOnLocation) {
+        [self.mapView.mapboxMapView setCenterCoordinate:options.centerOnLocation.coordinates
+                                              zoomLevel:18.0 animated:NO];
+        [self.mapView setFloor:options.centerOnLocation.floor];
+    }
+    
+    if (options.centerOnPlaceId) {
+        [self.mapView.mapwizeApi getPlaceWithIdentifier:options.centerOnPlaceId success:^(MWZPlace * _Nonnull place) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self selectPlace:place];
+            });
+        } failure:^(NSError * _Nonnull error) {
+            
+        }];
+    }
 }
 
 - (void) addLanguagesButton {
     self.languagesButton = [[MWZComponentLanguagesButton alloc] init];
     self.languagesButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.languagesButton.delegate = self;
-    [self.view addSubview:self.languagesButton];
+    [self addSubview:self.languagesButton];
 }
 
 - (void) applyLanguagesButtonConstraints {
@@ -129,7 +157,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     NSLayoutConstraint* languagesButtonMinY = [NSLayoutConstraint constraintWithItem:self.languagesButton
                                                                            attribute:NSLayoutAttributeBottom
                                                                            relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                                              toItem:self.view
+                                                                              toItem:self
                                                                            attribute:NSLayoutAttributeCenterY
                                                                           multiplier:1.0f
                                                                             constant:0.0f];
@@ -142,15 +170,15 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         languagesButtonRightConstraint = [NSLayoutConstraint constraintWithItem:self.languagesButton
                                                                       attribute:NSLayoutAttributeLeft
                                                                       relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.view
+                                                                         toItem:self
                                                                       attribute:NSLayoutAttributeLeft
                                                                      multiplier:1.0f
-                                                                       constant:self.view.safeAreaInsets.left + 16.0f];
+                                                                       constant:self.safeAreaInsets.left + 16.0f];
         
         languagesButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:self.languagesButton
                                                                        attribute:NSLayoutAttributeBottom
                                                                        relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                          toItem:self.view.safeAreaLayoutGuide
+                                                                          toItem:self.safeAreaLayoutGuide
                                                                        attribute:NSLayoutAttributeBottom
                                                                       multiplier:1.0f
                                                                         constant: -32.0f];
@@ -159,7 +187,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         languagesButtonRightConstraint = [NSLayoutConstraint constraintWithItem:self.languagesButton
                                                                       attribute:NSLayoutAttributeLeft
                                                                       relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.view
+                                                                         toItem:self
                                                                       attribute:NSLayoutAttributeLeft
                                                                      multiplier:1.0f
                                                                        constant:16.0f];
@@ -167,7 +195,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         languagesButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:self.languagesButton
                                                                        attribute:NSLayoutAttributeBottom
                                                                        relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                          toItem:self.view
+                                                                          toItem:self
                                                                        attribute:NSLayoutAttributeBottom
                                                                       multiplier:1.0f
                                                                         constant:-32.0f];
@@ -203,7 +231,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     self.universesButton = [[MWZComponentUniversesButton alloc] init];
     self.universesButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.universesButton.delegate = self;
-    [self.view addSubview:self.universesButton];
+    [self addSubview:self.universesButton];
 }
 
 - (void) applyUniversesButtonConstraints {
@@ -226,7 +254,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     NSLayoutConstraint* universeButtonMinY = [NSLayoutConstraint constraintWithItem:self.universesButton
                                                                           attribute:NSLayoutAttributeBottom
                                                                           relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                                             toItem:self.view
+                                                                             toItem:self
                                                                           attribute:NSLayoutAttributeCenterY
                                                                          multiplier:1.0f
                                                                            constant:0.0f];
@@ -238,7 +266,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         self.universesButtonLeftConstraint = [NSLayoutConstraint constraintWithItem:self.universesButton
                                                                           attribute:NSLayoutAttributeLeft
                                                                           relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.view
+                                                                             toItem:self
                                                                           attribute:NSLayoutAttributeLeft
                                                                          multiplier:1.0f
                                                                            constant:16.0f * 2 + 50.f];
@@ -246,7 +274,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         universesButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:self.universesButton
                                                                        attribute:NSLayoutAttributeBottom
                                                                        relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                          toItem:self.view.safeAreaLayoutGuide
+                                                                          toItem:self.safeAreaLayoutGuide
                                                                        attribute:NSLayoutAttributeBottom
                                                                       multiplier:1.0f
                                                                         constant:-32.0f];
@@ -255,7 +283,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         self.universesButtonLeftConstraint = [NSLayoutConstraint constraintWithItem:self.universesButton
                                                                           attribute:NSLayoutAttributeLeft
                                                                           relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.view
+                                                                             toItem:self
                                                                           attribute:NSLayoutAttributeLeft
                                                                          multiplier:1.0f
                                                                            constant:16.0f * 2 + 50.f];
@@ -263,7 +291,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         universesButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:self.universesButton
                                                                        attribute:NSLayoutAttributeBottom
                                                                        relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                          toItem:self.view
+                                                                          toItem:self
                                                                        attribute:NSLayoutAttributeBottom
                                                                       multiplier:1.0f
                                                                         constant:-32.0f];
@@ -299,7 +327,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     self.followUserButton = [[MWZComponentFollowUserButton alloc] initWithColor:self.options.mainColor];
     self.followUserButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.followUserButton.delegate = self;
-    [self.view addSubview:self.followUserButton];
+    [self addSubview:self.followUserButton];
 }
 
 - (void) applyFollowUserButtonConstraints {
@@ -309,11 +337,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
-                                   constant:50.f] setActive:YES];
-    
-    /*if (settings.followUserButtonIsHidden) {
-     self.followUserButtonHeightConstraint.constant = 0.0f;
-     }*/
+                                   constant:self.settings.followUserButtonIsHidden ? 0.0f : 50.f] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.followUserButton
                                   attribute:NSLayoutAttributeWidth
@@ -326,7 +350,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     NSLayoutConstraint* followUserMinY = [NSLayoutConstraint constraintWithItem:self.followUserButton
                                                                       attribute:NSLayoutAttributeBottom
                                                                       relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                                         toItem:self.view
+                                                                         toItem:self
                                                                       attribute:NSLayoutAttributeCenterY
                                                                      multiplier:1.0f
                                                                        constant:0.0f];
@@ -339,14 +363,14 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         followUserButtonRightConstraint = [NSLayoutConstraint constraintWithItem:self.followUserButton
                                                                        attribute:NSLayoutAttributeRight
                                                                        relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self.view
+                                                                          toItem:self
                                                                        attribute:NSLayoutAttributeRight
                                                                       multiplier:1.0f
-                                                                        constant:-self.view.safeAreaInsets.right - 16.0];
+                                                                        constant:-self.safeAreaInsets.right - 16.0];
         followUserButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:self.followUserButton
                                                                         attribute:NSLayoutAttributeBottom
                                                                         relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                           toItem:self.view.safeAreaLayoutGuide
+                                                                           toItem:self.safeAreaLayoutGuide
                                                                         attribute:NSLayoutAttributeBottom
                                                                        multiplier:1.0f
                                                                          constant:-32.0f];
@@ -354,14 +378,14 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         followUserButtonRightConstraint = [NSLayoutConstraint constraintWithItem:self.followUserButton
                                                                        attribute:NSLayoutAttributeRight
                                                                        relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self.view
+                                                                          toItem:self
                                                                        attribute:NSLayoutAttributeRight
                                                                       multiplier:1.0f
                                                                         constant:-16.0f];
         followUserButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:self.followUserButton
                                                                         attribute:NSLayoutAttributeBottom
                                                                         relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                           toItem:self.view
+                                                                           toItem:self
                                                                         attribute:NSLayoutAttributeBottom
                                                                        multiplier:1.0f
                                                                          constant:-32.0f];
@@ -396,17 +420,18 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     self.compassView = [[MWZComponentCompass alloc] initWithImage:[UIImage imageNamed:@"compass" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil]];
     self.compassView.translatesAutoresizingMaskIntoConstraints = NO;
     self.compassView.delegate = self;
-    [self.view addSubview:self.compassView];
+    [self addSubview:self.compassView];
 }
 
 - (void) applyCompassConstraints {
+    
     [[NSLayoutConstraint constraintWithItem:self.compassView
                                   attribute:NSLayoutAttributeWidth
                                   relatedBy:NSLayoutRelationEqual
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
-                                   constant:40.0] setActive:YES];
+                                   constant:self.settings.compassIsHidden ? 0.0f : 40.0f] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.compassView
                                   attribute:NSLayoutAttributeHeight
@@ -461,48 +486,56 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
                                    constant:0] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.floorController
+                                  attribute:NSLayoutAttributeBottom
+                                  relatedBy:NSLayoutRelationLessThanOrEqual
+                                     toItem:self.followUserButton
+                                  attribute:NSLayoutAttributeTop
+                                 multiplier:1.0f
+                                   constant:-8.0] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.floorController
                                   attribute:NSLayoutAttributeCenterY
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self.view
+                                     toItem:self
                                   attribute:NSLayoutAttributeCenterY
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
     
-    /*if (uiSettings.compassIsHidden) {
-     NSLayoutConstraint* toSearchBarConstraint = [NSLayoutConstraint constraintWithItem:self.floorController
-     attribute:NSLayoutAttributeTop
-     relatedBy:NSLayoutRelationEqual
-     toItem:self.searchBar
-     attribute:NSLayoutAttributeBottom
-     multiplier:1.0f
-     constant:8.0f];
-     toSearchBarConstraint.priority = 999;
-     [toSearchBarConstraint setActive:YES];
-     
-     [[NSLayoutConstraint constraintWithItem:self.floorController
-     attribute:NSLayoutAttributeTop
-     relatedBy:NSLayoutRelationGreaterThanOrEqual
-     toItem:self.directionBar
-     attribute:NSLayoutAttributeBottom
-     multiplier:1.0f
-     constant:8.0f] setActive:YES];
-     }
+    if (self.settings.compassIsHidden) {
+         NSLayoutConstraint* toSearchBarConstraint = [NSLayoutConstraint constraintWithItem:self.floorController
+         attribute:NSLayoutAttributeTop
+         relatedBy:NSLayoutRelationEqual
+         toItem:[self.defaultScene getTopViewToConstraint]
+         attribute:NSLayoutAttributeBottom
+         multiplier:1.0f
+         constant:8.0f];
+         toSearchBarConstraint.priority = 999;
+         [toSearchBarConstraint setActive:YES];
+         
+         [[NSLayoutConstraint constraintWithItem:self.floorController
+         attribute:NSLayoutAttributeTop
+         relatedBy:NSLayoutRelationGreaterThanOrEqual
+         toItem:[self.directionScene getTopViewToConstraint]
+         attribute:NSLayoutAttributeBottom
+         multiplier:1.0f
+         constant:8.0f] setActive:YES];
+         }
      else {
-     [[NSLayoutConstraint constraintWithItem:self.floorController
-     attribute:NSLayoutAttributeTop
-     relatedBy:NSLayoutRelationGreaterThanOrEqual
-     toItem:self.compassView
-     attribute:NSLayoutAttributeBottom
-     multiplier:1.0f
-     constant:8.0f] setActive:YES];
-     }*/
+         [[NSLayoutConstraint constraintWithItem:self.floorController
+         attribute:NSLayoutAttributeTop
+         relatedBy:NSLayoutRelationGreaterThanOrEqual
+         toItem:self.compassView
+         attribute:NSLayoutAttributeBottom
+         multiplier:1.0f
+         constant:8.0f] setActive:YES];
+     }
 }
 
 - (void) addFloorController {
     self.floorController = [[MWZComponentFloorController alloc] initWithColor:self.options.mainColor];
     self.floorController.translatesAutoresizingMaskIntoConstraints = NO;
     self.floorController.floorControllerDelegate = self;
-    [self.view addSubview:self.floorController];
+    [self addSubview:self.floorController];
 }
 
 #pragma mark Search initialization
@@ -551,7 +584,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 - (void) defaultToDirectionTransition {
     self.state = MWZViewStateDirectionOff;
     [self setFromDirectionPoint:[self.mapView getUserLocation]];
-    [self setToDirectionPoint:(id<MWZDirectionPoint>)self.selectedContent];
+    [self setToDirectionPoint:(id<MWZDirectionPoint>)self.selectedContent inSearch:NO];
     [self setIsAccessible:self.isAccessible];
     [self.sceneCoordinator transitionFromDefaultToDirection];
     if (self.fromDirectionPoint == nil) {
@@ -600,6 +633,14 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 - (void) searchToDirectionTransition {
     self.state = MWZViewStateDirectionOff;
     [self.sceneCoordinator transitionFromSearchToDirection];
+}
+
+- (void) setIndoorLocationProvider:(ILIndoorLocationProvider*) indoorLocationProvider {
+    [self.mapView setIndoorLocationProvider:indoorLocationProvider];
+}
+
+- (void) grantAccess:(NSString*) accessKey success:(void (^)(void)) success failure:(void (^)(NSError* error)) failure {
+    [self.mapView grantAccess:accessKey success:success failure:failure];
 }
 
 #pragma mark Content selection
@@ -655,6 +696,30 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     } failure:^(NSError * _Nonnull error) {
         
     }];
+}
+
+- (void) selectPlaceList:(MWZPlacelist*) placeList {
+    if (self.selectedContent) {
+        [self.mapView removeMarkers];
+        [self.mapView removePromotedPlaces];
+    }
+    [self.mapView addMarkersOnPlacelist:placeList completionHandler:^(NSArray<MWZMapwizeAnnotation *> * _Nonnull annotation) {
+        
+    }];
+    [self.mapView addPromotedPlacelist:placeList completionHandler:^(NSArray<MWZPlace *> * _Nonnull places) {
+        
+    }];
+    self.selectedContent = placeList;
+    MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
+    defaultProperties.selectedContent = self.selectedContent;
+    defaultProperties.language = [self.mapView getLanguage];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
+        defaultProperties.infoButtonHidden = [self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
+    }
+    else {
+        defaultProperties.infoButtonHidden = NO;
+    }
+    [self.defaultScene setSceneProperties:defaultProperties];
 }
 
 #pragma mark Direction methods
@@ -717,7 +782,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     }
 }
 
-- (void) setToDirectionPoint:(id<MWZDirectionPoint>)toDirectionPoint {
+- (void) setToDirectionPoint:(id<MWZDirectionPoint>)toDirectionPoint inSearch:(BOOL)inSearch {
     [self.mapView removeMarkers];
     _toDirectionPoint = toDirectionPoint;
     if (toDirectionPoint == nil) {
@@ -732,8 +797,10 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     else if ([toDirectionPoint isKindOfClass:ILIndoorLocation.class]) {
         [self.directionScene setToText:NSLocalizedString(@"Current location", @"") asPlaceHolder:NO];
     }
-    [self.directionScene closeToSearch];
-    [self.directionScene setSearchResultsHidden:YES];
+    if (inSearch) {
+        [self.directionScene closeToSearch];
+        [self.directionScene setSearchResultsHidden:YES];
+    }
     self.state = MWZViewStateDirectionOff;
     [self promoteDirectionPoints];
     if ([self shouldStartDirection]) {
@@ -824,7 +891,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 }
 
 - (void)mapView:(MWZMapView *)mapView floorsDidChange:(NSArray<MWZFloor *> *)floors {
-    BOOL showFloorController = YES;
+    BOOL showFloorController = !self.settings.floorControllerIsHidden;
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowFloorControllerFor:)]) {
         showFloorController = [self.delegate mapwizeView:self shouldShowFloorControllerFor:floors];
     }
@@ -980,7 +1047,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
             [self selectPlace:(MWZPlace*)mapwizeObject];
         }
         if ([mapwizeObject isKindOfClass:MWZPlacelist.class]) {
-            
+            [self selectPlaceList:(MWZPlacelist*) mapwizeObject];
         }
         if (![universe.identifier isEqualToString:[self.mapView getUniverse].identifier]) {
             [self.mapView setUniverse:universe];
@@ -992,7 +1059,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         
     }
     else if (self.state == MWZViewStateSearchDirectionTo) {
-        [self setToDirectionPoint:(id<MWZDirectionPoint>)mapwizeObject];
+        [self setToDirectionPoint:(id<MWZDirectionPoint>)mapwizeObject inSearch:YES];
         
     }
 }
@@ -1048,7 +1115,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     self.toDirectionPoint = nil;
     self.fromDirectionPoint = nil;
     [self setFromDirectionPoint:tmpFrom];
-    [self setToDirectionPoint:tmpTo];
+    [self setToDirectionPoint:tmpTo inSearch:NO];
 }
 
 -(void)directionSceneAccessibilityModeDidChange:(BOOL)isAccessible {

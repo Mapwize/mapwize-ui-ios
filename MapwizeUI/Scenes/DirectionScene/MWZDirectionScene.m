@@ -240,8 +240,8 @@
             [self.backgroundView setTransform:CGAffineTransformMakeTranslation(0,self.backgroundView.superview.frame.size.height)];
             [self.resultList setTransform:CGAffineTransformMakeTranslation(0,self.backgroundView.superview.frame.size.height)];
         } completion:^(BOOL finished) {
-            //[self.backgroundView setHidden:hidden];
-            //[self.resultList setHidden:hidden];
+            [self.backgroundView setHidden:hidden];
+            [self.resultList setHidden:hidden];
         }];
     }
     else {
