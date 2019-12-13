@@ -8,6 +8,7 @@
     p.language = properties.language;
     p.selectedContent = properties.selectedContent;
     p.venue = properties.venue;
+    p.venueLoading = properties.venueLoading;
     return p;
 }
 

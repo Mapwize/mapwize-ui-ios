@@ -8,7 +8,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         let opts = MWZUIOptions()
-        opts.centerOnPlaceId = "5d08d8a4efe1d20012809ee5";
+        //opts.centerOnPlaceId = "5d08d8a4efe1d20012809ee5";
         let settings = MWZMapwizeViewUISettings()
         mapwizeView = MWZMapViewController(frame: self.view.frame, mapwizeOptions: opts, uiSettings: settings)
         mapwizeView.translatesAutoresizingMaskIntoConstraints = false
@@ -40,13 +40,25 @@ extension ViewController: MWZMapViewControllerDelegate {
     }
     
     func mapwizeViewDidTap(onMenu mapwizeView: MWZMapViewController!) {
-        print("onMenu")
+        /*print("onMenu")
         let alert = UIAlertController.init(title: "User action",
                                            message: "Click on the menu",
                                            preferredStyle: .alert)
         let action = UIAlertAction.init(title: "Cancel", style: .destructive, handler: nil)
         alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)*/
+        
+        mapwizeView.mapView.mapwizeApi.getPlace(identifier: "5d08d8a4efe1d20012809ee5", success: { (p1) in
+            mapwizeView.mapView.mapwizeApi.getPlace(identifier: "569f8d7cb4d7200b003c32a1", success: { (p2) in
+                DispatchQueue.main.async {
+                    self.mapwizeView.setDirection(MWZDirection(), from: p1, to: p2, isAccessible: true)
+                }
+            }) { (e2) in
+                print(e2)
+            }
+        }) { (e1) in
+            print(e1)
+        }
         
     }
     

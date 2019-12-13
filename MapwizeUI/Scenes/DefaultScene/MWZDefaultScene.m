@@ -128,7 +128,7 @@
 - (void) setSceneProperties:(MWZDefaultSceneProperties *)sceneProperties {
     
     if (sceneProperties.venue) {
-        [self setSearchBarTitleForVenue:[sceneProperties.venue titleForLanguage:sceneProperties.language]];
+        [self setSearchBarTitleForVenue:[sceneProperties.venue titleForLanguage:sceneProperties.language] loading:sceneProperties.venueLoading];
         if (!_sceneProperties.venue) {
             [self setDirectionButtonHidden:NO];
         }
@@ -142,7 +142,7 @@
         }
     }
     else {
-        [self setSearchBarTitleForVenue:nil];
+        [self setSearchBarTitleForVenue:nil loading:NO];
         [self hideContent];
     }
     
@@ -166,9 +166,16 @@
     }
 }
 
-- (void) setSearchBarTitleForVenue:(NSString*) venueName {
+- (void) setSearchBarTitleForVenue:(NSString*) venueName loading:(BOOL) loading {
     if (venueName && venueName.length > 0) {
-        self.menuBar.searchQueryLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Search in %@...", ""), venueName];
+        if (loading) {
+            self.menuBar.searchQueryLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Entering in %@...", ""), venueName];
+            [self.menuBar showActivityIndicator];
+        }
+        else {
+            self.menuBar.searchQueryLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Search in %@...", ""), venueName];
+            [self.menuBar hideActivityIndicator];
+        }
     }
     else {
         self.menuBar.searchQueryLabel.text = NSLocalizedString(@"Search a venue...", "");

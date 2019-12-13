@@ -70,6 +70,51 @@
     
     self.menuButton.contentEdgeInsets = UIEdgeInsetsMake(4.0f, 4.0f, 4.0f, 4.0f);
     
+    self.activityIndicator = [[UIActivityIndicatorView alloc] init];
+    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.activityIndicator setHidden:YES];
+    [self addSubview:self.activityIndicator];
+    
+    [[NSLayoutConstraint constraintWithItem:self.activityIndicator
+                                  attribute:NSLayoutAttributeLeft
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeLeft
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.activityIndicator
+                                  attribute:NSLayoutAttributeTop
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeTop
+                                 multiplier:1.0f
+                                   constant:8.0f] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.activityIndicator
+                                  attribute:NSLayoutAttributeBottom
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeBottom
+                                 multiplier:1.0f
+                                   constant:-8.0f] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.activityIndicator
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:32.f] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:self.activityIndicator
+                                  attribute:NSLayoutAttributeWidth
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:32.f] setActive:YES];
+    
     self.directionButton = [[UIButton alloc] init];
     self.directionButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.directionButton setImage:directionImage forState:UIControlStateNormal];
@@ -160,6 +205,18 @@
                                  multiplier:1.0f
                                    constant:8.0f] setActive:YES];
     
+}
+
+- (void) showActivityIndicator {
+    [self.menuButton setHidden:YES];
+    [self.activityIndicator setHidden:NO];
+    [self.activityIndicator startAnimating];
+}
+
+- (void) hideActivityIndicator {
+    [self.menuButton setHidden:NO];
+    [self.activityIndicator setHidden:YES];
+    [self.activityIndicator stopAnimating];
 }
 
 - (void) didTapOnSearch:(UITapGestureRecognizer*) recognizer {

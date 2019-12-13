@@ -12,6 +12,8 @@
 #import "MWZComponentUniversesButtonDelegate.h"
 #import "MWZUIOptions.h"
 #import "MWZMapwizeViewUISettings.h"
+
+@class MWZComponentFollowUserButton;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MWZMapViewController : UIView
@@ -23,6 +25,7 @@ MWZComponentUniversesButtonDelegate,MWZComponentLanguagesButtonDelegate>
 
 @property (nonatomic) MWZMapView* mapView;
 @property (nonatomic, weak) id<MWZMapViewControllerDelegate> delegate;
+@property (nonatomic) MWZComponentFollowUserButton* followUserButton;
 
 - (instancetype) initWithFrame:(CGRect)frame
                 mapwizeOptions:(MWZUIOptions*) options

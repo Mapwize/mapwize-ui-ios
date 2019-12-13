@@ -27,7 +27,6 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 @property (nonatomic) MWZMapwizeViewUISettings* settings;
 
 @property (nonatomic) MWZComponentFloorController* floorController;
-@property (nonatomic) MWZComponentFollowUserButton* followUserButton;
 @property (nonatomic) MWZComponentCompass* compassView;
 @property (nonatomic) MWZComponentUniversesButton* universesButton;
 @property (nonatomic) MWZComponentLanguagesButton* languagesButton;
@@ -134,6 +133,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     self.languagesButton = [[MWZComponentLanguagesButton alloc] init];
     self.languagesButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.languagesButton.delegate = self;
+    [self.languagesButton setHidden:YES];
     [self addSubview:self.languagesButton];
 }
 
@@ -494,12 +494,12 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
                                    constant:-8.0] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.floorController
-                                  attribute:NSLayoutAttributeCenterY
+                                  attribute:NSLayoutAttributeBottom
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self
-                                  attribute:NSLayoutAttributeCenterY
+                                     toItem:self.followUserButton
+                                  attribute:NSLayoutAttributeTop
                                  multiplier:1.0f
-                                   constant:0.0f] setActive:YES];
+                                   constant:-8.0f] setActive:YES];
     
     if (self.settings.compassIsHidden) {
          NSLayoutConstraint* toSearchBarConstraint = [NSLayoutConstraint constraintWithItem:self.floorController
@@ -643,13 +643,24 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     [self.mapView grantAccess:accessKey success:success failure:failure];
 }
 
+- (void) setDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to isAccessible:(BOOL) isAccessible {
+    _fromDirectionPoint = nil;
+    _toDirectionPoint = nil;
+    [self setIsAccessible:isAccessible];
+    [self defaultToDirectionTransition];
+    _fromDirectionPoint = from;
+    _toDirectionPoint = to;
+    [self setFromDirectionPoint:from];
+    [self setToDirectionPoint:to inSearch:NO];
+}
+
 #pragma mark Content selection
 - (void) showSelectedContent {
     MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.selectedContent = self.selectedContent;
     defaultProperties.language = [self.mapView getLanguage];
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
-        defaultProperties.infoButtonHidden = [self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
+        defaultProperties.infoButtonHidden = ![self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
     }
     else {
         defaultProperties.infoButtonHidden = NO;
@@ -682,7 +693,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     defaultProperties.selectedContent = self.selectedContent;
     defaultProperties.language = [self.mapView getLanguage];
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
-        defaultProperties.infoButtonHidden = [self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
+        defaultProperties.infoButtonHidden = ![self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
     }
     else {
         defaultProperties.infoButtonHidden = NO;
@@ -714,7 +725,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     defaultProperties.selectedContent = self.selectedContent;
     defaultProperties.language = [self.mapView getLanguage];
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
-        defaultProperties.infoButtonHidden = [self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
+        defaultProperties.infoButtonHidden = ![self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
     }
     else {
         defaultProperties.infoButtonHidden = NO;
@@ -749,7 +760,9 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
 - (void) setFromDirectionPoint:(id<MWZDirectionPoint>)fromDirectionPoint {
     _fromDirectionPoint = fromDirectionPoint;
-    if (fromDirectionPoint == nil) {
+    if (fromDirectionPoint == nil || ([fromDirectionPoint isKindOfClass:ILIndoorLocation.class]
+                                      && !((ILIndoorLocation*)fromDirectionPoint).floor)) {
+        _fromDirectionPoint = nil;
         [self.directionScene setFromText:NSLocalizedString(@"Starting point",@"") asPlaceHolder:YES];
     }
     else if ([fromDirectionPoint isKindOfClass:MWZPlace.class]) {
@@ -825,26 +838,29 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 }
 
 - (void) startDirection {
-    if ([self.fromDirectionPoint isKindOfClass:ILIndoorLocation.class]) {
+    if ([self.fromDirectionPoint isKindOfClass:ILIndoorLocation.class]
+        && ((ILIndoorLocation*)self.fromDirectionPoint).floor) {
         MWZDirectionOptions* options = [[MWZDirectionOptions alloc] init];
         [self.mapView startNavigation:self.toDirectionPoint isAccessible:self.isAccessible options:options];
     }
-    [self.mapView.mapwizeApi getDirectionWithFrom:self.fromDirectionPoint
-                                               to:self.toDirectionPoint
-                                     isAccessible:self.isAccessible success:^(MWZDirection * _Nonnull direction) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.state == MWZViewStateDirectionOn || self.state == MWZViewStateDirectionOff) {
-                self.state = MWZViewStateDirectionOn;
-                [self.mapView setDirection:direction];
-                [self.directionScene setInfoWith:direction.traveltime
-                               directionDistance:direction.distance
-                                    isAccessible:self.isAccessible];
-                [self.directionScene setDirectionInfoHidden:NO];
-            }
-        });
-    } failure:^(NSError * _Nonnull error) {
-        // TODO HANDLE DIRECTION NOT FOUND
-    }];
+    else {
+        [self.mapView.mapwizeApi getDirectionWithFrom:self.fromDirectionPoint
+                                                   to:self.toDirectionPoint
+                                         isAccessible:self.isAccessible success:^(MWZDirection * _Nonnull direction) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (self.state == MWZViewStateDirectionOn || self.state == MWZViewStateDirectionOff) {
+                    self.state = MWZViewStateDirectionOn;
+                    [self.mapView setDirection:direction];
+                    [self.directionScene setInfoWith:direction.traveltime
+                                   directionDistance:direction.distance
+                                        isAccessible:self.isAccessible];
+                    [self.directionScene setDirectionInfoHidden:NO];
+                }
+            });
+        } failure:^(NSError * _Nonnull error) {
+            // TODO HANDLE DIRECTION NOT FOUND
+        }];
+    }
 }
 
 #pragma mark MWZMapViewDelegate
@@ -867,13 +883,19 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
 - (void)mapView:(MWZMapView *_Nonnull)mapView venueWillEnter:(MWZVenue *_Nonnull)venue {
     [self fetchMainSearchesForVenues:venue];
+    MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
+    defaultProperties.venue = venue;
+    defaultProperties.venueLoading = YES;
+    [self.defaultScene setSceneProperties:defaultProperties];
 }
 
 - (void)mapView:(MWZMapView *_Nonnull)mapView venueDidEnter:(MWZVenue *_Nonnull)venue {
     MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.venue = venue;
+    defaultProperties.venueLoading = NO;
     [self.defaultScene setSceneProperties:defaultProperties];
     [self.languagesButton mapwizeDidEnterInVenue:venue];
+    [self.languagesButton setHidden:([venue.supportedLanguages count] == 1)];
     if (self.languagesButton.isHidden) {
         self.universesButtonLeftConstraint.constant = 16.0f;
     }
@@ -886,8 +908,10 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 - (void)mapView:(MWZMapView *_Nonnull)mapView venueDidExit:(MWZVenue *_Nonnull)venue {
     MWZDefaultSceneProperties* defaultProperties = [MWZDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.venue = nil;
+    [self.languagesButton setHidden:YES];
     [self.defaultScene setSceneProperties:defaultProperties];
     self.mainSearches = @[];
+    [self unselectContent];
 }
 
 - (void)mapView:(MWZMapView *)mapView floorsDidChange:(NSArray<MWZFloor *> *)floors {
@@ -910,10 +934,27 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     [self.universesButton mapwizeAccessibleUniversesDidChange: accessibleUniverses];
 }
 
+- (void) mapView:(MWZMapView *)mapView universeDidChange:(MWZUniverse *)universe {
+    if (self.selectedContent) {
+        [self unselectContent];
+    }
+}
+
 - (void) mapViewDidLoad:(MWZMapView *)mapView {
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeViewDidLoad:)]) {
         [self.delegate mapwizeViewDidLoad:self];
     }
+}
+
+- (BOOL)mapView:(MWZMapView *_Nonnull) mapView shouldRecomputeNavigation:(MWZNavigationInfo* _Nonnull) navigationInfo {
+    return navigationInfo.locationDelta > 10;
+}
+
+- (void)mapViewDidStartNavigation:(MWZMapView *)mapView forDirection:(MWZDirection *)direction {
+    [self.directionScene setInfoWith:direction.traveltime
+                   directionDistance:direction.distance
+                        isAccessible:self.isAccessible];
+    [self.directionScene setDirectionInfoHidden:NO];
 }
 
 #pragma mark MGLMapViewDelegate
@@ -929,6 +970,22 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     [self.compassView updateCompass:mapView.direction];
 }
 
+
+/*- (BOOL) mapView:(MGLMapView *)mapView shouldChangeFromCamera:(MGLMapCamera *)oldCamera toCamera:(MGLMapCamera *)newCamera {
+    if (self.state == MWZViewStateDefault || ![self.mapView getVenue]) {
+        return YES;
+    }
+    MGLMapCamera *currentCamera = mapView.camera;
+    CLLocationCoordinate2D newCameraCenter = newCamera.centerCoordinate;
+    mapView.camera = newCamera;
+    MGLCoordinateBounds newVisibleCoordinates = mapView.visibleCoordinateBounds;
+    BOOL zoomOk = mapView.zoomLevel > 15;
+    mapView.camera = currentCamera;
+    BOOL inside = MGLCoordinateInCoordinateBounds(newCameraCenter, [self.mapView getVenue].bounds);
+    BOOL intersects = MGLCoordinateInCoordinateBounds(newVisibleCoordinates.ne, [self.mapView getVenue].bounds) && MGLCoordinateInCoordinateBounds(newVisibleCoordinates.sw, [self.mapView getVenue].bounds);
+     
+    return inside && zoomOk;
+}*/
 
 #pragma mark MWZComponentFloorControllerDelegate
 - (void) floorController:(MWZComponentFloorController*) floorController didSelect:(NSNumber*) floorOrder {
