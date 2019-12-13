@@ -840,15 +840,18 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 - (void) startDirection {
     if ([self.fromDirectionPoint isKindOfClass:ILIndoorLocation.class]
         && ((ILIndoorLocation*)self.fromDirectionPoint).floor) {
+        [self.directionScene showLoading];
         MWZDirectionOptions* options = [[MWZDirectionOptions alloc] init];
         [self.mapView startNavigation:self.toDirectionPoint isAccessible:self.isAccessible options:options];
     }
     else {
+        [self.directionScene showLoading];
         [self.mapView.mapwizeApi getDirectionWithFrom:self.fromDirectionPoint
                                                    to:self.toDirectionPoint
                                          isAccessible:self.isAccessible success:^(MWZDirection * _Nonnull direction) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (self.state == MWZViewStateDirectionOn || self.state == MWZViewStateDirectionOff) {
+                    [self.directionScene hideLoading];
                     self.state = MWZViewStateDirectionOn;
                     [self.mapView setDirection:direction];
                     [self.directionScene setInfoWith:direction.traveltime
@@ -858,7 +861,8 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
                 }
             });
         } failure:^(NSError * _Nonnull error) {
-            // TODO HANDLE DIRECTION NOT FOUND
+            [self.directionScene hideLoading];
+            [self.directionScene showErrorMessage:@"Direction not found"];
         }];
     }
 }
@@ -950,11 +954,19 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     return navigationInfo.locationDelta > 10;
 }
 
+
+
 - (void)mapViewDidStartNavigation:(MWZMapView *)mapView forDirection:(MWZDirection *)direction {
+    [self.directionScene hideLoading];
     [self.directionScene setInfoWith:direction.traveltime
                    directionDistance:direction.distance
                         isAccessible:self.isAccessible];
     [self.directionScene setDirectionInfoHidden:NO];
+}
+
+- (void)mapView:(MWZMapView *)mapView navigationFailedWithError:(NSError *)error {
+    [self.directionScene hideLoading];
+    [self.directionScene showErrorMessage:@"Navigation error"];
 }
 
 #pragma mark MGLMapViewDelegate

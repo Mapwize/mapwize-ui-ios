@@ -201,6 +201,17 @@
     [self.directionHeader closeToSearch];
 }
 
+- (void) showLoading {
+    [self.directionInfo showLoading];
+}
+- (void) hideLoading {
+    [self.directionInfo hideLoading];
+}
+
+- (void) showErrorMessage:(NSString*) errorMessage {
+    [self.directionInfo showErrorMessage:errorMessage];
+}
+
 - (void) showSearchResults:(NSArray<id<MWZObject>>*) results
                  universes:(NSArray<MWZUniverse*>*) universes
             activeUniverse:(MWZUniverse*) activeUniverse

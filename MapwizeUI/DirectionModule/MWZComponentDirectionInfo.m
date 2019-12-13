@@ -11,6 +11,8 @@
 @property (nonatomic) UIImage* traveltimeImage;
 @property (nonatomic) UIView* distanceContentView;
 @property (nonatomic) UIView* traveltimeContentView;
+@property (nonatomic) UIActivityIndicatorView* activityIndicatorView;
+@property (nonatomic) UILabel* errorLabel;
 
 @end
 
@@ -36,6 +38,39 @@
 }
 
 - (void) setupSubview:(UIColor*) color {
+    
+    self.activityIndicatorView = [[UIActivityIndicatorView alloc] init];
+    self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.activityIndicatorView setHidden:YES];
+    [self addSubview:self.activityIndicatorView];
+    [[NSLayoutConstraint constraintWithItem:self.activityIndicatorView
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:32.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.activityIndicatorView
+                                  attribute:NSLayoutAttributeWidth
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:32.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.activityIndicatorView
+                                  attribute:NSLayoutAttributeTop
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeTop
+                                 multiplier:1.0f
+                                   constant:16.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.activityIndicatorView
+                                  attribute:NSLayoutAttributeCenterX
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeCenterX
+                                 multiplier:1.0f
+                                   constant:0.0f] setActive:YES];
     
     NSBundle* bundle = [NSBundle bundleForClass:self.class];
     self.accessibilityOnImage = [UIImage imageNamed:@"accessibilityOn" inBundle:bundle compatibleWithTraitCollection:nil];
@@ -233,6 +268,33 @@
                                    constant:0.0f] setActive:YES];
 }
 
+- (void) showLoading {
+    [self.distanceContentView setHidden:YES];
+    [self.traveltimeContentView setHidden:YES];
+    [self.activityIndicatorView setHidden:NO];
+    [self.activityIndicatorView startAnimating];
+    if (@available(iOS 11.0, *)) {
+        [self animateTo:64.0f + self.safeAreaInsets.bottom];
+    } else {
+        [self animateTo:64.0f];
+    }
+}
+
+- (void) hideLoading {
+    [self.activityIndicatorView setHidden:YES];
+    [self.activityIndicatorView stopAnimating];
+}
+
+- (void) showErrorMessage:(NSString*) message {
+    [self.distanceContentView setHidden:YES];
+    [self.traveltimeContentView setHidden:YES];
+    if (@available(iOS 11.0, *)) {
+        [self animateTo:64.0f + self.safeAreaInsets.bottom];
+    } else {
+        [self animateTo:64.0f];
+    }
+}
+
 - (void) setInfoWith:(double) directionTravelTime directionDistance:(double) directionDistance {
     double traveltime = directionTravelTime / 60;
     if (traveltime <= 1.0) {
@@ -247,7 +309,8 @@
     formatter.numberFormatter.maximumFractionDigits = 0;
     NSString* localizedString = [formatter stringFromMeasurement:measurment];
     self.distanceLabel.text = localizedString;
-    
+    [self.distanceContentView setHidden:NO];
+    [self.traveltimeContentView setHidden:NO];
     if (@available(iOS 11.0, *)) {
         [self animateTo:64.0f + self.safeAreaInsets.bottom];
     } else {

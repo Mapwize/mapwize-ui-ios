@@ -29,6 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
    directionDistance:(double) directionDistance
         isAccessible:(BOOL) isAccessible;
 
+- (void) showLoading;
+- (void) hideLoading;
+- (void) showErrorMessage:(NSString*) errorMessage;
 - (void) setDirectionInfoHidden:(BOOL) hidden;
 - (void) openFromSearch;
 - (void) closeFromSearch;

@@ -7,6 +7,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype) initWithColor:(UIColor*) color;
 
+- (void) showLoading;
+- (void) hideLoading;
+- (void) showErrorMessage:(NSString*) message;
 - (void) setInfoWith:(double) directionTravelTime directionDistance:(double) directionDistance;
 - (void) close;
     
