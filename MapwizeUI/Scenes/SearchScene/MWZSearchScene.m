@@ -1,5 +1,4 @@
 #import "MWZSearchScene.h"
-#import "MWZUIConstants.h"
 
 @implementation MWZSearchScene
 
@@ -56,21 +55,21 @@
                                          toItem:view
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
-                                       constant:-view.safeAreaInsets.right - MWZDefaultPadding] setActive:YES];
+                                       constant:-view.safeAreaInsets.right - 16.0f] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.searchQueryBar
                                       attribute:NSLayoutAttributeLeft
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:view
                                       attribute:NSLayoutAttributeLeft
                                      multiplier:1.0f
-                                       constant:view.safeAreaInsets.left + MWZDefaultPadding] setActive:YES];
+                                       constant:view.safeAreaInsets.left + 16.0f] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.searchQueryBar
                                       attribute:NSLayoutAttributeTop
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:view.safeAreaLayoutGuide
                                       attribute:NSLayoutAttributeTop
                                      multiplier:1.0f
-                                       constant:MWZDefaultPadding] setActive:YES];
+                                       constant:16.0f] setActive:YES];
     } else {
         [[NSLayoutConstraint constraintWithItem:self.searchQueryBar
                                       attribute:NSLayoutAttributeRight
@@ -78,21 +77,21 @@
                                          toItem:view
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
-                                       constant:- MWZDefaultPadding] setActive:YES];
+                                       constant:- 16.0f] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.searchQueryBar
                                       attribute:NSLayoutAttributeLeft
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:view
                                       attribute:NSLayoutAttributeLeft
                                      multiplier:1.0f
-                                       constant:MWZDefaultPadding] setActive:YES];
+                                       constant:16.0f] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.searchQueryBar
                                       attribute:NSLayoutAttributeTop
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:view
                                       attribute:NSLayoutAttributeTop
                                      multiplier:1.0f
-                                       constant:MWZDefaultPadding] setActive:YES];
+                                       constant:16.0f] setActive:YES];
     }
     
     self.resultContainerView = [[UIView alloc] init];
@@ -120,14 +119,14 @@
                                          toItem:self.searchQueryBar
                                       attribute:NSLayoutAttributeBottom
                                      multiplier:1.0f
-                                       constant:MWZDefaultPadding] setActive:YES];
+                                       constant:16.0f] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.resultContainerView
                                       attribute:NSLayoutAttributeBottom
                                       relatedBy:NSLayoutRelationLessThanOrEqual
                                          toItem:view.safeAreaLayoutGuide
                                       attribute:NSLayoutAttributeBottom
                                      multiplier:1.0f
-                                       constant:-MWZDefaultPadding] setActive:YES];
+                                       constant:-16.0f] setActive:YES];
         _resultContainerViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.resultContainerView
                                                                             attribute:NSLayoutAttributeHeight
                                                                             relatedBy:NSLayoutRelationEqual
@@ -144,28 +143,28 @@
                                          toItem:view
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
-                                       constant:- MWZDefaultPadding] setActive:YES];
+                                       constant:- 16.0f] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.resultContainerView
                                       attribute:NSLayoutAttributeLeft
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:view
                                       attribute:NSLayoutAttributeLeft
                                      multiplier:1.0f
-                                       constant:MWZDefaultPadding] setActive:YES];
+                                       constant:16.0f] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.resultContainerView
                                       attribute:NSLayoutAttributeTop
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:self.searchQueryBar
                                       attribute:NSLayoutAttributeBottom
                                      multiplier:1.0f
-                                       constant:MWZDefaultPadding] setActive:YES];
+                                       constant:16.0f] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.resultContainerView
                                       attribute:NSLayoutAttributeBottom
                                       relatedBy:NSLayoutRelationLessThanOrEqual
                                          toItem:view
                                       attribute:NSLayoutAttributeBottom
                                      multiplier:1.0f
-                                       constant:-MWZDefaultPadding] setActive:YES];
+                                       constant:-16.0f] setActive:YES];
         _resultContainerViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.resultContainerView
                                                                             attribute:NSLayoutAttributeHeight
                                                                             relatedBy:NSLayoutRelationEqual

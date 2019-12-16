@@ -3,7 +3,6 @@
 #import "MWZDirectionHeaderDelegate.h"
 #import "MWZScene.h"
 #import "MWZDirectionSceneDelegate.h"
-#import "MWZComponentResultList.h"
 #import "MWZComponentGroupedResultListDelegate.h"
 #import "MWZComponentDirectionInfo.h"
 #import "MWZComponentGroupedResultList.h"

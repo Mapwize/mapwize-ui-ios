@@ -1,5 +1,4 @@
 #import "MWZDefaultScene.h"
-#import "MWZUIConstants.h"
 
 @implementation MWZDefaultScene
 
@@ -24,21 +23,21 @@
                                          toItem:view
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
-                                       constant:-view.safeAreaInsets.right - MWZDefaultPadding] setActive:YES];
+                                       constant:-view.safeAreaInsets.right - 16.0f] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeLeft
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:view
                                       attribute:NSLayoutAttributeLeft
                                      multiplier:1.0f
-                                       constant:view.safeAreaInsets.left + MWZDefaultPadding] setActive:YES];
+                                       constant:view.safeAreaInsets.left + 16.0f] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeTop
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:view.safeAreaLayoutGuide
                                       attribute:NSLayoutAttributeTop
                                      multiplier:1.0f
-                                       constant:MWZDefaultPadding] setActive:YES];
+                                       constant:16.0f] setActive:YES];
     } else {
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeRight
@@ -46,21 +45,21 @@
                                          toItem:view
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
-                                       constant:- MWZDefaultPadding] setActive:YES];
+                                       constant:- 16.0f] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeLeft
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:view
                                       attribute:NSLayoutAttributeLeft
                                      multiplier:1.0f
-                                       constant:MWZDefaultPadding] setActive:YES];
+                                       constant:16.0f] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.menuBar
                                       attribute:NSLayoutAttributeTop
                                       relatedBy:NSLayoutRelationEqual
                                          toItem:view
                                       attribute:NSLayoutAttributeTop
                                      multiplier:1.0f
-                                       constant:MWZDefaultPadding] setActive:YES];
+                                       constant:16.0f] setActive:YES];
     }
     
     self.bottomInfoView = [[MWZComponentBottomInfoView alloc] initWithColor:self.mainColor];

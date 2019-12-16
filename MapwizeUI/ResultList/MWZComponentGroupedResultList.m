@@ -1,5 +1,4 @@
 #import "MWZComponentGroupedResultList.h"
-#import "MWZComponentResultList.h"
 #import "MWZComponentTitleCell.h"
 #import "MWZComponentSubtitleCell.h"
 #import "MWZComponentTitleWithoutFloorCellTableViewCell.h"

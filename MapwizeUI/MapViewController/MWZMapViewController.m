@@ -1,5 +1,4 @@
 #import "MWZMapViewController.h"
-#import "MWZUIConstants.h"
 #import "MWZSearchScene.h"
 #import "MWZDefaultScene.h"
 #import "MWZDirectionScene.h"
