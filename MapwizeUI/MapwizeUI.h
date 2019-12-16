@@ -4,6 +4,6 @@ FOUNDATION_EXPORT double MapwizeUIVersionNumber;
 
 FOUNDATION_EXPORT const unsigned char MapwizeUIVersionString[];
 
-#import "MWZMapwizeViewUISettings.h"
+#import "MWZUISettings.h"
 #import "MWZUIOptions.h"
-#import "MWZMapViewController.h"
+#import "MWZUIView.h"

@@ -8,7 +8,7 @@ For documentation about Mapwize SDK objects like MWZVenue, MWZPlace, MWZOptions.
 
 ## Description
 
-The Mapwize UI view comes with the following components:
+The Mapwize UI view comes with the following UIs:
 
 - Mapwize SDK integration
 - Floor controller
@@ -147,7 +147,7 @@ Setup the UI to display information about the selected placelist
 Add markers on places contained in the placelist and promote them
 `- (void) selectPlaceList:(MWZPlaceList*) placeList;`
 
-Hide the UI component, remove markers and unpromote place if needed
+Hide the UI UI, remove markers and unpromote place if needed
 `- (void) unselectContent:(BOOL) closeInfo;`
 
 Display a direction object and show the direction UI already configured

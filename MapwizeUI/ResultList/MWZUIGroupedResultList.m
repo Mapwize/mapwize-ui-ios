@@ -1,7 +1,7 @@
 #import "MWZUIGroupedResultList.h"
-#import "MWZComponentTitleCell.h"
-#import "MWZComponentSubtitleCell.h"
-#import "MWZComponentTitleWithoutFloorCellTableViewCell.h"
+#import "MWZUITitleCell.h"
+#import "MWZUISubtitleCell.h"
+#import "MWZUITitleWithoutFloorCellTableViewCell.h"
 #import "MWZUIGroupedResultListDelegate.h"
 
 @interface MWZUIGroupedResultList () <UITableViewDelegate, UITableViewDataSource>
@@ -35,9 +35,9 @@
         self.delegate = self;
         self.separatorStyle = UITableViewCellSeparatorStyleNone;
         self.scrollEnabled = NO;
-        [self registerClass:[MWZComponentTitleWithoutFloorCellTableViewCell class] forCellReuseIdentifier:@"titleWithoutFloorCell"];
-        [self registerClass:[MWZComponentTitleCell class] forCellReuseIdentifier:@"titleCell"];
-        [self registerClass:[MWZComponentSubtitleCell class] forCellReuseIdentifier:@"subtitleCell"];
+        [self registerClass:[MWZUITitleWithoutFloorCellTableViewCell class] forCellReuseIdentifier:@"titleWithoutFloorCell"];
+        [self registerClass:[MWZUITitleCell class] forCellReuseIdentifier:@"titleCell"];
+        [self registerClass:[MWZUISubtitleCell class] forCellReuseIdentifier:@"subtitleCell"];
         _contentByUniverseId = [[NSMutableDictionary alloc] init];
         _ungroupedResults = [[NSMutableArray alloc] init];
         _universes = [[NSMutableArray alloc] init];
@@ -143,7 +143,7 @@
         return [self getCellFor:mapwizeObject];
     }
     else if (!self.universes || self.universes.count == 0) {
-        MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
+        MWZUITitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
         cell.titleView.text = NSLocalizedString(@"No results", "");
         [cell.imageView setImage:nil];
         return cell;
@@ -167,7 +167,7 @@
     
     if ([mapwizeObject isKindOfClass:MWZVenue.class]) {
         MWZVenue* venue = (MWZVenue*) mapwizeObject;
-        MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
+        MWZUITitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
         cell.titleView.text = [venue titleForLanguage:self.language];
         [cell.imageView setImage:imageVenue];
         return cell;
@@ -175,7 +175,7 @@
     if ([mapwizeObject isKindOfClass:MWZPlace.class]) {
         MWZPlace* place = (MWZPlace*) mapwizeObject;
         if ([place subtitleForLanguage:self.language] && [[place subtitleForLanguage:self.language] length] > 0) {
-            MWZComponentSubtitleCell* cell = [self dequeueReusableCellWithIdentifier:@"subtitleCell"];
+            MWZUISubtitleCell* cell = [self dequeueReusableCellWithIdentifier:@"subtitleCell"];
             cell.titleView.text = [place titleForLanguage:self.language];
             cell.subtitleView.text = [place subtitleForLanguage:self.language];
             cell.floorView.text = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), place.floor];
@@ -183,7 +183,7 @@
             return cell;
         }
         else {
-            MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleCell"];
+            MWZUITitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleCell"];
             cell.titleView.text = [place titleForLanguage:self.language];
             cell.floorView.text = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), place.floor];
             [cell.imageView setImage:imagePlace];
@@ -192,12 +192,12 @@
     }
     if ([mapwizeObject isKindOfClass:MWZPlacelist.class]) {
         MWZPlacelist* placeList = (MWZPlacelist*) mapwizeObject;
-        MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
+        MWZUITitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
         cell.titleView.text = [placeList titleForLanguage:self.language];
         [cell.imageView setImage:imagePlacelist];
         return cell;
     }
-    MWZComponentTitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
+    MWZUITitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
     return cell;
 }
 
