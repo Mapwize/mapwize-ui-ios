@@ -3,15 +3,15 @@
 #import "MWZDirectionHeaderDelegate.h"
 #import "MWZScene.h"
 #import "MWZDirectionSceneDelegate.h"
-#import "MWZComponentGroupedResultListDelegate.h"
+#import "MWZUIGroupedResultListDelegate.h"
 #import "MWZComponentDirectionInfo.h"
-#import "MWZComponentGroupedResultList.h"
+#import "MWZUIGroupedResultList.h"
 #import "MWZComponentCurrentLocationView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 
-@interface MWZDirectionScene : NSObject <MWZScene, MWZDirectionHeaderDelegate, MWZComponentGroupedResultListDelegate>
+@interface MWZDirectionScene : NSObject <MWZScene, MWZDirectionHeaderDelegate, MWZUIGroupedResultListDelegate>
 
 @property (nonatomic, weak) id<MWZDirectionSceneDelegate> delegate;
 @property (nonatomic) UIView* topConstraintView;
@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSLayoutConstraint* topConstraintViewMarginTop;
 @property (nonatomic) MWZDirectionHeader* directionHeader;
 @property (nonatomic) MWZComponentDirectionInfo* directionInfo;
-@property (nonatomic) MWZComponentGroupedResultList* resultList;
+@property (nonatomic) MWZUIGroupedResultList* resultList;
 @property (nonatomic) UIView* backgroundView;
 @property (nonatomic) UIColor* mainColor;
 @property (nonatomic) MWZComponentCurrentLocationView* currentLocationView;

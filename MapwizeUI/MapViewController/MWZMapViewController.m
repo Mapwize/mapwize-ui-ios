@@ -7,7 +7,7 @@
 #import "MWZComponentFloorController.h"
 #import "MWZComponentFollowUserButton.h"
 #import "MWZComponentCompass.h"
-#import "MWZComponentUniversesButton.h"
+#import "MWZUIUniversesButton.h"
 #import "MWZComponentLanguagesButton.h"
 
 typedef NS_ENUM(NSUInteger, MWZViewState) {
@@ -27,7 +27,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
 @property (nonatomic) MWZComponentFloorController* floorController;
 @property (nonatomic) MWZComponentCompass* compassView;
-@property (nonatomic) MWZComponentUniversesButton* universesButton;
+@property (nonatomic) MWZUIUniversesButton* universesButton;
 @property (nonatomic) MWZComponentLanguagesButton* languagesButton;
 
 @property (nonatomic) MWZSceneCoordinator* sceneCoordinator;
@@ -227,7 +227,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 }
 
 - (void) addUniversesButton {
-    self.universesButton = [[MWZComponentUniversesButton alloc] init];
+    self.universesButton = [[MWZUIUniversesButton alloc] init];
     self.universesButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.universesButton.delegate = self;
     [self addSubview:self.universesButton];

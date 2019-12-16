@@ -1,13 +1,13 @@
 #import <UIKit/UIKit.h>
 #import <MapwizeSDK/MapwizeSDK.h>
 
-@protocol MWZComponentUniversesButtonDelegate;
+@protocol MWZUIUniversesButtonDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MWZComponentUniversesButton : UIButton
+@interface MWZUIUniversesButton : UIButton
 
-@property (nonatomic, weak) id<MWZComponentUniversesButtonDelegate> delegate;
+@property (nonatomic, weak) id<MWZUIUniversesButtonDelegate> delegate;
 
 - (instancetype) init;
 

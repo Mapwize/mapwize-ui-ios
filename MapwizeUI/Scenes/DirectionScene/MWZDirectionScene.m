@@ -33,7 +33,7 @@
     self.backgroundView.backgroundColor = [UIColor whiteColor];
     [view addSubview:self.backgroundView];
     
-    self.resultList = [[MWZComponentGroupedResultList alloc] init];
+    self.resultList = [[MWZUIGroupedResultList alloc] init];
     self.resultList.translatesAutoresizingMaskIntoConstraints = NO;
     self.resultList.resultDelegate = self;
     [view addSubview:self.resultList];

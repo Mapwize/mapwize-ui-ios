@@ -176,7 +176,7 @@
         [_resultContainerViewHeightConstraint setActive:YES];
     }
     
-    self.resultList = [[MWZComponentGroupedResultList alloc] init];
+    self.resultList = [[MWZUIGroupedResultList alloc] init];
     self.resultList.resultDelegate = self;
     self.resultList.translatesAutoresizingMaskIntoConstraints = NO;
     [self.resultContainerView addSubview:self.resultList];

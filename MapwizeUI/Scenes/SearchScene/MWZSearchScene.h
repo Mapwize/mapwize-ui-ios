@@ -2,18 +2,18 @@
 #import <MapwizeSDK/MapwizeSDK.h>
 #import "MWZSearchQueryBar.h"
 #import "MWZSearchViewControllerOptions.h"
-#import "MWZComponentGroupedResultList.h"
+#import "MWZUIGroupedResultList.h"
 #import "MWZSearchSceneDelegate.h"
 #import "MWZScene.h"
-#import "MWZComponentGroupedResultListDelegate.h"
+#import "MWZUIGroupedResultListDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MWZSearchScene : NSObject <MWZScene, MWZSearchQueryBarDelegate, MWZComponentGroupedResultListDelegate>
+@interface MWZSearchScene : NSObject <MWZScene, MWZSearchQueryBarDelegate, MWZUIGroupedResultListDelegate>
 
 @property (nonatomic) MWZSearchViewControllerOptions* searchOptions;
 @property (nonatomic) MWZSearchQueryBar* searchQueryBar;
-@property (nonatomic) MWZComponentGroupedResultList* resultList;
+@property (nonatomic) MWZUIGroupedResultList* resultList;
 @property (nonatomic) UIView* resultContainerView;
 @property (nonatomic) UIView* backgroundView;
 @property (nonatomic) NSLayoutConstraint* resultContainerViewHeightConstraint;

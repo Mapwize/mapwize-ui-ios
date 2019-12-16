@@ -1,10 +1,10 @@
-#import "MWZComponentGroupedResultList.h"
+#import "MWZUIGroupedResultList.h"
 #import "MWZComponentTitleCell.h"
 #import "MWZComponentSubtitleCell.h"
 #import "MWZComponentTitleWithoutFloorCellTableViewCell.h"
-#import "MWZComponentGroupedResultListDelegate.h"
+#import "MWZUIGroupedResultListDelegate.h"
 
-@interface MWZComponentGroupedResultList () <UITableViewDelegate, UITableViewDataSource>
+@interface MWZUIGroupedResultList () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic) NSArray<MWZUniverse*>* accessibleUniverses;
 @property (nonatomic) NSMutableArray<MWZUniverse*>* universes;
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation MWZComponentGroupedResultList
+@implementation MWZUIGroupedResultList
 
 - (instancetype)init {
     self = [super init];

@@ -1,6 +1,6 @@
-#import "MWZComponentColors.h"
+#import "MWZUIColors.h"
 
-@implementation MWZComponentColors
+@implementation MWZUIColors
 
 + (UIImage *)tintedBackgroundImageWithImage:(UIImage*) input tint:(UIColor *)color {
     UIImage *image;

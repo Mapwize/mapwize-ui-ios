@@ -1,19 +1,19 @@
-#import "MWZComponentUniversesButton.h"
-#import "MWZComponentUniversesButtonDelegate.h"
+#import "MWZUIUniversesButton.h"
+#import "MWZUIUniversesButtonDelegate.h"
 
-@interface MWZComponentUniversesButton ()
+@interface MWZUIUniversesButton ()
 
 @property (nonatomic) NSArray<MWZUniverse*>* universes;
 
 @end
 
-@implementation MWZComponentUniversesButton
+@implementation MWZUIUniversesButton
 
 - (instancetype) init {
     self = [super init];
     if (self) {
         _universes = @[];
-        UIImage* image = [UIImage imageNamed:@"universe" inBundle:[NSBundle bundleForClass:MWZComponentUniversesButton.class] compatibleWithTraitCollection:nil];
+        UIImage* image = [UIImage imageNamed:@"universe" inBundle:[NSBundle bundleForClass:MWZUIUniversesButton.class] compatibleWithTraitCollection:nil];
         [self setImage:image forState:UIControlStateNormal];
         [self.imageView setContentMode:UIViewContentModeScaleAspectFit];
         self.adjustsImageWhenHighlighted = NO;

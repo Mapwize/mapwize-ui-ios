@@ -9,7 +9,7 @@
 #import "MWZComponentCompassDelegate.h"
 #import "MWZComponentFollowUserButtonDelegate.h"
 #import "MWZComponentLanguagesButtonDelegate.h"
-#import "MWZComponentUniversesButtonDelegate.h"
+#import "MWZUIUniversesButtonDelegate.h"
 #import "MWZUIOptions.h"
 #import "MWZMapwizeViewUISettings.h"
 
@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 MWZDefaultSceneDelegate, MWZDirectionSceneDelegate, MWZMapViewDelegate,
 MWZComponentFloorControllerDelegate, MWZComponentCompassDelegate,
 MWZComponentFollowUserButtonDelegate, MGLMapViewDelegate,
-MWZComponentUniversesButtonDelegate,MWZComponentLanguagesButtonDelegate>
+MWZUIUniversesButtonDelegate,MWZComponentLanguagesButtonDelegate>
 
 @property (nonatomic) MWZMapView* mapView;
 @property (nonatomic, weak) id<MWZMapViewControllerDelegate> delegate;

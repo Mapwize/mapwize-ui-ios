@@ -1,7 +1,7 @@
 #import <MapwizeSDK/MapwizeSDK.h>
 #import "MWZComponentFollowUserButton.h"
 #import "MWZComponentFollowUserButtonDelegate.h"
-#import "MWZComponentColors.h"
+#import "MWZUIColors.h"
 
 @interface MWZComponentFollowUserButton ()
 
@@ -18,9 +18,9 @@
     if (self) {
         _imageNone = [UIImage imageNamed:@"followOff" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
         _imageFollow = [UIImage imageNamed:@"followOff" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
-        _imageFollow = [MWZComponentColors tintedBackgroundImageWithImage:_imageFollow tint:color];
+        _imageFollow = [MWZUIColors tintedBackgroundImageWithImage:_imageFollow tint:color];
         _imageFollowHeading = [UIImage imageNamed:@"followHeading" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
-        _imageFollowHeading = [MWZComponentColors tintedBackgroundImageWithImage:_imageFollowHeading tint:color];
+        _imageFollowHeading = [MWZUIColors tintedBackgroundImageWithImage:_imageFollowHeading tint:color];
         [self setImage:_imageNone forState:UIControlStateNormal];
         self.adjustsImageWhenHighlighted = NO;
         UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self

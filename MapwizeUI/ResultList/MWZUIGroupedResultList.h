@@ -1,13 +1,13 @@
 #import <UIKit/UIKit.h>
 #import <MapwizeSDK/MapwizeSDK.h>
 
-@protocol MWZComponentGroupedResultListDelegate;
+@protocol MWZUIGroupedResultListDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MWZComponentGroupedResultList : UITableView
+@interface MWZUIGroupedResultList : UITableView
 
-@property (nonatomic, weak) id<MWZComponentGroupedResultListDelegate> resultDelegate;
+@property (nonatomic, weak) id<MWZUIGroupedResultListDelegate> resultDelegate;
 
 - (void) setLanguage:(NSString*) language;
 - (void) swapResults:(NSArray<id<MWZObject>>*) results

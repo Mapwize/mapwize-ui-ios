@@ -2,7 +2,7 @@
 #import <UIKit/UIKit.h>
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MWZComponentColors : NSObject
+@interface MWZUIColors : NSObject
 
 + (UIImage *)tintedBackgroundImageWithImage:(UIImage*) input tint:(UIColor *)color;
 
