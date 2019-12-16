@@ -590,6 +590,12 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     if (self.fromDirectionPoint == nil) {
         self.state = MWZViewStateSearchDirectionFrom;
         [self.directionScene openFromSearch];
+        if ([self.mapView getUserLocation] && [self.mapView getUserLocation].floor) {
+            [self.directionScene setCurrentLocationViewHidden:NO];
+        }
+        else {
+            [self.directionScene setCurrentLocationViewHidden:YES];
+        }
         [self.directionScene setSearchResultsHidden:NO];
         [self.directionScene showSearchResults:self.mainFroms
                                      universes:[self.mapView getUniverses]
@@ -599,6 +605,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     else if (self.toDirectionPoint == nil) {
         self.state = MWZViewStateSearchDirectionTo;
         [self.directionScene openToSearch];
+        [self.directionScene setCurrentLocationViewHidden:YES];
         [self.directionScene setSearchResultsHidden:NO];
         [self.directionScene showSearchResults:self.mainSearches
              universes:[self.mapView getUniverses]
@@ -779,6 +786,8 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         if (self.toDirectionPoint == nil) {
             self.state = MWZViewStateSearchDirectionTo;
             [self.directionScene openToSearch];
+            [self.directionScene setCurrentLocationViewHidden:YES];
+            
             [self.directionScene showSearchResults:self.mainSearches
                                          universes:[self.mapView getUniverses]
                                     activeUniverse:[self.mapView getUniverse]
@@ -812,6 +821,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     }
     if (inSearch) {
         [self.directionScene closeToSearch];
+        [self.directionScene setCurrentLocationViewHidden:YES];
         [self.directionScene setSearchResultsHidden:YES];
     }
     self.state = MWZViewStateDirectionOff;
@@ -862,7 +872,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
             });
         } failure:^(NSError * _Nonnull error) {
             [self.directionScene hideLoading];
-            [self.directionScene showErrorMessage:@"Direction not found"];
+            [self.directionScene showErrorMessage:NSLocalizedString(@"Direction not found",@"")];
         }];
     }
 }
@@ -951,22 +961,26 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 }
 
 - (BOOL)mapView:(MWZMapView *_Nonnull) mapView shouldRecomputeNavigation:(MWZNavigationInfo* _Nonnull) navigationInfo {
-    return navigationInfo.locationDelta > 10;
+    return navigationInfo.locationDelta > 10 && [self.mapView getUserLocation] && [self.mapView getUserLocation].floor;
 }
 
 
 
 - (void)mapViewDidStartNavigation:(MWZMapView *)mapView forDirection:(MWZDirection *)direction {
-    [self.directionScene hideLoading];
-    [self.directionScene setInfoWith:direction.traveltime
-                   directionDistance:direction.distance
-                        isAccessible:self.isAccessible];
-    [self.directionScene setDirectionInfoHidden:NO];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.directionScene hideLoading];
+        [self.directionScene setInfoWith:direction.traveltime
+                       directionDistance:direction.distance
+                            isAccessible:self.isAccessible];
+        [self.directionScene setDirectionInfoHidden:NO];
+    });
 }
 
 - (void)mapView:(MWZMapView *)mapView navigationFailedWithError:(NSError *)error {
-    [self.directionScene hideLoading];
-    [self.directionScene showErrorMessage:@"Navigation error"];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.directionScene hideLoading];
+        [self.directionScene showErrorMessage:NSLocalizedString(@"Direction not found", &"")];
+    });
 }
 
 #pragma mark MGLMapViewDelegate
@@ -1134,10 +1148,14 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 }
 
 #pragma mark MWZDirectionSceneDelegate
+- (void) directionSceneDidTapOnCurrentLocation:(MWZDirectionScene*) scene {
+    [self setFromDirectionPoint:[self.mapView getUserLocation]];
+}
 - (void)directionSceneDidTapOnBackButton:(MWZDirectionScene *)scene {
     if (self.state == MWZViewStateSearchDirectionFrom || self.state == MWZViewStateSearchDirectionTo) {
         [self.directionScene closeFromSearch];
         [self.directionScene closeToSearch];
+        [self.directionScene setCurrentLocationViewHidden:YES];
         [self.directionScene setSearchResultsHidden:YES];
         if ([self.mapView getDirection]) {
             self.state = MWZViewStateDirectionOn;
@@ -1158,6 +1176,12 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         [self.directionScene openFromSearch];
         [self.directionScene closeToSearch];
         [self.directionScene setSearchResultsHidden:NO];
+        if ([self.mapView getUserLocation] && [self.mapView getUserLocation].floor) {
+            [self.directionScene setCurrentLocationViewHidden:NO];
+        }
+        else {
+            [self.directionScene setCurrentLocationViewHidden:YES];
+        }
         [self.directionScene showSearchResults:self.mainFroms
                                      universes:[self.mapView getUniverses]
                                 activeUniverse:[self.mapView getUniverse]
@@ -1171,6 +1195,8 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         [self.directionScene openToSearch];
         [self.directionScene closeFromSearch];
         [self.directionScene setSearchResultsHidden:NO];
+        [self.directionScene setCurrentLocationViewHidden:YES];
+        
         [self.directionScene showSearchResults:self.mainSearches
                                      universes:[self.mapView getUniverses]
                                 activeUniverse:[self.mapView getUniverse]

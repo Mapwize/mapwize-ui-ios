@@ -39,6 +39,36 @@
     self.directionHeader.delegate = self;
     [view addSubview:self.directionHeader];
     
+    self.currentLocationView = [[MWZComponentCurrentLocationView alloc] init];
+    self.currentLocationView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.currentLocationView setHidden:YES];
+    UITapGestureRecognizer *currentLocationViewGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(currentLocationTapped:)];
+    currentLocationViewGestureRecognizer.numberOfTapsRequired = 1;
+    [self.currentLocationView addGestureRecognizer:currentLocationViewGestureRecognizer];
+    [view addSubview:self.currentLocationView];
+    
+    [[NSLayoutConstraint constraintWithItem:self.currentLocationView
+                                  attribute:NSLayoutAttributeRight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:view
+                                  attribute:NSLayoutAttributeRight
+                                 multiplier:1.0f
+                                   constant:-16.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.currentLocationView
+                                  attribute:NSLayoutAttributeLeft
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:view
+                                  attribute:NSLayoutAttributeLeft
+                                 multiplier:1.0f
+                                   constant:16.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.currentLocationView
+                                  attribute:NSLayoutAttributeTop
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.directionHeader
+                                  attribute:NSLayoutAttributeBottom
+                                 multiplier:1.0f
+                                   constant:16.0f] setActive:YES];
+    
     [[NSLayoutConstraint constraintWithItem:self.directionHeader
                                   attribute:NSLayoutAttributeRight
                                   relatedBy:NSLayoutRelationEqual
@@ -104,13 +134,14 @@
                                   attribute:NSLayoutAttributeLeft
                                  multiplier:1.0f
                                    constant:16.0f] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:self.resultList
-                                  attribute:NSLayoutAttributeTop
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self.directionHeader
-                                  attribute:NSLayoutAttributeBottom
-                                 multiplier:1.0f
-                                   constant:16.0f] setActive:YES];
+    self.resultListTopConstraint = [NSLayoutConstraint constraintWithItem:self.resultList
+                                                                attribute:NSLayoutAttributeTop
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:self.directionHeader
+                                                                attribute:NSLayoutAttributeBottom
+                                                               multiplier:1.0f
+                                                                 constant:16.0f];
+    [self.resultListTopConstraint setActive:YES];
     
     self.directionInfo = [[MWZComponentDirectionInfo alloc] initWithColor:self.mainColor];
     self.directionInfo.translatesAutoresizingMaskIntoConstraints = NO;
@@ -169,6 +200,10 @@
     
     [self setSearchResultsHidden:YES];
     
+}
+
+- (void) currentLocationTapped:(UITapGestureRecognizer*) recognizer {
+    [_delegate directionSceneDidTapOnCurrentLocation:self];
 }
 
 - (UIView*) getTopViewToConstraint {
@@ -246,10 +281,12 @@
 
 - (void) setSearchResultsHidden:(BOOL) hidden {
     [self.directionHeader setButtonsHidden:!hidden];
+    //self.currentLocationView.alpha = 0.0;
     if (hidden) {
         [UIView animateWithDuration:0.5 animations:^{
             [self.backgroundView setTransform:CGAffineTransformMakeTranslation(0,self.backgroundView.superview.frame.size.height)];
             [self.resultList setTransform:CGAffineTransformMakeTranslation(0,self.backgroundView.superview.frame.size.height)];
+            [self.currentLocationView setTransform:CGAffineTransformMakeTranslation(0,self.backgroundView.superview.frame.size.height)];
         } completion:^(BOOL finished) {
             [self.backgroundView setHidden:hidden];
             [self.resultList setHidden:hidden];
@@ -261,10 +298,39 @@
         [UIView animateWithDuration:0.5 animations:^{
             [self.backgroundView setTransform:CGAffineTransformMakeTranslation(0,0)];
             [self.resultList setTransform:CGAffineTransformMakeTranslation(0,0)];
+            [self.currentLocationView setTransform:CGAffineTransformMakeTranslation(0,0)];
         } completion:^(BOOL finished) {
-            
+            [UIView animateWithDuration:0.5 animations:^{
+                //self.currentLocationView.alpha = 1.0;
+            } completion:^(BOOL finished) {
+                
+            }];
         }];
     }
+}
+
+- (void) setCurrentLocationViewHidden:(BOOL) hidden {
+    [self.resultListTopConstraint setActive:NO];
+    if (hidden) {
+        self.resultListTopConstraint = [NSLayoutConstraint constraintWithItem:self.resultList
+                                                                    attribute:NSLayoutAttributeTop
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:self.directionHeader
+                                                                    attribute:NSLayoutAttributeBottom
+                                                                   multiplier:1.0f
+                                                                     constant:16.0f];
+    }
+    else {
+        self.resultListTopConstraint = [NSLayoutConstraint constraintWithItem:self.resultList
+                                                                    attribute:NSLayoutAttributeTop
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:self.currentLocationView
+                                                                    attribute:NSLayoutAttributeBottom
+                                                                   multiplier:1.0f
+                                                                     constant:16.0f];
+    }
+    [self.resultListTopConstraint setActive:YES];
+    [self.currentLocationView setHidden:hidden];
 }
 
 - (void) setHidden:(BOOL) hidden {

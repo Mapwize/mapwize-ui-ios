@@ -14,6 +14,7 @@
 - (void) directionSceneAccessibilityModeDidChange:(BOOL) isAccessible;
 - (void) searchDirectionQueryDidChange:(NSString*) query;
 - (void) didSelect:(id<MWZObject>)mapwizeObject universe:(MWZUniverse*) universe;
+- (void) directionSceneDidTapOnCurrentLocation:(MWZDirectionScene*) scene;
 
 @end
 

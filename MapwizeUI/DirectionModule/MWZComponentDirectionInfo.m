@@ -72,6 +72,33 @@
                                  multiplier:1.0f
                                    constant:0.0f] setActive:YES];
     
+    self.errorLabel = [[UILabel alloc] init];
+    self.errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.errorLabel.textColor = [UIColor redColor];
+    [self.errorLabel setHidden:YES];
+    [self addSubview:self.errorLabel];
+    [[NSLayoutConstraint constraintWithItem:self.errorLabel
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:32.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.errorLabel
+                                  attribute:NSLayoutAttributeTop
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeTop
+                                 multiplier:1.0f
+                                   constant:16.0f] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.errorLabel
+                                  attribute:NSLayoutAttributeCenterX
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeCenterX
+                                 multiplier:1.0f
+                                   constant:0.0f] setActive:YES];
+    
     NSBundle* bundle = [NSBundle bundleForClass:self.class];
     self.accessibilityOnImage = [UIImage imageNamed:@"accessibilityOn" inBundle:bundle compatibleWithTraitCollection:nil];
     self.accessibilityOnImage = [self.accessibilityOnImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -269,6 +296,7 @@
 }
 
 - (void) showLoading {
+    [self.errorLabel setHidden:YES];
     [self.distanceContentView setHidden:YES];
     [self.traveltimeContentView setHidden:YES];
     [self.activityIndicatorView setHidden:NO];
@@ -288,6 +316,8 @@
 - (void) showErrorMessage:(NSString*) message {
     [self.distanceContentView setHidden:YES];
     [self.traveltimeContentView setHidden:YES];
+    [self.errorLabel setHidden:NO];
+    self.errorLabel.text = message;
     if (@available(iOS 11.0, *)) {
         [self animateTo:64.0f + self.safeAreaInsets.bottom];
     } else {
@@ -311,6 +341,7 @@
     self.distanceLabel.text = localizedString;
     [self.distanceContentView setHidden:NO];
     [self.traveltimeContentView setHidden:NO];
+    [self.errorLabel setHidden:YES];
     if (@available(iOS 11.0, *)) {
         [self animateTo:64.0f + self.safeAreaInsets.bottom];
     } else {

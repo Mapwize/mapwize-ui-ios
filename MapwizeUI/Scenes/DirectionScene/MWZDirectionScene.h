@@ -7,6 +7,7 @@
 #import "MWZComponentGroupedResultListDelegate.h"
 #import "MWZComponentDirectionInfo.h"
 #import "MWZComponentGroupedResultList.h"
+#import "MWZComponentCurrentLocationView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,12 +16,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<MWZDirectionSceneDelegate> delegate;
 @property (nonatomic) UIView* topConstraintView;
+@property (nonatomic) UIView* resultListTopConstraintView;
+@property (nonatomic) NSLayoutConstraint* resultListTopConstraint;
 @property (nonatomic) NSLayoutConstraint* topConstraintViewMarginTop;
 @property (nonatomic) MWZDirectionHeader* directionHeader;
 @property (nonatomic) MWZComponentDirectionInfo* directionInfo;
 @property (nonatomic) MWZComponentGroupedResultList* resultList;
 @property (nonatomic) UIView* backgroundView;
 @property (nonatomic) UIColor* mainColor;
+@property (nonatomic) MWZComponentCurrentLocationView* currentLocationView;
 
 - (void) setFromText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
 - (void) setToText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
@@ -42,6 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
             activeUniverse:(MWZUniverse*) activeUniverse
               withLanguage:(NSString*) language;
 - (void) setSearchResultsHidden:(BOOL) hidden;
+- (void) setCurrentLocationViewHidden:(BOOL) hidden;
 
 @end
 
