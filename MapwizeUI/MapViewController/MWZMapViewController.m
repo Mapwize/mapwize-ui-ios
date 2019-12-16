@@ -871,13 +871,20 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
                 }
             });
         } failure:^(NSError * _Nonnull error) {
-            [self.directionScene hideLoading];
-            [self.directionScene showErrorMessage:NSLocalizedString(@"Direction not found",@"")];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.directionScene hideLoading];
+                [self.directionScene showErrorMessage:NSLocalizedString(@"Direction not found",@"")];
+            });
         }];
     }
 }
 
 #pragma mark MWZMapViewDelegate
+
+- (void)mapView:(MWZMapView *)mapView followUserModeDidChange:(MWZFollowUserMode)followUserMode {
+    [self.followUserButton setFollowUserMode:followUserMode];
+}
+
 - (void)mapView:(MWZMapView *_Nonnull)mapView didTap:(MWZClickEvent *_Nonnull)clickEvent {
     if (self.state != MWZViewStateDefault) {
         return;
@@ -949,7 +956,13 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 }
 
 - (void) mapView:(MWZMapView *)mapView universeDidChange:(MWZUniverse *)universe {
-    if (self.selectedContent) {
+    BOOL universeExists = NO;
+    for (MWZUniverse* u in self.selectedContent.universes) {
+        if ([u.identifier isEqualToString:universe.identifier]) {
+            universeExists = YES;
+        }
+    }
+    if (self.selectedContent && !universeExists) {
         [self unselectContent];
     }
 }

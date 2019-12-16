@@ -24,6 +24,10 @@
                                                                     constant:0.0f];
     [self.topConstraintViewMarginTop setActive:YES];
     
+    self.directionInfo = [[MWZComponentDirectionInfo alloc] initWithColor:self.mainColor];
+    self.directionInfo.translatesAutoresizingMaskIntoConstraints = NO;
+    [view addSubview:self.directionInfo];
+    
     self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
     self.backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
     self.backgroundView.backgroundColor = [UIColor whiteColor];
@@ -143,9 +147,7 @@
                                                                  constant:16.0f];
     [self.resultListTopConstraint setActive:YES];
     
-    self.directionInfo = [[MWZComponentDirectionInfo alloc] initWithColor:self.mainColor];
-    self.directionInfo.translatesAutoresizingMaskIntoConstraints = NO;
-    [view addSubview:self.directionInfo];
+    
     [[NSLayoutConstraint constraintWithItem:self.directionInfo
                                   attribute:NSLayoutAttributeHeight
                                   relatedBy:NSLayoutRelationEqual
