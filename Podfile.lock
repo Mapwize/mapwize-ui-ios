@@ -1,12 +1,12 @@
 PODS:
   - IndoorLocation (1.0.4)
-  - Mapbox-iOS-SDK (5.4.0)
-  - MapwizeSDK (3.0.1):
+  - Mapbox-iOS-SDK (5.5.0)
+  - MapwizeSDK (3.0.11):
     - IndoorLocation (= 1.0.4)
-    - Mapbox-iOS-SDK (= 5.4.0)
+    - Mapbox-iOS-SDK (~> 5.0)
     - SSZipArchive (= 2.2.2)
-  - MapwizeUI (2.0.1):
-    - MapwizeSDK (= 3.0.1)
+  - MapwizeUI (2.0.4):
+    - MapwizeSDK (= 3.0.11)
   - SSZipArchive (2.2.2)
 
 DEPENDENCIES:
@@ -14,7 +14,7 @@ DEPENDENCIES:
   - MapwizeUI (from `.`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - IndoorLocation
     - Mapbox-iOS-SDK
     - MapwizeSDK
@@ -26,11 +26,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   IndoorLocation: 9812c8c2d499ef25e6146ef90cf23f8d107213a8
-  Mapbox-iOS-SDK: 2b58f752d94e57e95b8e54f3b52569199f6efdba
-  MapwizeSDK: d04d0bb154f7d26a8f0327f1cc4a5d4a5f1b14fe
-  MapwizeUI: 3e2bd3b8562ae68107aeb854d31a93c9b5096ba3
+  Mapbox-iOS-SDK: 7fa66a27e586acb14c7f32ec5a487343e3994451
+  MapwizeSDK: c209abb110d98eee81dcd33e30c960d202a678f3
+  MapwizeUI: 75c657b3c111f7fdce2764e7071700b18cb00d0f
   SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
 
 PODFILE CHECKSUM: ddf18a6423f1ea59aeb27cd7ff6b11013e67f21e
 
-COCOAPODS: 1.7.1
+COCOAPODS: 1.8.3
