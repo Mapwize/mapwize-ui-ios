@@ -582,9 +582,11 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
 - (void) defaultToDirectionTransition {
     self.state = MWZViewStateDirectionOff;
+    self.fromDirectionPoint = nil;
+    self.toDirectionPoint = nil;
+    [self setIsAccessible:self.isAccessible];
     [self setFromDirectionPoint:[self.mapView getUserLocation]];
     [self setToDirectionPoint:(id<MWZDirectionPoint>)self.selectedContent inSearch:NO];
-    [self setIsAccessible:self.isAccessible];
     [self.sceneCoordinator transitionFromDefaultToDirection];
     if (self.fromDirectionPoint == nil) {
         self.state = MWZViewStateSearchDirectionFrom;
@@ -610,9 +612,6 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
              universes:[self.mapView getUniverses]
         activeUniverse:[self.mapView getUniverse]
           withLanguage:[self.mapView getLanguage]];
-    }
-    else {
-        [self startDirection];
     }
     [self unselectContent];
 }
