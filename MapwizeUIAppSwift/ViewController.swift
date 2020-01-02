@@ -2,15 +2,15 @@ import UIKit
 import MapwizeUI
 
 class ViewController: UIViewController {
-    var mapwizeView: MWZMapViewController!
+    var mapwizeView: MWZUIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let opts = MWZUIOptions()
         //opts.centerOnPlaceId = "5d08d8a4efe1d20012809ee5";
-        let settings = MWZMapwizeViewUISettings()
-        mapwizeView = MWZMapViewController(frame: self.view.frame, mapwizeOptions: opts, uiSettings: settings)
+        let settings = MWZUISettings()
+        mapwizeView = MWZUIView(frame: self.view.frame, mapwizeOptions: opts, uiSettings: settings)
         mapwizeView.translatesAutoresizingMaskIntoConstraints = false
         //mapwizeView = MWZMapwizeViewController.init(frame: self.view.frame, mapwizeOptions: opts, uiSettings: settings)
         mapwizeView?.delegate = self
@@ -23,13 +23,13 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: MWZMapViewControllerDelegate {
+extension ViewController: MWZUIViewDelegate {
     
-    func mapwizeViewDidLoad(_ mapwizeView: MWZMapViewController!) {
+    func mapwizeViewDidLoad(_ mapwizeView: MWZUIView!) {
         
     }
     
-    func mapwizeViewDidTap(onFollowWithoutLocation mapwizeView: MWZMapViewController!) {
+    func mapwizeViewDidTap(onFollowWithoutLocation mapwizeView: MWZUIView!) {
         print("onFollowWithoutLocation")
         let alert = UIAlertController.init(title: "User action",
                                            message: "Click on the follow user mode button but no location has been found",
@@ -39,7 +39,7 @@ extension ViewController: MWZMapViewControllerDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func mapwizeViewDidTap(onMenu mapwizeView: MWZMapViewController!) {
+    func mapwizeViewDidTap(onMenu mapwizeView: MWZUIView!) {
         /*print("onMenu")
         let alert = UIAlertController.init(title: "User action",
                                            message: "Click on the menu",
@@ -62,7 +62,7 @@ extension ViewController: MWZMapViewControllerDelegate {
         
     }
     
-    func mapwizeView(_ mapwizeView: MWZMapViewController!, didTapOnPlaceInformationButton place: MWZPlace!) {
+    func mapwizeView(_ mapwizeView: MWZUIView!, didTapOnPlaceInformationButton place: MWZPlace!) {
         print("didTapOnPlaceInformationButton")
         let message = "Click on the place information button \(place.translations[0].title)"
         let alert = UIAlertController.init(title: "User action",
@@ -73,7 +73,7 @@ extension ViewController: MWZMapViewControllerDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func mapwizeView(_ mapwizeView: MWZMapViewController!, didTapOnPlacelistInformationButton placeList: MWZPlacelist!) {
+    func mapwizeView(_ mapwizeView: MWZUIView!, didTapOnPlacelistInformationButton placeList: MWZPlacelist!) {
         print("didTapOnPlaceListInformationButton")
         let message = "Click on the placelist information button \(placeList.translations[0].title)"
         let alert = UIAlertController.init(title: "User action",
@@ -84,14 +84,14 @@ extension ViewController: MWZMapViewControllerDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func mapwizeView(_ mapwizeView: MWZMapViewController!, shouldShowInformationButtonFor mapwizeObject: MWZObject!) -> Bool {
+    func mapwizeView(_ mapwizeView: MWZUIView!, shouldShowInformationButtonFor mapwizeObject: MWZObject!) -> Bool {
         if (mapwizeObject is MWZPlace) {
             return true
         }
         return false
     }
     
-    func mapwizeView(_ mapwizeView: MWZMapViewController!, shouldShowFloorControllerFor floors: [MWZFloor]!) -> Bool {
+    func mapwizeView(_ mapwizeView: MWZUIView!, shouldShowFloorControllerFor floors: [MWZFloor]!) -> Bool {
         if (floors.count > 1) {
             return true
         }
