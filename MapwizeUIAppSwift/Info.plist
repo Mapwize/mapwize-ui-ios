@@ -50,6 +50,6 @@
 	<key>MGLMapboxMetricsEnabledSettingShownInApp</key>
 	<true/>
 	<key>MWZApiKey</key>
-	<string>3dda5b4dcb336838288b858b38840c7a</string>
+	<string>YOUR_API_KEY</string>
 </dict>
 </plist>
