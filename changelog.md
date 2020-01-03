@@ -2,7 +2,7 @@
 
 ## 2.1.0
 
-- Prefixing all classes with MWZUI to improve distinction between MapwizeUI and MapwizeSDK components.
+- Replacing MWZComponent prefixe with MWZUI.
 - Changing some class name. For example, MWZMapwizeView becomes MWZUIView
 - Improving UI Behavior
 - Fixing issue with animation that create unexpected behaviour
