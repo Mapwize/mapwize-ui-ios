@@ -1,7 +1,9 @@
 "Direction" = "Direction";
 "Information" = "Information";
+"Search" = "Search";
 "Search a venue..." = "Search a venue...";
 "Entering in %@..." = "Entering in %@...";
+"Direction not found" = "Sorry! We didn't find any direction.";
 "Search in %@..." = "Search in %@...";
 "Destination" = "Destination";
 "Starting point" = "Starting point";

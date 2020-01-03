@@ -1,9 +1,9 @@
 #import "ViewController.h"
 #import <MapwizeUI/MapwizeUI.h>
 
-@interface ViewController () <MWZMapwizeViewDelegate>
+@interface ViewController () <MWZUIViewDelegate>
 
-@property (nonatomic, retain) MWZMapwizeView* mapwizeView;
+@property (nonatomic, retain) MWZUIView* mapwizeView;
 
 @end
 
@@ -13,9 +13,9 @@
     [super viewDidLoad];
     
     MWZUIOptions* opts = [[MWZUIOptions alloc] init];
-    MWZMapwizeViewUISettings* settings = [[MWZMapwizeViewUISettings alloc] init];
+    MWZUISettings* settings = [[MWZUISettings alloc] init];
     
-    self.mapwizeView = [[MWZMapwizeView alloc] initWithFrame:self.view.frame
+    self.mapwizeView = [[MWZUIView alloc] initWithFrame:self.view.frame
                                               mapwizeOptions:opts
                                                   uiSettings:settings];
     self.mapwizeView.delegate = self;
@@ -52,7 +52,7 @@
     
 }
 
-- (void)mapwizeView:(MWZMapwizeView *)mapwizeView didTapOnPlaceInformationButton:(MWZPlace *)place {
+- (void)mapwizeView:(MWZUIView *)mapwizeView didTapOnPlaceInformationButton:(MWZPlace *)place {
     NSLog(@"didTapOnPlaceInformations");
     NSString* message = [NSString stringWithFormat:@"Click on the place information button %@", place.translations[0].title];
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"User action"
@@ -64,7 +64,7 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)mapwizeView:(MWZMapwizeView *)mapwizeView didTapOnPlaceListInformationButton:(MWZPlacelist *)placeList {
+- (void)mapwizeView:(MWZUIView *)mapwizeView didTapOnPlaceListInformationButton:(MWZPlacelist *)placeList {
     NSLog(@"didTapOnPlaceListInformations");
     NSString* message = [NSString stringWithFormat:@"Click on the placelist information button %@", placeList.translations[0].title];
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"User action"
@@ -76,7 +76,7 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)mapwizeViewDidTapOnFollowWithoutLocation:(MWZMapwizeView *)mapwizeView {
+- (void)mapwizeViewDidTapOnFollowWithoutLocation:(MWZUIView *)mapwizeView {
     NSLog(@"mapwizeViewDidTapOnFollowWithoutLocation");
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"User action"
                                                                    message:@"Click on the follow user mode button but no location has been found"
@@ -87,7 +87,7 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)mapwizeViewDidTapOnMenu:(MWZMapwizeView *)mapwizeView {
+- (void)mapwizeViewDidTapOnMenu:(MWZUIView *)mapwizeView {
     NSLog(@"mapwizeViewDidTapOnMenu");
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"User action"
                                                                     message:@"Click on the menu"
@@ -98,11 +98,11 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void) mapwizeViewDidLoad:(MWZMapwizeView*) mapwizeView {
+- (void) mapwizeViewDidLoad:(MWZUIView*) mapwizeView {
     NSLog(@"mapwizeViewDidLoad");
 }
 
-- (BOOL) mapwizeView:(MWZMapwizeView *)mapwizeView shouldShowInformationButtonFor:(id<MWZObject>)mapwizeObject {
+- (BOOL) mapwizeView:(MWZUIView *)mapwizeView shouldShowInformationButtonFor:(id<MWZObject>)mapwizeObject {
     if ([mapwizeObject isKindOfClass:MWZPlace.class]) {
         return YES;
     }
