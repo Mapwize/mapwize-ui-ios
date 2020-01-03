@@ -4,7 +4,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MWZUISettings: NSObject
 
-@property (nonatomic, retain) UIColor* mainColor;
 @property (nonatomic, assign) BOOL menuButtonIsHidden;
 @property (nonatomic, assign) BOOL followUserButtonIsHidden;
 @property (nonatomic, assign) BOOL floorControllerIsHidden;

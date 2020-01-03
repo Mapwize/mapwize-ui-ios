@@ -1,5 +1,21 @@
 # Mapwize UI iOS Changelog
 
+## 2.1.0
+
+- Prefixing all classes with MWZUI to improve distinction between MapwizeUI and MapwizeSDK components.
+- Changing some class name. For example, MWZMapwizeView becomes MWZUIView
+- Improving UI Behavior
+- Fixing issue with animation that create unexpected behaviour
+- Removing mainColor from UISettings. Use MWZUIOptions instead.
+
+## 2.0.4
+
+- Updating MapwizeSDK to 3.0.11
+
+## 2.0.3
+
+- Updating MapwizeSDK to 3.0.10
+
 ## 2.0.2
 
 - Updating MapwizeSDK to 3.0.6
