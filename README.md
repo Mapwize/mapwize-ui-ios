@@ -43,7 +43,24 @@ All dependencies will be installed (MapwizeUI, MapwizeForMapbox, Mapbox and Indo
 
 ## Initialization
 
-The UIViewController that embeds the MWZMapwizeView must implement `MWZMapwizeViewDelegate` with the followings methods :
+### API Key
+
+You'll need a Mapwize API key to load the map and allow API requests. Simply add MWZApiKey with the key in your info.plist.
+
+To get your own Mapwize API key, sign up for a free account at mapwize.io. Then within the Mapwize Studio, navigate to "API Keys" on the side menu.
+
+### Mapbox configuration
+
+To run Mapbox on your device, you will need to add the following elements in your info.plist file:
+- MGLMapboxAccessToken -> pk.mapwize
+- MGLMapboxMetricsEnabledSettingShownInApp -> YES
+
+The first one enables Mapbox to load the Mapwize style, while the second guarantees we provide the required information for Mapbox.
+With these settings, a popup is shown to users when they click on the Mapwize logo (bottom left of the map).
+
+### MWZMapwizeView
+
+The UIView that embeds the MWZMapwizeView must implement `MWZMapwizeViewDelegate` with the followings methods :
 
 ```objective-c
 - (void) mapwizeViewDidLoad:(MWZMapwizeView*) mapwizeView;
