@@ -2,10 +2,9 @@
 
 ## 2.1.0
 
-- Replacing MWZComponent prefixe with MWZUI.
-- Changing some class name. For example, MWZMapwizeView becomes MWZUIView
-- Improving UI Behavior
-- Fixing issue with animation that create unexpected behaviour
+- Prefixing all classes with MWZUI. MWZMapwizeView becomes MWZUIView.
+- Improving UI Behavior.
+- Fixing issue with animation that created unexpected behaviour.
 - Removing mainColor from UISettings. Use MWZUIOptions instead.
 
 ## 2.0.4
