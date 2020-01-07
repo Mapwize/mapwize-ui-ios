@@ -71,6 +71,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     self = [super initWithFrame:frame];
     if (self) {
         _settings = uiSettings;
+        _options = options;
         [self initializeWithOptions:options mapwizeConfiguration:mapwizeConfiguration];
     }
     return self;

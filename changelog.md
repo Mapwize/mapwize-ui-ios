@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.1.1
+
+- Fixing missing main color after initialization
+
 ## 2.1.0
 
 - Prefixing all classes with MWZUI. MWZMapwizeView becomes MWZUIView.
