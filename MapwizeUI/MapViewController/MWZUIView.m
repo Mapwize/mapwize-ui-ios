@@ -121,7 +121,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     if (options.centerOnPlaceId) {
         [self.mapView.mapwizeApi getPlaceWithIdentifier:options.centerOnPlaceId success:^(MWZPlace * _Nonnull place) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self selectPlace:place];
+                [self selectPlace:place  centerOn:NO];
             });
         } failure:^(NSError * _Nonnull error) {
             
@@ -620,7 +620,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 - (void) directionToDefaultTransition {
     self.state = MWZViewStateDefault;
     if (self.toDirectionPoint && [self.toDirectionPoint isKindOfClass:MWZPlace.class]) {
-        [self selectPlace:(MWZPlace*)self.toDirectionPoint];
+        [self selectPlace:(MWZPlace*)self.toDirectionPoint centerOn:NO];
     }
     [self.directionScene setDirectionInfoHidden:YES];
     [self.sceneCoordinator transitionFromDirectionToDefault];
@@ -687,10 +687,13 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     self.selectedContent = nil;
 }
 
-- (void) selectPlace:(MWZPlace*) place {
+- (void) selectPlace:(MWZPlace*) place centerOn:(BOOL) centerOn{
     if (self.selectedContent) {
         [self.mapView removeMarkers];
         [self.mapView removePromotedPlaces];
+    }
+    if (centerOn) {
+        [self.mapView centerOnPlace:place animated:YES];
     }
     [self.mapView addMarkerOnPlace:place];
     [self.mapView addPromotedPlace:place];
@@ -709,7 +712,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
 
 - (void) selectPlacePreview:(MWZPlacePreview*) placePreview {
     [placePreview getFullObjectAsyncWithSuccess:^(MWZPlace * _Nonnull place) {
-        [self selectPlace:place];
+        [self selectPlace:place centerOn:NO];
     } failure:^(NSError * _Nonnull error) {
         
     }];
@@ -1139,7 +1142,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     else if (self.state == MWZViewStateSearchInVenue) {
         if ([mapwizeObject isKindOfClass:MWZPlace.class]) {
             [self.mapView centerOnPlace:(MWZPlace*)mapwizeObject animated:YES];
-            [self selectPlace:(MWZPlace*)mapwizeObject];
+            [self selectPlace:(MWZPlace*)mapwizeObject centerOn:NO];
         }
         if ([mapwizeObject isKindOfClass:MWZPlacelist.class]) {
             [self selectPlaceList:(MWZPlacelist*) mapwizeObject];

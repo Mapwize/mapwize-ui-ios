@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.1.2
+
+- Adding missing argument centerOn is selectPlace method
+
 ## 2.1.1
 
 - Fixing missing main color after initialization

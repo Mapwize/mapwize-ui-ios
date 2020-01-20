@@ -40,7 +40,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 
 - (void) grantAccess:(NSString*) accessKey success:(void (^)(void)) success failure:(void (^)(NSError* error)) failure;
 
-- (void) selectPlace:(MWZPlace*) place;
+- (void) selectPlace:(MWZPlace*) place centerOn:(BOOL) centerOn;
 
 - (void) selectPlaceList:(MWZPlacelist*) placeList;
 
