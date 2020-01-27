@@ -726,8 +726,28 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     [self.mapView addMarkersOnPlacelist:placeList completionHandler:^(NSArray<MWZMapwizeAnnotation *> * _Nonnull annotation) {
         
     }];
+    __weak MWZUIView *weakSelf = self;
     [self.mapView addPromotedPlacelist:placeList completionHandler:^(NSArray<MWZPlace *> * _Nonnull places) {
-        
+        if (places.count == 0) return;
+        [weakSelf.mapView.mapwizeApi getVenueWithIdentifier:places[0].venueId success:^(MWZVenue * _Nonnull venue) {
+            BOOL shouldSetFloor = YES;
+            if ([weakSelf.mapView getFloor]) {
+                for (MWZPlace* place in places) {
+                    if ([[weakSelf.mapView getFloorNumber] isEqual:place.floor]){
+                        shouldSetFloor = NO;
+                        break;
+                    }
+                }
+            }
+            if (shouldSetFloor) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.mapView centerOnVenue:venue animated:YES];
+                    [weakSelf.mapView setFloor:places[0].floor];
+                });
+            }
+        } failure:^(NSError * _Nonnull error) {
+            
+        }];
     }];
     self.selectedContent = placeList;
     MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];

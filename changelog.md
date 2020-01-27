@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.1.3
+
+- selectPlacelist now center on the placelist if needed
+
 ## 2.1.2
 
 - Adding missing argument centerOn is selectPlace method
