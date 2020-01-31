@@ -669,7 +669,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         defaultProperties.infoButtonHidden = ![self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
     }
     else {
-        defaultProperties.infoButtonHidden = NO;
+        defaultProperties.infoButtonHidden = YES;
     }
     [self.defaultScene setSceneProperties:defaultProperties];
     if ([self.selectedContent isKindOfClass:MWZPlace.class]) {
@@ -705,7 +705,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         defaultProperties.infoButtonHidden = ![self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
     }
     else {
-        defaultProperties.infoButtonHidden = NO;
+        defaultProperties.infoButtonHidden = YES;
     }
     [self.defaultScene setSceneProperties:defaultProperties];
 }
@@ -757,7 +757,7 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
         defaultProperties.infoButtonHidden = ![self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
     }
     else {
-        defaultProperties.infoButtonHidden = NO;
+        defaultProperties.infoButtonHidden = YES;
     }
     [self.defaultScene setSceneProperties:defaultProperties];
 }

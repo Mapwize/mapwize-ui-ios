@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.1.4
+
+- infoButton is now hidden by default
+
 ## 2.1.3
 
 - selectPlacelist now center on the placelist if needed
