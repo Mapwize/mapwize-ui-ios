@@ -1,27 +1,23 @@
 #import <UIKit/UIKit.h>
 #import <MapwizeSDK/MapwizeSDK.h>
-#import "MWZUIViewDelegate.h"
-#import "MWZUISearchSceneDelegate.h"
-#import "MWZUIDefaultSceneDelegate.h"
-#import "MWZUIDirectionSceneDelegate.h"
-#import "MWZUISceneCoordinator.h"
-#import "MWZUIFloorControllerDelegate.h"
-#import "MWZUICompassDelegate.h"
-#import "MWZUIFollowUserButtonDelegate.h"
-#import "MWZUILanguagesButtonDelegate.h"
-#import "MWZUIUniversesButtonDelegate.h"
-#import "MWZUIOptions.h"
-#import "MWZUISettings.h"
+@protocol MWZUIViewDelegate;
+@protocol MWZUISearchSceneDelegate;
+@protocol MWZUIDefaultSceneDelegate;
+@protocol MWZUIDirectionSceneDelegate;
+@protocol MWZUIFloorControllerDelegate;
+@protocol MWZUICompassDelegate;
+@protocol MWZUIFollowUserButtonDelegate;
+@protocol MWZUILanguagesButtonDelegate;
+@protocol MWZUIUniversesButtonDelegate;
 
+@class MWZUISceneCoordinator;
+
+@class MWZUISettings;
+@class MWZUIOptions;
 @class MWZUIFollowUserButton;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MWZUIView : UIView
-<UIViewControllerTransitioningDelegate, MWZUISearchSceneDelegate,
-MWZUIDefaultSceneDelegate, MWZUIDirectionSceneDelegate, MWZMapViewDelegate,
-MWZUIFloorControllerDelegate, MWZUICompassDelegate,
-MWZUIFollowUserButtonDelegate, MGLMapViewDelegate,
-MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 
 @property (nonatomic) MWZMapView* mapView;
 @property (nonatomic, weak) id<MWZUIViewDelegate> delegate;

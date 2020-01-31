@@ -109,4 +109,10 @@
     return NO;
 }
 
+- (void)mapwizeView:(MWZUIView *)mapwizeView didTapOnPlacelistInformationButton:(MWZPlacelist *)placeList {
+    
+}
+
+
+
 @end

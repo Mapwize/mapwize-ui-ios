@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.1.5
+
+- Adding missing that can produce compilation error 
+
 ## 2.1.4
 
 - infoButton is now hidden by default

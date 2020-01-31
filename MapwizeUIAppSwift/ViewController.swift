@@ -8,7 +8,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         let opts = MWZUIOptions()
-        opts.mainColor = .green
+        opts.mainColor = .orange
         let settings = MWZUISettings()
         mapwizeView = MWZUIView(frame: self.view.frame, mapwizeOptions: opts, uiSettings: settings)
         mapwizeView.translatesAutoresizingMaskIntoConstraints = false
@@ -71,9 +71,6 @@ extension ViewController: MWZUIViewDelegate {
     }
     
     func mapwizeView(_ mapwizeView: MWZUIView!, shouldShowInformationButtonFor mapwizeObject: MWZObject!) -> Bool {
-        if (mapwizeObject is MWZPlace) {
-            return true
-        }
         return false
     }
     

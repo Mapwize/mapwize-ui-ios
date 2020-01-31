@@ -9,6 +9,19 @@
 #import "MWZUICompass.h"
 #import "MWZUIUniversesButton.h"
 #import "MWZUILanguagesButton.h"
+#import "MWZUIOptions.h"
+#import "MWZUISettings.h"
+#import "MWZUIViewDelegate.h"
+#import "MWZUISearchSceneDelegate.h"
+#import "MWZUIDefaultSceneDelegate.h"
+#import "MWZUIDirectionSceneDelegate.h"
+#import "MWZUISceneCoordinator.h"
+#import "MWZUIFloorControllerDelegate.h"
+#import "MWZUICompassDelegate.h"
+#import "MWZUIFollowUserButtonDelegate.h"
+#import "MWZUILanguagesButtonDelegate.h"
+#import "MWZUIUniversesButtonDelegate.h"
+
 
 typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZViewStateDefault,
@@ -20,7 +33,11 @@ typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZViewStateSearchDirectionTo
 };
 
-@interface MWZUIView ()
+@interface MWZUIView () <UIViewControllerTransitioningDelegate, MWZUISearchSceneDelegate,
+MWZUIDefaultSceneDelegate, MWZUIDirectionSceneDelegate, MWZMapViewDelegate,
+MWZUIFloorControllerDelegate, MWZUICompassDelegate,
+MWZUIFollowUserButtonDelegate, MGLMapViewDelegate,
+MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 
 @property (nonatomic) MWZUIOptions* options;
 @property (nonatomic) MWZUISettings* settings;
