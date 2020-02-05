@@ -192,11 +192,12 @@ shouldRecomputeNavigation:(MWZNavigationInfo* _Nonnull) navigationInfo;
  @param channel the channel through the place has been selected (Search, MainSearches or MapClick)
  @param searchQuery the last query that ran in the search bar before the selection. This value is nil if the channel is not Search
  */
-- (void) didSelectPlace:(MWZPlace*_Nonnull) place
-        currentUniverse:(MWZUniverse*_Nonnull) currentUniverse
-   searchResultUniverse:(MWZUniverse*_Nonnull) searchResultUniverse
-                channel:(MWZUIEventChannel*_Nonnull) channel
-            searchQuery:(NSString*_Nullable) searchQuery;
+- (void) mapwizeView:(MWZUIView *_Nonnull) mapwizeView
+      didSelectPlace:(MWZPlace*_Nonnull) place
+     currentUniverse:(MWZUniverse*_Nonnull) currentUniverse
+searchResultUniverse:(MWZUniverse*_Nonnull) searchResultUniverse
+             channel:(MWZUIEventChannel) channel
+        searchQuery:(NSString*_Nullable) searchQuery;
 
 /**
 Called when a place has been selected
@@ -206,11 +207,12 @@ Called when a place has been selected
 @param channel the channel through the placelist has been selected (Search, MainSearches)
 @param searchQuery the last query that ran in the search bar before the selection. This value is nil if the channel is not Search
 */
-- (void) didSelectPlacelist:(MWZPlacelist*_Nonnull) placelist
-            currentUniverse:(MWZUniverse*_Nonnull) currentUniverse
-       searchResultUniverse:(MWZUniverse*_Nonnull) searchResultUniverse
-                    channel:(MWZUIEventChannel*_Nonnull) channel
-                searchQuery:(NSString*_Nullable) searchQuery;
+- (void) mapwizeView:(MWZUIView *_Nonnull) mapwizeView
+  didSelectPlacelist:(MWZPlacelist*_Nonnull) placelist
+     currentUniverse:(MWZUniverse*_Nonnull) currentUniverse
+searchResultUniverse:(MWZUniverse*_Nonnull) searchResultUniverse
+             channel:(MWZUIEventChannel) channel
+         searchQuery:(NSString*_Nullable) searchQuery;
 
 /**
  Called when a direction start
@@ -221,12 +223,13 @@ Called when a place has been selected
  @param mode the mode set for the direction
  @param isNavigation true if the current direction is used as navigation
  */
-- (void) didStartDirectionInVenue:(MWZVenue*_Nonnull) venue
-                         universe:(MWZUniverse*_Nonnull) universe
-                             from:(id<MWZDirectionPoint>_Nonnull) from
-                               to:(id<MWZDirectionPoint>_Nonnull) to
-                             mode:(NSString*_Nonnull) mode
-                     isNavigation:(BOOL) isNavigation;
+- (void) mapwizeView:(MWZUIView *_Nonnull) mapwizeView
+didStartDirectionInVenue:(MWZVenue*_Nonnull) venue
+            universe:(MWZUniverse*_Nonnull) universe
+                from:(id<MWZDirectionPoint>_Nonnull) from
+                  to:(id<MWZDirectionPoint>_Nonnull) to
+                mode:(NSString*_Nonnull) mode
+        isNavigation:(BOOL) isNavigation;
 
 
 @end

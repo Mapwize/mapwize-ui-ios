@@ -264,21 +264,24 @@
     [self showSearchResults:@[]
                   universes:@[]
              activeUniverse:[[MWZUniverse alloc] init]
-               withLanguage:@"en"];
+               withLanguage:@"en"
+                   forQuery:@""];
 }
 
-- (void) showResults:(NSArray<id<MWZObject>> *)results withLanguage:(NSString *)language {
-    [self.resultList swapResults:results language:language];
+- (void) showResults:(NSArray<id<MWZObject>> *)results withLanguage:(NSString *)language forQuery:(NSString*) query {
+    [self.resultList swapResults:results language:language forQuery:query];
 }
 
 - (void) showSearchResults:(NSArray<id<MWZObject>>*) results
                  universes:(NSArray<MWZUniverse*>*) universes
             activeUniverse:(MWZUniverse*) activeUniverse
-              withLanguage:(NSString*) language {
+              withLanguage:(NSString*) language
+                  forQuery:(NSString*) query {
     [self.resultList swapResults:results
                        universes:universes
                   activeUniverse:activeUniverse
-                        language:language];
+                        language:language
+                        forQuery:query];
 }
 
 #pragma mark MWZSearchQueryBarDelegate
@@ -291,8 +294,8 @@
 }
 
 #pragma mark MWZUIResultListDelegate
-- (void)didSelect:(id<MWZObject>)mapwizeObject universe:(MWZUniverse *)universe {
-    [_delegate didSelect:mapwizeObject universe:universe];
+- (void)didSelect:(id<MWZObject>)mapwizeObject universe:(MWZUniverse *)universe forQuery:(NSString *)query {
+    [_delegate didSelect:mapwizeObject universe:universe forQuery:query];
 }
 
 @end

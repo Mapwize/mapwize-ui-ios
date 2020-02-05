@@ -13,6 +13,7 @@
 @property (nonatomic) NSMutableDictionary<NSString*, NSMutableArray<id<MWZObject>>*>* contentByUniverseId;
 @property (nonatomic) NSLayoutConstraint* tableHeightConstraint;
 @property (nonatomic) NSString* language;
+@property (nonatomic) NSString* query;
 
 @end
 
@@ -62,7 +63,9 @@
 - (void) swapResults:(NSArray<id<MWZObject>>*) results
            universes:(NSArray<MWZUniverse*>*) universes
       activeUniverse:(MWZUniverse*) activeUniverse
-            language:(nonnull NSString *)language{
+            language:(nonnull NSString *)language
+            forQuery:(NSString*) query {
+    _query = query;
     [self setLanguage:language];
     [self.contentByUniverseId removeAllObjects];
     [self.ungroupedResults removeAllObjects];
@@ -75,7 +78,8 @@
     [self reloadData];
 }
 
-- (void) swapResults:(NSArray<id<MWZObject>> *)results language:(NSString *)language {
+- (void) swapResults:(NSArray<id<MWZObject>> *)results language:(NSString *)language forQuery:(NSString*) query {
+    _query = query;
     [self setLanguage:language];
     [self.contentByUniverseId removeAllObjects];
     self.universes = nil;
@@ -219,13 +223,13 @@
         MWZUniverse* universe = self.universes[indexPath.section];
         id<MWZObject> mapwizeObject = self.contentByUniverseId[universe.identifier][indexPath.row];
         if (_resultDelegate) {
-            [_resultDelegate didSelect:mapwizeObject universe:universe];
+            [_resultDelegate didSelect:mapwizeObject universe:universe forQuery:_query];
         }
     }
     else {
         id<MWZObject> mapwizeObject = self.ungroupedResults[indexPath.row];
         if (_resultDelegate) {
-            [_resultDelegate didSelect:mapwizeObject universe:nil];
+            [_resultDelegate didSelect:mapwizeObject universe:nil forQuery:_query];
         }
     }
 }

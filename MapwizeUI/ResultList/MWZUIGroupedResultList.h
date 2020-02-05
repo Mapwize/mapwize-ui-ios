@@ -13,8 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) swapResults:(NSArray<id<MWZObject>>*) results
            universes:(NSArray<MWZUniverse*>*) universes
       activeUniverse:(MWZUniverse*) activeUniverse
-            language:(NSString*) language;
-- (void) swapResults:(NSArray<id<MWZObject>> *)results language:(NSString *)language;
+            language:(NSString*) language
+            forQuery:(NSString*) query;
+- (void) swapResults:(NSArray<id<MWZObject>> *)results language:(NSString *)language forQuery:(NSString*) query;
 
 @end
 
