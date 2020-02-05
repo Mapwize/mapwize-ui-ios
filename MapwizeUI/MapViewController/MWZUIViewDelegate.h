@@ -2,7 +2,10 @@
 #define MWZUIViewDelegate_h
 
 @class MWZUIView;
+#import "MWZUIEventChannel.h"
+
 @protocol MWZUIViewDelegate <NSObject>
+
 
 - (void) mapwizeViewDidLoad:(MWZUIView* _Nonnull) mapwizeView;
 
@@ -180,6 +183,52 @@ floorsDidChange:(NSArray<MWZFloor *> *_Nonnull)floors;
  */
 - (BOOL)mapwizeView:(MWZUIView *_Nonnull) mapwizeView
 shouldRecomputeNavigation:(MWZNavigationInfo* _Nonnull) navigationInfo;
+
+/**
+ Called when a place has been selected
+ @param place the selected place
+ @param currentUniverse the current displayed universe
+ @param searchResultUniverse the universe that will be display after the place selection. If the universe does not change, the value will be the same as currentUniverse
+ @param channel the channel through the place has been selected (Search, MainSearches or MapClick)
+ @param searchQuery the last query that ran in the search bar before the selection. This value is nil if the channel is not Search
+ */
+- (void) didSelectPlace:(MWZPlace*_Nonnull) place
+        currentUniverse:(MWZUniverse*_Nonnull) currentUniverse
+   searchResultUniverse:(MWZUniverse*_Nonnull) searchResultUniverse
+                channel:(MWZUIEventChannel*_Nonnull) channel
+            searchQuery:(NSString*_Nullable) searchQuery;
+
+/**
+Called when a place has been selected
+@param placelist the selected placelist
+@param currentUniverse the current displayed universe
+@param searchResultUniverse the universe that will be display after the placelist selection. If the universe does not change, the value will be the same as currentUniverse
+@param channel the channel through the placelist has been selected (Search, MainSearches)
+@param searchQuery the last query that ran in the search bar before the selection. This value is nil if the channel is not Search
+*/
+- (void) didSelectPlacelist:(MWZPlacelist*_Nonnull) placelist
+            currentUniverse:(MWZUniverse*_Nonnull) currentUniverse
+       searchResultUniverse:(MWZUniverse*_Nonnull) searchResultUniverse
+                    channel:(MWZUIEventChannel*_Nonnull) channel
+                searchQuery:(NSString*_Nullable) searchQuery;
+
+/**
+ Called when a direction start
+ @param venue the current displayed venue
+ @param universe the current displayed universe
+ @param from the starting point
+ @param to the destination point
+ @param mode the mode set for the direction
+ @param isNavigation true if the current direction is used as navigation
+ */
+- (void) didStartDirectionInVenue:(MWZVenue*_Nonnull) venue
+                         universe:(MWZUniverse*_Nonnull) universe
+                             from:(id<MWZDirectionPoint>_Nonnull) from
+                               to:(id<MWZDirectionPoint>_Nonnull) to
+                             mode:(NSString*_Nonnull) mode
+                     isNavigation:(BOOL) isNavigation;
+
+
 @end
 
 #endif
