@@ -894,6 +894,9 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         [self.directionScene showLoading];
         MWZDirectionOptions* options = [[MWZDirectionOptions alloc] init];
         [self.mapView startNavigation:self.toDirectionPoint isAccessible:self.isAccessible options:options];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:didStartDirectionInVenue:universe:from:to:mode:isNavigation:)]) {
+            [self.delegate mapwizeView:self didStartDirectionInVenue:[self.mapView getVenue] universe:[self.mapView getUniverse] from:self.fromDirectionPoint to:self.toDirectionPoint mode:@"TMP_MODE" isNavigation:YES];
+        }
     }
     else {
         [self.directionScene showLoading];
@@ -909,6 +912,9 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                    directionDistance:direction.distance
                                         isAccessible:self.isAccessible];
                     [self.directionScene setDirectionInfoHidden:NO];
+                    if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:didStartDirectionInVenue:universe:from:to:mode:isNavigation:)]) {
+                        [self.delegate mapwizeView:self didStartDirectionInVenue:[self.mapView getVenue] universe:[self.mapView getUniverse] from:self.fromDirectionPoint to:self.toDirectionPoint mode:@"TMP_MODE" isNavigation:NO];
+                    }
                 }
             });
         } failure:^(NSError * _Nonnull error) {
