@@ -1411,6 +1411,12 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     [self.floorController mapwizeFloorsDidChange:floors showController:showFloorController];
 }
 
+- (void)mapView:(MWZMapView *)mapView languageDidChange:(NSString *)language {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:languageDidChange:)]) {
+        [self.delegate mapwizeView:self languageDidChange:language];
+    }
+}
+
 - (MWZUserLocationAnnotationView *_Nonnull)viewForUserLocationAnnotation {
     if (self.delegate && [self.delegate respondsToSelector:@selector(viewForUserLocationAnnotation)]) {
         return [self.delegate viewForUserLocationAnnotation];

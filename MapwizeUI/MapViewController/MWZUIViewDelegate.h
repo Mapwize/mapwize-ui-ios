@@ -143,6 +143,13 @@ universesDidChange:(NSArray<MWZUniverse *> *_Nonnull)universes;
 floorsDidChange:(NSArray<MWZFloor *> *_Nonnull)floors;
 
 /**
+ Called when the language change for the displayed venue
+ @param mapView the mapwize view that triggered the event
+ @param language the current language
+ */
+- (void)mapwizeView:(MWZUIView *_Nonnull)mapView languageDidChange:(NSString* _Nonnull)language;
+
+/**
  Called when the MWZUIView needs to display the user location. Use this method to display a custom
  user location view. Specifications about the MGLUserLocationAnnotationView can be found at https://docs.mapbox.com/ios/api/maps
  */
