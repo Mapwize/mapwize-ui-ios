@@ -214,6 +214,9 @@
     if (self.ungroupedResults.count > 0) {
         return self.ungroupedResults.count;
     }
+    if ([self.query length] == 0) {
+        return 0;
+    }
     return 1;
 }
 
