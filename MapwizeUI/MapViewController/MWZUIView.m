@@ -616,7 +616,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         }
         [self.directionScene setSearchResultsHidden:NO];
         [self.directionScene showSearchResults:self.mainFroms
-                                     universes:[self.mapView getUniverses]
+                                     universes:@[[self.mapView getUniverse]]
                                 activeUniverse:[self.mapView getUniverse]
                                   withLanguage:[self.mapView getLanguage]
                                       forQuery:@""];
@@ -627,7 +627,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         [self.directionScene setCurrentLocationViewHidden:YES];
         [self.directionScene setSearchResultsHidden:NO];
         [self.directionScene showSearchResults:self.mainSearches
-             universes:[self.mapView getUniverses]
+             universes:@[[self.mapView getUniverse]]
         activeUniverse:[self.mapView getUniverse]
           withLanguage:[self.mapView getLanguage]
               forQuery:@""];
@@ -829,7 +829,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
             [self.directionScene setCurrentLocationViewHidden:YES];
             
             [self.directionScene showSearchResults:self.mainSearches
-                                         universes:[self.mapView getUniverses]
+                                         universes:@[[self.mapView getUniverse]]
                                     activeUniverse:[self.mapView getUniverse]
                                       withLanguage:[self.mapView getLanguage]
                                           forQuery:@""];
@@ -1144,7 +1144,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
             [self.directionScene setCurrentLocationViewHidden:YES];
         }
         [self.directionScene showSearchResults:self.mainFroms
-                                     universes:[self.mapView getUniverses]
+                                     universes:@[[self.mapView getUniverse]]
                                 activeUniverse:[self.mapView getUniverse]
                                   withLanguage:[self.mapView getLanguage]
                                       forQuery:@""];
@@ -1160,7 +1160,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         [self.directionScene setCurrentLocationViewHidden:YES];
         
         [self.directionScene showSearchResults:self.mainSearches
-                                     universes:[self.mapView getUniverses]
+                                     universes:@[[self.mapView getUniverse]]
                                 activeUniverse:[self.mapView getUniverse]
                                   withLanguage:[self.mapView getLanguage]
                                       forQuery:@""];
@@ -1190,7 +1190,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         params.universeId = [self.mapView getUniverse].identifier;
         if ([query length] == 0) {
             [self.directionScene showSearchResults:self.mainSearches
-                                         universes:[self.mapView getUniverses]
+                                         universes:@[[self.mapView getUniverse]]
                                     activeUniverse:[self.mapView getUniverse]
                                       withLanguage:[self.mapView getLanguage]
                                           forQuery:@""];
@@ -1203,7 +1203,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         params.universeId = [self.mapView getUniverse].identifier;
         if ([query length] == 0) {
             [self.directionScene showSearchResults:self.mainFroms
-                                         universes:[self.mapView getUniverses]
+                                         universes:@[[self.mapView getUniverse]]
                                     activeUniverse:[self.mapView getUniverse]
                                       withLanguage:[self.mapView getLanguage]
                                           forQuery:@""];
@@ -1217,7 +1217,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     [self.mapView.mapwizeApi searchWithSearchParams:params success:^(NSArray<id<MWZObject>> *searchResponse) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.directionScene showSearchResults:searchResponse
-                                         universes:[self.mapView getUniverses]
+                                         universes:@[[self.mapView getUniverse]]
                                     activeUniverse:[self.mapView getUniverse]
                                       withLanguage:[self.mapView getLanguage]
                                           forQuery:query];
