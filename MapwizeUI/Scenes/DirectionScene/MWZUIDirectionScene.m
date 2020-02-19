@@ -252,11 +252,13 @@
 - (void) showSearchResults:(NSArray<id<MWZObject>>*) results
                  universes:(NSArray<MWZUniverse*>*) universes
             activeUniverse:(MWZUniverse*) activeUniverse
-              withLanguage:(NSString*) language {
+              withLanguage:(NSString*) language
+                  forQuery:(NSString*) query {
     [self.resultList swapResults:results
                        universes:universes
                   activeUniverse:activeUniverse
-                        language:language];
+                        language:language
+                        forQuery:query];
 }
 
 - (void) setDirectionInfoHidden:(BOOL) hidden {
@@ -377,8 +379,8 @@
     [_delegate searchDirectionQueryDidChange:query];
 }
 
-- (void)didSelect:(id<MWZObject>)mapwizeObject universe:(MWZUniverse *)universe {
-    [_delegate didSelect:mapwizeObject universe:universe];
+- (void)didSelect:(id<MWZObject>)mapwizeObject universe:(MWZUniverse *)universe forQuery:(NSString*) query {
+    [_delegate didSelect:mapwizeObject universe:universe forQuery:query];
 }
 
 @end

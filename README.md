@@ -94,10 +94,10 @@ MWZMapwizeViewUISettings contains the following attribute
 
 ### Access to MWZMapView
 
-Once the `(void) mapwizeViewDidLoad:(MWZMapwizeView*) mapwizeView` is called, you can retrieved the MWZMapView using `mapwizeView.mapwizeMap`
+Once the `(void) mapwizeViewDidLoad:(MWZMapwizeView*) mapwizeView` is called, you can retrieved the MWZMapView using `mapwizeView.mapView`
 
 ```objective-c
-@property (nonatomic) MWZMapView* mapwizeMap;
+@property (nonatomic) MWZMapView* mapView;
 ```
 
 ### Simple example

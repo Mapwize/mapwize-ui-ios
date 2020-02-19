@@ -13,7 +13,7 @@
 - (void) directionSceneDidTapOnSwapButton:(MWZUIDirectionScene*) scene;
 - (void) directionSceneAccessibilityModeDidChange:(BOOL) isAccessible;
 - (void) searchDirectionQueryDidChange:(NSString*) query;
-- (void) didSelect:(id<MWZObject>)mapwizeObject universe:(MWZUniverse*) universe;
+- (void) didSelect:(id<MWZObject>)mapwizeObject universe:(MWZUniverse*) universe forQuery:(NSString*) query;
 - (void) directionSceneDidTapOnCurrentLocation:(MWZUIDirectionScene*) scene;
 
 @end

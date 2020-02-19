@@ -43,7 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) showSearchResults:(NSArray<id<MWZObject>>*) results
                  universes:(NSArray<MWZUniverse*>*) universes
             activeUniverse:(MWZUniverse*) activeUniverse
-              withLanguage:(NSString*) language;
+              withLanguage:(NSString*) language
+                  forQuery:(NSString*) query;
 - (void) setSearchResultsHidden:(BOOL) hidden;
 - (void) setCurrentLocationViewHidden:(BOOL) hidden;
 
