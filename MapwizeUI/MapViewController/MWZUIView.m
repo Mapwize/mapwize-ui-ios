@@ -108,7 +108,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     [self addUniversesButton];
     self.sceneCoordinator = [[MWZUISceneCoordinator alloc] initWithContainerView:self];
     
-    self.defaultScene = [[MWZUIDefaultScene alloc] initWith:self.options.mainColor];
+    self.defaultScene = [[MWZUIDefaultScene alloc] initWith:self.options.mainColor menuIsHidden:self.settings.menuButtonIsHidden];
     self.defaultScene.delegate = self;
     self.sceneCoordinator.defaultScene = self.defaultScene;
     

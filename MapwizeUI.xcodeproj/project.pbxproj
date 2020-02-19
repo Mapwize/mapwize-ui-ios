@@ -252,17 +252,17 @@
 		8F63875523BE194F0006B10E /* DirectionScene */ = {
 			isa = PBXGroup;
 			children = (
-				8F63875623BE194F0006B10E /* MWZUIDirectionSceneDelegate.h */,
-				8F63875723BE194F0006B10E /* MWZUIDirectionHeader.m */,
-				8F63875823BE194F0006B10E /* MWZUIDirectionModeSegment.m */,
-				8F63875923BE194F0006B10E /* MWZUIDirectionMode.h */,
-				8F63875A23BE194F0006B10E /* MWZUIDirectionScene.m */,
-				8F63875B23BE194F0006B10E /* MWZUIDirectionModeSegment.h */,
 				8F63875C23BE194F0006B10E /* MWZUIDirectionHeader.h */,
-				8F63875D23BE194F0006B10E /* MWZUIDirectionModeSegmentDelegate.h */,
+				8F63875723BE194F0006B10E /* MWZUIDirectionHeader.m */,
 				8F63875E23BE194F0006B10E /* MWZUIDirectionHeaderDelegate.h */,
+				8F63875923BE194F0006B10E /* MWZUIDirectionMode.h */,
 				8F63875F23BE194F0006B10E /* MWZUIDirectionMode.m */,
+				8F63875B23BE194F0006B10E /* MWZUIDirectionModeSegment.h */,
+				8F63875823BE194F0006B10E /* MWZUIDirectionModeSegment.m */,
+				8F63875D23BE194F0006B10E /* MWZUIDirectionModeSegmentDelegate.h */,
 				8F63876023BE194F0006B10E /* MWZUIDirectionScene.h */,
+				8F63875A23BE194F0006B10E /* MWZUIDirectionScene.m */,
+				8F63875623BE194F0006B10E /* MWZUIDirectionSceneDelegate.h */,
 			);
 			path = DirectionScene;
 			sourceTree = "<group>";

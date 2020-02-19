@@ -2,17 +2,19 @@
 
 @implementation MWZUIDefaultScene
 
-- (instancetype) initWith:(UIColor*) mainColor {
+- (instancetype) initWith:(UIColor*) mainColor menuIsHidden:(BOOL) menuIsHidden {
     self = [super init];
     if (self) {
         _sceneProperties = [[MWZUIDefaultSceneProperties alloc] init];
         _mainColor = mainColor;
+        _menuIsHidden = menuIsHidden;
     }
     return self;
 }
 
 - (void)addTo:(UIView *)view {
     self.menuBar = [[MWZUIMapViewMenuBar alloc] initWithFrame:CGRectZero];
+    [self.menuBar.menuButton setHidden:_menuIsHidden];
     self.menuBar.translatesAutoresizingMaskIntoConstraints = NO;
     self.menuBar.delegate = self;
     [view addSubview:self.menuBar];

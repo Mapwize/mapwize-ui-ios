@@ -229,7 +229,7 @@
             [_resultDelegate didSelect:mapwizeObject universe:universe forQuery:_query];
         }
     }
-    else {
+    else if (self.ungroupedResults.count > 0) {
         id<MWZObject> mapwizeObject = self.ungroupedResults[indexPath.row];
         if (_resultDelegate) {
             [_resultDelegate didSelect:mapwizeObject universe:nil forQuery:_query];
