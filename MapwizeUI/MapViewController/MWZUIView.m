@@ -491,13 +491,13 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
-                                   constant:50.f] setActive:YES];
+                                   constant:90.f] setActive:YES];
     
     [[NSLayoutConstraint constraintWithItem:self.floorController
-                                  attribute:NSLayoutAttributeCenterX
+                                  attribute:NSLayoutAttributeTrailing
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:self.followUserButton
-                                  attribute:NSLayoutAttributeCenterX
+                                     toItem:self
+                                  attribute:NSLayoutAttributeTrailing
                                  multiplier:1.0f
                                    constant:0] setActive:YES];
     

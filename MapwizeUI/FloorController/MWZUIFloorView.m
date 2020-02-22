@@ -24,7 +24,21 @@
 - (void) drawRect:(CGRect)rect {
     [super drawRect:rect];
     self.layer.masksToBounds = false;
-    self.layer.cornerRadius = rect.size.height/2;
+    if (@available(iOS 11.0, *)) {
+        self.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMinXMaxYCorner;
+        self.layer.cornerRadius = rect.size.height/2;
+    } else {
+        UIBezierPath *maskPath;
+        maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
+                                         byRoundingCorners:(UIRectCornerBottomLeft | UIRectCornerTopLeft)
+                                               cornerRadii:CGSizeMake(rect.size.height/2, rect.size.height/2)];
+
+        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        maskLayer.frame = self.bounds;
+        maskLayer.path = maskPath.CGPath;
+        self.layer.mask = maskLayer;
+    }
+    
     self.layer.shadowOpacity = .3f;
     self.layer.shadowRadius = 2;
     self.layer.shadowColor = [UIColor blackColor].CGColor;

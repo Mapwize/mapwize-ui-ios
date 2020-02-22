@@ -3,7 +3,7 @@
 
 @import MapwizeSDK;
 
-const int MWZUIFloorViewWidth = 40;
+const int MWZUIFloorViewWidth = 90;
 const int MWZUIFloorViewHeight = 40;
 const int MWZUIFloorViewMarginSize = 4;
 
