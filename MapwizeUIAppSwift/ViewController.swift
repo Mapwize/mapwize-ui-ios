@@ -25,11 +25,9 @@ class ViewController: UIViewController {
 extension ViewController: MWZUIViewDelegate {
     
     func mapwizeView(_ mapwizeView: MWZUIView, didSelect place: MWZPlace, currentUniverse: MWZUniverse, searchResultUniverse: MWZUniverse, channel: MWZUIEventChannel, searchQuery: String?) {
-        print("Select place \(place.name) from \(channel.rawValue) with query \(searchQuery)")
     }
     
     func mapwizeView(_ mapwizeView: MWZUIView, didSelect placelist: MWZPlacelist, currentUniverse: MWZUniverse, searchResultUniverse: MWZUniverse, channel: MWZUIEventChannel, searchQuery: String?) {
-        print("Select place \(placelist.name) from \(channel.rawValue) with query \(searchQuery)")
     }
     
     func mapwizeViewDidLoad(_ mapwizeView: MWZUIView) {

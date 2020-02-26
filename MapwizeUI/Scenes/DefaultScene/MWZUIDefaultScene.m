@@ -12,6 +12,17 @@
     return self;
 }
 
+- (instancetype)initWith:(UIColor *)mainColor {
+    self = [super init];
+    if (self) {
+        _sceneProperties = [[MWZUIDefaultSceneProperties alloc] init];
+        _mainColor = mainColor;
+        _menuIsHidden = NO;
+    }
+    return self;
+}
+
+
 - (void)addTo:(UIView *)view {
     self.menuBar = [[MWZUIMapViewMenuBar alloc] initWithFrame:CGRectZero];
     [self.menuBar.menuButton setHidden:_menuIsHidden];
@@ -186,6 +197,7 @@
 - (void) setHidden:(BOOL) hidden {
     [self.menuBar setHidden:hidden];
 }
+
 
 - (void) showContent:(id<MWZObject>) object
             language:(NSString*) language

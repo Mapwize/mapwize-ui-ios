@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.1.7
+
+- Fixing warnings
+
 ## 2.1.6
 
 - Adding all MapwizeSDK delegate methods in the MapwizeUI delegate
