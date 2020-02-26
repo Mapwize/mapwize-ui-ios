@@ -1,5 +1,17 @@
 # Mapwize UI iOS Changelog
 
+## 2.1.6
+
+- Add all MapwizeSDK delegate methods in the MapwizeUI delegate
+- Add events to the delegate for analytics purpose
+- Add direction start event
+- Add language change event
+- Change mapwizeMap to mapView in the doc
+- Do not display other universes in direction search
+- Do not display "no result" if there is no query
+- Fix crash when clicking on "no result"
+- Fix isMenuHidden option
+
 ## 2.1.5
 
 - Adding missing that can produce compilation error 
