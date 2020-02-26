@@ -2,15 +2,15 @@
 
 ## 2.1.6
 
-- Add all MapwizeSDK delegate methods in the MapwizeUI delegate
-- Add events to the delegate for analytics purpose
-- Add direction start event
-- Add language change event
-- Change mapwizeMap to mapView in the doc
-- Do not display other universes in direction search
-- Do not display "no result" if there is no query
-- Fix crash when clicking on "no result"
-- Fix isMenuHidden option
+- Adding all MapwizeSDK delegate methods in the MapwizeUI delegate
+- Adding some more event to the delegate for analytics purpose
+- Adding event for direction start
+- Adding language change event
+- Fixing doc (mapwizeMap -> mapView )
+- Hidding other universe in direction search
+- Hidding no result if no query has been input
+- Fixing crash on no result click 
+- Fixing isMenuHidden does not work
 
 ## 2.1.5
 
@@ -18,11 +18,11 @@
 
 ## 2.1.4
 
-- infoButton is now hidden by default
+- Hidding informationButton by default
 
 ## 2.1.3
 
-- selectPlacelist now center on the placelist if needed
+- Centering on placelist when selectPlacelist is called
 
 ## 2.1.2
 
