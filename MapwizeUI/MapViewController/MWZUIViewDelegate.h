@@ -4,9 +4,15 @@
 @class MWZUIView;
 #import "MWZUIEventChannel.h"
 
+/**
+ The MWZUIViewDelegate allow you to respond to the map events
+ */
 @protocol MWZUIViewDelegate <NSObject>
 
-
+/**
+ Called when the MWZUIView is ready to use
+ @param mapwizeView the view that triggered the event
+ */
 - (void) mapwizeViewDidLoad:(MWZUIView* _Nonnull) mapwizeView;
 
 @optional

@@ -3,6 +3,7 @@
 ## 2.1.7
 
 - Fixing warnings
+- Update documentation
 
 ## 2.1.6
 
