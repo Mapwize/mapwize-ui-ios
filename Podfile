@@ -7,16 +7,18 @@ target 'MapwizeUI' do
   pod 'MapwizeSDK'
 end
 
-target 'MapwizeUIApp' do
-  workspace 'MapwizeUIApp'
-  project './MapwizeUIApp.xcodeproj'
-  use_frameworks!
-  pod 'MapwizeUI', path: '.'
-end
+if ENV['BUILD_RELEASE'] != "true"
+  target 'MapwizeUIApp' do
+    workspace 'MapwizeUIApp'
+    project './MapwizeUIApp.xcodeproj'
+    use_frameworks!
+    pod 'MapwizeUI', path: '.'
+  end
 
-target 'MapwizeUIAppSwift' do
-  workspace 'MapwizeUIApp'
-  project './MapwizeUIAppSwift.xcodeproj'
-  use_frameworks!
-  pod 'MapwizeUI', path: '.'
+  target 'MapwizeUIAppSwift' do
+    workspace 'MapwizeUIApp'
+    project './MapwizeUIAppSwift.xcodeproj'
+    use_frameworks!
+    pod 'MapwizeUI', path: '.'
+  end
 end

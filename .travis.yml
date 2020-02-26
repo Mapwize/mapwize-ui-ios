@@ -1,0 +1,18 @@
+language: objective-c
+osx_image: xcode11.3
+before_install:
+- gem install cocoapods xcpretty jazzy --no-document --quiet
+script:
+- ./ci/build-ui-cocoapods.sh || travis_terminate 1;
+- ./ci/build-jazzy-doc.sh --tag=${TRAVIS_BRANCH} || travis_terminate 1;
+- zip -r iosdoc.zip docs || travis_terminate 1;
+deploy:
+- provider: releases
+  api_key: "${GITHUB_TOKEN}"
+  file: "./iosdoc.zip"
+  skip_cleanup: true
+  on:
+    tags: true
+env:
+  global:
+    secure: WgtRHlR+DFlS21MFTMdvJbcxIhXRD4XEspRIo/1eN7NserptkCKxu+Sj54EZxNN/m8lQhxQfH2GYf2kSrRAgAEhBrS9YymRhn3D5IOUn23U8ejvQlpc73Qz6SCWzzKgKoPRBjSUF9I9Pym8zi/hdUGVMhnXLauEJqaCiMl2fUdzyDMYxHd0ReAAdhYYfZ/IT7UK1FL6zM39cSV1mC8RXVC8aAoIa9P8ZlMAecOnXLfHjrs7qjyjn43RdDTIXuwdx19fKPNERThAf+eYzz982w8wbX1pvNPEAb0zQtHtxCpmKAXyEESofWWanHQ1sTdy4iieAAP5K8mVTDbx6KmKfDtZApbtC/vEqDO50wXWI+/WDzszx5um9VaylfCXGq7ZPqpjBdOY+447SHsGpUU21PlULjo3b9Y8S1WA24/ibvdMgiuDj1dZaaFRpn2eDep4THwtd396QZhLiFPObjLAL9NjQr3sGf6av7ptNH9Hov2oeS0DVp/fq5Ae1He+8uxOoJXSwu5ZgBf61s9lcmb04RJ7JETu6VB+ra789gMlvz4HOh2hUcRv1bLcSzNr1YGx4Q9T16PDjW83HvUcy9ZvX2GUof9NnbNlpUOPO6m1OwCVoBZW16o46jtARsCAQ1rD62pg7Q/oPL3zzyvwbyi9GOTWaRQ88TJwGudbBFovv6eA= # GITHUB_TOKEN
