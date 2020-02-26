@@ -3,14 +3,14 @@
 ## 2.1.6
 
 - Adding all MapwizeSDK delegate methods in the MapwizeUI delegate
-- Adding some more event to the delegate for analytics purpose
-- Adding event for direction start
+- Adding events to the delegate for analytics purpose
+- Adding direction start event
 - Adding language change event
-- Fixing doc (mapwizeMap -> mapView )
-- Hidding other universe in direction search
-- Hidding no result if no query has been input
-- Fixing crash on no result click 
-- Fixing isMenuHidden does not work
+- Changing mapwizeMap to mapView in the doc
+- Hidding other universes in direction search
+- Hidding "no result" if there is no query
+- Fixing crash when clicking on "no result"
+- Fixing isMenuHidden option
 
 ## 2.1.5
 
