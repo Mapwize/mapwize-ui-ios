@@ -247,3 +247,18 @@ You can get your key by signing up for a free account at [mapwize.io](https://ww
 Once you have your API key, add it to the info.plist with the key MWZMapwizeApiKey
 
 To test the UI further, go to ViewController and change some options or add some code in it.
+
+## Analytics
+
+Mapwize SDK and Mapwize UI do __not__ have analytics trackers built in. This means that Mapwize does not know how maps are used in your applications, which we believe is a good thing for privacy. This also means that Mapwize is not able to provide you with analytics metrics and that, if you want any, you will have to intrument your code with your own analytics tracker.
+
+Events and callbacks from `MWZUIViewDelegate` can be used to detect changes in the interface and trigger tracking events. We believe using the following events would make sense:
+
+- `venueDidEnter` 
+- `venueDidExit`
+- `floorDidChange`
+- `universeDidChange`
+- `languageDidChange`
+- `didSelectPlace`
+- `didSelectPlacelist`
+- `didStartDirectionInVenue`
