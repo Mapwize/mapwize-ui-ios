@@ -3,7 +3,7 @@
 #import "MWZUIPaddingLabel.h"
 #import "MWZUIPaddingTextField.h"
 #import "MWZUIDirectionModeSegment.h"
-#import "MWZUIDirectionMode.h"
+#import "MWZDirectionMode.h"
 #import "MWZUIDirectionModeSegmentDelegate.h"
 @interface MWZUIDirectionHeader () <UITextFieldDelegate, MWZUIDirectionModeSegmentDelegate>
 
@@ -124,13 +124,18 @@
     [self.fromTextField setHidden:YES];
     [self.fromTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
-    self.modeControl = [[MWZUIDirectionModeSegment alloc] initWithItems:@[
-        [[MWZUIDirectionMode alloc] initWithImage:self.accessibilityOffImage isAccessible:NO],
-        [[MWZUIDirectionMode alloc] initWithImage:self.accessibilityOnImage isAccessible:YES]
-    ] color:self.color];
+    self.modeControl = [[MWZUIDirectionModeSegment alloc] initWithColor:self.color];
     self.modeControl.delegate = self;
     self.modeControl.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.modeControl];
+}
+
+- (void) setAvailableModes:(NSArray<MWZDirectionMode*>*) modes {
+    [self.modeControl setModes:modes];
+}
+
+- (void) setSelectedMode:(MWZDirectionMode*) mode {
+    [self.modeControl setSelectedMode:mode];
 }
 
 - (void) didTapOnFrom:(UITapGestureRecognizer*) recognizer {
@@ -480,20 +485,8 @@
     }
 }
 
--(void) directionModeSegment:(MWZUIDirectionModeSegment *)segment didChangeMode:(MWZUIDirectionMode *)mode {
-    [_delegate directionHeaderAccessibilityModeDidChange:mode.isAccessible];
-}
-
--(void) setAccessibleMode:(BOOL) isAccessible {
-    
-}
-
-- (void) setAccessibilityOn {
-    [_delegate directionHeaderAccessibilityModeDidChange:YES];
-}
-
-- (void) setAccessibilityOff {
-    [_delegate directionHeaderAccessibilityModeDidChange:NO];
+-(void) directionModeSegment:(MWZUIDirectionModeSegment *)segment didChangeMode:(MWZDirectionMode *)mode {
+    [_delegate directionHeaderDirectionModeDidChange:mode];
 }
 
 - (void) backClick {

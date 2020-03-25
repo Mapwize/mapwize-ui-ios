@@ -58,7 +58,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 
 @property (nonatomic) id<MWZDirectionPoint> fromDirectionPoint;
 @property (nonatomic) id<MWZDirectionPoint> toDirectionPoint;
-@property (nonatomic, assign) BOOL isAccessible;
+@property (nonatomic) MWZDirectionMode* directionMode;
 
 @property (nonatomic, assign) MWZViewState state;
 
@@ -601,7 +601,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     self.state = MWZViewStateDirectionOff;
     self.fromDirectionPoint = nil;
     self.toDirectionPoint = nil;
-    [self setIsAccessible:self.isAccessible];
+    [self setDirectionMode:self.directionMode];
     [self setFromDirectionPoint:[self.mapView getUserLocation]];
     [self setToDirectionPoint:(id<MWZDirectionPoint>)self.selectedContent inSearch:NO];
     [self.sceneCoordinator transitionFromDefaultToDirection];
@@ -667,10 +667,13 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     [self.mapView grantAccess:accessKey success:success failure:failure];
 }
 
-- (void) setDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to isAccessible:(BOOL) isAccessible {
+- (void) setDirection:(MWZDirection*) direction
+                 from:(id<MWZDirectionPoint>) from
+                   to:(id<MWZDirectionPoint>) to
+        directionMode:(MWZDirectionMode*) directionMode {
     _fromDirectionPoint = nil;
     _toDirectionPoint = nil;
-    [self setIsAccessible:isAccessible];
+    [self setDirectionMode:directionMode];
     [self defaultToDirectionTransition];
     _fromDirectionPoint = from;
     _toDirectionPoint = to;
@@ -872,9 +875,9 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     }
 }
 
--(void) setIsAccessible:(BOOL)isAccessible {
-    _isAccessible = isAccessible;
-    [self.directionScene setAccessibleMode:isAccessible];
+-(void) setDirectionMode:(MWZDirectionMode*)directionMode {
+    _directionMode = directionMode;
+    [self.directionScene setSelectedMode:directionMode];
     if ([self shouldStartDirection]) {
         [self startDirection];
     }
@@ -893,7 +896,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         && ((ILIndoorLocation*)self.fromDirectionPoint).floor) {
         [self.directionScene showLoading];
         MWZDirectionOptions* options = [[MWZDirectionOptions alloc] init];
-        [self.mapView startNavigation:self.toDirectionPoint isAccessible:self.isAccessible options:options];
+        [self.mapView startNavigation:self.toDirectionPoint directionMode:self.directionMode options:options];
         if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:didStartDirectionInVenue:universe:from:to:mode:isNavigation:)]) {
             [self.delegate mapwizeView:self didStartDirectionInVenue:[self.mapView getVenue] universe:[self.mapView getUniverse] from:self.fromDirectionPoint to:self.toDirectionPoint mode:@"TMP_MODE" isNavigation:YES];
         }
@@ -902,7 +905,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         [self.directionScene showLoading];
         [self.mapView.mapwizeApi getDirectionWithFrom:self.fromDirectionPoint
                                                    to:self.toDirectionPoint
-                                         isAccessible:self.isAccessible success:^(MWZDirection * _Nonnull direction) {
+                                        directionMode:self.directionMode success:^(MWZDirection * _Nonnull direction) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (self.state == MWZViewStateDirectionOn || self.state == MWZViewStateDirectionOff) {
                     [self.directionScene hideLoading];
@@ -910,7 +913,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                     [self.mapView setDirection:direction];
                     [self.directionScene setInfoWith:direction.traveltime
                                    directionDistance:direction.distance
-                                        isAccessible:self.isAccessible];
+                                       directionMode:self.directionMode];
                     [self.directionScene setDirectionInfoHidden:NO];
                     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:didStartDirectionInVenue:universe:from:to:mode:isNavigation:)]) {
                         [self.delegate mapwizeView:self didStartDirectionInVenue:[self.mapView getVenue] universe:[self.mapView getUniverse] from:self.fromDirectionPoint to:self.toDirectionPoint mode:@"TMP_MODE" isNavigation:NO];
@@ -1176,8 +1179,8 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     [self setToDirectionPoint:tmpTo inSearch:NO];
 }
 
--(void)directionSceneAccessibilityModeDidChange:(BOOL)isAccessible {
-    [self setIsAccessible:isAccessible];
+-(void)directionSceneDirectionModeDidChange:(MWZDirectionMode*)directionMode {
+    [self setDirectionMode:directionMode];
     
 }
 
@@ -1346,6 +1349,10 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     [self.universesButton showIfNeeded];
 }
 
+- (void)mapView:(MWZMapView *)mapView directionModesDidChange:(NSArray<MWZDirectionMode *> *)directionModes {
+    [self.directionScene setAvailableModes:directionModes];
+}
+
 - (void)mapView:(MWZMapView *_Nonnull)mapView venueDidExit:(MWZVenue *_Nonnull)venue {
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:venueDidExit:)]) {
         [self.delegate mapwizeView:self venueDidExit:venue];
@@ -1447,7 +1454,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         [self.directionScene hideLoading];
         [self.directionScene setInfoWith:direction.traveltime
                        directionDistance:direction.distance
-                            isAccessible:self.isAccessible];
+                           directionMode:self.directionMode];
         [self.directionScene setDirectionInfoHidden:NO];
     });
 }

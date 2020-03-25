@@ -34,13 +34,11 @@
 		8F63877423BE194F0006B10E /* MWZUIDirectionSceneDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F63875623BE194F0006B10E /* MWZUIDirectionSceneDelegate.h */; };
 		8F63877523BE194F0006B10E /* MWZUIDirectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F63875723BE194F0006B10E /* MWZUIDirectionHeader.m */; };
 		8F63877623BE194F0006B10E /* MWZUIDirectionModeSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F63875823BE194F0006B10E /* MWZUIDirectionModeSegment.m */; };
-		8F63877723BE194F0006B10E /* MWZUIDirectionMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F63875923BE194F0006B10E /* MWZUIDirectionMode.h */; };
 		8F63877823BE194F0006B10E /* MWZUIDirectionScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F63875A23BE194F0006B10E /* MWZUIDirectionScene.m */; };
 		8F63877923BE194F0006B10E /* MWZUIDirectionModeSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F63875B23BE194F0006B10E /* MWZUIDirectionModeSegment.h */; };
 		8F63877A23BE194F0006B10E /* MWZUIDirectionHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F63875C23BE194F0006B10E /* MWZUIDirectionHeader.h */; };
 		8F63877B23BE194F0006B10E /* MWZUIDirectionModeSegmentDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F63875D23BE194F0006B10E /* MWZUIDirectionModeSegmentDelegate.h */; };
 		8F63877C23BE194F0006B10E /* MWZUIDirectionHeaderDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F63875E23BE194F0006B10E /* MWZUIDirectionHeaderDelegate.h */; };
-		8F63877D23BE194F0006B10E /* MWZUIDirectionMode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F63875F23BE194F0006B10E /* MWZUIDirectionMode.m */; };
 		8F63877E23BE194F0006B10E /* MWZUIDirectionScene.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F63876023BE194F0006B10E /* MWZUIDirectionScene.h */; };
 		8F787C4D23E453D1000EA02F /* MWZUIPaddingTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F787C4923E453D1000EA02F /* MWZUIPaddingTextField.h */; };
 		8F787C4E23E453D1000EA02F /* MWZUIPaddingTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F787C4A23E453D1000EA02F /* MWZUIPaddingTextField.m */; };
@@ -125,13 +123,11 @@
 		8F63875623BE194F0006B10E /* MWZUIDirectionSceneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIDirectionSceneDelegate.h; sourceTree = "<group>"; };
 		8F63875723BE194F0006B10E /* MWZUIDirectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZUIDirectionHeader.m; sourceTree = "<group>"; };
 		8F63875823BE194F0006B10E /* MWZUIDirectionModeSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZUIDirectionModeSegment.m; sourceTree = "<group>"; };
-		8F63875923BE194F0006B10E /* MWZUIDirectionMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIDirectionMode.h; sourceTree = "<group>"; };
 		8F63875A23BE194F0006B10E /* MWZUIDirectionScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZUIDirectionScene.m; sourceTree = "<group>"; };
 		8F63875B23BE194F0006B10E /* MWZUIDirectionModeSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIDirectionModeSegment.h; sourceTree = "<group>"; };
 		8F63875C23BE194F0006B10E /* MWZUIDirectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIDirectionHeader.h; sourceTree = "<group>"; };
 		8F63875D23BE194F0006B10E /* MWZUIDirectionModeSegmentDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIDirectionModeSegmentDelegate.h; sourceTree = "<group>"; };
 		8F63875E23BE194F0006B10E /* MWZUIDirectionHeaderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIDirectionHeaderDelegate.h; sourceTree = "<group>"; };
-		8F63875F23BE194F0006B10E /* MWZUIDirectionMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZUIDirectionMode.m; sourceTree = "<group>"; };
 		8F63876023BE194F0006B10E /* MWZUIDirectionScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIDirectionScene.h; sourceTree = "<group>"; };
 		8F787C4923E453D1000EA02F /* MWZUIPaddingTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIPaddingTextField.h; sourceTree = "<group>"; };
 		8F787C4A23E453D1000EA02F /* MWZUIPaddingTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZUIPaddingTextField.m; sourceTree = "<group>"; };
@@ -255,8 +251,6 @@
 				8F63875C23BE194F0006B10E /* MWZUIDirectionHeader.h */,
 				8F63875723BE194F0006B10E /* MWZUIDirectionHeader.m */,
 				8F63875E23BE194F0006B10E /* MWZUIDirectionHeaderDelegate.h */,
-				8F63875923BE194F0006B10E /* MWZUIDirectionMode.h */,
-				8F63875F23BE194F0006B10E /* MWZUIDirectionMode.m */,
 				8F63875B23BE194F0006B10E /* MWZUIDirectionModeSegment.h */,
 				8F63875823BE194F0006B10E /* MWZUIDirectionModeSegment.m */,
 				8F63875D23BE194F0006B10E /* MWZUIDirectionModeSegmentDelegate.h */,
@@ -517,7 +511,6 @@
 				8F8607DD219D67AB00281AB7 /* MWZUIUniversesButtonDelegate.h in Headers */,
 				8F63873E23BE19320006B10E /* MWZUIView.h in Headers */,
 				8F63876423BE194F0006B10E /* MWZUIMapViewMenuBarDelegate.h in Headers */,
-				8F63877723BE194F0006B10E /* MWZUIDirectionMode.h in Headers */,
 				8F8607ED219D67AB00281AB7 /* MWZUIFloorController.h in Headers */,
 				8F63876E23BE194F0006B10E /* MWZUISearchQueryBar.h in Headers */,
 				8F8607D7219D67AB00281AB7 /* MWZUIDirectionInfo.h in Headers */,
@@ -622,7 +615,6 @@
 				8F8607D4219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.m in Sources */,
 				8F8607EA219D67AB00281AB7 /* MWZUITitleCell.m in Sources */,
 				8F63877623BE194F0006B10E /* MWZUIDirectionModeSegment.m in Sources */,
-				8F63877D23BE194F0006B10E /* MWZUIDirectionMode.m in Sources */,
 				8F63877523BE194F0006B10E /* MWZUIDirectionHeader.m in Sources */,
 				8F8640D4222831140043E9E5 /* MWZUITitleWithoutFloorCellTableViewCell.m in Sources */,
 				8F8607E6219D67AB00281AB7 /* MWZUISubtitleCell.m in Sources */,

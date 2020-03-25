@@ -73,7 +73,10 @@ Select the placelist passed as parameter. Selecting a placelist add a marker on 
 /**
  Display a direction on the map and change the UI to display the direction interface
  */
-- (void) setDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to isAccessible:(BOOL) isAccessible;
+- (void) setDirection:(MWZDirection*) direction
+                 from:(id<MWZDirectionPoint>) from
+                   to:(id<MWZDirectionPoint>) to
+        directionMode:(MWZDirectionMode*) directionMode;
 
 
 @end

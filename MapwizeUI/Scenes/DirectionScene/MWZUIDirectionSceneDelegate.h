@@ -11,7 +11,7 @@
 - (void) directionSceneDidTapOnFromButton:(MWZUIDirectionScene*) scene;
 - (void) directionSceneDidTapOnToButton:(MWZUIDirectionScene*) scene;
 - (void) directionSceneDidTapOnSwapButton:(MWZUIDirectionScene*) scene;
-- (void) directionSceneAccessibilityModeDidChange:(BOOL) isAccessible;
+- (void) directionSceneDirectionModeDidChange:(MWZDirectionMode*) directionMode;
 - (void) searchDirectionQueryDidChange:(NSString*) query;
 - (void) didSelect:(id<MWZObject>)mapwizeObject universe:(MWZUniverse*) universe forQuery:(NSString*) query;
 - (void) directionSceneDidTapOnCurrentLocation:(MWZUIDirectionScene*) scene;
