@@ -8,27 +8,47 @@
         _color = color;
         _buttons = [[NSMutableArray alloc] init];
         [self initialize];
-        self.backgroundColor = [UIColor greenColor];
-        self.axis = UILayoutConstraintAxisHorizontal;
-        self.alignment = UIStackViewAlignmentFill;
-        self.distribution = UIStackViewDistributionFillEqually;
     }
     return self;
 }
 
 - (void) initialize {
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+    self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.scrollView.showsHorizontalScrollIndicator = NO;
+    [self addSubview:self.scrollView];
     
+    [[self.scrollView.leftAnchor constraintEqualToAnchor:self.leftAnchor constant:0.0] setActive:YES];
+    [[self.scrollView.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:0.0] setActive:YES];
+    [[self.scrollView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0] setActive:YES];
+    [[self.scrollView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0.0] setActive:YES];
+    
+    self.stackView = [[UIStackView alloc] initWithFrame:CGRectZero];
+    self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.stackView.axis = UILayoutConstraintAxisHorizontal;
+    self.stackView.alignment = UIStackViewAlignmentFill;
+    self.stackView.distribution = UIStackViewDistributionFill;
+    [self.scrollView addSubview:self.stackView];
+    
+    [[self.stackView.leftAnchor constraintEqualToAnchor:self.stackView.leftAnchor constant:0.0] setActive:YES];
+    [[self.stackView.rightAnchor constraintEqualToAnchor:self.stackView.rightAnchor constant:0.0] setActive:YES];
+    [[self.stackView.topAnchor constraintEqualToAnchor:self.stackView.topAnchor constant:0.0] setActive:YES];
+    [[self.stackView.bottomAnchor constraintEqualToAnchor:self.stackView.bottomAnchor constant:0.0] setActive:YES];
 }
 
 - (void) setModes:(NSArray<MWZDirectionMode *> *)modes {
-    for (UIView* view in self.arrangedSubviews) {
+    for (UIView* view in self.stackView.arrangedSubviews) {
         [view removeFromSuperview];
     }
     [self.buttons removeAllObjects];
     _modes = modes;
+    int divider = modes.count > 4 ? 4 : (int)modes.count;
+    int size = self.frame.size.width / divider;
     for (MWZDirectionMode* mode in _modes) {
         UIButton* button = [[UIButton alloc] init];
         button.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        [[button.widthAnchor constraintEqualToConstant:size] setActive:YES];
         [button setImage:[mode.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         [button.imageView setContentMode:UIViewContentModeScaleAspectFit];
         CGFloat redComponent = CGColorGetComponents(self.color.CGColor)[0];
@@ -38,11 +58,10 @@
         button.contentEdgeInsets = UIEdgeInsetsMake(4.f, 4.f, 4.f, 4.f);
         [button addTarget:self action:@selector(didTapOnButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.buttons addObject:button];
-        [self addArrangedSubview:button];
+        [self.stackView addArrangedSubview:button];
     }
     
-    if (_selectedMode == nil) {
-        //[self setSelectedMode:self.modes[0]];
+    if (_selectedMode == nil || _modes) {
         [_delegate directionModeSegment:self didChangeMode:self.modes[0]];
     }
     
@@ -56,12 +75,15 @@
     self.selectorView.layer.masksToBounds = YES;
     self.selectorView.layer.backgroundColor = self.haloColor.CGColor;
     self.selectorView.layer.borderColor = self.color.CGColor;
-    [self addSubview:self.selectorView];
+    [self.stackView addSubview:self.selectorView];
     [[self.selectorView.heightAnchor constraintEqualToAnchor:self.buttons[0].heightAnchor multiplier:1.0] setActive:YES];
     [[self.selectorView.widthAnchor constraintEqualToAnchor:self.buttons[0].widthAnchor multiplier:1.0] setActive:YES];
+    
+    self.scrollView.contentSize = CGSizeMake(size*modes.count, self.scrollView.contentSize.height);
 }
 
 - (void) setSelectedMode:(MWZDirectionMode*) mode {
+    NSLog(@"Size view %f; Size content %f", self.scrollView.frame.size.width, self.scrollView.contentSize.width);
     UIButton* toButton = nil;
     for (int i=0; i<self.modes.count; i++) {
         if (mode == self.modes[i]) {
