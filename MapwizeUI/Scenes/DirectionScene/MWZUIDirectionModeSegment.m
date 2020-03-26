@@ -61,7 +61,7 @@
         [self.stackView addArrangedSubview:button];
     }
     
-    if (_selectedMode == nil || _modes) {
+    if (_selectedMode == nil || [_modes indexOfObject:_selectedMode] == NSNotFound) {
         [_delegate directionModeSegment:self didChangeMode:self.modes[0]];
     }
     
@@ -83,7 +83,6 @@
 }
 
 - (void) setSelectedMode:(MWZDirectionMode*) mode {
-    NSLog(@"Size view %f; Size content %f", self.scrollView.frame.size.width, self.scrollView.contentSize.width);
     UIButton* toButton = nil;
     for (int i=0; i<self.modes.count; i++) {
         if (mode == self.modes[i]) {
