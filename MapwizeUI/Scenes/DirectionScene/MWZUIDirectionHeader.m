@@ -509,4 +509,5 @@
     [_delegate searchDirectionQueryDidChange:textField.text];
 }
 
+
 @end

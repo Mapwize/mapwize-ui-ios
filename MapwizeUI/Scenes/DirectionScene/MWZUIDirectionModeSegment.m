@@ -61,10 +61,6 @@
         [self.stackView addArrangedSubview:button];
     }
     
-    if (_selectedMode == nil || [_modes indexOfObject:_selectedMode] == NSNotFound) {
-        [_delegate directionModeSegment:self didChangeMode:self.modes[0]];
-    }
-    
     if (self.selectorView != nil) {
         [self.selectorView removeFromSuperview];
     }
@@ -80,12 +76,19 @@
     [[self.selectorView.widthAnchor constraintEqualToAnchor:self.buttons[0].widthAnchor multiplier:1.0] setActive:YES];
     
     self.scrollView.contentSize = CGSizeMake(size*modes.count, self.scrollView.contentSize.height);
+    
+    if (_selectedMode == nil || [_modes indexOfObject:_selectedMode] == NSNotFound) {
+        [_delegate directionModeSegment:self didChangeMode:self.modes[0]];
+    }
+    else {
+        [self setSelectedMode:_selectedMode];
+    }
 }
 
 - (void) setSelectedMode:(MWZDirectionMode*) mode {
     UIButton* toButton = nil;
     for (int i=0; i<self.modes.count; i++) {
-        if (mode == self.modes[i]) {
+        if ([mode isEqual:self.modes[i]]) {
             [self.buttons[i] setTintColor:self.color];
             toButton = self.buttons[i];
         }
@@ -93,7 +96,8 @@
             [self.buttons[i] setTintColor:[UIColor blackColor]];
         }
     }
-    if (mode == _selectedMode) {
+    if ([mode isEqual:_selectedMode]) {
+        [self.superview layoutIfNeeded];
         [UIView animateWithDuration:0.0 animations:^{
             [self.selectorView setTransform:CGAffineTransformMakeTranslation(toButton.frame.origin.x, 0.0)];
         }];

@@ -605,6 +605,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     [self setFromDirectionPoint:[self.mapView getUserLocation]];
     [self setToDirectionPoint:(id<MWZDirectionPoint>)self.selectedContent inSearch:NO];
     [self.sceneCoordinator transitionFromDefaultToDirection];
+    
     if (self.fromDirectionPoint == nil) {
         self.state = MWZViewStateSearchDirectionFrom;
         [self.directionScene openFromSearch];
@@ -671,14 +672,18 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                  from:(id<MWZDirectionPoint>) from
                    to:(id<MWZDirectionPoint>) to
         directionMode:(MWZDirectionMode*) directionMode {
-    _fromDirectionPoint = nil;
-    _toDirectionPoint = nil;
+    [self defaultToDirectionTransitionWithDirection:direction from:from to:to directionMode:directionMode];
+}
+
+- (void) defaultToDirectionTransitionWithDirection:(MWZDirection*) direction
+                                              from:(id<MWZDirectionPoint>) from
+                                                to:(id<MWZDirectionPoint>) to
+                                     directionMode:(MWZDirectionMode*) directionMode {
+    self.state = MWZViewStateDirectionOff;
+    [self.sceneCoordinator transitionFromDefaultToDirection];
     [self setDirectionMode:directionMode];
-    [self defaultToDirectionTransition];
-    _fromDirectionPoint = from;
-    _toDirectionPoint = to;
-    [self setFromDirectionPoint:from];
     [self setToDirectionPoint:to inSearch:NO];
+    [self setFromDirectionPoint:from];
 }
 
 #pragma mark Content selection
