@@ -48,7 +48,6 @@
         UIButton* button = [[UIButton alloc] init];
         button.translatesAutoresizingMaskIntoConstraints = NO;
         
-        [[button.widthAnchor constraintEqualToConstant:size] setActive:YES];
         [button setImage:[mode.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         [button.imageView setContentMode:UIViewContentModeScaleAspectFit];
         CGFloat redComponent = CGColorGetComponents(self.color.CGColor)[0];
@@ -59,6 +58,8 @@
         [button addTarget:self action:@selector(didTapOnButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.buttons addObject:button];
         [self.stackView addArrangedSubview:button];
+        [[button.widthAnchor constraintEqualToConstant:size] setActive:YES];
+        [[button.heightAnchor constraintEqualToAnchor:self.heightAnchor multiplier:1.0] setActive:YES];
     }
     
     if (self.selectorView != nil) {
