@@ -65,6 +65,9 @@
     if (self.selectorView != nil) {
         [self.selectorView removeFromSuperview];
     }
+    if ([_modes count] == 0) {
+        return;
+    }
     self.selectorView = [[UIView alloc] init];
     self.selectorView.translatesAutoresizingMaskIntoConstraints = NO;
     self.selectorView.layer.cornerRadius = 16.0;
