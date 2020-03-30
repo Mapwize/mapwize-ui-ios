@@ -14,6 +14,7 @@
 @property (nonatomic) NSLayoutConstraint* tableHeightConstraint;
 @property (nonatomic) NSString* language;
 @property (nonatomic) NSString* query;
+@property (nonatomic) BOOL networkError;
 
 @end
 
@@ -65,6 +66,7 @@
       activeUniverse:(MWZUniverse*) activeUniverse
             language:(nonnull NSString *)language
             forQuery:(NSString*) query {
+    _networkError = NO;
     _query = query;
     [self setLanguage:language];
     [self.contentByUniverseId removeAllObjects];
@@ -75,6 +77,11 @@
         [self buildResultsMap:results universes:universes activeUniverse:activeUniverse];
         [self buildUniversesArray];
     }
+    [self reloadData];
+}
+
+- (void) setNetworkError {
+    _networkError = YES;
     [self reloadData];
 }
 
@@ -139,10 +146,15 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
-    
     NSMutableArray<id<MWZObject>>* content;
     
-    if (self.ungroupedResults.count > 0) {
+    if (self.networkError) {
+        MWZUITitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
+        cell.titleView.text = NSLocalizedString(@"Search error", "");
+        [cell.imageView setImage:nil];
+        return cell;
+    }
+    else if (self.ungroupedResults.count > 0) {
         id<MWZObject> mapwizeObject = self.ungroupedResults[indexPath.row];
         return [self getCellFor:mapwizeObject];
     }
@@ -206,7 +218,9 @@
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
+    if (_networkError) {
+        return 1;
+    }
     if (self.universes && self.universes.count > 0) {
         MWZUniverse* universe = self.universes[section];
         return self.contentByUniverseId[universe.identifier].count;

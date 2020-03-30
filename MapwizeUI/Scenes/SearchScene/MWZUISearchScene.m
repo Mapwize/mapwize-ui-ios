@@ -284,6 +284,10 @@
                         forQuery:query];
 }
 
+- (void) setNetworkError {
+    [self.resultList setNetworkError];
+}
+
 #pragma mark MWZSearchQueryBarDelegate
 - (void)searchQueryDidChange:(NSString*) query {
     [_delegate searchQueryDidChange:query];

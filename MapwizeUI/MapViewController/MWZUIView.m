@@ -594,6 +594,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 
 - (void) searchToMapTransition {
     self.state = MWZViewStateDefault;
+    [self.universesButton setHidden:NO];
     [self.sceneCoordinator transitionFromSearchToDefault];
 }
 
@@ -601,6 +602,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     self.state = MWZViewStateDirectionOff;
     self.fromDirectionPoint = nil;
     self.toDirectionPoint = nil;
+    [self.universesButton setHidden:YES];
     [self setDirectionMode:self.directionMode];
     [self setFromDirectionPoint:[self.mapView getUserLocation]];
     [self setToDirectionPoint:(id<MWZDirectionPoint>)self.selectedContent inSearch:NO];
@@ -638,6 +640,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 
 - (void) directionToDefaultTransition {
     self.state = MWZViewStateDefault;
+    [self.universesButton setHidden:NO];
     if (self.toDirectionPoint && [self.toDirectionPoint isKindOfClass:MWZPlace.class]) {
         [self selectPlace:(MWZPlace*)self.toDirectionPoint centerOn:NO];
     }
@@ -680,6 +683,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                                 to:(id<MWZDirectionPoint>) to
                                      directionMode:(MWZDirectionMode*) directionMode {
     self.state = MWZViewStateDirectionOff;
+    [self.universesButton setHidden:YES];
     [self.sceneCoordinator transitionFromDefaultToDirection];
     [self setDirectionMode:directionMode];
     [self setToDirectionPoint:to inSearch:NO];
@@ -1021,7 +1025,9 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                            withLanguage:[self.mapView getLanguage] forQuery:query];
                 });
             } failure:^(NSError *error) {
-                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.searchScene setNetworkError];
+                });
             }];
         }
     }
@@ -1046,7 +1052,9 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                                forQuery:query];
                 });
             } failure:^(NSError *error) {
-                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.searchScene setNetworkError];
+                });
             }];
         }
     }
@@ -1231,7 +1239,9 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                           forQuery:query];
         });
     } failure:^(NSError *error) {
-        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.searchScene setNetworkError];
+        });
     }];
 }
 
