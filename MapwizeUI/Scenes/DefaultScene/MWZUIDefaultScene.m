@@ -155,6 +155,7 @@
     }
     else {
         [self setSearchBarTitleForVenue:nil loading:NO];
+        [self setDirectionButtonHidden:YES];
         [self hideContent];
     }
     
