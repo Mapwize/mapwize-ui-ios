@@ -932,6 +932,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.directionScene hideLoading];
                 [self.directionScene showErrorMessage:NSLocalizedString(@"Direction not found",@"")];
+                [self.mapView removeDirection];
             });
         }];
     }
@@ -1480,6 +1481,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         }
         [self.directionScene hideLoading];
         [self.directionScene showErrorMessage:NSLocalizedString(@"Direction not found", &"")];
+        [self.mapView removeDirection];
     });
 }
 
