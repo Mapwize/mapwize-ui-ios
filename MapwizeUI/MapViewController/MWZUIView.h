@@ -15,6 +15,8 @@
 @class MWZUISettings;
 @class MWZUIOptions;
 @class MWZUIFollowUserButton;
+@class MWZUICompass;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -30,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// The MWZUIFollowUserButton is exposed to help you align your UI to existing component
 @property (nonatomic) MWZUIFollowUserButton* followUserButton;
 
+@property (nonatomic) MWZUICompass* compassView;
 /**
  Init the MWZUIView using the global MWZMapwizeConfiguration (see SDK documentation for more information)
  */

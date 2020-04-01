@@ -42,7 +42,6 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 @property (nonatomic) MWZUISettings* settings;
 
 @property (nonatomic) MWZUIFloorController* floorController;
-@property (nonatomic) MWZUICompass* compassView;
 @property (nonatomic) MWZUIUniversesButton* universesButton;
 @property (nonatomic) MWZUILanguagesButton* languagesButton;
 
@@ -594,7 +593,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 
 - (void) searchToMapTransition {
     self.state = MWZViewStateDefault;
-    [self.universesButton setHidden:NO];
+    [self.universesButton showIfNeeded];
     [self.sceneCoordinator transitionFromSearchToDefault];
 }
 
@@ -640,7 +639,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 
 - (void) directionToDefaultTransition {
     self.state = MWZViewStateDefault;
-    [self.universesButton setHidden:NO];
+    [self.universesButton showIfNeeded];
     if (self.toDirectionPoint && [self.toDirectionPoint isKindOfClass:MWZPlace.class]) {
         [self selectPlace:(MWZPlace*)self.toDirectionPoint centerOn:NO];
     }
