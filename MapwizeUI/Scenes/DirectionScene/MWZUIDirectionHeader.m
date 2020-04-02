@@ -436,7 +436,7 @@
 
 - (void) setButtonsHidden:(BOOL) isHidden {
     [self.swapButton setHidden:isHidden];
-    [self.modeControl setHidden:isHidden];
+    //[self.modeControl setHidden:isHidden];
 }
 
 - (void) openFromSearch {

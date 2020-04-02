@@ -886,7 +886,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 -(void) setDirectionMode:(MWZDirectionMode*)directionMode {
     _directionMode = directionMode;
     [self.directionScene setSelectedMode:directionMode];
-    if ([self shouldStartDirection]) {
+    if (self.state == MWZViewStateDirectionOn) {
         [self startDirection];
     }
 }
@@ -1136,6 +1136,9 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         [self.directionScene setSearchResultsHidden:YES];
         if ([self.mapView getDirection]) {
             self.state = MWZViewStateDirectionOn;
+            if (![[self.mapView getDirection].directionMode isEqual:_directionMode] && [self shouldStartDirection]) {
+                [self startDirection];
+            }
         }
         else {
             [self directionToDefaultTransition];
@@ -1194,7 +1197,6 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 
 -(void)directionSceneDirectionModeDidChange:(MWZDirectionMode*)directionMode {
     [self setDirectionMode:directionMode];
-    
 }
 
 - (void) searchDirectionQueryDidChange:(NSString*) query {
