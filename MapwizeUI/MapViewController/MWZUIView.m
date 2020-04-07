@@ -58,7 +58,6 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 @property (nonatomic) id<MWZDirectionPoint> fromDirectionPoint;
 @property (nonatomic) id<MWZDirectionPoint> toDirectionPoint;
 @property (nonatomic) MWZDirectionMode* directionMode;
-
 @property (nonatomic, assign) MWZViewState state;
 
 @property (nonatomic) NSLayoutConstraint* universesButtonLeftConstraint;
@@ -906,7 +905,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         MWZDirectionOptions* options = [[MWZDirectionOptions alloc] init];
         [self.mapView startNavigation:self.toDirectionPoint directionMode:self.directionMode options:options];
         if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:didStartDirectionInVenue:universe:from:to:mode:isNavigation:)]) {
-            [self.delegate mapwizeView:self didStartDirectionInVenue:[self.mapView getVenue] universe:[self.mapView getUniverse] from:self.fromDirectionPoint to:self.toDirectionPoint mode:@"TMP_MODE" isNavigation:YES];
+            [self.delegate mapwizeView:self didStartDirectionInVenue:[self.mapView getVenue] universe:[self.mapView getUniverse] from:self.fromDirectionPoint to:self.toDirectionPoint mode:self.directionMode.identifier isNavigation:YES];
         }
     }
     else {
@@ -924,7 +923,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                        directionMode:self.directionMode];
                     [self.directionScene setDirectionInfoHidden:NO];
                     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:didStartDirectionInVenue:universe:from:to:mode:isNavigation:)]) {
-                        [self.delegate mapwizeView:self didStartDirectionInVenue:[self.mapView getVenue] universe:[self.mapView getUniverse] from:self.fromDirectionPoint to:self.toDirectionPoint mode:@"TMP_MODE" isNavigation:NO];
+                        [self.delegate mapwizeView:self didStartDirectionInVenue:[self.mapView getVenue] universe:[self.mapView getUniverse] from:self.fromDirectionPoint to:self.toDirectionPoint mode:self.directionMode.identifier isNavigation:NO];
                     }
                 }
             });
