@@ -3,7 +3,6 @@
 #import "MWZUIPaddingLabel.h"
 #import "MWZUIPaddingTextField.h"
 #import "MWZUIDirectionModeSegment.h"
-#import "MWZDirectionMode.h"
 #import "MWZUIDirectionModeSegmentDelegate.h"
 @interface MWZUIDirectionHeader () <UITextFieldDelegate, MWZUIDirectionModeSegmentDelegate>
 
