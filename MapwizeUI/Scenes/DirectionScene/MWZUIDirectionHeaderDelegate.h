@@ -1,8 +1,9 @@
 #ifndef MWZUIDirectionHeaderDelegate_h
 #define MWZUIDirectionHeaderDelegate_h
 
+@import MapwizeSDK;
+
 @class MWZUIDirectionHeader;
-@class MWZDirectionMode;
 
 @protocol MWZUIDirectionHeaderDelegate <NSObject>
 

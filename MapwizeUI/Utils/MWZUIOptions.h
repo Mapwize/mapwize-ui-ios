@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
-#import <MapwizeSDK/MapwizeSDK.h>
+
+@import MapwizeSDK;
 
 /**
  This class allows to pass MWZOptions to the map with option that are not in the MapwizeSDK

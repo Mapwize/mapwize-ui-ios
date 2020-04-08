@@ -1,10 +1,11 @@
 #import <UIKit/UIKit.h>
 #import "MWZUIDirectionHeaderDelegate.h"
 
+@import MapwizeSDK;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class MWZUIBorderedTextField;
-@class MWZDirectionMode;
 
 @interface MWZUIDirectionHeader : UIView <UITextFieldDelegate>
 

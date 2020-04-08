@@ -1,9 +1,9 @@
 #ifndef MWZUIDirectionSceneDelegate_h
 #define MWZUIDirectionSceneDelegate_h
 
+@import MapwizeSDK;
+
 @class MWZUIDirectionScene;
-@class MWZUniverse;
-@protocol MWZObject;
 
 @protocol MWZUIDirectionSceneDelegate <NSObject>
 

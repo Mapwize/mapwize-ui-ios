@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
-#import <MapwizeSDK/MapwizeSDK.h>
+
+@import MapwizeSDK;
+
 @protocol MWZUIViewDelegate;
 @protocol MWZUISearchSceneDelegate;
 @protocol MWZUIDefaultSceneDelegate;

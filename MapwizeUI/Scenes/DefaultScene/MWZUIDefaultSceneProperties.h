@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@class MWZVenue;
-@protocol MWZObject;
+@import MapwizeSDK;
 
 @interface MWZUIDefaultSceneProperties : NSObject
 

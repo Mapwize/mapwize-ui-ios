@@ -1,5 +1,6 @@
 #import <IndoorLocation/IndoorLocation.h>
-#import <MapwizeSDK/MapwizeSDK.h>
+
+@import MapwizeSDK;
 
 NS_ASSUME_NONNULL_BEGIN
 

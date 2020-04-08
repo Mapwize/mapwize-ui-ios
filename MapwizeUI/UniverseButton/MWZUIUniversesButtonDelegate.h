@@ -1,4 +1,4 @@
-#import <MapwizeSDK/MapwizeSDK.h>
+@import MapwizeSDK;
 
 #ifndef MWZUIUniversesButtonDelegate_h
 #define MWZUIUniversesButtonDelegate_h

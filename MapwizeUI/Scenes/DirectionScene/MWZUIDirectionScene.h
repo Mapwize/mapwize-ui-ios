@@ -8,6 +8,8 @@
 #import "MWZUIGroupedResultList.h"
 #import "MWZUICurrentLocationView.h"
 
+@import MapwizeSDK;
+
 NS_ASSUME_NONNULL_BEGIN
 
 
