@@ -168,7 +168,12 @@ Hide the UI component, remove markers and unpromote place if needed
 `- (void) unselectContent:(BOOL) closeInfo;`
 
 Display a direction object and show the direction UI already configured
-`- (void) setDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to isAccessible:(BOOL) isAccessible;`
+```objective-c 
+- (void) setDirection:(MWZDirection*) direction
+                 from:(id<MWZDirectionPoint>) from
+                   to:(id<MWZDirectionPoint>) to
+        directionMode:(MWZDirectionMode*) directionMode
+```
 
 
 ## Information button
@@ -233,6 +238,9 @@ You can override them in your `strings.xml` file and add other Localizable.strin
 "Languages" = "Languages";
 "Choose your preferred language" = "Choose your preferred language";
 "Cancel" = "Cancel";
+"Direction not found" = "Direction not found"
+"Search error" = "Search went wrong"
+"Search" = "Search"
 ```
 
 Be careful with strings containing placeholders. Please ensure that the exact placeholders are kept!
