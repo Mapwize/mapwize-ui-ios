@@ -2,8 +2,10 @@
 
 ## 2.2.0
 
-- Integrating MapwizeSDK 3.1.0
-- Adding support for direction mode
+- Integrating Mapwize SDK 3.1.0
+- Introducting direction modes to allow computation of optimized directions for different profiles. This feature extends the existing accessibility feature in the directions.
+	- The modes configured in Mapwize Studio for each venue / universe will automatically appear in the direction interface.
+	- The method `setDirection` has been changed to accept a mode instead of the `isAccessible` option.
 
 ## 2.1.7
 
