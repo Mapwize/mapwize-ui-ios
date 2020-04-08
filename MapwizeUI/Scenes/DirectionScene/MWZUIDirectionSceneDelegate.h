@@ -1,9 +1,9 @@
 #ifndef MWZUIDirectionSceneDelegate_h
 #define MWZUIDirectionSceneDelegate_h
 
+@import MapwizeSDK;
+
 @class MWZUIDirectionScene;
-@class MWZUniverse;
-@protocol MWZObject;
 
 @protocol MWZUIDirectionSceneDelegate <NSObject>
 
@@ -11,7 +11,7 @@
 - (void) directionSceneDidTapOnFromButton:(MWZUIDirectionScene*) scene;
 - (void) directionSceneDidTapOnToButton:(MWZUIDirectionScene*) scene;
 - (void) directionSceneDidTapOnSwapButton:(MWZUIDirectionScene*) scene;
-- (void) directionSceneAccessibilityModeDidChange:(BOOL) isAccessible;
+- (void) directionSceneDirectionModeDidChange:(MWZDirectionMode*) directionMode;
 - (void) searchDirectionQueryDidChange:(NSString*) query;
 - (void) didSelect:(id<MWZObject>)mapwizeObject universe:(MWZUniverse*) universe forQuery:(NSString*) query;
 - (void) directionSceneDidTapOnCurrentLocation:(MWZUIDirectionScene*) scene;

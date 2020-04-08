@@ -218,7 +218,7 @@
 
 - (void) setInfoWith:(double) directionTravelTime
    directionDistance:(double) directionDistance
-        isAccessible:(BOOL) isAccessible {
+       directionMode:(MWZDirectionMode*) directionMode {
     [self.directionInfo setInfoWith:directionTravelTime directionDistance:directionDistance];
 }
 
@@ -351,8 +351,12 @@
     [self.directionHeader setToText:text asPlaceHolder:asPlaceHolder];
 }
 
--(void) setAccessibleMode:(BOOL) isAccessible {
-    [self.directionHeader setAccessibleMode:isAccessible];
+- (void) setAvailableModes:(NSArray<MWZDirectionMode*>*) modes {
+    [self.directionHeader setAvailableModes:modes];
+}
+
+- (void) setSelectedMode:(MWZDirectionMode*) mode {
+    [self.directionHeader setSelectedMode:mode];
 }
 
 - (void)directionHeaderDidTapOnBackButton:(MWZUIDirectionHeader *)directionHeader {
@@ -371,8 +375,8 @@
     [_delegate directionSceneDidTapOnSwapButton:self];
 }
 
-- (void) directionHeaderAccessibilityModeDidChange:(BOOL) isAccessible {
-    [_delegate directionSceneAccessibilityModeDidChange:isAccessible];
+- (void) directionHeaderDirectionModeDidChange:(MWZDirectionMode*) directionMode {
+    [_delegate directionSceneDirectionModeDidChange:directionMode];
 }
 
 - (void) searchDirectionQueryDidChange:(NSString*) query {

@@ -2,26 +2,53 @@
 
 @implementation MWZUIDirectionModeSegment
 
-- (instancetype) initWithItems:(NSArray<MWZUIDirectionMode*>*)modes color:(UIColor*) color {
+- (instancetype) initWithColor:(UIColor*) color {
     self = [super init];
     if (self) {
-        _modes = modes;
         _color = color;
         _buttons = [[NSMutableArray alloc] init];
         [self initialize];
-        self.backgroundColor = [UIColor greenColor];
-        self.axis = UILayoutConstraintAxisHorizontal;
-        self.alignment = UIStackViewAlignmentFill;
-        self.distribution = UIStackViewDistributionFillEqually;
     }
     return self;
 }
 
 - (void) initialize {
-    for (MWZUIDirectionMode* mode in self.modes) {
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+    self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.scrollView.showsHorizontalScrollIndicator = NO;
+    [self addSubview:self.scrollView];
+    
+    [[self.scrollView.leftAnchor constraintEqualToAnchor:self.leftAnchor constant:0.0] setActive:YES];
+    [[self.scrollView.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:0.0] setActive:YES];
+    [[self.scrollView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0] setActive:YES];
+    [[self.scrollView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0.0] setActive:YES];
+    
+    self.stackView = [[UIStackView alloc] initWithFrame:CGRectZero];
+    self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.stackView.axis = UILayoutConstraintAxisHorizontal;
+    self.stackView.alignment = UIStackViewAlignmentFill;
+    self.stackView.distribution = UIStackViewDistributionFill;
+    [self.scrollView addSubview:self.stackView];
+    
+    [[self.stackView.leftAnchor constraintEqualToAnchor:self.stackView.leftAnchor constant:0.0] setActive:YES];
+    [[self.stackView.rightAnchor constraintEqualToAnchor:self.stackView.rightAnchor constant:0.0] setActive:YES];
+    [[self.stackView.topAnchor constraintEqualToAnchor:self.stackView.topAnchor constant:0.0] setActive:YES];
+    [[self.stackView.bottomAnchor constraintEqualToAnchor:self.stackView.bottomAnchor constant:0.0] setActive:YES];
+}
+
+- (void) setModes:(NSArray<MWZDirectionMode *> *)modes {
+    for (UIView* view in self.stackView.arrangedSubviews) {
+        [view removeFromSuperview];
+    }
+    [self.buttons removeAllObjects];
+    _modes = modes;
+    int divider = modes.count > 4 ? 4 : (int)modes.count;
+    int size = self.frame.size.width / divider;
+    for (MWZDirectionMode* mode in _modes) {
         UIButton* button = [[UIButton alloc] init];
         button.translatesAutoresizingMaskIntoConstraints = NO;
-        [button setImage:mode.image forState:UIControlStateNormal];
+        
+        [button setImage:[mode.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         [button.imageView setContentMode:UIViewContentModeScaleAspectFit];
         CGFloat redComponent = CGColorGetComponents(self.color.CGColor)[0];
         CGFloat greenComponent = CGColorGetComponents(self.color.CGColor)[1];
@@ -30,27 +57,42 @@
         button.contentEdgeInsets = UIEdgeInsetsMake(4.f, 4.f, 4.f, 4.f);
         [button addTarget:self action:@selector(didTapOnButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.buttons addObject:button];
-        [self addArrangedSubview:button];
+        [self.stackView addArrangedSubview:button];
+        [[button.widthAnchor constraintEqualToConstant:size] setActive:YES];
+        [[button.heightAnchor constraintEqualToAnchor:self.heightAnchor multiplier:1.0] setActive:YES];
     }
-    [self setSelectedMode:self.modes[0]];
     
+    if (self.selectorView != nil) {
+        [self.selectorView removeFromSuperview];
+    }
+    if ([_modes count] == 0) {
+        return;
+    }
     self.selectorView = [[UIView alloc] init];
     self.selectorView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.selectorView.backgroundColor = [UIColor redColor];
     self.selectorView.layer.cornerRadius = 16.0;
     self.selectorView.layer.borderWidth = 0.3;
     self.selectorView.layer.masksToBounds = YES;
     self.selectorView.layer.backgroundColor = self.haloColor.CGColor;
     self.selectorView.layer.borderColor = self.color.CGColor;
-    [self addSubview:self.selectorView];
+    [self.stackView addSubview:self.selectorView];
     [[self.selectorView.heightAnchor constraintEqualToAnchor:self.buttons[0].heightAnchor multiplier:1.0] setActive:YES];
     [[self.selectorView.widthAnchor constraintEqualToAnchor:self.buttons[0].widthAnchor multiplier:1.0] setActive:YES];
+    
+    self.scrollView.contentSize = CGSizeMake(size*modes.count, self.scrollView.contentSize.height);
+    
+    if (_selectedMode == nil || [_modes indexOfObject:_selectedMode] == NSNotFound) {
+        [_delegate directionModeSegment:self didChangeMode:self.modes[0]];
+    }
+    else {
+        [self setSelectedMode:_selectedMode];
+    }
 }
 
-- (void) setSelectedMode:(MWZUIDirectionMode*) mode {
+- (void) setSelectedMode:(MWZDirectionMode*) mode {
     UIButton* toButton = nil;
     for (int i=0; i<self.modes.count; i++) {
-        if (mode == self.modes[i]) {
+        if ([mode isEqual:self.modes[i]]) {
             [self.buttons[i] setTintColor:self.color];
             toButton = self.buttons[i];
         }
@@ -58,9 +100,18 @@
             [self.buttons[i] setTintColor:[UIColor blackColor]];
         }
     }
-    [UIView animateWithDuration:0.3 animations:^{
-        [self.selectorView setTransform:CGAffineTransformMakeTranslation(toButton.frame.origin.x, 0.0)];
-    }];
+    if ([mode isEqual:_selectedMode]) {
+        [self.superview layoutIfNeeded];
+        [UIView animateWithDuration:0.0 animations:^{
+            [self.selectorView setTransform:CGAffineTransformMakeTranslation(toButton.frame.origin.x, 0.0)];
+        }];
+    }
+    else {
+        [UIView animateWithDuration:0.3 animations:^{
+            [self.selectorView setTransform:CGAffineTransformMakeTranslation(toButton.frame.origin.x, 0.0)];
+        }];
+    }
+    
     _selectedMode = mode;
 }
 

@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
-#import <MapwizeSDK/MapwizeSDK.h>
+
+@import MapwizeSDK;
 
 @protocol MWZUIGroupedResultListDelegate;
 
@@ -16,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
             language:(NSString*) language
             forQuery:(NSString*) query;
 - (void) swapResults:(NSArray<id<MWZObject>> *)results language:(NSString *)language forQuery:(NSString*) query;
-
+- (void) setNetworkError;
 @end
 
 NS_ASSUME_NONNULL_END

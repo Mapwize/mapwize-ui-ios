@@ -1,11 +1,12 @@
 #import <UIKit/UIKit.h>
-#import <MapwizeSDK/MapwizeSDK.h>
 #import "MWZUISearchQueryBar.h"
 #import "MWZUISearchViewControllerOptions.h"
 #import "MWZUIGroupedResultList.h"
 #import "MWZUISearchSceneDelegate.h"
 #import "MWZUIScene.h"
 #import "MWZUIGroupedResultListDelegate.h"
+
+@import MapwizeSDK;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -29,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
               withLanguage:(NSString*) language
                   forQuery:(NSString*) query;
 - (void) showResults:(NSArray<id<MWZObject>> *)results withLanguage:(NSString *)language forQuery:(NSString*) query;
+- (void) setNetworkError;
 
 @end
 

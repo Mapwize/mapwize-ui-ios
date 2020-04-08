@@ -8,6 +8,8 @@
 #import "MWZUIGroupedResultList.h"
 #import "MWZUICurrentLocationView.h"
 
+@import MapwizeSDK;
+
 NS_ASSUME_NONNULL_BEGIN
 
 
@@ -27,10 +29,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void) setFromText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
 - (void) setToText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
-- (void) setAccessibleMode:(BOOL) isAccessible;
+- (void) setAvailableModes:(NSArray<MWZDirectionMode*>*) modes;
+- (void) setSelectedMode:(MWZDirectionMode*) mode;
+
 - (void) setInfoWith:(double) directionTravelTime
    directionDistance:(double) directionDistance
-        isAccessible:(BOOL) isAccessible;
+       directionMode:(MWZDirectionMode*) directionMode;
 
 - (void) showLoading;
 - (void) hideLoading;

@@ -1,12 +1,13 @@
 #ifndef MWZUIDirectionModeSegmentDelegate_h
 #define MWZUIDirectionModeSegmentDelegate_h
 
+@import MapwizeSDK;
+
 @class MWZUIDirectionModeSegment;
-@class MWZUIDirectionMode;
 
 @protocol MWZUIDirectionModeSegmentDelegate <NSObject>
 
-- (void) directionModeSegment:(MWZUIDirectionModeSegment*) segment didChangeMode:(MWZUIDirectionMode*) mode;
+- (void) directionModeSegment:(MWZUIDirectionModeSegment*) segment didChangeMode:(MWZDirectionMode*) mode;
 
 @end
 

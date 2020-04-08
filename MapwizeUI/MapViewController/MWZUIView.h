@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
-#import <MapwizeSDK/MapwizeSDK.h>
+
+@import MapwizeSDK;
+
 @protocol MWZUIViewDelegate;
 @protocol MWZUISearchSceneDelegate;
 @protocol MWZUIDefaultSceneDelegate;
@@ -15,6 +17,8 @@
 @class MWZUISettings;
 @class MWZUIOptions;
 @class MWZUIFollowUserButton;
+@class MWZUICompass;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -30,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// The MWZUIFollowUserButton is exposed to help you align your UI to existing component
 @property (nonatomic) MWZUIFollowUserButton* followUserButton;
 
+@property (nonatomic) MWZUICompass* compassView;
 /**
  Init the MWZUIView using the global MWZMapwizeConfiguration (see SDK documentation for more information)
  */
@@ -73,7 +78,10 @@ Select the placelist passed as parameter. Selecting a placelist add a marker on 
 /**
  Display a direction on the map and change the UI to display the direction interface
  */
-- (void) setDirection:(MWZDirection*) direction from:(id<MWZDirectionPoint>) from to:(id<MWZDirectionPoint>) to isAccessible:(BOOL) isAccessible;
+- (void) setDirection:(MWZDirection*) direction
+                 from:(id<MWZDirectionPoint>) from
+                   to:(id<MWZDirectionPoint>) to
+        directionMode:(MWZDirectionMode*) directionMode;
 
 
 @end

@@ -1,6 +1,8 @@
 #import <UIKit/UIKit.h>
 #import "MWZUIDirectionHeaderDelegate.h"
 
+@import MapwizeSDK;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class MWZUIBorderedTextField;
@@ -16,9 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) closeFromSearch;
 - (void) openToSearch;
 - (void) closeToSearch;
--(void) setFromText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
--(void) setToText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
--(void) setAccessibleMode:(BOOL) isAccessible;
+- (void) setFromText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
+- (void) setToText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder;
+- (void) setAvailableModes:(NSArray<MWZDirectionMode*>*) modes;
+- (void) setSelectedMode:(MWZDirectionMode*) mode;
 
 @end
 
