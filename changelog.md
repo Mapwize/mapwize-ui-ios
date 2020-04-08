@@ -1,5 +1,10 @@
 # Mapwize UI iOS Changelog
 
+## 2.2.0
+
+- Integrating MapwizeSDK 3.1.0
+- Adding support for direction mode
+
 ## 2.1.7
 
 - Fixing warnings
