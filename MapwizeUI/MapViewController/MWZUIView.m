@@ -53,7 +53,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 @property (nonatomic) NSArray<MWZVenue*>* mainVenues;
 @property (nonatomic) NSArray<id<MWZObject>>* mainSearches;
 @property (nonatomic) NSArray<MWZPlace*>* mainFroms;
-@property (nonatomic) id<MWZObject> selectedContent;
+@property (nonatomic) id selectedContent;
 
 @property (nonatomic) id<MWZDirectionPoint> fromDirectionPoint;
 @property (nonatomic) id<MWZDirectionPoint> toDirectionPoint;
@@ -739,8 +739,32 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 }
 
 - (void) selectPlacePreview:(MWZPlacePreview*) placePreview {
+    if (self.selectedContent) {
+        [self.mapView removeMarkers];
+        [self.mapView removePromotedPlaces];
+    }
+    _selectedContent = placePreview;
+    [self.mapView addMarkerOnPlacePreview:placePreview];
+    [self.mapView addPromotedPlacePreview:placePreview];
+    MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
+    defaultProperties.selectedContent = placePreview;
+    defaultProperties.language = [self.mapView getLanguage];
+    defaultProperties.infoButtonHidden = YES;
+    [self.defaultScene setSceneProperties:defaultProperties];
     [placePreview getFullObjectAsyncWithSuccess:^(MWZPlace * _Nonnull place) {
-        [self selectPlace:place centerOn:NO];
+        if ([self.selectedContent isKindOfClass:MWZPlacePreview.class] && [((MWZPlacePreview*)self.selectedContent).identifier isEqualToString:place.identifier]) {
+            self.selectedContent = place;
+            MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
+            defaultProperties.selectedContent = self.selectedContent;
+            defaultProperties.language = [self.mapView getLanguage];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
+                defaultProperties.infoButtonHidden = ![self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
+            }
+            else {
+                defaultProperties.infoButtonHidden = YES;
+            }
+            [self.defaultScene setSceneProperties:defaultProperties];
+        }
     } failure:^(NSError * _Nonnull error) {
         
     }];
@@ -1392,7 +1416,10 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         [self.delegate mapwizeView:self universeDidChange:universe];
     }
     BOOL universeExists = NO;
-    for (MWZUniverse* u in self.selectedContent.universes) {
+    if ([self.selectedContent isKindOfClass:MWZPlacePreview.class]) {
+        return;
+    }
+    for (MWZUniverse* u in ((id<MWZObject>)self.selectedContent).universes) {
         if ([u.identifier isEqualToString:universe.identifier]) {
             universeExists = YES;
         }

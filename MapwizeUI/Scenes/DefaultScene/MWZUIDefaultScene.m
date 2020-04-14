@@ -203,6 +203,9 @@
 - (void) showContent:(id<MWZObject>) object
             language:(NSString*) language
       showInfoButton:(BOOL) showInfoButton {
+    if ([object isKindOfClass:MWZPlacePreview.class]) {
+        [self.bottomInfoView selectContentWithPlacePreview:(MWZPlacePreview*)object];
+    }
     if ([object isKindOfClass:MWZPlace.class]) {
         [self.bottomInfoView selectContentWithPlace:(MWZPlace*)object
                                            language:language
