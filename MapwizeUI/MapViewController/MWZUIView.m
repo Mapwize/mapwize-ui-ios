@@ -1389,6 +1389,22 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     [self.universesButton showIfNeeded];
 }
 
+- (void)mapView:(MWZMapView *)mapView venueDidFailEntering:(MWZVenue *)venue withError:(NSError *)error {
+    MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
+    defaultProperties.venue = venue;
+    defaultProperties.venueLoading = NO;
+    [self.defaultScene setSceneProperties:defaultProperties];
+    [self.languagesButton mapwizeDidEnterInVenue:venue];
+    [self.languagesButton setHidden:([venue.supportedLanguages count] == 1)];
+    if (self.languagesButton.isHidden) {
+        self.universesButtonLeftConstraint.constant = 16.0f;
+    }
+    else {
+        self.universesButtonLeftConstraint.constant =  16.0f * 2 + 50.f;
+    }
+    [self.universesButton showIfNeeded];
+}
+
 - (void)mapView:(MWZMapView *)mapView directionModesDidChange:(NSArray<MWZDirectionMode *> *)directionModes {
     [self.directionScene setAvailableModes:directionModes];
 }
@@ -1429,6 +1445,12 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     }
 }
 
+- (void) mapView:(MWZMapView *)mapView universeDidFailChanging:(MWZUniverse *)universe withError:(NSError *)error {
+    if (self.selectedContent) {
+        [self unselectContent];
+    }
+}
+
 - (void) mapView:(MWZMapView* _Nonnull) mapView universesDidChange:(NSArray<MWZUniverse*>* _Nonnull) accessibleUniverses {
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:universesDidChange:)]) {
         [self.delegate mapwizeView:self universesDidChange:accessibleUniverses];
@@ -1447,6 +1469,10 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:floorDidChange:)]) {
         [self.delegate mapwizeView:self floorDidChange:floor];
     }
+    [self.floorController mapwizeFloorDidChange:floor];
+}
+
+- (void)mapView:(MWZMapView *)mapView floorDidFailChanging:(MWZFloor *)floor withError:(NSError *)error {
     [self.floorController mapwizeFloorDidChange:floor];
 }
 
