@@ -244,6 +244,7 @@ didStartDirectionInVenue:(MWZVenue*_Nonnull) venue
                 mode:(NSString*_Nonnull) mode
         isNavigation:(BOOL) isNavigation;
 
+- (void) mapwizeViewDidFailLoadingContent:(MWZUIView *)mapwizeView;
 
 @end
 

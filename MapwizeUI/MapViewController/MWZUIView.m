@@ -961,6 +961,12 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     }
 }
 
+- (void) dispatchDidFailLoadingContent {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeViewDidFailLoadingContent:)]) {
+        [self.delegate mapwizeViewDidFailLoadingContent:self];
+    }
+}
+
 #pragma mark MGLMapViewDelegate
 - (void) mapView:(MGLMapView *)mapView regionIsChangingWithReason:(MGLCameraChangeReason)reason {
     [self.compassView updateCompass:mapView.direction];
@@ -1403,6 +1409,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         self.universesButtonLeftConstraint.constant =  16.0f * 2 + 50.f;
     }
     [self.universesButton showIfNeeded];
+    [self dispatchDidFailLoadingContent];
 }
 
 - (void)mapView:(MWZMapView *)mapView directionModesDidChange:(NSArray<MWZDirectionMode *> *)directionModes {
@@ -1449,6 +1456,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     if (self.selectedContent) {
         [self unselectContent];
     }
+    [self dispatchDidFailLoadingContent];
 }
 
 - (void) mapView:(MWZMapView* _Nonnull) mapView universesDidChange:(NSArray<MWZUniverse*>* _Nonnull) accessibleUniverses {
@@ -1473,7 +1481,8 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 }
 
 - (void)mapView:(MWZMapView *)mapView floorDidFailChanging:(MWZFloor *)floor withError:(NSError *)error {
-    [self.floorController mapwizeFloorDidChange:floor];
+    [self.floorController mapwizeFloorDidChange:nil];
+    [self dispatchDidFailLoadingContent];
 }
 
 - (void)mapView:(MWZMapView *)mapView floorsDidChange:(NSArray<MWZFloor *> *)floors {
