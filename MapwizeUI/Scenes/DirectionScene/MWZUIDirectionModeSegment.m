@@ -42,6 +42,11 @@
     }
     [self.buttons removeAllObjects];
     _modes = modes;
+    
+    if ([_modes count] == 0) {
+        return;
+    }
+    
     int divider = modes.count > 4 ? 4 : (int)modes.count;
     int size = self.frame.size.width / divider;
     for (MWZDirectionMode* mode in _modes) {
@@ -64,9 +69,6 @@
     
     if (self.selectorView != nil) {
         [self.selectorView removeFromSuperview];
-    }
-    if ([_modes count] == 0) {
-        return;
     }
     self.selectorView = [[UIView alloc] init];
     self.selectorView.translatesAutoresizingMaskIntoConstraints = NO;
