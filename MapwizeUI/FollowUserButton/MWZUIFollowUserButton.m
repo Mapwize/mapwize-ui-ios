@@ -22,6 +22,7 @@
         _imageFollowHeading = [UIImage imageNamed:@"followHeading" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
         _imageFollowHeading = [MWZUIColors tintedBackgroundImageWithImage:_imageFollowHeading tint:color];
         [self setImage:_imageNone forState:UIControlStateNormal];
+        self.imageEdgeInsets = UIEdgeInsetsMake(16, 16, 16, 16);
         self.adjustsImageWhenHighlighted = NO;
         UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                           action:@selector(buttonAction)];
