@@ -21,6 +21,7 @@
 #import "MWZUIFollowUserButtonDelegate.h"
 #import "MWZUILanguagesButtonDelegate.h"
 #import "MWZUIUniversesButtonDelegate.h"
+#import "MWZUIBottomSheetComponents.h"
 
 typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZViewStateDefault,
@@ -109,7 +110,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     self.defaultScene = [[MWZUIDefaultScene alloc] initWith:self.options.mainColor menuIsHidden:self.settings.menuButtonIsHidden];
     self.defaultScene.delegate = self;
     self.sceneCoordinator.defaultScene = self.defaultScene;
-    
+
     self.searchScene = [[MWZUISearchScene alloc] initWith:self.options.mainColor];
     self.searchScene.delegate = self;
     self.sceneCoordinator.searchScene = self.searchScene;
@@ -117,6 +118,8 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     self.directionScene = [[MWZUIDirectionScene alloc] initWith:self.options.mainColor];
     self.directionScene.delegate = self;
     self.sceneCoordinator.directionScene = self.directionScene;
+    
+    
     
     [self applyFloorControllerConstraint];
     [self applyCompassConstraints];
@@ -1052,6 +1055,17 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     }
 }
 
+- (MWZUIBottomSheetComponents*) requireComponentForPlace:(MWZPlace*)place withDefaultComponents:(MWZUIBottomSheetComponents*)components {
+    components.contentRows = @[];
+    components.headerButtons = @[];
+    components.minimizedViewButtons = @[];
+    return components;
+}
+
+- (MWZUIBottomSheetComponents*) requireComponentForPlacelist:(MWZPlacelist*)placelist withDefaultComponents:(MWZUIBottomSheetComponents*)components {
+    return components;
+}
+
 #pragma mark MWZSearchSceneDelegate
 - (void)didTapOnBackButton {
     if (self.state == MWZViewStateSearchVenues || self.state == MWZViewStateSearchInVenue) {
@@ -1328,7 +1342,6 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 - (void)didSelectLanguage:(NSString *)language {
     [self.mapView setLanguage:language forVenue:[self.mapView getVenue]];
 }
-
 
 #pragma mark MWZMapViewDelegate
 
