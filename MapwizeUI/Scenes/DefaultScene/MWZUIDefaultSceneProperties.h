@@ -6,7 +6,7 @@
 
 @property (nonatomic) MWZVenue* venue;
 @property (nonatomic) BOOL venueLoading;
-@property (nonatomic) id<MWZObject> selectedContent;
+@property (nonatomic) id selectedContent;
 @property (nonatomic) NSString* language;
 @property (nonatomic, assign) BOOL infoButtonHidden;
 

@@ -21,6 +21,7 @@
 #import "MWZUIFollowUserButtonDelegate.h"
 #import "MWZUILanguagesButtonDelegate.h"
 #import "MWZUIUniversesButtonDelegate.h"
+#import "MWZUIBottomSheetComponents.h"
 
 typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZViewStateDefault,
@@ -109,7 +110,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     self.defaultScene = [[MWZUIDefaultScene alloc] initWith:self.options.mainColor menuIsHidden:self.settings.menuButtonIsHidden];
     self.defaultScene.delegate = self;
     self.sceneCoordinator.defaultScene = self.defaultScene;
-    
+
     self.searchScene = [[MWZUISearchScene alloc] initWith:self.options.mainColor];
     self.searchScene.delegate = self;
     self.sceneCoordinator.searchScene = self.searchScene;
@@ -117,6 +118,8 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     self.directionScene = [[MWZUIDirectionScene alloc] initWith:self.options.mainColor];
     self.directionScene.delegate = self;
     self.sceneCoordinator.directionScene = self.directionScene;
+    
+    
     
     [self applyFloorControllerConstraint];
     [self applyCompassConstraints];
@@ -739,6 +742,18 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 }
 
 - (void) selectPlacePreview:(MWZPlacePreview*) placePreview {
+    if (self.selectedContent) {
+        [self.mapView removeMarkers];
+        [self.mapView removePromotedPlaces];
+    }
+    [self.mapView addMarkerOnPlacePreview:placePreview];
+    [self.mapView addPromotedPlacePreview:placePreview];
+    self.selectedContent = nil;
+    MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
+    defaultProperties.selectedContent = placePreview;
+    defaultProperties.language = [self.mapView getLanguage];
+    [self.defaultScene setSceneProperties:defaultProperties];
+    
     [placePreview getFullObjectAsyncWithSuccess:^(MWZPlace * _Nonnull place) {
         [self selectPlace:place centerOn:NO];
     } failure:^(NSError * _Nonnull error) {
@@ -992,6 +1007,17 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
             [self.delegate mapwizeView:self didTapOnPlacelistInformationButton:(MWZPlacelist*)self.selectedContent];
         }
     }
+}
+
+- (MWZUIBottomSheetComponents*) requireComponentForPlace:(MWZPlace*)place withDefaultComponents:(MWZUIBottomSheetComponents*)components {
+    components.contentRows = @[];
+    components.headerButtons = @[];
+    components.minimizedViewButtons = @[];
+    return components;
+}
+
+- (MWZUIBottomSheetComponents*) requireComponentForPlacelist:(MWZPlacelist*)placelist withDefaultComponents:(MWZUIBottomSheetComponents*)components {
+    return components;
 }
 
 #pragma mark MWZSearchSceneDelegate
@@ -1281,7 +1307,6 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 - (void)didSelectLanguage:(NSString *)language {
     [self.mapView setLanguage:language forVenue:[self.mapView getVenue]];
 }
-
 
 #pragma mark MWZMapViewDelegate
 

@@ -1,4 +1,6 @@
 #import "MWZUIDefaultScene.h"
+#import "MWZUIBottomSheetDelegate.h"
+#import "MWZUIBottomSheetComponents.h"
 
 @implementation MWZUIDefaultScene
 
@@ -75,58 +77,12 @@
                                        constant:16.0f] setActive:YES];
     }
     
-    self.bottomInfoView = [[MWZUIBottomInfoView alloc] initWithColor:self.mainColor];
-    self.bottomInfoView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.bottomInfoView.delegate = self;
-    [view addSubview:self.bottomInfoView];
-    
-    [[NSLayoutConstraint constraintWithItem:self.bottomInfoView
-                                  attribute:NSLayoutAttributeHeight
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:nil
-                                  attribute:NSLayoutAttributeNotAnAttribute
-                                 multiplier:1.0f
-                                   constant:0.f] setActive:YES];
-    
-    if (@available(iOS 11.0, *)) {
-        [[NSLayoutConstraint constraintWithItem:self.bottomInfoView
-                                      attribute:NSLayoutAttributeRight
-                                      relatedBy:NSLayoutRelationEqual
-                                         toItem:view
-                                      attribute:NSLayoutAttributeRight
-                                     multiplier:1.0f
-                                       constant:-view.safeAreaInsets.right] setActive:YES];
-        [[NSLayoutConstraint constraintWithItem:self.bottomInfoView
-                                      attribute:NSLayoutAttributeLeft
-                                      relatedBy:NSLayoutRelationEqual
-                                         toItem:view
-                                      attribute:NSLayoutAttributeLeft
-                                     multiplier:1.0f
-                                       constant:-view.safeAreaInsets.right] setActive:YES];
-    } else {
-        [[NSLayoutConstraint constraintWithItem:self.bottomInfoView
-                                      attribute:NSLayoutAttributeRight
-                                      relatedBy:NSLayoutRelationEqual
-                                         toItem:view
-                                      attribute:NSLayoutAttributeRight
-                                     multiplier:1.0f
-                                       constant:0] setActive:YES];
-        [[NSLayoutConstraint constraintWithItem:self.bottomInfoView
-                                      attribute:NSLayoutAttributeLeft
-                                      relatedBy:NSLayoutRelationEqual
-                                         toItem:view
-                                      attribute:NSLayoutAttributeLeft
-                                     multiplier:1.0f
-                                       constant:0] setActive:YES];
-    }
-    
-    [[NSLayoutConstraint constraintWithItem:self.bottomInfoView
-                                  attribute:NSLayoutAttributeBottom
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:view
-                                  attribute:NSLayoutAttributeBottom
-                                 multiplier:1.0f
-                                   constant:0.0f] setActive:YES];
+    _bottomSheet = [[MWZUIBottomSheet alloc] initWithFrame:view.frame color:_mainColor];
+    _bottomSheet.translatesAutoresizingMaskIntoConstraints = NO;
+    [view addSubview:_bottomSheet];
+    [[_bottomSheet.leadingAnchor constraintEqualToAnchor:view.leadingAnchor] setActive:YES];
+    [[_bottomSheet.trailingAnchor constraintEqualToAnchor:view.trailingAnchor] setActive:YES];
+    _bottomSheet.delegate = self;
 }
 
 - (UIView*) getTopViewToConstraint {
@@ -134,7 +90,7 @@
 }
 
 - (UIView*) getBottomViewToConstraint {
-    return self.bottomInfoView;
+    return self.bottomSheet;
 }
 
 - (void) setSceneProperties:(MWZUIDefaultSceneProperties *)sceneProperties {
@@ -200,23 +156,26 @@
 }
 
 
-- (void) showContent:(id<MWZObject>) object
+- (void) showContent:(id) object
             language:(NSString*) language
       showInfoButton:(BOOL) showInfoButton {
+    
+    if ([object isKindOfClass:MWZPlacePreview.class]) {
+        [self.bottomSheet showPlacePreview:object];
+    }
     if ([object isKindOfClass:MWZPlace.class]) {
-        [self.bottomInfoView selectContentWithPlace:(MWZPlace*)object
-                                           language:language
-                                     showInfoButton:showInfoButton];
+        [self.bottomSheet showPlace:object language:language];
     }
     if ([object isKindOfClass:MWZPlacelist.class]) {
-        [self.bottomInfoView selectContentWithPlaceList:(MWZPlacelist*)object
+        [self.bottomSheet showMock:[MWZUIPlaceMock getMock1]];
+        /*[self.bottomInfoView selectContentWithPlaceList:(MWZPlacelist*)object
                                                language:language
-                                         showInfoButton:showInfoButton];
+                                         showInfoButton:showInfoButton];*/
     }
 }
 
 - (void) hideContent {
-    [self.bottomInfoView unselectContent];
+    //[self.bottomInfoView unselectContent];
 }
 
 #pragma mark MWZMapViewMenuBarDelegate
@@ -240,5 +199,21 @@
 - (void)didPressInformation {
     [_delegate didTapOnInformationButton];
 }
+
+- (MWZUIBottomSheetComponents *)requireComponentForPlace:(MWZPlace *)place
+                                   withDefaultComponents:(MWZUIBottomSheetComponents *)components {
+    if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlace:withDefaultComponents:)]) {
+        return [_delegate requireComponentForPlace:place withDefaultComponents:components];
+    }
+    return components;
+}
+
+- (MWZUIBottomSheetComponents *)requireComponentForPlacelist:(MWZPlacelist *)placelist withDefaultComponents:(MWZUIBottomSheetComponents *)components {
+    if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlacelist:withDefaultComponents:)]) {
+        return [_delegate requireComponentForPlacelist:placelist withDefaultComponents:components];
+    }
+    return components;
+}
+
 
 @end
