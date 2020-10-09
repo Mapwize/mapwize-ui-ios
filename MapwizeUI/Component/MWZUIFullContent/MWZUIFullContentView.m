@@ -24,6 +24,7 @@
 @property (nonatomic) UIButton* webSiteButton;
 @property (nonatomic) MWZUIOpeningHoursView* openingHoursView;
 @property (nonatomic) UILabel* phoneTextView;
+@property (nonatomic) UIScrollView* pagerView;
 
 @end
 
@@ -116,11 +117,11 @@
     NSMutableArray<MWZUIFullContentViewComponentButton*>* buttons = [[NSMutableArray alloc] init];
     MWZUIFullContentViewComponentButton* directionButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"DIRECTIONS" image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:NO];
     [buttons addObject:directionButton];
-    if (NO) {//place.phoneNumber) {
+    if (place.phone) {
         MWZUIFullContentViewComponentButton* phoneButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"CALL" image:[UIImage systemImageNamed:@"phone.fill"] color:_color outlined:YES];
         [buttons addObject:phoneButton];
     }
-    if (NO) {//place.website) {
+    if (place.website) {
         MWZUIFullContentViewComponentButton* websiteButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"WEBSITE" image:[UIImage systemImageNamed:@"network"] color:_color outlined:YES];
         [buttons addObject:websiteButton];
     }
@@ -134,36 +135,36 @@
 - (NSMutableArray<MWZUIFullContentViewComponentRow*>*) buildContentRowsForPlace:(MWZPlace*)place language:(NSString*)language {
     NSMutableArray<MWZUIFullContentViewComponentRow*>* rows = [[NSMutableArray alloc] init];
     NSMutableArray<MWZUIFullContentViewComponentRow*>* unfilledRow = [[NSMutableArray alloc] init];
-    if (NO) {//place.openingHours) {
-        MWZUIFullContentViewComponentRow* openRow = [self getOpeningHoursRowForMock:place];
+    if (place.openingHours) {
+        MWZUIFullContentViewComponentRow* openRow = [self getOpeningHoursRowForPlace:place];
         [rows addObject:openRow];
     }
     else {
-        MWZUIFullContentViewComponentRow* row = [self getOpeningHoursRowForMock:nil];
+        MWZUIFullContentViewComponentRow* row = [self getOpeningHoursRowForPlace:nil];
         [unfilledRow addObject:row];
     }
-    if (NO) {//place.phoneNumber) {
-        MWZUIFullContentViewComponentRow* row = [self getPhoneRowForMock:place];
+    if (place.phone) {
+        MWZUIFullContentViewComponentRow* row = [self getPhoneRowForPlace:place];
         [rows addObject:row];
     }
     else {
-        MWZUIFullContentViewComponentRow* row = [self getPhoneRowForMock:nil];
+        MWZUIFullContentViewComponentRow* row = [self getPhoneRowForPlace:nil];
         [unfilledRow addObject:row];
     }
-    if (NO) {//place.website) {
-        MWZUIFullContentViewComponentRow* row = [self getWebsiteRowForMock:place];
+    if (place.website) {
+        MWZUIFullContentViewComponentRow* row = [self getWebsiteRowForPlace:place];
         [rows addObject:row];
     }
     else {
-        MWZUIFullContentViewComponentRow* row = [self getWebsiteRowForMock:nil];
+        MWZUIFullContentViewComponentRow* row = [self getWebsiteRowForPlace:nil];
         [unfilledRow addObject:row];
     }
     if (NO) {//place.calendarEvents) {
-        MWZUIFullContentViewComponentRow* row = [self getBookingRowForMock:place];
+        MWZUIFullContentViewComponentRow* row = [self getBookingRowForPlace:place];
         [rows addObject:row];
     }
     else {
-        MWZUIFullContentViewComponentRow* row = [self getBookingRowForMock:nil];
+        MWZUIFullContentViewComponentRow* row = [self getBookingRowForPlace:nil];
         [unfilledRow addObject:row];
     }
     [rows addObjectsFromArray:unfilledRow];
@@ -180,8 +181,8 @@
     return componentRow;
 }
 
-- (MWZUIFullContentViewComponentRow*) getBookingRowForMock:(MWZUIPlaceMock*)mock {
-    return [[MWZUIBookingView alloc] initWithFrame:CGRectZero mock:mock color:_color];
+- (MWZUIFullContentViewComponentRow*) getBookingRowForPlace:(MWZPlace*)place {
+    return [[MWZUIBookingView alloc] initWithFrame:CGRectZero place:place color:_color];
 }
 
 - (UIView*) addBookingRowBelow:(UIView*) view {
@@ -206,7 +207,7 @@
     UILabel* bookingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     bookingLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [bookingLabel setFont:[UIFont systemFontOfSize:14]];
-    BOOL isOccupied = [self isOccupied:_mock];
+    BOOL isOccupied = [self isOccupied:_place];
     [bookingLabel setText:isOccupied?@"Currently occupied":@"Currently available"];
     
     [bookingRow addSubview:bookingLabel];
@@ -214,7 +215,7 @@
     [[bookingLabel.trailingAnchor constraintEqualToAnchor:bookingRow.trailingAnchor] setActive:YES];
     [[bookingLabel.centerYAnchor constraintEqualToAnchor:bookingImageView.centerYAnchor constant:0.0] setActive:YES];
     
-    MWZUIBookingView* gridView = [[MWZUIBookingView alloc] initWithFrame:CGRectZero mock:_mock color:_color];
+    MWZUIBookingView* gridView = [[MWZUIBookingView alloc] initWithFrame:CGRectZero place:_place color:_color];
     gridView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:gridView];
     [[gridView.topAnchor constraintEqualToAnchor:bookingImageView.bottomAnchor constant:16.0] setActive:YES];
@@ -225,8 +226,8 @@
     return gridView;
 }
 
-- (BOOL) isOccupied:(MWZUIPlaceMock*)mock {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+- (BOOL) isOccupied:(MWZPlace*)place {
+    /*NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate now]];
     NSInteger hour = [components hour];
     NSInteger min = [components minute];
@@ -238,17 +239,17 @@
         if (startTime<time && endTime>time) {
             return YES;
         }
-    }
+    }*/
     
     return NO;
 }
 
-- (MWZUIFullContentViewComponentRow*) getWebsiteRowForMock:(MWZUIPlaceMock*)mock {
+- (MWZUIFullContentViewComponentRow*) getWebsiteRowForPlace:(MWZPlace*)place {
     UILabel* websiteLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     websiteLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [websiteLabel setFont:[UIFont systemFontOfSize:14]];
-    if (mock && mock.website) {
-        [websiteLabel setText:_mock.website];
+    if (place && place.website) {
+        [websiteLabel setText:place.website];
         return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"network"] contentView:websiteLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {
@@ -266,12 +267,12 @@
     
 }
 
-- (MWZUIFullContentViewComponentRow*) getPhoneRowForMock:(MWZUIPlaceMock*)mock {
+- (MWZUIFullContentViewComponentRow*) getPhoneRowForPlace:(MWZPlace*)place {
     UILabel* phoneLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     phoneLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [phoneLabel setFont:[UIFont systemFontOfSize:14]];
-    if (mock && mock.phoneNumber) {
-        [phoneLabel setText:[_mock.phoneNumber stringByReplacingOccurrencesOfString:@"." withString:@" "]];
+    if (place && place.phone) {
+        [phoneLabel setText:[place.phone stringByReplacingOccurrencesOfString:@"." withString:@" "]];
         return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"phone"] contentView:phoneLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {
@@ -343,11 +344,11 @@
     }
 }
 
-- (MWZUIFullContentViewComponentRow*) getOpeningHoursRowForMock:(MWZUIPlaceMock*)mock {
+- (MWZUIFullContentViewComponentRow*) getOpeningHoursRowForPlace:(MWZPlace*)place {
     _openingHoursView = [[MWZUIOpeningHoursView alloc] initWithFrame:CGRectZero];
-    [_openingHoursView setOpeningHours:mock.openingHours];
+    [_openingHoursView setOpeningHours:place.openingHours];
 
-    if (mock.openingHours.count > 0) {
+    if (place.openingHours.count > 0) {
         UITapGestureRecognizer *singleFingerTap =
           [[UITapGestureRecognizer alloc] initWithTarget:self
                                                   action:@selector(toggleOpeningHours:)];

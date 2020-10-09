@@ -3,7 +3,7 @@ PODS:
   - Mapbox-iOS-SDK (5.9.0):
     - MapboxMobileEvents (= 0.10.2)
   - MapboxMobileEvents (0.10.2)
-  - MapwizeSDK (3.2.1):
+  - MapwizeSDK (3.1.0):
     - IndoorLocation (= 1.0.4)
     - Mapbox-iOS-SDK (~> 5.0)
     - SSZipArchive (= 2.2.3)
@@ -13,7 +13,7 @@ PODS:
 
 DEPENDENCIES:
   - IndoorLocation
-  - MapwizeSDK
+  - MapwizeSDK (from `../mapwize-sdk-ios`)
   - MapwizeUI (from `.`)
 
 SPEC REPOS:
@@ -21,10 +21,11 @@ SPEC REPOS:
     - IndoorLocation
     - Mapbox-iOS-SDK
     - MapboxMobileEvents
-    - MapwizeSDK
     - SSZipArchive
 
 EXTERNAL SOURCES:
+  MapwizeSDK:
+    :path: "../mapwize-sdk-ios"
   MapwizeUI:
     :path: "."
 
@@ -32,10 +33,10 @@ SPEC CHECKSUMS:
   IndoorLocation: 9812c8c2d499ef25e6146ef90cf23f8d107213a8
   Mapbox-iOS-SDK: a5915700ec84bc1a7f8b3e746d474789e35b7956
   MapboxMobileEvents: 2bc0ca2eedb627b73cf403258dce2b2fa98074a6
-  MapwizeSDK: 85eae96e4d75260b3ca0f07aac8998230b60334e
+  MapwizeSDK: 055ed11641b2dda5daa90daf67562862bbef5069
   MapwizeUI: 4c70d56a8fecef5300a01b4167e5ef1e5edda0e5
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
 
-PODFILE CHECKSUM: e19951664c55d9350d6010a1aacafcdaf1d2974b
+PODFILE CHECKSUM: 3e18d38575b1111c4d80a0cfc49c9df2a80e48a3
 
 COCOAPODS: 1.9.3

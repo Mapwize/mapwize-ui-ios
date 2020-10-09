@@ -5,8 +5,6 @@
 
 @property (nonatomic) UILabel* titleTextView;
 @property (nonatomic) UILabel* floorTextView;
-@property (nonatomic) UIButton* directionButton;
-@property (nonatomic) UIButton* callButton;
 
 @end
 
@@ -63,11 +61,16 @@
     [[_titleTextView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-8.0] setActive:YES];
     [[_titleTextView.topAnchor constraintEqualToAnchor:self.topAnchor constant:8.0] setActive:YES];
     
-    UIView* lastAnchorView = self;
+    UIView* lastAnchorView = nil;
     for (MWZUIIconTextButton* button in buttons) {
         button.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:button];
-        [[button.leadingAnchor constraintEqualToAnchor:lastAnchorView.leadingAnchor constant:8.0] setActive:YES];
+        if (lastAnchorView) {
+            [[button.leadingAnchor constraintEqualToAnchor:lastAnchorView.trailingAnchor constant:8.0] setActive:YES];
+        }
+        else {
+            [[button.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
+        }
         [[button.topAnchor constraintEqualToAnchor:_titleTextView.bottomAnchor constant:8.0] setActive:YES];
         [[button.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-8.0] setActive:YES];
         lastAnchorView = button;
@@ -81,43 +84,15 @@
 
 - (NSMutableArray<MWZUIIconTextButton*>*) buildButtonsForPlace:(MWZPlace*)place {
     NSMutableArray<MWZUIIconTextButton*>* buttons = [[NSMutableArray alloc] init];
-    _directionButton = [[MWZUIIconTextButton alloc] initWithTitle:@"Direction" image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:NO];
-    [buttons addObject:_directionButton];
+    MWZUIIconTextButton* directionButton = [[MWZUIIconTextButton alloc] initWithTitle:@"Direction" image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:NO];
+    [buttons addObject:directionButton];
+    
+    if (place.phone) {
+        MWZUIIconTextButton* directionButton = [[MWZUIIconTextButton alloc] initWithTitle:@"Call" image:[UIImage systemImageNamed:@"phone"] color:_color outlined:YES];
+        [buttons addObject:directionButton];
+    }
     
     return buttons;
-}
-
-- (void)setMock:(MWZUIPlaceMock *)mock {
-    _mock = mock;
-    _titleTextView = [[UILabel alloc] initWithFrame:CGRectZero];
-    _titleTextView.font=[_titleTextView.font fontWithSize:21];
-    
-    _titleTextView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    _titleTextView.text = mock.title;
-    
-    [self addSubview:_titleTextView];
-    
-    [[_titleTextView.heightAnchor constraintEqualToConstant:24] setActive:YES];
-    [[_titleTextView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
-    [[_titleTextView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-8.0] setActive:YES];
-    [[_titleTextView.topAnchor constraintEqualToAnchor:self.topAnchor constant:8.0] setActive:YES];
-    
-    _directionButton = [[MWZUIIconTextButton alloc] initWithTitle:@"Direction" image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:NO];
-    _directionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:_directionButton];
-    [[_directionButton.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
-    [[_directionButton.topAnchor constraintEqualToAnchor:_titleTextView.bottomAnchor constant:8.0] setActive:YES];
-    [[_directionButton.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-8.0] setActive:YES];
-    
-    if (mock.phoneNumber) {
-        _callButton = [[MWZUIIconTextButton alloc] initWithTitle:@"Call" image:[UIImage systemImageNamed:@"phone.fill"] color:_color outlined:YES];
-        _callButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:_callButton];
-        [[_callButton.leadingAnchor constraintEqualToAnchor:_directionButton.trailingAnchor constant:8.0] setActive:YES];
-        [[_callButton.topAnchor constraintEqualToAnchor:_titleTextView.bottomAnchor constant:8.0] setActive:YES];
-        [[_callButton.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-8.0] setActive:YES];
-    }
 }
 
 @end
