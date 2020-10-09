@@ -6,19 +6,19 @@
 
 static double gridWidth = 25;
 
-- (instancetype)initWithFrame:(CGRect)frame mock:(nonnull MWZUIPlaceMock *)mock color:(UIColor*)color
+- (instancetype)initWithFrame:(CGRect)frame place:(nonnull MWZPlace *)place color:(UIColor*)color
 {
     self = [super initWithFrame:frame];
     if (self) {
         self.color = color;
         self.type = MWZUIFullContentViewComponentRowSchedule;
-        self.infoAvailable = mock.calendarEvents && mock.calendarEvents.count > 0;
-        [self setupViewWithMock:mock];
+        self.infoAvailable = place.calendarEvents && place.calendarEvents.count > 0;
+        [self setupViewWithPlace:place];
     }
     return self;
 }
 
-- (void) setupViewWithMock:(MWZUIPlaceMock*)mock {
+- (void) setupViewWithPlace:(MWZPlace*)place {
     self.image = [UIImage systemImageNamed:@"calendar.badge.clock"];
     UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -28,7 +28,7 @@ static double gridWidth = 25;
     if (self.infoAvailable) {
         [imageView setTintColor:self.color];
         [bookingLabel setFont:[UIFont systemFontOfSize:14]];
-        BOOL isOccupied = [self isOccupied:mock];
+        BOOL isOccupied = [self isOccupied:place];
         [bookingLabel setText:isOccupied?@"Currently occupied":@"Currently available"];
     }
     else {
@@ -71,18 +71,18 @@ static double gridWidth = 25;
     [_scrollView addSubview:v];
     _scrollView.contentSize = v.frame.size;
     _scrollView.showsHorizontalScrollIndicator = NO;
-    [v setCurrentTime:time events:mock.calendarEvents];
+    [v setCurrentTime:time events:place.calendarEvents];
     [_scrollView scrollRectToVisible:CGRectMake(7*gridWidth-20, 0, 10, 10) animated:NO];
 }
 
-- (BOOL) isOccupied:(MWZUIPlaceMock*)mock {
+- (BOOL) isOccupied:(MWZPlace*)place {
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate now]];
     NSInteger hour = [components hour];
     NSInteger min = [components minute];
     double time = hour + min/60.0;
     
-    for (NSDictionary* event in mock.calendarEvents) {
+    for (NSDictionary* event in place.calendarEvents) {
         double startTime = [event[@"startTime"] doubleValue];
         double endTime = [event[@"endTime"] doubleValue];
         if (startTime<time && endTime>time) {

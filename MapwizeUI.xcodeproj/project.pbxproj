@@ -113,6 +113,8 @@
 		8F92797A252DD45B006CB433 /* MWZUIFullContentViewComponentButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F92796F252DD45B006CB433 /* MWZUIFullContentViewComponentButton.h */; };
 		8F92797B252DD45B006CB433 /* MWZUIFullContentViewComponentButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F927970252DD45B006CB433 /* MWZUIFullContentViewComponentButton.m */; };
 		8F927A63252F28F0006CB433 /* MWZUIBottomSheetDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F927A62252F28F0006CB433 /* MWZUIBottomSheetDelegate.h */; };
+		8F927A8125306CAB006CB433 /* MWZUIPagerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F927A7F25306CAB006CB433 /* MWZUIPagerView.h */; };
+		8F927A8225306CAB006CB433 /* MWZUIPagerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F927A8025306CAB006CB433 /* MWZUIPagerView.m */; };
 		8FDB0CAF23EAF0B100B3536A /* MWZUISettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDB0CAD23EAF0B100B3536A /* MWZUISettings.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8FDB0CB023EAF0B100B3536A /* MWZUISettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDB0CAE23EAF0B100B3536A /* MWZUISettings.m */; };
 		C6B8D5712226785400A3AD82 /* MWZUIOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C6B8D5702226785400A3AD82 /* MWZUIOptions.m */; };
@@ -233,6 +235,8 @@
 		8F92796F252DD45B006CB433 /* MWZUIFullContentViewComponentButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MWZUIFullContentViewComponentButton.h; path = MapwizeUI/Component/MWZUIFullContent/MWZUIFullContentViewComponentButton.h; sourceTree = SOURCE_ROOT; };
 		8F927970252DD45B006CB433 /* MWZUIFullContentViewComponentButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MWZUIFullContentViewComponentButton.m; path = MapwizeUI/Component/MWZUIFullContent/MWZUIFullContentViewComponentButton.m; sourceTree = SOURCE_ROOT; };
 		8F927A62252F28F0006CB433 /* MWZUIBottomSheetDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUIBottomSheetDelegate.h; sourceTree = "<group>"; };
+		8F927A7F25306CAB006CB433 /* MWZUIPagerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUIPagerView.h; sourceTree = "<group>"; };
+		8F927A8025306CAB006CB433 /* MWZUIPagerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIPagerView.m; sourceTree = "<group>"; };
 		8FDB0CAD23EAF0B100B3536A /* MWZUISettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUISettings.h; sourceTree = "<group>"; };
 		8FDB0CAE23EAF0B100B3536A /* MWZUISettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZUISettings.m; sourceTree = "<group>"; };
 		C6B8D5702226785400A3AD82 /* MWZUIOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIOptions.m; sourceTree = "<group>"; };
@@ -501,6 +505,8 @@
 				8F927942252DD42F006CB433 /* MWZUIPlaceMock.h */,
 				8F927943252DD42F006CB433 /* MWZUIPlaceMock.m */,
 				8F927A62252F28F0006CB433 /* MWZUIBottomSheetDelegate.h */,
+				8F927A7F25306CAB006CB433 /* MWZUIPagerView.h */,
+				8F927A8025306CAB006CB433 /* MWZUIPagerView.m */,
 			);
 			path = BottomSheet;
 			sourceTree = "<group>";
@@ -566,6 +572,7 @@
 				8F63877023BE194F0006B10E /* MWZUISearchSceneDelegate.h in Headers */,
 				8F927976252DD45B006CB433 /* MWZUIFullContentViewComponentRow.h in Headers */,
 				8F86080D219D9CBF00281AB7 /* MWZUILanguagesButtonDelegate.h in Headers */,
+				8F927A8125306CAB006CB433 /* MWZUIPagerView.h in Headers */,
 				8F8607C6219D67AB00281AB7 /* MWZUIBottomInfoView.h in Headers */,
 				8F63876923BE194F0006B10E /* MWZUIScene.h in Headers */,
 				8F8607C7219D67AB00281AB7 /* MWZUIBottomInfoViewDelegate.h in Headers */,
@@ -746,6 +753,7 @@
 				8F8607DB219D67AB00281AB7 /* MWZUIDirectionInfo.m in Sources */,
 				8F63876B23BE194F0006B10E /* MWZUISearchQueryBar.m in Sources */,
 				C6B8D5712226785400A3AD82 /* MWZUIOptions.m in Sources */,
+				8F927A8225306CAB006CB433 /* MWZUIPagerView.m in Sources */,
 				8F927977252DD45B006CB433 /* MWZUIOpeningHoursView.m in Sources */,
 				8F8607E9219D67AB00281AB7 /* MWZUIGroupedResultList.m in Sources */,
 				8F860818219DC5F200281AB7 /* MWZUIColors.m in Sources */,

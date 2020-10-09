@@ -1056,9 +1056,6 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 }
 
 - (MWZUIBottomSheetComponents*) requireComponentForPlace:(MWZPlace*)place withDefaultComponents:(MWZUIBottomSheetComponents*)components {
-    components.contentRows = @[];
-    components.headerButtons = @[];
-    components.minimizedViewButtons = @[];
     return components;
 }
 
