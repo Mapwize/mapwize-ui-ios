@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void) showPlacePreview:(MWZPlacePreview*)placePreview;
 - (void) showPlace:(MWZPlace*)place language:(NSString*)language;
-- (void) showMock:(MWZUIPlaceMock*) mock;
+- (void) removeContent;
 
 @end
 

@@ -167,7 +167,7 @@
         [self.bottomSheet showPlace:object language:language];
     }
     if ([object isKindOfClass:MWZPlacelist.class]) {
-        [self.bottomSheet showMock:[MWZUIPlaceMock getMock1]];
+        //[self.bottomSheet showMock:[MWZUIPlaceMock getMock1]];
         /*[self.bottomInfoView selectContentWithPlaceList:(MWZPlacelist*)object
                                                language:language
                                          showInfoButton:showInfoButton];*/
@@ -175,7 +175,7 @@
 }
 
 - (void) hideContent {
-    //[self.bottomInfoView unselectContent];
+    [self.bottomSheet removeContent];
 }
 
 #pragma mark MWZMapViewMenuBarDelegate
@@ -213,6 +213,12 @@
         return [_delegate requireComponentForPlacelist:placelist withDefaultComponents:components];
     }
     return components;
+}
+
+- (void) didClose {
+    if (_delegate && [_delegate respondsToSelector:@selector(didClose)]) {
+        [_delegate didClose];
+    }
 }
 
 

@@ -6,7 +6,7 @@
 @class MWZUIFullContentViewComponentRow;
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MWZUIFullContentView : UIScrollView <UIScrollViewDelegate>
+@interface MWZUIFullContentView : UIView
 
 @property (nonatomic) MWZUIPlaceMock* mock;
 @property (nonatomic) MWZPlace* place;

@@ -12,6 +12,8 @@
 
 - (MWZUIBottomSheetComponents*) requireComponentForPlacelist:(MWZPlacelist*)placelist withDefaultComponents:(MWZUIBottomSheetComponents*)components;
 
+- (void) didClose;
+
 @end
 
 #endif /* MWZUIBottomSheetDelegate_h */

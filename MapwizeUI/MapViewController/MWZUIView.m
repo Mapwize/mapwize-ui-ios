@@ -1009,6 +1009,10 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     }
 }
 
+- (void) didClose {
+    [self unselectContent];
+}
+
 - (MWZUIBottomSheetComponents*) requireComponentForPlace:(MWZPlace*)place withDefaultComponents:(MWZUIBottomSheetComponents*)components {
     return components;
 }

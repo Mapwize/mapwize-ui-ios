@@ -14,6 +14,7 @@
 - (void) didTapOnInformationButton;
 - (MWZUIBottomSheetComponents*) requireComponentForPlace:(MWZPlace*)place withDefaultComponents:(MWZUIBottomSheetComponents*)components;
 - (MWZUIBottomSheetComponents*) requireComponentForPlacelist:(MWZPlacelist*)placelist withDefaultComponents:(MWZUIBottomSheetComponents*)components;
+- (void) didClose;
 @end
 
 #endif /* MWZDefaultSceneDelegate_h */
