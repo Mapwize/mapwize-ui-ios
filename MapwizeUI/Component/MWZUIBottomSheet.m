@@ -66,6 +66,12 @@
     [self setupViews];
 }
 
+- (void) removeContent {
+    _placePreview = nil;
+    _place = nil;
+    [self animateToHeight:0];
+}
+
 - (void) showPlacePreview:(MWZPlacePreview*)placePreview {
     _placePreview = placePreview;
     [_headerImageCollectionView reloadData];
@@ -80,10 +86,14 @@
     [_defaultContentView setPlacePreview:placePreview];
     [_defaultContentView layoutIfNeeded];
     self.defaultContentHeight = _defaultContentView.frame.size.height + self.safeAreaInsets.bottom;
-    [self animateToHeight:self.defaultContentHeight];
+    if (!_place) {
+        [self animateToHeight:self.defaultContentHeight];
+    }
+    _place = nil;
 }
 
 - (void) showPlace:(MWZPlace*)place language:(NSString*)language {
+    _placePreview = nil;
     _place = place;
     [_headerImageCollectionView reloadData];
     [_defaultContentView removeFromSuperview];
@@ -102,6 +112,7 @@
     [[_fullContentView.trailingAnchor constraintEqualToAnchor:_contentView.trailingAnchor] setActive:YES];
     [[_fullContentView.topAnchor constraintEqualToAnchor:_contentView.topAnchor] setActive:YES];
     [[_fullContentView.bottomAnchor constraintEqualToAnchor:_contentView.bottomAnchor] setActive:YES];
+    [[_fullContentView.widthAnchor constraintEqualToAnchor:self.widthAnchor] setActive:YES];
     [_fullContentView setHidden:YES];
     _fullContentView.alpha = 0.0;
     
@@ -118,7 +129,7 @@
     
     [_defaultContentView layoutIfNeeded];
     self.defaultContentHeight = _defaultContentView.frame.size.height + self.safeAreaInsets.bottom;
-    if (false) { //place.imageUrls && place.imageUrls.count > 0) {
+    if (place.photos && place.photos.count > 0) {
         _maximizedHeaderHeight = _parentFrame.size.height * 1/3;
         [self animateToHeight:self.defaultHeaderHeight + self.defaultContentHeight];
     }
@@ -126,37 +137,6 @@
         _maximizedHeaderHeight = 0;
         [self animateToHeight:self.defaultContentHeight];
     }
-    
-}
-
-- (void) showMock:(MWZUIPlaceMock*) mock {
-    _mock = mock;
-    [_headerImageCollectionView reloadData];
-    [_defaultContentView removeFromSuperview];
-    [_fullContentView removeFromSuperview];
-    _defaultContentView = [[MWZUIDefaultContentView alloc] initWithFrame:self.frame color:_color];
-    _defaultContentView.translatesAutoresizingMaskIntoConstraints = NO;
-    [_contentView addSubview:_defaultContentView];
-    [[_defaultContentView.leadingAnchor constraintEqualToAnchor:_contentView.leadingAnchor] setActive:YES];
-    [[_defaultContentView.trailingAnchor constraintEqualToAnchor:_contentView.trailingAnchor] setActive:YES];
-    [[_defaultContentView.topAnchor constraintEqualToAnchor:_contentView.topAnchor] setActive:YES];
-    [_defaultContentView setMock:mock];
-    [_defaultContentView layoutIfNeeded];
-    
-    _fullContentView = [[MWZUIFullContentView alloc] initWithFrame:self.frame color:_color];
-    _fullContentView.translatesAutoresizingMaskIntoConstraints = NO;
-    [_contentView addSubview:_fullContentView];
-    [[_fullContentView.leadingAnchor constraintEqualToAnchor:_contentView.leadingAnchor] setActive:YES];
-    [[_fullContentView.trailingAnchor constraintEqualToAnchor:_contentView.trailingAnchor] setActive:YES];
-    [[_fullContentView.topAnchor constraintEqualToAnchor:_contentView.topAnchor] setActive:YES];
-    [[_fullContentView.bottomAnchor constraintEqualToAnchor:_contentView.bottomAnchor] setActive:YES];
-    [_fullContentView setHidden:YES];
-    _fullContentView.alpha = 0.0;
-    [_fullContentView setMock:_mock];
-    
-    self.defaultContentHeight = _defaultContentView.frame.size.height + self.safeAreaInsets.bottom;
-    [self animateToHeight:self.defaultHeaderHeight + self.defaultContentHeight];
-    //[self updateHeight:self.defaultHeaderHeight + self.defaultContentHeight];
     
 }
 
@@ -219,7 +199,9 @@
         [_defaultContentView setHidden:NO];
         [_fullContentView setHidden:NO];
     }
-    [self updateHeight:self.frame.size.height - _currentTranslation - translation.y];
+    if (self.frame.size.height - _currentTranslation - translation.y < self.frame.size.height) {
+        [self updateHeight:self.frame.size.height - _currentTranslation - translation.y];
+    }
     if (sender.state == UIGestureRecognizerStateEnded) {
         CGPoint velocity = [sender velocityInView:sender.view.superview];
         /*if (velocity.y < -500) {
@@ -253,6 +235,9 @@
         
         if (fabs(nextHeight - 0) < closestDistance) {
             closestHeight = 0;
+            if (_delegate) {
+                [_delegate didClose];
+            }
         }
         
         
@@ -342,8 +327,14 @@
     if (!cell) {
         cell = [[MWZUICollectionViewCell alloc] init];
     }
+    if (!_place || !_place.photos.count || _place.photos.count == 0) {
+        cell.imageView.image = [UIImage imageNamed:@"imagePlaceholder"
+                                          inBundle:[NSBundle bundleForClass:self.class]
+                     compatibleWithTraitCollection:nil];
+        return cell;
+    }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.mock.imageUrls[indexPath.row]]];
+        NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.place.photos[indexPath.row]]];
 
         dispatch_async(dispatch_get_main_queue(), ^{
             if (imgData)
@@ -354,7 +345,8 @@
                 //Check if your image loaded successfully:
                 if (image)
                 {
-                    [cell.superview layoutSubviews];
+                    cell.imageView.image = image;
+                    /*[cell.superview layoutSubviews];
                     [UIView animateWithDuration:0.15 animations:^{
                         cell.imageView.alpha = 0;
                                         } completion:^(BOOL finished) {
@@ -362,7 +354,7 @@
                                             [UIView animateWithDuration:0.15 animations:^{
                                                 cell.imageView.alpha = 1;
                                             }];
-                                        }];
+                                        }];*/
                 }
                 else
                 {
@@ -384,10 +376,10 @@
 }
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if (!_mock) {
+    /*if (!_place || !_place.photos || _place.photos.count == 0) {
         return 3;
-    }
-    return [_mock.imageUrls count];
+    }*/
+    return [_place.photos count] >= 3 ? [_place.photos count] : 3;
 }
 
 

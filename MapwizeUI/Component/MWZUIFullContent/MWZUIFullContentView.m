@@ -12,8 +12,9 @@
 #import "MWZUIFullContentViewComponentRow.h"
 #import "MWZUIBookingView.h"
 #import "MWZUIBottomSheet.h"
+#import "MWZUIPagerView.h"
 
-@interface MWZUIFullContentView ()
+@interface MWZUIFullContentView () <UIGestureRecognizerDelegate>
 
 @property (nonatomic) UILabel* titleTextView;
 @property (nonatomic) UILabel* subtitleTextView;
@@ -24,7 +25,7 @@
 @property (nonatomic) UIButton* webSiteButton;
 @property (nonatomic) MWZUIOpeningHoursView* openingHoursView;
 @property (nonatomic) UILabel* phoneTextView;
-@property (nonatomic) UIScrollView* pagerView;
+@property (nonatomic) MWZUIPagerView* pagerView;
 
 @end
 
@@ -34,18 +35,20 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.showsVerticalScrollIndicator = NO;
-        self.delegate = self;
         _color = color;
     }
     return self;
 }
+
+
+
 
 -(void)setContentForPlace:(MWZPlace*)place
                  language:(NSString*)language
                   buttons:(NSArray<MWZUIFullContentViewComponentButton*>*)buttons
                      rows:(NSArray<MWZUIFullContentViewComponentRow*>*)rows {
     _place = place;
+    
     _titleTextView = [[UILabel alloc] initWithFrame:CGRectZero];
     _titleTextView.font=[_titleTextView.font fontWithSize:21];
     _titleTextView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -69,26 +72,27 @@
     [[_subtitleTextView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-16.0] setActive:YES];
     [[_subtitleTextView.topAnchor constraintEqualToAnchor:_titleTextView.bottomAnchor constant:8.0] setActive:YES];
     [[_subtitleTextView.widthAnchor constraintEqualToAnchor:self.widthAnchor constant:-32] setActive:YES];
-
-    UIView* topSeparator = [[UIView alloc] initWithFrame:CGRectZero];
-    topSeparator.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:topSeparator];
-    topSeparator.backgroundColor = [UIColor lightGrayColor];
-    [[topSeparator.heightAnchor constraintEqualToConstant:0.3] setActive:YES];
-    [[topSeparator.leadingAnchor constraintEqualToAnchor:self.leadingAnchor] setActive:YES];
-    [[topSeparator.trailingAnchor constraintEqualToAnchor:self.trailingAnchor] setActive:YES];
-    [[topSeparator.topAnchor constraintEqualToAnchor:_subtitleTextView.bottomAnchor constant:16.0] setActive:YES];
-    [[topSeparator.widthAnchor constraintEqualToAnchor:self.widthAnchor] setActive:YES];
     
+    UIScrollView* overviewScroll = [[UIScrollView alloc] initWithFrame:CGRectZero];
+    overviewScroll.showsVerticalScrollIndicator = NO;
+    UIView* overview = [[UIView alloc] initWithFrame:CGRectZero];
+    overview.translatesAutoresizingMaskIntoConstraints = NO;
+    [overviewScroll addSubview:overview];
+    [[overview.topAnchor constraintEqualToAnchor:overviewScroll.topAnchor] setActive:YES];
+    [[overview.bottomAnchor constraintEqualToAnchor:overviewScroll.bottomAnchor] setActive:YES];
+    [[overview.leadingAnchor constraintEqualToAnchor:overviewScroll.leadingAnchor] setActive:YES];
+    [[overview.trailingAnchor constraintEqualToAnchor:overviewScroll.trailingAnchor] setActive:YES];
+    [[overview.widthAnchor constraintEqualToAnchor:overviewScroll.widthAnchor] setActive:YES];
+    //[[overviewScroll.widthAnchor constraintEqualToAnchor:self.widthAnchor] setActive:YES];
     _headerButtonStackView = [[UIStackView alloc] initWithFrame:CGRectZero];
     _headerButtonStackView.translatesAutoresizingMaskIntoConstraints = NO;
     _headerButtonStackView.distribution = UIStackViewDistributionFillEqually;
     _headerButtonStackView.alignment = UIStackViewAlignmentLeading;
     _headerButtonStackView.axis = UILayoutConstraintAxisHorizontal;
-    [self addSubview:_headerButtonStackView];
-    [[_headerButtonStackView.topAnchor constraintEqualToAnchor:topSeparator.bottomAnchor constant:16.0] setActive:YES];
-    [[_headerButtonStackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:16.0] setActive:YES];
-    [[_headerButtonStackView.trailingAnchor constraintLessThanOrEqualToAnchor:self.trailingAnchor constant:-16.0] setActive:YES];
+    [overview addSubview:_headerButtonStackView];
+    [[_headerButtonStackView.topAnchor constraintEqualToAnchor:overview.topAnchor constant:0.0] setActive:YES];
+    [[_headerButtonStackView.leadingAnchor constraintEqualToAnchor:overview.leadingAnchor constant:16.0] setActive:YES];
+    [[_headerButtonStackView.trailingAnchor constraintLessThanOrEqualToAnchor:overview.trailingAnchor constant:-16.0] setActive:YES];
     [[_headerButtonStackView.heightAnchor constraintEqualToConstant:70] setActive:YES];
     
     for (MWZUIFullContentViewComponentButton* button in buttons) {
@@ -96,21 +100,57 @@
     }
     
     if (buttons.count == 4) {
-        [[_headerButtonStackView.widthAnchor constraintEqualToAnchor:self.widthAnchor constant:-32] setActive:YES];
+        [[_headerButtonStackView.widthAnchor constraintEqualToAnchor:overview.widthAnchor constant:-32] setActive:YES];
     }
     else {
-        [[_headerButtonStackView.widthAnchor constraintLessThanOrEqualToAnchor:self.widthAnchor constant:-32] setActive:YES];
+        [[_headerButtonStackView.widthAnchor constraintLessThanOrEqualToAnchor:overview.widthAnchor constant:-32] setActive:YES];
     }
     
-    UIView* lastView = [self addSeparatorBelow:_headerButtonStackView marginTop:16];
+    UIView* lastView = [self addSeparatorBelow:_headerButtonStackView inView:overview marginTop:16];
     
     for (MWZUIFullContentViewComponentRow* row in rows) {
-        lastView = [self addRow:row below:lastView];
+        lastView = [self addRow:row inView:overview below:lastView];
         if ([rows indexOfObject:row] < rows.count - 1) {
-            lastView = [self addSeparatorBelow:lastView marginTop:0];
+            lastView = [self addSeparatorBelow:lastView inView:overview marginTop:0];
         }
     }
-    [[lastView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-16] setActive:YES];
+    [[lastView.bottomAnchor constraintEqualToAnchor:overview.bottomAnchor constant:-16] setActive:YES];
+    
+    
+    _pagerView = [[MWZUIPagerView alloc] initWithFrame:CGRectZero color:_color];
+    _pagerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [_pagerView addSlide:overviewScroll named:@"OVERVIEW"];
+    if ([_place detailsForLanguage:language] && [place detailsForLanguage:language].length > 0) {
+        UIScrollView* detailsContainer = [[UIScrollView alloc] initWithFrame:CGRectZero];
+        detailsContainer.showsVerticalScrollIndicator = NO;
+        detailsContainer.translatesAutoresizingMaskIntoConstraints = NO;
+        UILabel* details = [[UILabel alloc] init];
+        details.translatesAutoresizingMaskIntoConstraints = NO;
+        details.numberOfLines = 0;
+        [detailsContainer addSubview:details];
+        
+        NSAttributedString* attributedString = [[NSAttributedString alloc]
+                            initWithData: [[place detailsForLanguage:language] dataUsingEncoding:NSUnicodeStringEncoding]
+                            options: @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
+                            documentAttributes: nil
+                            error: nil
+                            ];
+        details.attributedText = attributedString;
+        [details sizeToFit];
+        [[details.topAnchor constraintEqualToAnchor:detailsContainer.topAnchor constant:8.0] setActive:YES];
+        [[details.leadingAnchor constraintEqualToAnchor:detailsContainer.leadingAnchor constant:8.0] setActive:YES];
+        [[details.trailingAnchor constraintLessThanOrEqualToAnchor:detailsContainer.trailingAnchor constant:-8.0] setActive:YES];
+        [[details.bottomAnchor constraintLessThanOrEqualToAnchor:detailsContainer.bottomAnchor constant:-8.0] setActive:YES];
+        [[details.widthAnchor constraintLessThanOrEqualToAnchor:detailsContainer.widthAnchor constant:-16.0] setActive:YES];
+        [_pagerView addSlide:detailsContainer named:@"DETAILS"];
+    }
+    [self addSubview:_pagerView];
+    [_pagerView.topAnchor constraintEqualToAnchor:_subtitleTextView.bottomAnchor constant:16].active = YES;
+    [_pagerView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor].active = YES;
+    [_pagerView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor].active = YES;
+    [_pagerView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = YES;
+    [[_pagerView.widthAnchor constraintEqualToAnchor:self.widthAnchor] setActive:YES];
+    [_pagerView build];
 }
 
 - (NSMutableArray<MWZUIFullContentViewComponentButton*>*) buildHeaderButtonsForPlace:(MWZPlace*)place language:(NSString*)language {
@@ -171,13 +211,13 @@
     return rows;
 }
 
-- (UIView*) addRow:(MWZUIFullContentViewComponentRow*)componentRow below:(UIView*)view {
-    [self addSubview:componentRow];
+- (UIView*) addRow:(MWZUIFullContentViewComponentRow*)componentRow inView:(UIView*)inView below:(UIView*)view {
+    [inView addSubview:componentRow];
     componentRow.translatesAutoresizingMaskIntoConstraints = NO;
     [[componentRow.topAnchor constraintEqualToAnchor:view.bottomAnchor constant:0.0] setActive:YES];
-    [[componentRow.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:0.0] setActive:YES];
-    [[componentRow.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:0.0] setActive:YES];
-    [[componentRow.widthAnchor constraintEqualToAnchor:self.widthAnchor] setActive:YES];
+    [[componentRow.leadingAnchor constraintEqualToAnchor:inView.leadingAnchor constant:0.0] setActive:YES];
+    [[componentRow.trailingAnchor constraintEqualToAnchor:inView.trailingAnchor constant:0.0] setActive:YES];
+    [[componentRow.widthAnchor constraintEqualToAnchor:inView.widthAnchor] setActive:YES];
     return componentRow;
 }
 
@@ -398,16 +438,16 @@
     [_openingHoursView toggleExpanded];
 }
 
-- (UIView*) addSeparatorBelow:(UIView*) view marginTop:(double) marginTop {
+- (UIView*) addSeparatorBelow:(UIView*) view inView:(UIView*)inView marginTop:(double) marginTop {
     UIView* separator = [[UIView alloc] initWithFrame:CGRectZero];
     separator.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:separator];
+    [inView addSubview:separator];
     separator.backgroundColor = [UIColor lightGrayColor];
     [[separator.heightAnchor constraintEqualToConstant:0.5] setActive:YES];
-    [[separator.leadingAnchor constraintEqualToAnchor:self.leadingAnchor] setActive:YES];
-    [[separator.trailingAnchor constraintEqualToAnchor:self.trailingAnchor] setActive:YES];
+    [[separator.leadingAnchor constraintEqualToAnchor:inView.leadingAnchor] setActive:YES];
+    [[separator.trailingAnchor constraintEqualToAnchor:inView.trailingAnchor] setActive:YES];
     [[separator.topAnchor constraintEqualToAnchor:view.bottomAnchor constant:marginTop] setActive:YES];
-    [[separator.widthAnchor constraintEqualToAnchor:self.widthAnchor] setActive:YES];
+    [[separator.widthAnchor constraintEqualToAnchor:inView.widthAnchor] setActive:YES];
     return separator;
 }
 
