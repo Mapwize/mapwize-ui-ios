@@ -19,6 +19,7 @@
     if (self) {
         imageContainerView = [[UIView alloc] initWithFrame:CGRectZero];
         imageContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+        imageContainerView.userInteractionEnabled = NO;
         [self addSubview:imageContainerView];
         [[imageContainerView.topAnchor constraintEqualToAnchor:self.topAnchor] setActive:YES];
         [[imageContainerView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor] setActive:YES];
@@ -81,6 +82,7 @@
         
         labelView = [[UILabel alloc] init];
         labelView.translatesAutoresizingMaskIntoConstraints = NO;
+        labelView.userInteractionEnabled = NO;
         [labelView setFont:[UIFont systemFontOfSize:14]];
         [labelView setTextColor:color];
         [self addSubview:labelView];

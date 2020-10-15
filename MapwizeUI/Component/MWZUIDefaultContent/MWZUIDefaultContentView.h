@@ -1,13 +1,14 @@
 #import <UIKit/UIKit.h>
 #import <MapwizeSDK/MapwizeSDK.h>
-#import "MWZUIPlaceMock.h"
+#import "MWZUIDefaultContentViewDelegate.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class MWZUIIconTextButton;
 
 @interface MWZUIDefaultContentView : UIView
 
-@property (nonatomic) MWZUIPlaceMock* mock;
+@property (nonatomic, weak) id<MWZUIDefaultContentViewDelegate> delegate;
 @property (nonatomic) MWZPlace* place;
 @property (nonatomic) MWZPlacePreview* placePreview;
 @property (nonatomic) UIColor* color;

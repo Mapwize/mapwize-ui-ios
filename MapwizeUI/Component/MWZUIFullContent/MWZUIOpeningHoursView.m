@@ -7,11 +7,15 @@
 
 #import "MWZUIOpeningHoursView.h"
 #import "MWZUIOpeningHoursTableViewCell.h"
+#import "MWZUIOpeningHoursUtils.h"
+#import "MWZUIOpeningInterval.h"
+#import "MWZUIOpeningHoursTodayTableViewCell.h"
+
 @interface MWZUIOpeningHoursView () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic) UITableView* tableView;
 @property (nonatomic) NSLayoutConstraint* tableViewHeightConstraint;
-
+@property (nonatomic) NSArray<NSDictionary*>* sortedIntervals;
 @end
 
 @implementation MWZUIOpeningHoursView
@@ -29,6 +33,7 @@
 
 - (void) setOpeningHours:(NSArray *)openingHours {
     _openingHours = openingHours;
+    _sortedIntervals = [MWZUIOpeningHoursUtils getOpeningStrings:openingHours];
     [_tableView reloadData];
 }
 
@@ -66,28 +71,47 @@
     }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    MWZUIOpeningHoursTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"openingCell"];
-    if (cell == nil) {
-        cell = [[MWZUIOpeningHoursTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"openingCell"];
-    }
+    UITableViewCell *returnedCell = nil;
     if (_expanded) {
-        cell.titleLabel.text = [NSString stringWithFormat:@"Day %ld opening", (long)indexPath.row];
-    }
-    else {
-        if (_openingHours.count > 0) {
-            cell.titleLabel.text = @"Today opening";
-            cell.titleLabel.font = [cell.titleLabel.font fontWithSize:14];
+        MWZUIOpeningHoursTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"openingCell"];
+        if (cell == nil) {
+            cell = [[MWZUIOpeningHoursTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"openingCell"];
+        }
+        cell.dayLabel.text = _sortedIntervals[indexPath.row][@"day"];
+        cell.hoursLabel.text = _sortedIntervals[indexPath.row][@"value"];
+        if (indexPath.row == 0) {
+            UIFontDescriptor * fontD = [cell.hoursLabel.font.fontDescriptor
+                        fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
+            cell.hoursLabel.font = [UIFont fontWithDescriptor:fontD size:14];
+            cell.dayLabel.font = [UIFont fontWithDescriptor:fontD size:14];
         }
         else {
-            cell.titleLabel.text = @"Opening hours not available";
-            UIFontDescriptor * fontD = [cell.titleLabel.font.fontDescriptor
-                        fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
-            cell.titleLabel.font = [UIFont fontWithDescriptor:fontD size:14];
-            cell.titleLabel.textColor = [UIColor darkGrayColor];
+            cell.hoursLabel.font = [cell.hoursLabel.font fontWithSize:14];
+            cell.dayLabel.font = [cell.hoursLabel.font fontWithSize:14];
         }
+        cell.hoursLabel.numberOfLines = 0;
+        returnedCell = cell;
     }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    return cell;
+    else {
+        MWZUIOpeningHoursTodayTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"todayCell"];
+        if (cell == nil) {
+            cell = [[MWZUIOpeningHoursTodayTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"todayCell"];
+        }
+        if (_openingHours.count > 0) {
+            cell.hoursLabel.text = [MWZUIOpeningHoursUtils getCurrentOpeningStateString:_openingHours];
+            cell.hoursLabel.font = [cell.hoursLabel.font fontWithSize:14];
+        }
+        else {
+            cell.hoursLabel.text = @"Opening hours not available";
+            UIFontDescriptor * fontD = [cell.hoursLabel.font.fontDescriptor
+                        fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
+            cell.hoursLabel.font = [UIFont fontWithDescriptor:fontD size:14];
+            cell.hoursLabel.textColor = [UIColor darkGrayColor];
+        }
+        returnedCell = cell;
+    }
+    returnedCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return returnedCell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -101,8 +125,8 @@
     //[self setExpanded:!_expanded];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+/*- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 24;
-}
+}*/
 
 @end

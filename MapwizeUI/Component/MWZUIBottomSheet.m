@@ -138,6 +138,8 @@
         [self animateToHeight:self.defaultContentHeight];
     }
     
+    _fullContentView.delegate = self;
+    _defaultContentView.delegate = self;
 }
 
 - (void) setupViews {
@@ -385,6 +387,20 @@
 
 - (MWZUIBottomSheetComponents *)requireComponentForPlace:(MWZUIPlaceMock *)mock withDefaultComponents:(MWZUIBottomSheetComponents *)components {
     return components;
+}
+
+- (void) didTapOnDirectionButton {
+    [_delegate didTapOnDirectionButton];
+}
+
+- (void) didTapOnCallButton {
+    [_delegate didTapOnCallButton];
+}
+- (void) didTapOnShareButton {
+    [_delegate didTapOnShareButton];
+}
+- (void) didTapOnWebsiteButton {
+    [_delegate didTapOnWebsiteButton];
 }
 
 @end

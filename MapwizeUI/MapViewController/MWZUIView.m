@@ -22,6 +22,7 @@
 #import "MWZUILanguagesButtonDelegate.h"
 #import "MWZUIUniversesButtonDelegate.h"
 #import "MWZUIBottomSheetComponents.h"
+#import "MWZUIOpeningHoursUtils.h"
 
 typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZViewStateDefault,
@@ -144,6 +145,57 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
             
         }];
     }
+    
+    
+    
+    NSArray* openingHours = @[
+        @{@"day":@0, @"open":@"0800", @"close":@"2000"}
+    ];
+    
+    NSLog(@"DEBUG %@", [MWZUIOpeningHoursUtils getCurrentOpeningStateString:openingHours]);
+    
+    openingHours = @[
+        @{@"day":@0, @"open":@"0000", @"close":@"2359"},
+        @{@"day":@1, @"open":@"0000", @"close":@"2359"},
+        @{@"day":@2, @"open":@"0000", @"close":@"2359"},
+        @{@"day":@3, @"open":@"0000", @"close":@"2359"},
+        @{@"day":@4, @"open":@"0000", @"close":@"2359"},
+        @{@"day":@5, @"open":@"0000", @"close":@"2359"},
+        @{@"day":@6, @"open":@"0000", @"close":@"2359"}
+    ];
+    
+    NSLog(@"DEBUG %@", [MWZUIOpeningHoursUtils getCurrentOpeningStateString:openingHours]);
+    
+    openingHours = @[
+        
+    ];
+    
+    NSLog(@"DEBUG %@", [MWZUIOpeningHoursUtils getCurrentOpeningStateString:openingHours]);
+    
+    openingHours = @[
+        @{@"day":@0, @"open":@"0000", @"close":@"2359"},
+        @{@"day":@1, @"open":@"0000", @"close":@"2359"},
+        @{@"day":@2, @"open":@"0000", @"close":@"2359"},
+        @{@"day":@3, @"open":@"0000", @"close":@"2359"},
+        @{@"day":@4, @"open":@"0000", @"close":@"2359"},
+        @{@"day":@5, @"open":@"0000", @"close":@"2359"},
+        @{@"day":@6, @"open":@"0000", @"close":@"2000"}
+    ];
+    
+    NSLog(@"DEBUG %@", [MWZUIOpeningHoursUtils getCurrentOpeningStateString:openingHours]);
+    
+    openingHours = @[
+        @{@"day":@6, @"open":@"0800", @"close":@"2000"}
+    ];
+    
+    NSLog(@"DEBUG %@", [MWZUIOpeningHoursUtils getCurrentOpeningStateString:openingHours]);
+    
+    openingHours = @[
+        @{@"day":@0, @"open":@"0800", @"close":@"2000"}
+    ];
+    
+    NSLog(@"DEBUG %@", [MWZUIOpeningHoursUtils getCurrentOpeningStateString:openingHours]);
+    
 }
 
 - (void) addLanguagesButton {
@@ -719,6 +771,13 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 }
 
 - (void) selectPlace:(MWZPlace*) place centerOn:(BOOL) centerOn{
+    if (self.selectedContent) {
+        if ([self.selectedContent.identifier isEqualToString:place.identifier]) {
+            return;
+        }
+        [self.mapView removeMarkers];
+        [self.mapView removePromotedPlaces];
+    }
     if (centerOn) {
         [self.mapView centerOnPlace:place animated:YES];
     }
@@ -741,6 +800,16 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     _selectedContent = placePreview;
     [self.mapView removeMarkers];
     [self.mapView selectPlacePreview:placePreview];
+    if (self.selectedContent) {
+        if ([self.selectedContent.identifier isEqualToString:placePreview.identifier]) {
+            return;
+        }
+        [self.mapView removeMarkers];
+        [self.mapView removePromotedPlaces];
+    }
+    [self.mapView addMarkerOnPlacePreview:placePreview];
+    [self.mapView addPromotedPlacePreview:placePreview];
+    self.selectedContent = nil;
     MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.selectedContent = placePreview;
     defaultProperties.language = [self.mapView getLanguage];
@@ -768,7 +837,6 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 - (void) selectPlaceList:(MWZPlacelist*) placeList {
     if (self.selectedContent) {
         [self.mapView unselectPlace];
-        [self.mapView removeMarkers];
     }
     
     [self.mapView.mapwizeApi getPlacesForPlacelistWithIdentifier:placeList.identifier success:^(NSArray<MWZPlace *> * _Nonnull places) {
@@ -1040,6 +1108,16 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 
 - (void) didTapOnDirectionButton {
     [self defaultToDirectionTransition];
+}
+
+- (void) didTapOnCallButton {
+    NSLog(@"SHOW PHONE CALL");
+}
+- (void) didTapOnShareButton {
+    NSLog(@"SHOW SHARE PLACE");
+}
+- (void) didTapOnWebsiteButton {
+    NSLog(@"SHOW WEBSITE");
 }
 
 - (void) didTapOnInformationButton {

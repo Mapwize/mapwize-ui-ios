@@ -220,5 +220,17 @@
     }
 }
 
+- (void) didTapOnCallButton {
+    [_delegate didTapOnCallButton];
+}
+
+- (void) didTapOnShareButton {
+    [_delegate didTapOnShareButton];
+}
+
+- (void) didTapOnWebsiteButton {
+    [_delegate didTapOnWebsiteButton];
+}
+
 
 @end

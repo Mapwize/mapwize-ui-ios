@@ -34,7 +34,7 @@
     
     _contentView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:_contentView];
-    [[_contentView.leadingAnchor constraintEqualToAnchor:imageView.trailingAnchor constant:16] setActive:YES];
+    [[_contentView.leadingAnchor constraintEqualToAnchor:imageView.trailingAnchor constant:32] setActive:YES];
     [[_contentView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor] setActive:YES];
     [[_contentView.topAnchor constraintEqualToAnchor:self.topAnchor constant:16.0] setActive:YES];
     [[_contentView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-16.0] setActive:YES];
