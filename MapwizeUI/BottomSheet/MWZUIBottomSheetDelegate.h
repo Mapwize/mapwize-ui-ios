@@ -14,6 +14,14 @@
 
 - (void) didClose;
 
+- (void) didTapOnDirectionButton;
+
+- (void) didTapOnCallButton;
+
+- (void) didTapOnShareButton;
+
+- (void) didTapOnWebsiteButton;
+
 @end
 
 #endif /* MWZUIBottomSheetDelegate_h */

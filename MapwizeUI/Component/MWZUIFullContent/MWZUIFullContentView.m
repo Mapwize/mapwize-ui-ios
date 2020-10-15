@@ -13,6 +13,7 @@
 #import "MWZUIBookingView.h"
 #import "MWZUIBottomSheet.h"
 #import "MWZUIPagerView.h"
+#import <WebKit/WebKit.h>
 
 @interface MWZUIFullContentView () <UIGestureRecognizerDelegate>
 
@@ -121,29 +122,12 @@
     _pagerView.translatesAutoresizingMaskIntoConstraints = NO;
     [_pagerView addSlide:overviewScroll named:@"OVERVIEW"];
     if ([_place detailsForLanguage:language] && [place detailsForLanguage:language].length > 0) {
-        UIScrollView* detailsContainer = [[UIScrollView alloc] initWithFrame:CGRectZero];
-        detailsContainer.showsVerticalScrollIndicator = NO;
-        detailsContainer.translatesAutoresizingMaskIntoConstraints = NO;
-        UILabel* details = [[UILabel alloc] init];
-        details.translatesAutoresizingMaskIntoConstraints = NO;
-        details.numberOfLines = 0;
-        [detailsContainer addSubview:details];
-        
-        NSAttributedString* attributedString = [[NSAttributedString alloc]
-                            initWithData: [[place detailsForLanguage:language] dataUsingEncoding:NSUnicodeStringEncoding]
-                            options: @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
-                            documentAttributes: nil
-                            error: nil
-                            ];
-        details.attributedText = attributedString;
-        [details sizeToFit];
-        [[details.topAnchor constraintEqualToAnchor:detailsContainer.topAnchor constant:8.0] setActive:YES];
-        [[details.leadingAnchor constraintEqualToAnchor:detailsContainer.leadingAnchor constant:8.0] setActive:YES];
-        [[details.trailingAnchor constraintLessThanOrEqualToAnchor:detailsContainer.trailingAnchor constant:-8.0] setActive:YES];
-        [[details.bottomAnchor constraintLessThanOrEqualToAnchor:detailsContainer.bottomAnchor constant:-8.0] setActive:YES];
-        [[details.widthAnchor constraintLessThanOrEqualToAnchor:detailsContainer.widthAnchor constant:-16.0] setActive:YES];
-        [_pagerView addSlide:detailsContainer named:@"DETAILS"];
+        WKWebView* webview = [[WKWebView alloc] initWithFrame:CGRectZero];
+        [webview loadHTMLString:[_place detailsForLanguage:language] baseURL:nil];
+        [_pagerView addSlide:webview named:@"DETAILS"];
     }
+    
+    
     [self addSubview:_pagerView];
     [_pagerView.topAnchor constraintEqualToAnchor:_subtitleTextView.bottomAnchor constant:16].active = YES;
     [_pagerView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor].active = YES;
@@ -156,17 +140,21 @@
 - (NSMutableArray<MWZUIFullContentViewComponentButton*>*) buildHeaderButtonsForPlace:(MWZPlace*)place language:(NSString*)language {
     NSMutableArray<MWZUIFullContentViewComponentButton*>* buttons = [[NSMutableArray alloc] init];
     MWZUIFullContentViewComponentButton* directionButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"DIRECTIONS" image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:NO];
+    [directionButton addTarget:self action:@selector(directionButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [buttons addObject:directionButton];
     if (place.phone) {
         MWZUIFullContentViewComponentButton* phoneButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"CALL" image:[UIImage systemImageNamed:@"phone.fill"] color:_color outlined:YES];
+        [phoneButton addTarget:self action:@selector(phoneButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttons addObject:phoneButton];
     }
     if (place.website) {
         MWZUIFullContentViewComponentButton* websiteButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"WEBSITE" image:[UIImage systemImageNamed:@"network"] color:_color outlined:YES];
+        [websiteButton addTarget:self action:@selector(websiteButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttons addObject:websiteButton];
     }
     if (NO) {//place.sharable) {
         MWZUIFullContentViewComponentButton* shareButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"SHARE" image:[UIImage systemImageNamed:@"square.and.arrow.up"] color:_color outlined:YES];
+        [shareButton addTarget:self action:@selector(shareButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttons addObject:shareButton];
     }
     return buttons;
@@ -175,9 +163,17 @@
 - (NSMutableArray<MWZUIFullContentViewComponentRow*>*) buildContentRowsForPlace:(MWZPlace*)place language:(NSString*)language {
     NSMutableArray<MWZUIFullContentViewComponentRow*>* rows = [[NSMutableArray alloc] init];
     NSMutableArray<MWZUIFullContentViewComponentRow*>* unfilledRow = [[NSMutableArray alloc] init];
+    if (place.floor) {
+        MWZUIFullContentViewComponentRow* row = [self getFloorRowForPlace:place];
+        [rows addObject:row];
+    }
+    else {
+        MWZUIFullContentViewComponentRow* row = [self getFloorRowForPlace:nil];
+        [unfilledRow addObject:row];
+    }
     if (place.openingHours) {
-        MWZUIFullContentViewComponentRow* openRow = [self getOpeningHoursRowForPlace:place];
-        [rows addObject:openRow];
+        MWZUIFullContentViewComponentRow* row = [self getOpeningHoursRowForPlace:place];
+        [rows addObject:row];
     }
     else {
         MWZUIFullContentViewComponentRow* row = [self getOpeningHoursRowForPlace:nil];
@@ -197,6 +193,14 @@
     }
     else {
         MWZUIFullContentViewComponentRow* row = [self getWebsiteRowForPlace:nil];
+        [unfilledRow addObject:row];
+    }
+    if (place.capacity) {
+        MWZUIFullContentViewComponentRow* row = [self getCapacityRowForPlace:place];
+        [rows addObject:row];
+    }
+    else {
+        MWZUIFullContentViewComponentRow* row = [self getCapacityRowForPlace:nil];
         [unfilledRow addObject:row];
     }
     if (NO) {//place.calendarEvents) {
@@ -305,6 +309,47 @@
                                               action:@selector(toggleOpeningHours:)];*/
     
     
+}
+
+- (MWZUIFullContentViewComponentRow*) getFloorRowForPlace:(MWZPlace*)place {
+    UILabel* floorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    floorLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [floorLabel setFont:[UIFont systemFontOfSize:14]];
+    if (place) {
+        if (place.floor) {
+            [floorLabel setText:[NSString stringWithFormat:@"%@", place.floor]];
+        }
+        else {
+            [floorLabel setText:@"Outdoor"];
+        }
+        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"alt"] contentView:floorLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
+    }
+    else {
+        [floorLabel setText:@"Capacity not available"];
+        UIFontDescriptor * fontD = [floorLabel.font.fontDescriptor
+                    fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
+        floorLabel.font = [UIFont fontWithDescriptor:fontD size:0];
+        floorLabel.textColor = [UIColor darkGrayColor];
+        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"alt"] contentView:floorLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:NO];
+    }
+}
+
+- (MWZUIFullContentViewComponentRow*) getCapacityRowForPlace:(MWZPlace*)place {
+    UILabel* capacityLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    capacityLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [capacityLabel setFont:[UIFont systemFontOfSize:14]];
+    if (place && place.capacity) {
+        [capacityLabel setText:[NSString stringWithFormat:@"%@", place.capacity]];
+        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"person.3"] contentView:capacityLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
+    }
+    else {
+        [capacityLabel setText:@"Capacity not available"];
+        UIFontDescriptor * fontD = [capacityLabel.font.fontDescriptor
+                    fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
+        capacityLabel.font = [UIFont fontWithDescriptor:fontD size:0];
+        capacityLabel.textColor = [UIColor darkGrayColor];
+        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"person.3"] contentView:capacityLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:NO];
+    }
 }
 
 - (MWZUIFullContentViewComponentRow*) getPhoneRowForPlace:(MWZPlace*)place {
@@ -449,6 +494,22 @@
     [[separator.topAnchor constraintEqualToAnchor:view.bottomAnchor constant:marginTop] setActive:YES];
     [[separator.widthAnchor constraintEqualToAnchor:inView.widthAnchor] setActive:YES];
     return separator;
+}
+
+- (void) directionButtonAction:(UIButton*)button {
+    [_delegate didTapOnDirectionButton];
+}
+
+- (void) phoneButtonAction:(UIButton*)button {
+    [_delegate didTapOnCallButton];
+}
+
+- (void) shareButtonAction:(UIButton*)button {
+    [_delegate didTapOnShareButton];
+}
+
+- (void) websiteButtonAction:(UIButton*)button {
+    [_delegate didTapOnWebsiteButton];
 }
 
 @end

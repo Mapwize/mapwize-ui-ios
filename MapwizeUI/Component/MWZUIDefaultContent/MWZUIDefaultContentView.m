@@ -1,6 +1,6 @@
 #import "MWZUIDefaultContentView.h"
 #import "MWZUIIconTextButton.h"
-
+#import "MWZUIOpeningHoursUtils.h"
 @interface MWZUIDefaultContentView ()
 
 @property (nonatomic) UILabel* titleTextView;
@@ -61,22 +61,50 @@
     [[_titleTextView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-8.0] setActive:YES];
     [[_titleTextView.topAnchor constraintEqualToAnchor:self.topAnchor constant:8.0] setActive:YES];
     
-    UIView* lastAnchorView = nil;
+    UIView* lastAnchorView = _titleTextView;
+    if ([place subtitleForLanguage:language] && [[place subtitleForLanguage:language] length] > 0) {
+        UILabel* subtitle = [[UILabel alloc] initWithFrame:CGRectZero];
+        subtitle.translatesAutoresizingMaskIntoConstraints = NO;
+        subtitle.textColor = [UIColor darkGrayColor];
+        subtitle.font = [subtitle.font fontWithSize:16];
+        subtitle.text = [place subtitleForLanguage:language];
+        [self addSubview:subtitle];
+        [[subtitle.heightAnchor constraintEqualToConstant:16] setActive:YES];
+        [[subtitle.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
+        [[subtitle.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-8.0] setActive:YES];
+        [[subtitle.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:8.0] setActive:YES];
+        lastAnchorView = subtitle;
+    }
+    if (place.openingHours) {
+        UILabel* openingHours = [[UILabel alloc] initWithFrame:CGRectZero];
+        openingHours.translatesAutoresizingMaskIntoConstraints = NO;
+        openingHours.textColor = [UIColor darkGrayColor];
+        openingHours.font = [openingHours.font fontWithSize:16];
+        openingHours.text = [MWZUIOpeningHoursUtils getCurrentOpeningStateString:place.openingHours];
+        [self addSubview:openingHours];
+        [[openingHours.heightAnchor constraintEqualToConstant:16] setActive:YES];
+        [[openingHours.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
+        [[openingHours.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-8.0] setActive:YES];
+        [[openingHours.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:8.0] setActive:YES];
+        lastAnchorView = openingHours;
+    }
+    
+    UIView* lastAnchorButton = nil;
     for (MWZUIIconTextButton* button in buttons) {
         button.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:button];
-        if (lastAnchorView) {
+        if (lastAnchorButton) {
             [[button.leadingAnchor constraintEqualToAnchor:lastAnchorView.trailingAnchor constant:8.0] setActive:YES];
         }
         else {
             [[button.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
         }
-        [[button.topAnchor constraintEqualToAnchor:_titleTextView.bottomAnchor constant:8.0] setActive:YES];
+        [[button.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:8.0] setActive:YES];
         [[button.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-8.0] setActive:YES];
-        lastAnchorView = button;
+        lastAnchorButton = button;
     }
     if (buttons.count == 0) {
-        [[_titleTextView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-8.0] setActive:YES];
+        [[lastAnchorView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-8.0] setActive:YES];
     }
 }
 
@@ -86,13 +114,31 @@
     NSMutableArray<MWZUIIconTextButton*>* buttons = [[NSMutableArray alloc] init];
     MWZUIIconTextButton* directionButton = [[MWZUIIconTextButton alloc] initWithTitle:@"Direction" image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:NO];
     [buttons addObject:directionButton];
+    [directionButton addTarget:self action:@selector(directionButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     
     if (place.phone) {
-        MWZUIIconTextButton* directionButton = [[MWZUIIconTextButton alloc] initWithTitle:@"Call" image:[UIImage systemImageNamed:@"phone"] color:_color outlined:YES];
-        [buttons addObject:directionButton];
+        MWZUIIconTextButton* phoneButton = [[MWZUIIconTextButton alloc] initWithTitle:@"Call" image:[UIImage systemImageNamed:@"phone"] color:_color outlined:YES];
+        [buttons addObject:phoneButton];
+        [phoneButton addTarget:self action:@selector(phoneButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     return buttons;
+}
+
+- (void) directionButtonAction:(UIButton*)button {
+    [_delegate didTapOnDirectionButton];
+}
+
+- (void) phoneButtonAction:(UIButton*)button {
+    [_delegate didTapOnCallButton];
+}
+
+- (void) shareButtonAction:(UIButton*)button {
+    [_delegate didTapOnShareButton];
+}
+
+- (void) websiteButtonAction:(UIButton*)button {
+    [_delegate didTapOnWebsiteButton];
 }
 
 @end

@@ -11,7 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MWZUIOpeningHoursTableViewCell : UITableViewCell
 
-@property (nonatomic, retain) UILabel* titleLabel;
+@property (nonatomic, retain) UILabel* dayLabel;
+@property (nonatomic, retain) UILabel* hoursLabel;
 
 @end
 

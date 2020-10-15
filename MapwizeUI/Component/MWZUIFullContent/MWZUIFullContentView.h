@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <MapwizeSDK/MapwizeSDK.h>
+#import "MWZUIFullContentViewDelegate.h"
 
 @class MWZUIPlaceMock;
 @class MWZUIFullContentViewComponentButton;
@@ -8,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MWZUIFullContentView : UIView
 
+@property (nonatomic, weak) id<MWZUIFullContentViewDelegate> delegate;
 @property (nonatomic) MWZUIPlaceMock* mock;
 @property (nonatomic) MWZPlace* place;
 @property (nonatomic) UIColor* color;

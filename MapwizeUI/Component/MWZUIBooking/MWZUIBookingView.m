@@ -47,32 +47,37 @@ static double gridWidth = 25;
     
     
     [self addSubview:bookingLabel];
-    [[bookingLabel.leadingAnchor constraintEqualToAnchor:imageView.trailingAnchor constant:16] setActive:YES];
+    [[bookingLabel.leadingAnchor constraintEqualToAnchor:imageView.trailingAnchor constant:32] setActive:YES];
     [[bookingLabel.trailingAnchor constraintEqualToAnchor:self.trailingAnchor] setActive:YES];
     [[bookingLabel.centerYAnchor constraintEqualToAnchor:imageView.centerYAnchor constant:0.0] setActive:YES];
     
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
-    _scrollView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:_scrollView];
-    [[_scrollView.topAnchor constraintEqualToAnchor:imageView.bottomAnchor constant:16.0] setActive:YES];
-    [[_scrollView.heightAnchor constraintEqualToConstant:130] setActive:YES];
-    [[_scrollView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-16] setActive:YES];
-    [[_scrollView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:16] setActive:YES];
-    [[_scrollView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0] setActive:YES];
-    
-    
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate now]];
-    NSInteger hour = [components hour];
-    NSInteger min = [components minute];
-    double time = hour + min/60.0;
-    
-    MWZUIBookingGridView* v = [[MWZUIBookingGridView alloc] initWithFrame:CGRectZero gridWidth:gridWidth color:self.color];
-    [_scrollView addSubview:v];
-    _scrollView.contentSize = v.frame.size;
-    _scrollView.showsHorizontalScrollIndicator = NO;
-    [v setCurrentTime:time events:place.calendarEvents];
-    [_scrollView scrollRectToVisible:CGRectMake(7*gridWidth-20, 0, 10, 10) animated:NO];
+    if (self.infoAvailable) {
+        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+        _scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:_scrollView];
+        [[_scrollView.topAnchor constraintEqualToAnchor:imageView.bottomAnchor constant:16.0] setActive:YES];
+        [[_scrollView.heightAnchor constraintEqualToConstant:130] setActive:YES];
+        [[_scrollView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-16] setActive:YES];
+        [[_scrollView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:16] setActive:YES];
+        [[_scrollView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0] setActive:YES];
+        
+        
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate now]];
+        NSInteger hour = [components hour];
+        NSInteger min = [components minute];
+        double time = hour + min/60.0;
+        
+        MWZUIBookingGridView* v = [[MWZUIBookingGridView alloc] initWithFrame:CGRectZero gridWidth:gridWidth color:self.color];
+        [_scrollView addSubview:v];
+        _scrollView.contentSize = v.frame.size;
+        _scrollView.showsHorizontalScrollIndicator = NO;
+        [v setCurrentTime:time events:place.calendarEvents];
+        [_scrollView scrollRectToVisible:CGRectMake(7*gridWidth-20, 0, 10, 10) animated:NO];
+    }
+    else {
+        [[imageView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-16] setActive:YES];
+    }
 }
 
 - (BOOL) isOccupied:(MWZPlace*)place {

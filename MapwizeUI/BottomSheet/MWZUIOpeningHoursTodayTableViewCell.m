@@ -1,13 +1,14 @@
 //
-//  MWZUIOpeningHoursTableViewCell.m
-//  BottomSheet
+//  MWZUIOpeningHoursTodayTableViewCell.m
+//  MapwizeUI
 //
-//  Created by Etienne on 02/10/2020.
+//  Created by Etienne on 15/10/2020.
+//  Copyright © 2020 Etienne Mercier. All rights reserved.
 //
 
-#import "MWZUIOpeningHoursTableViewCell.h"
+#import "MWZUIOpeningHoursTodayTableViewCell.h"
 
-@implementation MWZUIOpeningHoursTableViewCell
+@implementation MWZUIOpeningHoursTodayTableViewCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -18,18 +19,10 @@
 }
 
 - (void) setup {
-    
-    _dayLabel = [[UILabel alloc] init];
-    _dayLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:_dayLabel];
-    [[_dayLabel.leadingAnchor constraintEqualToAnchor:self.leadingAnchor] setActive:YES];
-    [[_dayLabel.topAnchor constraintEqualToAnchor:self.topAnchor constant:4] setActive:YES];
-    [[_dayLabel.widthAnchor constraintEqualToConstant:100] setActive:YES];
-    
     _hoursLabel = [[UILabel alloc] init];
     _hoursLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:_hoursLabel];
-    [[_hoursLabel.leadingAnchor constraintEqualToAnchor:_dayLabel.trailingAnchor] setActive:YES];
+    [[_hoursLabel.leadingAnchor constraintEqualToAnchor:self.leadingAnchor] setActive:YES];
     [[_hoursLabel.trailingAnchor constraintEqualToAnchor:self.trailingAnchor] setActive:YES];
     [[_hoursLabel.topAnchor constraintEqualToAnchor:self.topAnchor constant:4] setActive:YES];
     [[_hoursLabel.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-4] setActive:YES];
