@@ -293,7 +293,14 @@
     websiteLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [websiteLabel setFont:[UIFont systemFontOfSize:14]];
     if (place && place.website) {
-        [websiteLabel setText:place.website];
+        NSString *searchedString = place.website;
+        NSRange   searchedRange = NSMakeRange(0, [searchedString length]);
+        NSString *pattern = @"^(?:http[s]?://)?(?:www.)?([\\w.]+)";
+        NSError  *error = nil;
+
+        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
+        NSTextCheckingResult *match = [regex firstMatchInString:searchedString options:0 range: searchedRange];
+        [websiteLabel setText:[searchedString substringWithRange:[match rangeAtIndex:1]]];
         return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"network"] contentView:websiteLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {

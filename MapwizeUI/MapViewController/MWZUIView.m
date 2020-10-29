@@ -23,6 +23,7 @@
 #import "MWZUIUniversesButtonDelegate.h"
 #import "MWZUIBottomSheetComponents.h"
 #import "MWZUIOpeningHoursUtils.h"
+#import "MWZUIIssuesReportingViewController.h"
 
 typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZViewStateDefault,
@@ -145,56 +146,6 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
             
         }];
     }
-    
-    
-    
-    NSArray* openingHours = @[
-        @{@"day":@0, @"open":@"0800", @"close":@"2000"}
-    ];
-    
-    NSLog(@"DEBUG %@", [MWZUIOpeningHoursUtils getCurrentOpeningStateString:openingHours]);
-    
-    openingHours = @[
-        @{@"day":@0, @"open":@"0000", @"close":@"2359"},
-        @{@"day":@1, @"open":@"0000", @"close":@"2359"},
-        @{@"day":@2, @"open":@"0000", @"close":@"2359"},
-        @{@"day":@3, @"open":@"0000", @"close":@"2359"},
-        @{@"day":@4, @"open":@"0000", @"close":@"2359"},
-        @{@"day":@5, @"open":@"0000", @"close":@"2359"},
-        @{@"day":@6, @"open":@"0000", @"close":@"2359"}
-    ];
-    
-    NSLog(@"DEBUG %@", [MWZUIOpeningHoursUtils getCurrentOpeningStateString:openingHours]);
-    
-    openingHours = @[
-        
-    ];
-    
-    NSLog(@"DEBUG %@", [MWZUIOpeningHoursUtils getCurrentOpeningStateString:openingHours]);
-    
-    openingHours = @[
-        @{@"day":@0, @"open":@"0000", @"close":@"2359"},
-        @{@"day":@1, @"open":@"0000", @"close":@"2359"},
-        @{@"day":@2, @"open":@"0000", @"close":@"2359"},
-        @{@"day":@3, @"open":@"0000", @"close":@"2359"},
-        @{@"day":@4, @"open":@"0000", @"close":@"2359"},
-        @{@"day":@5, @"open":@"0000", @"close":@"2359"},
-        @{@"day":@6, @"open":@"0000", @"close":@"2000"}
-    ];
-    
-    NSLog(@"DEBUG %@", [MWZUIOpeningHoursUtils getCurrentOpeningStateString:openingHours]);
-    
-    openingHours = @[
-        @{@"day":@6, @"open":@"0800", @"close":@"2000"}
-    ];
-    
-    NSLog(@"DEBUG %@", [MWZUIOpeningHoursUtils getCurrentOpeningStateString:openingHours]);
-    
-    openingHours = @[
-        @{@"day":@0, @"open":@"0800", @"close":@"2000"}
-    ];
-    
-    NSLog(@"DEBUG %@", [MWZUIOpeningHoursUtils getCurrentOpeningStateString:openingHours]);
     
 }
 
@@ -1396,6 +1347,8 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 }
 
 - (void)mapView:(MWZMapView *_Nonnull)mapView didTap:(MWZClickEvent *_Nonnull)clickEvent {
+    
+    
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:didTap:)]) {
         [self.delegate mapwizeView:self didTap:clickEvent];
     }
@@ -1444,6 +1397,10 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 }
 
 - (void)mapView:(MWZMapView *_Nonnull)mapView venueDidEnter:(MWZVenue *_Nonnull)venue {
+    
+    MWZUIIssuesReportingViewController* issueController = [[MWZUIIssuesReportingViewController alloc] initWithVenue:venue place:nil userInfo:nil color:_options.mainColor];
+    [self.window.rootViewController presentViewController:issueController animated:YES completion:nil];
+    
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:venueDidEnter:)]) {
         [self.delegate mapwizeView:self venueDidEnter:venue];
     }
