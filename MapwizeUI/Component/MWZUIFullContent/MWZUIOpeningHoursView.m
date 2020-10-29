@@ -65,10 +65,9 @@
     
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-    {
-        _tableViewHeightConstraint.constant = _tableView.contentSize.height;
-    }
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    _tableViewHeightConstraint.constant = _tableView.contentSize.height;
+}
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     UITableViewCell *returnedCell = nil;

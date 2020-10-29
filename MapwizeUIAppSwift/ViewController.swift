@@ -7,9 +7,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let timezone = NSTimeZone(name: "America/Chicago")
+        let date = Date()
+        print(timezone?.secondsFromGMT(for: date))
         
         let opts = MWZUIOptions()
-        opts.mainColor = .systemBlue
+        //opts.mainColor = .systemBlue
         let settings = MWZUISettings()
         mapwizeView = MWZUIView(frame: self.view.frame, mapwizeOptions: opts, uiSettings: settings)
         mapwizeView.translatesAutoresizingMaskIntoConstraints = false
