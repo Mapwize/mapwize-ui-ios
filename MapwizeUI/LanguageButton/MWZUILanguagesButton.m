@@ -14,6 +14,7 @@
         UIImage* image = [UIImage imageNamed:@"languages" inBundle:[NSBundle bundleForClass:MWZUILanguagesButton.class] compatibleWithTraitCollection:nil];
         [self setImage:image forState:UIControlStateNormal];
         [self.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        self.imageEdgeInsets = UIEdgeInsetsMake(12, 12, 12, 12);
         self.adjustsImageWhenHighlighted = NO;
         UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                           action:@selector(buttonAction)];

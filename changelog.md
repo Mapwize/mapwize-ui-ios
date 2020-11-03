@@ -1,5 +1,14 @@
 # Mapwize UI iOS Changelog
 
+## 2.2.2
+
+- Updating Mapwize SDK to 3.2.1
+- Adding translation for Dutch, French and German
+
+## 2.2.1
+
+- Adding loading indicator when retrieving place info
+
 ## 2.2.0
 
 - Integrating Mapwize SDK 3.1.0

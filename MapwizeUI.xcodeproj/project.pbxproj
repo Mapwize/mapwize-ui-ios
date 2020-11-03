@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3441138DF15A092C0E6D7D42 /* Pods_MapwizeUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A637949CADFFF8509C533B /* Pods_MapwizeUI.framework */; };
+		880EFC333EF1DBBF18730262 /* Pods_MapwizeUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AA00E799863082A3FFC00CE /* Pods_MapwizeUI.framework */; };
 		8F31F9E7232687DC00BB4956 /* MWZUIFloorControllerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F31F9E6232687DC00BB4956 /* MWZUIFloorControllerDelegate.h */; };
 		8F63873D23BE19320006B10E /* MWZUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F63873A23BE19320006B10E /* MWZUIView.m */; };
 		8F63873E23BE19320006B10E /* MWZUIView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F63873B23BE19320006B10E /* MWZUIView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -95,8 +95,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2891CF1F64F791EAC6C577F4 /* Pods-MapwizeUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapwizeUI.debug.xcconfig"; path = "Target Support Files/Pods-MapwizeUI/Pods-MapwizeUI.debug.xcconfig"; sourceTree = "<group>"; };
-		584E7ABC513C4A2104683DE0 /* Pods-MapwizeUI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapwizeUI.release.xcconfig"; path = "Target Support Files/Pods-MapwizeUI/Pods-MapwizeUI.release.xcconfig"; sourceTree = "<group>"; };
+		00603C55A4323EA5EC894133 /* Pods-MapwizeUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapwizeUI.debug.xcconfig"; path = "Target Support Files/Pods-MapwizeUI/Pods-MapwizeUI.debug.xcconfig"; sourceTree = "<group>"; };
+		0AA00E799863082A3FFC00CE /* Pods_MapwizeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapwizeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		81E445B3F649BAAF4295AD71 /* Pods-MapwizeUI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapwizeUI.release.xcconfig"; path = "Target Support Files/Pods-MapwizeUI/Pods-MapwizeUI.release.xcconfig"; sourceTree = "<group>"; };
 		8F31F9E6232687DC00BB4956 /* MWZUIFloorControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUIFloorControllerDelegate.h; sourceTree = "<group>"; };
 		8F63873A23BE19320006B10E /* MWZUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZUIView.m; sourceTree = "<group>"; };
 		8F63873B23BE19320006B10E /* MWZUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIView.h; sourceTree = "<group>"; };
@@ -134,6 +135,9 @@
 		8F787C4B23E453D1000EA02F /* MWZUIPaddingLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZUIPaddingLabel.m; sourceTree = "<group>"; };
 		8F787C4C23E453D1000EA02F /* MWZUIPaddingLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIPaddingLabel.h; sourceTree = "<group>"; };
 		8F787C5C23EAEDA7000EA02F /* MWZUIEventChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIEventChannel.h; sourceTree = "<group>"; };
+		8F847E0525514C3700F8A231 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8F847E0625514C3F00F8A231 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8F847E0725514C5000F8A231 /* nl-NL */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "nl-NL"; path = "nl-NL.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		8F860776219D66A100281AB7 /* MapwizeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapwizeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F860779219D66A100281AB7 /* MapwizeUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapwizeUI.h; sourceTree = "<group>"; };
 		8F86077A219D66A100281AB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -181,7 +185,6 @@
 		8F8640D3222831140043E9E5 /* MWZUITitleWithoutFloorCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUITitleWithoutFloorCellTableViewCell.h; sourceTree = "<group>"; };
 		8FDB0CAD23EAF0B100B3536A /* MWZUISettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUISettings.h; sourceTree = "<group>"; };
 		8FDB0CAE23EAF0B100B3536A /* MWZUISettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZUISettings.m; sourceTree = "<group>"; };
-		95A637949CADFFF8509C533B /* Pods_MapwizeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapwizeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6B8D5702226785400A3AD82 /* MWZUIOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIOptions.m; sourceTree = "<group>"; };
 		C6B8D5722226786E00A3AD82 /* MWZUIOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIOptions.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -191,21 +194,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3441138DF15A092C0E6D7D42 /* Pods_MapwizeUI.framework in Frameworks */,
+				880EFC333EF1DBBF18730262 /* Pods_MapwizeUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		79BC4887FE8789BBB027EA58 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				95A637949CADFFF8509C533B /* Pods_MapwizeUI.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		8F63874023BE194F0006B10E /* DefaultScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -266,7 +261,7 @@
 				8F860778219D66A100281AB7 /* MapwizeUI */,
 				8F860777219D66A100281AB7 /* Products */,
 				C849811563FCBC5DFEFDFB23 /* Pods */,
-				79BC4887FE8789BBB027EA58 /* Frameworks */,
+				DD9C7582C7F214020484C67D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -455,11 +450,18 @@
 		C849811563FCBC5DFEFDFB23 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				2891CF1F64F791EAC6C577F4 /* Pods-MapwizeUI.debug.xcconfig */,
-				584E7ABC513C4A2104683DE0 /* Pods-MapwizeUI.release.xcconfig */,
+				00603C55A4323EA5EC894133 /* Pods-MapwizeUI.debug.xcconfig */,
+				81E445B3F649BAAF4295AD71 /* Pods-MapwizeUI.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		DD9C7582C7F214020484C67D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0AA00E799863082A3FFC00CE /* Pods_MapwizeUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -529,7 +531,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8F86077E219D66A100281AB7 /* Build configuration list for PBXNativeTarget "MapwizeUI" */;
 			buildPhases = (
-				9020C37B0BFD835722519EA8 /* [CP] Check Pods Manifest.lock */,
+				2E7B57B917AB3F11D4C9FE62 /* [CP] Check Pods Manifest.lock */,
 				8F860771219D66A100281AB7 /* Headers */,
 				8F860772219D66A100281AB7 /* Sources */,
 				8F860773219D66A100281AB7 /* Frameworks */,
@@ -564,6 +566,9 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				fr,
+				de,
+				"nl-NL",
 			);
 			mainGroup = 8F86076C219D66A100281AB7;
 			productRefGroup = 8F860777219D66A100281AB7 /* Products */;
@@ -588,7 +593,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		9020C37B0BFD835722519EA8 /* [CP] Check Pods Manifest.lock */ = {
+		2E7B57B917AB3F11D4C9FE62 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -659,6 +664,9 @@
 			isa = PBXVariantGroup;
 			children = (
 				8F8607FF219D976200281AB7 /* en */,
+				8F847E0525514C3700F8A231 /* fr */,
+				8F847E0625514C3F00F8A231 /* de */,
+				8F847E0725514C5000F8A231 /* nl-NL */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -670,6 +678,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -732,6 +741,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -786,7 +796,7 @@
 		};
 		8F86077F219D66A100281AB7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2891CF1F64F791EAC6C577F4 /* Pods-MapwizeUI.debug.xcconfig */;
+			baseConfigurationReference = 00603C55A4323EA5EC894133 /* Pods-MapwizeUI.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -812,7 +822,7 @@
 		};
 		8F860780219D66A100281AB7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 584E7ABC513C4A2104683DE0 /* Pods-MapwizeUI.release.xcconfig */;
+			baseConfigurationReference = 81E445B3F649BAAF4295AD71 /* Pods-MapwizeUI.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;

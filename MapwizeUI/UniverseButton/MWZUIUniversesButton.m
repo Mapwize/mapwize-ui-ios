@@ -15,6 +15,7 @@
         _universes = @[];
         UIImage* image = [UIImage imageNamed:@"universe" inBundle:[NSBundle bundleForClass:MWZUIUniversesButton.class] compatibleWithTraitCollection:nil];
         [self setImage:image forState:UIControlStateNormal];
+        self.imageEdgeInsets = UIEdgeInsetsMake(12, 12,12, 12);
         [self.imageView setContentMode:UIViewContentModeScaleAspectFit];
         self.adjustsImageWhenHighlighted = NO;
         UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self

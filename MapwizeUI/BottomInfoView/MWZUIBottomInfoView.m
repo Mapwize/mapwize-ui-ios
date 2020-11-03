@@ -11,6 +11,7 @@
 @property (nonatomic) UILabel* details;
 @property (nonatomic) MWZUIIconTextButton* directionButton;
 @property (nonatomic) MWZUIIconTextButton* informationsButton;
+@property (nonatomic) UIActivityIndicatorView* activityIndicator;
 @property (nonatomic) UIView* separatorView;
 @property (nonatomic) UIView* pullUpView;
 @property (nonatomic) CGFloat minHeight;
@@ -125,6 +126,10 @@
     self.directionButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.directionButton addTarget:self action:@selector(directionClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.directionButton];
+    
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
+    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:self.activityIndicator];
     
     UIImage* infoImage = [UIImage imageNamed:@"info" inBundle:bundle compatibleWithTraitCollection:nil];
     infoImage = [infoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -402,6 +407,8 @@
     informationsConstraintToBottom.priority = 750;
     [informationsConstraintToBottom setActive:YES];
     
+    [[_activityIndicator.centerXAnchor constraintEqualToAnchor:_directionButton.centerXAnchor] setActive:YES];
+    [[_activityIndicator.centerYAnchor constraintEqualToAnchor:_directionButton.centerYAnchor] setActive:YES];
     
 }
 
@@ -489,6 +496,9 @@
 }
 
 - (void) selectContentWithPlace:(MWZPlace*) place language:(NSString*) language showInfoButton:(BOOL) showInfoButton {
+    [_activityIndicator setHidden:YES];
+    [_activityIndicator stopAnimating];
+    [_directionButton setHidden:NO];
     NSBundle* bundle = [NSBundle bundleForClass:self.class];
     UIImage* imagePlace = [UIImage imageNamed:@"place" inBundle:bundle compatibleWithTraitCollection:nil];
     imagePlace = [imagePlace imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -499,6 +509,21 @@
     }
     NSString* details = [place detailsForLanguage:language];
     [self setContentWithImage:imagePlace title:title subtitle:subtitle details:details showInfoButton:showInfoButton];
+}
+
+- (void) selectContentWithPlacePreview:(MWZPlacePreview*) placePreview {
+    [_activityIndicator setHidden:NO];
+    [_activityIndicator startAnimating];
+    [_directionButton setHidden:YES];
+    NSBundle* bundle = [NSBundle bundleForClass:self.class];
+    UIImage* imagePlace = [UIImage imageNamed:@"place" inBundle:bundle compatibleWithTraitCollection:nil];
+    imagePlace = [imagePlace imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    NSString* title = placePreview.title;
+    NSString* subtitle = placePreview.subtitle;
+    if (!subtitle || [subtitle length] == 0) {
+        subtitle = @"";
+    }
+    [self setContentWithImage:imagePlace title:title subtitle:subtitle details:@"" showInfoButton:NO];
 }
 
 - (void) selectContentWithPlaceList:(MWZPlacelist*) placeList language:(NSString*) language showInfoButton:(BOOL) showInfoButton {

@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype) initWithColor:(UIColor*) color;
 
 - (void) selectContentWithPlace:(MWZPlace*) place language:(NSString*) language showInfoButton:(BOOL) showInfoButton;
+- (void) selectContentWithPlacePreview:(MWZPlacePreview*) placePreview;
 - (void) selectContentWithPlaceList:(MWZPlacelist*) placeList language:(NSString*) language showInfoButton:(BOOL) showInfoButton;
 
 - (void) unselectContent;
