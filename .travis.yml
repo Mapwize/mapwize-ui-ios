@@ -15,7 +15,7 @@ script:
     ./ci/build-jazzy-doc.sh --tag="${TRAVIS_TAG}" &&
     zip -r iosdoc.zip docs &&
     git add MapwizeUI.podspec &&
-    git diff-index --quiet HEAD || git commit -m ":robot:chore: updating the Podspec's version to ${TRAVIS_TAG}:robot:" &&
+    git diff-index --quiet HEAD MapwizeUI.podspec || git commit -m ":robot:chore: updating the Podspec's version to ${TRAVIS_TAG}:robot:" &&
     git switch -c master &&
     git push -q https://${GITHUB_TOKEN}@github.com/Mapwize/mapwize-ui-ios.git master
   fi;
