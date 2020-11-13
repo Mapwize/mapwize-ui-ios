@@ -100,8 +100,8 @@
         if (!_sceneProperties.venue) {
             [self setDirectionButtonHidden:NO];
         }
-        if (sceneProperties.selectedContent) {
-            [self showContent:sceneProperties.selectedContent
+        else if (sceneProperties.selectedContent && sceneProperties.placeDetails) {
+            [self showContent:sceneProperties.placeDetails
                      language:sceneProperties.language
                showInfoButton:!sceneProperties.infoButtonHidden];
         }
@@ -162,8 +162,8 @@
     if ([object isKindOfClass:MWZPlacePreview.class]) {
         [self.bottomSheet showPlacePreview:object];
     }
-    if ([object isKindOfClass:MWZPlace.class]) {
-        [self.bottomSheet showPlace:object language:language];
+    if ([object isKindOfClass:MWZPlaceDetails.class]) {
+        [self.bottomSheet showPlaceDetails:object language:language];
     }
     if ([object isKindOfClass:MWZPlacelist.class]) {
         //[self.bottomSheet showMock:[MWZUIPlaceMock getMock1]];
@@ -231,6 +231,15 @@
 - (void) didTapOnWebsiteButton {
     [_delegate didTapOnWebsiteButton];
 }
+
+- (MWZUIBottomSheetComponents *)requireComponentForPlaceDetails:(MWZPlaceDetails *)placeDetails withDefaultComponents:(MWZUIBottomSheetComponents *)components {
+    if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlace:withDefaultComponents:)]) {
+        return [_delegate requireComponentForPlace:_sceneProperties.selectedContent withDefaultComponents:components];
+    }
+    return components;
+}
+
+
 
 
 @end

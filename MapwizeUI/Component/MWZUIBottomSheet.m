@@ -1,9 +1,9 @@
 #import "MWZUIBottomSheet.h"
-#import "MWZUIPlaceMock.h"
 #import "MWZUICollectionViewCell.h"
 #import "MWZUIDefaultContentView.h"
 #import "MWZUIFullContentView.h"
 #import "MWZUIBottomSheetComponents.h"
+#import "MWZPlaceDetails.h"
 
 @interface MWZUIBottomSheet () <UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -15,9 +15,7 @@
 @property (nonatomic) MWZUIDefaultContentView* defaultContentView;
 @property (nonatomic) MWZUIFullContentView* fullContentView;
 
-@property (nonatomic) MWZUIPlaceMock* mock;
-
-@property (nonatomic) MWZPlace* place;
+@property (nonatomic) MWZPlaceDetails* placeDetails;
 @property (nonatomic) MWZPlacePreview* placePreview;
 // STATE : HIDDEN, SMALL, SMALL+HEADER, FULL
 //         0,      100,   200,          FULL
@@ -68,7 +66,7 @@
 
 - (void) removeContent {
     _placePreview = nil;
-    _place = nil;
+    _placeDetails = nil;
     [self animateToHeight:0];
 }
 
@@ -86,15 +84,15 @@
     [_defaultContentView setPlacePreview:placePreview];
     [_defaultContentView layoutIfNeeded];
     self.defaultContentHeight = _defaultContentView.frame.size.height + self.safeAreaInsets.bottom;
-    if (!_place) {
+    if (!_placeDetails) {
         [self animateToHeight:self.defaultContentHeight];
     }
-    _place = nil;
+    _placeDetails = nil;
 }
 
-- (void) showPlace:(MWZPlace*)place language:(NSString*)language {
+- (void) showPlaceDetails:(MWZPlaceDetails*)placeDetails language:(NSString*)language {
     _placePreview = nil;
-    _place = place;
+    _placeDetails = placeDetails;
     [_headerImageCollectionView reloadData];
     [_defaultContentView removeFromSuperview];
     [_fullContentView removeFromSuperview];
@@ -116,20 +114,20 @@
     [_fullContentView setHidden:YES];
     _fullContentView.alpha = 0.0;
     
-    NSMutableArray<MWZUIIconTextButton*>* minimizedViewButtons = [_defaultContentView buildButtonsForPlace:place];
-    NSMutableArray<MWZUIFullContentViewComponentButton*>* fullHeaderButtons = [_fullContentView buildHeaderButtonsForPlace:place language:language];
-    NSMutableArray<MWZUIFullContentViewComponentRow*>* fullRows = [_fullContentView buildContentRowsForPlace:place language:language];
+    NSMutableArray<MWZUIIconTextButton*>* minimizedViewButtons = [_defaultContentView buildButtonsForPlaceDetails:_placeDetails];
+    NSMutableArray<MWZUIFullContentViewComponentButton*>* fullHeaderButtons = [_fullContentView buildHeaderButtonsForPlaceDetails:_placeDetails language:language];
+    NSMutableArray<MWZUIFullContentViewComponentRow*>* fullRows = [_fullContentView buildContentRowsForPlaceDetails:_placeDetails language:language];
     MWZUIBottomSheetComponents* components = [[MWZUIBottomSheetComponents alloc] initWithHeaderButtons:fullHeaderButtons contentRows:fullRows minimizedViewButtons:minimizedViewButtons];
     if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlace:withDefaultComponents:)]) {
-        components = [_delegate requireComponentForPlace:place withDefaultComponents:components];
+        components = [_delegate requireComponentForPlaceDetails:_placeDetails withDefaultComponents:components];
     }
     
-    [_defaultContentView setContentForPlace:place language:language buttons:components.minimizedViewButtons];;
-    [_fullContentView setContentForPlace:place language:language buttons:components.headerButtons rows:components.contentRows];
+    [_defaultContentView setContentForPlaceDetails:_placeDetails language:language buttons:components.minimizedViewButtons];;
+    [_fullContentView setContentForPlaceDetails:_placeDetails language:language buttons:components.headerButtons rows:components.contentRows];
     
     [_defaultContentView layoutIfNeeded];
     self.defaultContentHeight = _defaultContentView.frame.size.height + self.safeAreaInsets.bottom;
-    if (place.photos && place.photos.count > 0) {
+    if (_placeDetails.photos && _placeDetails.photos.count > 0) {
         _maximizedHeaderHeight = _parentFrame.size.height * 1/3;
         [self animateToHeight:self.defaultHeaderHeight + self.defaultContentHeight];
     }
@@ -329,14 +327,14 @@
     if (!cell) {
         cell = [[MWZUICollectionViewCell alloc] init];
     }
-    if (!_place || !_place.photos.count || _place.photos.count == 0) {
+    if (!_placeDetails || !_placeDetails.photos.count || _placeDetails.photos.count <= indexPath.row) {
         cell.imageView.image = [UIImage imageNamed:@"imagePlaceholder"
                                           inBundle:[NSBundle bundleForClass:self.class]
                      compatibleWithTraitCollection:nil];
         return cell;
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.place.photos[indexPath.row]]];
+        NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.placeDetails.photos[indexPath.row]]];
 
         dispatch_async(dispatch_get_main_queue(), ^{
             if (imgData)
@@ -381,13 +379,17 @@
     /*if (!_place || !_place.photos || _place.photos.count == 0) {
         return 3;
     }*/
-    return [_place.photos count] >= 3 ? [_place.photos count] : 3;
+    return [_placeDetails.photos count] >= 3 ? [_placeDetails.photos count] : 3;
 }
 
-
-- (MWZUIBottomSheetComponents *)requireComponentForPlace:(MWZUIPlaceMock *)mock withDefaultComponents:(MWZUIBottomSheetComponents *)components {
+- (MWZUIBottomSheetComponents*) requireComponentForPlaceDetails:(MWZPlaceDetails*)placeDetails withDefaultComponents:(MWZUIBottomSheetComponents*)components {
     return components;
 }
+
+- (MWZUIBottomSheetComponents*) requireComponentForPlacelist:(MWZPlacelist*)placelist withDefaultComponents:(MWZUIBottomSheetComponents*)components {
+    return components;
+}
+
 
 - (void) didTapOnDirectionButton {
     [_delegate didTapOnDirectionButton];

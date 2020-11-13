@@ -1,6 +1,5 @@
 #import "MWZUIIssueTypeView.h"
 #import "MWZUIBookingGridView.h"
-#import "MWZUIPlaceMock.h"
 #import "MWZUIIssueTypeCell.h"
 #import "MWZUICollectionViewFlowFlowLayout.h"
 

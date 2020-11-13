@@ -1,24 +1,23 @@
 #import "MWZUIBookingView.h"
 #import "MWZUIBookingGridView.h"
-#import "MWZUIPlaceMock.h"
 
 @implementation MWZUIBookingView
 
 static double gridWidth = 25;
 
-- (instancetype)initWithFrame:(CGRect)frame place:(nonnull MWZPlace *)place color:(UIColor*)color
+- (instancetype) initWithFrame:(CGRect)frame placeDetails:(MWZPlaceDetails*)placeDetails color:(UIColor*)color
 {
     self = [super initWithFrame:frame];
     if (self) {
         self.color = color;
         self.type = MWZUIFullContentViewComponentRowSchedule;
-        self.infoAvailable = place.calendarEvents && place.calendarEvents.count > 0;
-        [self setupViewWithPlace:place];
+        self.infoAvailable = placeDetails.events && placeDetails.events.count > 0;
+        [self setupViewWithPlaceDetails:placeDetails];
     }
     return self;
 }
 
-- (void) setupViewWithPlace:(MWZPlace*)place {
+- (void) setupViewWithPlaceDetails:(MWZPlaceDetails*)placeDetails {
     self.image = [UIImage systemImageNamed:@"calendar.badge.clock"];
     UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -28,7 +27,7 @@ static double gridWidth = 25;
     if (self.infoAvailable) {
         [imageView setTintColor:self.color];
         [bookingLabel setFont:[UIFont systemFontOfSize:14]];
-        BOOL isOccupied = [self isOccupied:place];
+        BOOL isOccupied = [self isOccupied:placeDetails];
         [bookingLabel setText:isOccupied?@"Currently occupied":@"Currently available"];
     }
     else {
@@ -72,7 +71,7 @@ static double gridWidth = 25;
         [_scrollView addSubview:v];
         _scrollView.contentSize = v.frame.size;
         _scrollView.showsHorizontalScrollIndicator = NO;
-        [v setCurrentTime:time events:place.calendarEvents];
+        [v setCurrentTime:time events:placeDetails.events];
         [_scrollView scrollRectToVisible:CGRectMake(7*gridWidth-20, 0, 10, 10) animated:NO];
     }
     else {
@@ -80,17 +79,15 @@ static double gridWidth = 25;
     }
 }
 
-- (BOOL) isOccupied:(MWZPlace*)place {
+- (BOOL) isOccupied:(MWZPlaceDetails*)placeDetails {
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate now]];
     NSInteger hour = [components hour];
     NSInteger min = [components minute];
     double time = hour + min/60.0;
     
-    for (NSDictionary* event in place.calendarEvents) {
-        double startTime = [event[@"startTime"] doubleValue];
-        double endTime = [event[@"endTime"] doubleValue];
-        if (startTime<time && endTime>time) {
+    for (MWZPlaceDetailsEvent* event in placeDetails.events) {
+        if (event.start.doubleValue<time && event.end.doubleValue>time) {
             return YES;
         }
     }

@@ -9,6 +9,7 @@
     p.selectedContent = properties.selectedContent;
     p.venue = properties.venue;
     p.venueLoading = properties.venueLoading;
+    p.placeDetails = properties.placeDetails;
     return p;
 }
 

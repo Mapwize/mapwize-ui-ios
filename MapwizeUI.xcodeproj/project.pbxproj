@@ -96,8 +96,6 @@
 		8F860818219DC5F200281AB7 /* MWZUIColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860816219DC5F200281AB7 /* MWZUIColors.m */; };
 		8F8640D4222831140043E9E5 /* MWZUITitleWithoutFloorCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8640D2222831130043E9E5 /* MWZUITitleWithoutFloorCellTableViewCell.m */; };
 		8F8640D5222831140043E9E5 /* MWZUITitleWithoutFloorCellTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F8640D3222831140043E9E5 /* MWZUITitleWithoutFloorCellTableViewCell.h */; };
-		8F927948252DD42F006CB433 /* MWZUIPlaceMock.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F927942252DD42F006CB433 /* MWZUIPlaceMock.h */; };
-		8F927949252DD42F006CB433 /* MWZUIPlaceMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F927943252DD42F006CB433 /* MWZUIPlaceMock.m */; };
 		8F92794A252DD42F006CB433 /* MWZUIBottomSheet.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F927944252DD42F006CB433 /* MWZUIBottomSheet.h */; };
 		8F92794B252DD42F006CB433 /* MWZUICollectionViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F927945252DD42F006CB433 /* MWZUICollectionViewCell.h */; };
 		8F92794C252DD42F006CB433 /* MWZUIBottomSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F927946252DD42F006CB433 /* MWZUIBottomSheet.m */; };
@@ -239,8 +237,6 @@
 		8F860816219DC5F200281AB7 /* MWZUIColors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIColors.m; sourceTree = "<group>"; };
 		8F8640D2222831130043E9E5 /* MWZUITitleWithoutFloorCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZUITitleWithoutFloorCellTableViewCell.m; sourceTree = "<group>"; };
 		8F8640D3222831140043E9E5 /* MWZUITitleWithoutFloorCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUITitleWithoutFloorCellTableViewCell.h; sourceTree = "<group>"; };
-		8F927942252DD42F006CB433 /* MWZUIPlaceMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MWZUIPlaceMock.h; path = MapwizeUI/Component/MWZUIPlaceMock.h; sourceTree = SOURCE_ROOT; };
-		8F927943252DD42F006CB433 /* MWZUIPlaceMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MWZUIPlaceMock.m; path = MapwizeUI/Component/MWZUIPlaceMock.m; sourceTree = SOURCE_ROOT; };
 		8F927944252DD42F006CB433 /* MWZUIBottomSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MWZUIBottomSheet.h; path = MapwizeUI/Component/MWZUIBottomSheet.h; sourceTree = SOURCE_ROOT; };
 		8F927945252DD42F006CB433 /* MWZUICollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MWZUICollectionViewCell.h; path = MapwizeUI/Component/MWZUICollectionViewCell.h; sourceTree = SOURCE_ROOT; };
 		8F927946252DD42F006CB433 /* MWZUIBottomSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MWZUIBottomSheet.m; path = MapwizeUI/Component/MWZUIBottomSheet.m; sourceTree = SOURCE_ROOT; };
@@ -570,8 +566,6 @@
 				8F927A62252F28F0006CB433 /* MWZUIBottomSheetDelegate.h */,
 				8F927945252DD42F006CB433 /* MWZUICollectionViewCell.h */,
 				8F927947252DD42F006CB433 /* MWZUICollectionViewCell.m */,
-				8F927942252DD42F006CB433 /* MWZUIPlaceMock.h */,
-				8F927943252DD42F006CB433 /* MWZUIPlaceMock.m */,
 				8F927A7F25306CAB006CB433 /* MWZUIPagerView.h */,
 				8F927A8025306CAB006CB433 /* MWZUIPagerView.m */,
 				8F927A90253092F2006CB433 /* MWZUIPagerHeaderView.h */,
@@ -670,7 +664,6 @@
 				8F8607C3219D67AB00281AB7 /* MWZUICompassDelegate.h in Headers */,
 				8F787C5023E453D1000EA02F /* MWZUIPaddingLabel.h in Headers */,
 				8FDB0CAF23EAF0B100B3536A /* MWZUISettings.h in Headers */,
-				8F927948252DD42F006CB433 /* MWZUIPlaceMock.h in Headers */,
 				8F63876D23BE194F0006B10E /* MWZUISearchViewControllerOptions.h in Headers */,
 				8F63876723BE194F0006B10E /* MWZUIMapViewMenuBar.h in Headers */,
 				8F31F9E7232687DC00BB4956 /* MWZUIFloorControllerDelegate.h in Headers */,
@@ -820,7 +813,6 @@
 				8F847D3025481AC000F8A231 /* MWZUIIssuesReportingViewController.m in Sources */,
 				8F8607CB219D67AB00281AB7 /* MWZUIIconTextButton.m in Sources */,
 				8F8607F0219D67AB00281AB7 /* MWZUIFloorView.m in Sources */,
-				8F927949252DD42F006CB433 /* MWZUIPlaceMock.m in Sources */,
 				8F92794C252DD42F006CB433 /* MWZUIBottomSheet.m in Sources */,
 				8F8607D0219D67AB00281AB7 /* MWZUIBorderedTextField.m in Sources */,
 				8F847D5F254AC85A00F8A231 /* MWZUIIssueTypeCell.m in Sources */,

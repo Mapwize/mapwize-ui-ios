@@ -6,12 +6,13 @@
 //
 
 #import "MWZUIBookingGridView.h"
+@import MapwizeSDK;
 
 @interface MWZUIBookingGridView ()
 
 @property (nonatomic, assign) double gridWidth;
 @property (nonatomic, assign) double hours;
-@property (nonatomic) NSArray<NSDictionary*>* events;
+@property (nonatomic) NSArray<MWZPlaceDetailsEvent*>* events;
 
 @end
 
@@ -28,7 +29,7 @@
     return self;
 }
 
-- (void) setCurrentTime:(double)hours events:(NSArray<NSDictionary*>*)events {
+- (void) setCurrentTime:(double)hours events:(NSArray<MWZPlaceDetailsEvent*>*)events {
     _hours = hours;
     _events = events;
     [self drawRect:self.frame];
@@ -66,9 +67,9 @@
     }
 
     
-    for (NSDictionary* event in _events) {
-        double startTime = [event[@"startTime"] doubleValue];
-        double endTime = [event[@"endTime"] doubleValue];
+    for (MWZPlaceDetailsEvent* event in _events) {
+        double startTime = [event.start doubleValue];
+        double endTime = [event.end doubleValue];
         CGContextSetFillColorWithColor(context, _color.CGColor);
         //CGContextFillRect(context, CGRectMake(startTime*_gridWidth, 10, (endTime-startTime)*_gridWidth, 100 - 1));
         

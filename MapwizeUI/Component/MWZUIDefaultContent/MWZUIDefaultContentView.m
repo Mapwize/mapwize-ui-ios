@@ -45,14 +45,14 @@
     [[progressView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-16.0] setActive:YES];
 }
 
--(void)setContentForPlace:(MWZPlace*)place
+-(void)setContentForPlaceDetails:(MWZPlaceDetails*)placeDetails
                  language:(NSString*)language
                   buttons:(NSMutableArray<MWZUIIconTextButton*>*)buttons {
-    _place = place;
+    _placeDetails = placeDetails;
     _titleTextView = [[UILabel alloc] initWithFrame:CGRectZero];
     _titleTextView.font=[_titleTextView.font fontWithSize:21];
     _titleTextView.translatesAutoresizingMaskIntoConstraints = NO;
-    _titleTextView.text = [place titleForLanguage:language];
+    _titleTextView.text = [_placeDetails titleForLanguage:language];
     
     [self addSubview:_titleTextView];
     
@@ -62,12 +62,12 @@
     [[_titleTextView.topAnchor constraintEqualToAnchor:self.topAnchor constant:8.0] setActive:YES];
     
     UIView* lastAnchorView = _titleTextView;
-    if ([place subtitleForLanguage:language] && [[place subtitleForLanguage:language] length] > 0) {
+    if ([_placeDetails subtitleForLanguage:language] && [[_placeDetails subtitleForLanguage:language] length] > 0) {
         UILabel* subtitle = [[UILabel alloc] initWithFrame:CGRectZero];
         subtitle.translatesAutoresizingMaskIntoConstraints = NO;
         subtitle.textColor = [UIColor darkGrayColor];
         subtitle.font = [subtitle.font fontWithSize:16];
-        subtitle.text = [place subtitleForLanguage:language];
+        subtitle.text = [_placeDetails subtitleForLanguage:language];
         [self addSubview:subtitle];
         [[subtitle.heightAnchor constraintEqualToConstant:16] setActive:YES];
         [[subtitle.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
@@ -75,12 +75,12 @@
         [[subtitle.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:8.0] setActive:YES];
         lastAnchorView = subtitle;
     }
-    if (place.openingHours) {
+    if (_placeDetails.openingHours) {
         UILabel* openingHours = [[UILabel alloc] initWithFrame:CGRectZero];
         openingHours.translatesAutoresizingMaskIntoConstraints = NO;
         openingHours.textColor = [UIColor darkGrayColor];
         openingHours.font = [openingHours.font fontWithSize:16];
-        openingHours.text = [MWZUIOpeningHoursUtils getCurrentOpeningStateString:place.openingHours];
+        openingHours.text = [MWZUIOpeningHoursUtils getCurrentOpeningStateString:_placeDetails.openingHours];
         [self addSubview:openingHours];
         [[openingHours.heightAnchor constraintEqualToConstant:16] setActive:YES];
         [[openingHours.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
@@ -110,13 +110,13 @@
 
 
 
-- (NSMutableArray<MWZUIIconTextButton*>*) buildButtonsForPlace:(MWZPlace*)place {
+- (NSMutableArray<MWZUIIconTextButton*>*) buildButtonsForPlaceDetails:(MWZPlaceDetails*)placeDetails {
     NSMutableArray<MWZUIIconTextButton*>* buttons = [[NSMutableArray alloc] init];
     MWZUIIconTextButton* directionButton = [[MWZUIIconTextButton alloc] initWithTitle:@"Direction" image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:NO];
     [buttons addObject:directionButton];
     [directionButton addTarget:self action:@selector(directionButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    if (place.phone) {
+    if (placeDetails.phone) {
         MWZUIIconTextButton* phoneButton = [[MWZUIIconTextButton alloc] initWithTitle:@"Call" image:[UIImage systemImageNamed:@"phone"] color:_color outlined:YES];
         [buttons addObject:phoneButton];
         [phoneButton addTarget:self action:@selector(phoneButtonAction:) forControlEvents:UIControlEventTouchUpInside];

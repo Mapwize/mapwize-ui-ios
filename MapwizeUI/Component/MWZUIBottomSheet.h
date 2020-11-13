@@ -4,7 +4,7 @@
 #import "MWZUIDefaultContentViewDelegate.h"
 #import "MWZUIFullContentViewDelegate.h"
 
-@class MWZUIPlaceMock;
+@class MWZPlaceDetails;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFrame:(CGRect) frame color:(UIColor*)color;
 
 - (void) showPlacePreview:(MWZPlacePreview*)placePreview;
-- (void) showPlace:(MWZPlace*)place language:(NSString*)language;
+- (void) showPlaceDetails:(MWZPlaceDetails*)placeDetails language:(NSString*)language;
 - (void) removeContent;
 
 @end

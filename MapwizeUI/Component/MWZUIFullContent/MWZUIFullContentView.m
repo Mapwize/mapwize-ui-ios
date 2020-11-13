@@ -7,12 +7,12 @@
 
 #import "MWZUIFullContentView.h"
 #import "MWZUIFullContentViewComponentButton.h"
-#import "MWZUIPlaceMock.h"
 #import "MWZUIOpeningHoursView.h"
 #import "MWZUIFullContentViewComponentRow.h"
 #import "MWZUIBookingView.h"
 #import "MWZUIBottomSheet.h"
 #import "MWZUIPagerView.h"
+#import "MWZPlaceDetails.h"
 #import <WebKit/WebKit.h>
 
 @interface MWZUIFullContentView () <UIGestureRecognizerDelegate>
@@ -44,16 +44,16 @@
 
 
 
--(void)setContentForPlace:(MWZPlace*)place
+-(void)setContentForPlaceDetails:(MWZPlaceDetails*)placeDetails
                  language:(NSString*)language
                   buttons:(NSArray<MWZUIFullContentViewComponentButton*>*)buttons
                      rows:(NSArray<MWZUIFullContentViewComponentRow*>*)rows {
-    _place = place;
+    _placeDetails = placeDetails;
     
     _titleTextView = [[UILabel alloc] initWithFrame:CGRectZero];
     _titleTextView.font=[_titleTextView.font fontWithSize:21];
     _titleTextView.translatesAutoresizingMaskIntoConstraints = NO;
-    _titleTextView.text = [place titleForLanguage:language];
+    _titleTextView.text = [_placeDetails titleForLanguage:language];
     [self addSubview:_titleTextView];
     [[_titleTextView.heightAnchor constraintEqualToConstant:24] setActive:YES];
     [[_titleTextView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:16.0] setActive:YES];
@@ -65,7 +65,7 @@
     _subtitleTextView.font=[_subtitleTextView.font fontWithSize:16];
     [_subtitleTextView setTextColor:[UIColor darkGrayColor]];
     _subtitleTextView.translatesAutoresizingMaskIntoConstraints = NO;
-    _subtitleTextView.text = [place subtitleForLanguage:language];
+    _subtitleTextView.text = [_placeDetails subtitleForLanguage:language];
     _subtitleTextView.lineBreakMode = NSLineBreakByWordWrapping;
     _subtitleTextView.numberOfLines = 0;
     [self addSubview:_subtitleTextView];
@@ -121,9 +121,9 @@
     _pagerView = [[MWZUIPagerView alloc] initWithFrame:CGRectZero color:_color];
     _pagerView.translatesAutoresizingMaskIntoConstraints = NO;
     [_pagerView addSlide:overviewScroll named:@"OVERVIEW"];
-    if ([_place detailsForLanguage:language] && [place detailsForLanguage:language].length > 0) {
+    if ([_placeDetails detailsForLanguage:language] && [_placeDetails detailsForLanguage:language].length > 0) {
         WKWebView* webview = [[WKWebView alloc] initWithFrame:CGRectZero];
-        [webview loadHTMLString:[_place detailsForLanguage:language] baseURL:nil];
+        [webview loadHTMLString:[_placeDetails detailsForLanguage:language] baseURL:nil];
         [_pagerView addSlide:webview named:@"DETAILS"];
     }
     
@@ -137,17 +137,17 @@
     [_pagerView build];
 }
 
-- (NSMutableArray<MWZUIFullContentViewComponentButton*>*) buildHeaderButtonsForPlace:(MWZPlace*)place language:(NSString*)language {
+- (NSMutableArray<MWZUIFullContentViewComponentButton*>*) buildHeaderButtonsForPlaceDetails:(MWZPlaceDetails*)placeDetails language:(NSString*)language {
     NSMutableArray<MWZUIFullContentViewComponentButton*>* buttons = [[NSMutableArray alloc] init];
     MWZUIFullContentViewComponentButton* directionButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"DIRECTIONS" image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:NO];
     [directionButton addTarget:self action:@selector(directionButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [buttons addObject:directionButton];
-    if (place.phone) {
+    if (placeDetails.phone) {
         MWZUIFullContentViewComponentButton* phoneButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"CALL" image:[UIImage systemImageNamed:@"phone.fill"] color:_color outlined:YES];
         [phoneButton addTarget:self action:@selector(phoneButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttons addObject:phoneButton];
     }
-    if (place.website) {
+    if (placeDetails.website) {
         MWZUIFullContentViewComponentButton* websiteButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"WEBSITE" image:[UIImage systemImageNamed:@"network"] color:_color outlined:YES];
         [websiteButton addTarget:self action:@selector(websiteButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttons addObject:websiteButton];
@@ -160,55 +160,55 @@
     return buttons;
 }
 
-- (NSMutableArray<MWZUIFullContentViewComponentRow*>*) buildContentRowsForPlace:(MWZPlace*)place language:(NSString*)language {
+- (NSMutableArray<MWZUIFullContentViewComponentRow*>*) buildContentRowsForPlaceDetails:(MWZPlaceDetails*)placeDetails language:(NSString*)language {
     NSMutableArray<MWZUIFullContentViewComponentRow*>* rows = [[NSMutableArray alloc] init];
     NSMutableArray<MWZUIFullContentViewComponentRow*>* unfilledRow = [[NSMutableArray alloc] init];
-    if (place.floor) {
-        MWZUIFullContentViewComponentRow* row = [self getFloorRowForPlace:place];
+    if (placeDetails.floor) {
+        MWZUIFullContentViewComponentRow* row = [self getFloorRowForPlaceDetails:placeDetails];
         [rows addObject:row];
     }
     else {
-        MWZUIFullContentViewComponentRow* row = [self getFloorRowForPlace:nil];
+        MWZUIFullContentViewComponentRow* row = [self getFloorRowForPlaceDetails:nil];
         [unfilledRow addObject:row];
     }
-    if (place.openingHours) {
-        MWZUIFullContentViewComponentRow* row = [self getOpeningHoursRowForPlace:place];
+    if (placeDetails.openingHours) {
+        MWZUIFullContentViewComponentRow* row = [self getOpeningHoursRowForPlaceDetails:placeDetails];
         [rows addObject:row];
     }
     else {
-        MWZUIFullContentViewComponentRow* row = [self getOpeningHoursRowForPlace:nil];
+        MWZUIFullContentViewComponentRow* row = [self getOpeningHoursRowForPlaceDetails:nil];
         [unfilledRow addObject:row];
     }
-    if (place.phone) {
-        MWZUIFullContentViewComponentRow* row = [self getPhoneRowForPlace:place];
+    if (placeDetails.phone) {
+        MWZUIFullContentViewComponentRow* row = [self getPhoneRowForPlaceDetails:placeDetails];
         [rows addObject:row];
     }
     else {
-        MWZUIFullContentViewComponentRow* row = [self getPhoneRowForPlace:nil];
+        MWZUIFullContentViewComponentRow* row = [self getPhoneRowForPlaceDetails:nil];
         [unfilledRow addObject:row];
     }
-    if (place.website) {
-        MWZUIFullContentViewComponentRow* row = [self getWebsiteRowForPlace:place];
+    if (placeDetails.website) {
+        MWZUIFullContentViewComponentRow* row = [self getWebsiteRowForPlaceDetails:placeDetails];
         [rows addObject:row];
     }
     else {
-        MWZUIFullContentViewComponentRow* row = [self getWebsiteRowForPlace:nil];
+        MWZUIFullContentViewComponentRow* row = [self getWebsiteRowForPlaceDetails:nil];
         [unfilledRow addObject:row];
     }
-    if (place.capacity) {
-        MWZUIFullContentViewComponentRow* row = [self getCapacityRowForPlace:place];
+    if (placeDetails.capacity) {
+        MWZUIFullContentViewComponentRow* row = [self getCapacityRowForPlaceDetails:placeDetails];
         [rows addObject:row];
     }
     else {
-        MWZUIFullContentViewComponentRow* row = [self getCapacityRowForPlace:nil];
+        MWZUIFullContentViewComponentRow* row = [self getCapacityRowForPlaceDetails:nil];
         [unfilledRow addObject:row];
     }
-    if (NO) {//place.calendarEvents) {
-        MWZUIFullContentViewComponentRow* row = [self getBookingRowForPlace:place];
+    if (placeDetails.events) {//place.calendarEvents) {
+        MWZUIFullContentViewComponentRow* row = [self getBookingRowForPlaceDetails:placeDetails];
         [rows addObject:row];
     }
     else {
-        MWZUIFullContentViewComponentRow* row = [self getBookingRowForPlace:nil];
+        MWZUIFullContentViewComponentRow* row = [self getBookingRowForPlaceDetails:nil];
         [unfilledRow addObject:row];
     }
     [rows addObjectsFromArray:unfilledRow];
@@ -225,8 +225,8 @@
     return componentRow;
 }
 
-- (MWZUIFullContentViewComponentRow*) getBookingRowForPlace:(MWZPlace*)place {
-    return [[MWZUIBookingView alloc] initWithFrame:CGRectZero place:place color:_color];
+- (MWZUIFullContentViewComponentRow*) getBookingRowForPlaceDetails:(MWZPlaceDetails*)placeDetails {
+    return [[MWZUIBookingView alloc] initWithFrame:CGRectZero placeDetails:placeDetails color:_color];
 }
 
 - (UIView*) addBookingRowBelow:(UIView*) view {
@@ -251,7 +251,7 @@
     UILabel* bookingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     bookingLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [bookingLabel setFont:[UIFont systemFontOfSize:14]];
-    BOOL isOccupied = [self isOccupied:_place];
+    BOOL isOccupied = [self isOccupied:_placeDetails];
     [bookingLabel setText:isOccupied?@"Currently occupied":@"Currently available"];
     
     [bookingRow addSubview:bookingLabel];
@@ -259,7 +259,7 @@
     [[bookingLabel.trailingAnchor constraintEqualToAnchor:bookingRow.trailingAnchor] setActive:YES];
     [[bookingLabel.centerYAnchor constraintEqualToAnchor:bookingImageView.centerYAnchor constant:0.0] setActive:YES];
     
-    MWZUIBookingView* gridView = [[MWZUIBookingView alloc] initWithFrame:CGRectZero place:_place color:_color];
+    MWZUIBookingView* gridView = [[MWZUIBookingView alloc] initWithFrame:CGRectZero placeDetails:_placeDetails color:_color];
     gridView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:gridView];
     [[gridView.topAnchor constraintEqualToAnchor:bookingImageView.bottomAnchor constant:16.0] setActive:YES];
@@ -288,12 +288,12 @@
     return NO;
 }
 
-- (MWZUIFullContentViewComponentRow*) getWebsiteRowForPlace:(MWZPlace*)place {
+- (MWZUIFullContentViewComponentRow*) getWebsiteRowForPlaceDetails:(MWZPlaceDetails*)placeDetails {
     UILabel* websiteLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     websiteLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [websiteLabel setFont:[UIFont systemFontOfSize:14]];
-    if (place && place.website) {
-        NSString *searchedString = place.website;
+    if (placeDetails && placeDetails.website) {
+        NSString *searchedString = placeDetails.website;
         NSRange   searchedRange = NSMakeRange(0, [searchedString length]);
         NSString *pattern = @"^(?:http[s]?://)?(?:www.)?([\\w.]+)";
         NSError  *error = nil;
@@ -318,13 +318,13 @@
     
 }
 
-- (MWZUIFullContentViewComponentRow*) getFloorRowForPlace:(MWZPlace*)place {
+- (MWZUIFullContentViewComponentRow*) getFloorRowForPlaceDetails:(MWZPlaceDetails*)placeDetails {
     UILabel* floorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     floorLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [floorLabel setFont:[UIFont systemFontOfSize:14]];
-    if (place) {
-        if (place.floor) {
-            [floorLabel setText:[NSString stringWithFormat:@"%@", place.floor]];
+    if (placeDetails) {
+        if (placeDetails.floor) {
+            [floorLabel setText:[NSString stringWithFormat:@"%@", placeDetails.floor]];
         }
         else {
             [floorLabel setText:@"Outdoor"];
@@ -341,12 +341,12 @@
     }
 }
 
-- (MWZUIFullContentViewComponentRow*) getCapacityRowForPlace:(MWZPlace*)place {
+- (MWZUIFullContentViewComponentRow*) getCapacityRowForPlaceDetails:(MWZPlaceDetails*)placeDetails {
     UILabel* capacityLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     capacityLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [capacityLabel setFont:[UIFont systemFontOfSize:14]];
-    if (place && place.capacity) {
-        [capacityLabel setText:[NSString stringWithFormat:@"%@", place.capacity]];
+    if (placeDetails && placeDetails.capacity) {
+        [capacityLabel setText:[NSString stringWithFormat:@"%@", placeDetails.capacity]];
         return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"person.3"] contentView:capacityLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {
@@ -359,12 +359,12 @@
     }
 }
 
-- (MWZUIFullContentViewComponentRow*) getPhoneRowForPlace:(MWZPlace*)place {
+- (MWZUIFullContentViewComponentRow*) getPhoneRowForPlaceDetails:(MWZPlaceDetails*)placeDetails {
     UILabel* phoneLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     phoneLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [phoneLabel setFont:[UIFont systemFontOfSize:14]];
-    if (place && place.phone) {
-        [phoneLabel setText:[place.phone stringByReplacingOccurrencesOfString:@"." withString:@" "]];
+    if (placeDetails && placeDetails.phone) {
+        [phoneLabel setText:[placeDetails.phone stringByReplacingOccurrencesOfString:@"." withString:@" "]];
         return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"phone"] contentView:phoneLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {
@@ -377,44 +377,7 @@
     }
 }
 
-- (UIView*) addPhoneRowBelow:(UIView*) view {
-    UIView* phoneRow = [[UIView alloc] initWithFrame:CGRectZero];
-    phoneRow.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:phoneRow];
-    [[phoneRow.topAnchor constraintEqualToAnchor:view.bottomAnchor constant:0.0] setActive:YES];
-    [[phoneRow.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:0.0] setActive:YES];
-    [[phoneRow.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:0.0] setActive:YES];
-    
-    UIImageView* phoneImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-    phoneImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [phoneImageView setImage:[[UIImage systemImageNamed:@"phone"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-    [phoneImageView setTintColor:_color];
-    [phoneRow addSubview:phoneImageView];
-    [[phoneImageView.leadingAnchor constraintEqualToAnchor:phoneRow.leadingAnchor constant:16] setActive:YES];
-    [[phoneImageView.topAnchor constraintEqualToAnchor:view.bottomAnchor constant:16.0] setActive:YES];
-    [[phoneImageView.heightAnchor constraintEqualToConstant:24] setActive:YES];
-    [[phoneImageView.widthAnchor constraintEqualToConstant:24] setActive:YES];
-    [[phoneImageView.bottomAnchor constraintEqualToAnchor:phoneRow.bottomAnchor constant:0.0] setActive:YES];
-    
-    _phoneTextView = [[UILabel alloc] initWithFrame:CGRectZero];
-    _phoneTextView.translatesAutoresizingMaskIntoConstraints = NO;
-    [_phoneTextView setFont:[UIFont systemFontOfSize:14]];
-    [_phoneTextView setText:[_mock.phoneNumber stringByReplacingOccurrencesOfString:@"." withString:@" "]];
-    
-    [phoneRow addSubview:_phoneTextView];
-    [[_phoneTextView.leadingAnchor constraintEqualToAnchor:phoneImageView.trailingAnchor constant:36] setActive:YES];
-    [[_phoneTextView.trailingAnchor constraintEqualToAnchor:phoneRow.trailingAnchor] setActive:YES];
-    [[_phoneTextView.centerYAnchor constraintEqualToAnchor:phoneImageView.centerYAnchor constant:0.0] setActive:YES];
-    
-    UITapGestureRecognizer *singleFingerTap =
-      [[UITapGestureRecognizer alloc] initWithTarget:self
-                                              action:@selector(handlePhoneTap:)];
-    [phoneRow addGestureRecognizer:singleFingerTap];
-    
-    return phoneRow;
-}
-
-- (void) handlePhoneTap:(UITapGestureRecognizer*) recognier {
+/*- (void) handlePhoneTap:(UITapGestureRecognizer*) recognier {
     NSURL *urlOption1 = [NSURL URLWithString:[@"telprompt://" stringByAppendingString:_mock.phoneNumber]];
     NSURL *urlOption2 = [NSURL URLWithString:[@"tel://" stringByAppendingString:_mock.phoneNumber]];
     NSURL *targetURL = nil;
@@ -434,13 +397,13 @@
     #pragma clang diagnostic pop
         }
     }
-}
+}*/
 
-- (MWZUIFullContentViewComponentRow*) getOpeningHoursRowForPlace:(MWZPlace*)place {
+- (MWZUIFullContentViewComponentRow*) getOpeningHoursRowForPlaceDetails:(MWZPlaceDetails*)placeDetails {
     _openingHoursView = [[MWZUIOpeningHoursView alloc] initWithFrame:CGRectZero];
-    [_openingHoursView setOpeningHours:place.openingHours];
+    [_openingHoursView setOpeningHours:placeDetails.openingHours];
 
-    if (place.openingHours.count > 0) {
+    if (placeDetails.openingHours.count > 0) {
         UITapGestureRecognizer *singleFingerTap =
           [[UITapGestureRecognizer alloc] initWithTarget:self
                                                   action:@selector(toggleOpeningHours:)];

@@ -2,7 +2,8 @@
 #import <MapwizeSDK/MapwizeSDK.h>
 #import "MWZUIFullContentViewDelegate.h"
 
-@class MWZUIPlaceMock;
+
+@class MWZPlaceDetails;
 @class MWZUIFullContentViewComponentButton;
 @class MWZUIFullContentViewComponentRow;
 NS_ASSUME_NONNULL_BEGIN
@@ -10,19 +11,18 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MWZUIFullContentView : UIView
 
 @property (nonatomic, weak) id<MWZUIFullContentViewDelegate> delegate;
-@property (nonatomic) MWZUIPlaceMock* mock;
-@property (nonatomic) MWZPlace* place;
+@property (nonatomic) MWZPlaceDetails* placeDetails;
 @property (nonatomic) UIColor* color;
 
 -(instancetype) initWithFrame:(CGRect)frame color:(UIColor*)color;
 
--(void)setContentForPlace:(MWZPlace*)place
+-(void)setContentForPlaceDetails:(MWZPlaceDetails*)placeDetails
                  language:(NSString*)language
                   buttons:(NSArray<MWZUIFullContentViewComponentButton*>*)buttons
                      rows:(NSArray<MWZUIFullContentViewComponentRow*>*)rows;
 
-- (NSMutableArray<MWZUIFullContentViewComponentButton*>*) buildHeaderButtonsForPlace:(MWZPlace*)place language:(NSString*)language;
-- (NSMutableArray<MWZUIFullContentViewComponentRow*>*) buildContentRowsForPlace:(MWZPlace*)place language:(NSString*)language;
+- (NSMutableArray<MWZUIFullContentViewComponentButton*>*) buildHeaderButtonsForPlaceDetails:(MWZPlaceDetails*)placeDetails language:(NSString*)language;
+- (NSMutableArray<MWZUIFullContentViewComponentRow*>*) buildContentRowsForPlaceDetails:(MWZPlaceDetails*)placeDetails language:(NSString*)language;
 
 @end
 

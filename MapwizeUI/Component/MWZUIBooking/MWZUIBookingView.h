@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) UIScrollView* scrollView;
 
-- (instancetype) initWithFrame:(CGRect)frame place:(MWZPlace*)place color:(UIColor*)color;
+- (instancetype) initWithFrame:(CGRect)frame placeDetails:(MWZPlaceDetails*)placeDetails color:(UIColor*)color;
 
 @end
 
