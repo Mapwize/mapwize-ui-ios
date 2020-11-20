@@ -1,5 +1,11 @@
 # Mapwize UI iOS Changelog
 
+## 2.3.0
+
+- Upgrading the Mapwize SDK to 6.X.X
+  - This an amazing improvement for the CI/CD
+  - test line2
+
 ## 2.2.1
 
 - Updating Mapwize SDK to 3.2.1
