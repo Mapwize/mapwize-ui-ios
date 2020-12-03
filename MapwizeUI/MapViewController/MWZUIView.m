@@ -701,8 +701,8 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     }
     [self.defaultScene setSceneProperties:defaultProperties];
     if ([self.selectedContent isKindOfClass:MWZPlace.class]) {
-        [self.mapView addMarkerOnPlace:(MWZPlace*)self.selectedContent];
-        [self.mapView addPromotedPlace:(MWZPlace*)self.selectedContent];
+        [self.mapView removeMarkers];
+        [self.mapView selectPlace:(MWZPlace*)self.selectedContent];
     }
 }
 
@@ -710,21 +710,17 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.selectedContent = nil;
     [self.defaultScene setSceneProperties:defaultProperties];
+    [self.mapView unselectPlace];
     [self.mapView removeMarkers];
-    [self.mapView removePromotedPlaces];
     self.selectedContent = nil;
 }
 
 - (void) selectPlace:(MWZPlace*) place centerOn:(BOOL) centerOn{
-    if (self.selectedContent) {
-        [self.mapView removeMarkers];
-        [self.mapView removePromotedPlaces];
-    }
     if (centerOn) {
         [self.mapView centerOnPlace:place animated:YES];
     }
-    [self.mapView addMarkerOnPlace:place];
-    [self.mapView addPromotedPlace:place];
+    [self.mapView removeMarkers];
+    [self.mapView selectPlace:place];
     self.selectedContent = place;
     MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.selectedContent = self.selectedContent;
@@ -739,13 +735,9 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 }
 
 - (void) selectPlacePreview:(MWZPlacePreview*) placePreview {
-    if (self.selectedContent) {
-        [self.mapView removeMarkers];
-        [self.mapView removePromotedPlaces];
-    }
     _selectedContent = placePreview;
-    [self.mapView addMarkerOnPlacePreview:placePreview];
-    [self.mapView addPromotedPlacePreview:placePreview];
+    [self.mapView removeMarkers];
+    [self.mapView selectPlacePreview:placePreview];
     MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.selectedContent = placePreview;
     defaultProperties.language = [self.mapView getLanguage];
@@ -772,35 +764,38 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 
 - (void) selectPlaceList:(MWZPlacelist*) placeList {
     if (self.selectedContent) {
+        [self.mapView unselectPlace];
         [self.mapView removeMarkers];
-        [self.mapView removePromotedPlaces];
     }
-    [self.mapView addMarkersOnPlacelist:placeList completionHandler:^(NSArray<MWZMapwizeAnnotation *> * _Nonnull annotation) {
-        
-    }];
-    __weak MWZUIView *weakSelf = self;
-    [self.mapView addPromotedPlacelist:placeList completionHandler:^(NSArray<MWZPlace *> * _Nonnull places) {
-        if (places.count == 0) return;
-        [weakSelf.mapView.mapwizeApi getVenueWithIdentifier:places[0].venueId success:^(MWZVenue * _Nonnull venue) {
-            BOOL shouldSetFloor = YES;
-            if ([weakSelf.mapView getFloor]) {
-                for (MWZPlace* place in places) {
-                    if ([[weakSelf.mapView getFloorNumber] isEqual:place.floor]){
-                        shouldSetFloor = NO;
-                        break;
-                    }
+    
+    [self.mapView.mapwizeApi getPlacesForPlacelistWithIdentifier:placeList.identifier success:^(NSArray<MWZPlace *> * _Nonnull places) {
+        NSMutableArray<MWZMarker*>* markers = [[NSMutableArray alloc] init];
+        for (MWZPlace* place in places) {
+            MWZMarker* marker = [MWZMarker markerWithPlace:place options:[[MWZMarkerOptions alloc] init]];
+            [markers addObject:marker];
+        }
+        [self.mapView addMarkers:markers];
+        if (places.count == 0) {
+            return;
+        }
+        BOOL shouldSetFloor = YES;
+        if ([self.mapView getFloor]) {
+            for (MWZPlace* place in places) {
+                if ([[self.mapView getFloorNumber] isEqual:place.floor]){
+                    shouldSetFloor = NO;
+                    break;
                 }
             }
-            if (shouldSetFloor) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelf.mapView centerOnVenue:venue animated:YES];
-                    [weakSelf.mapView setFloor:places[0].floor];
-                });
-            }
+        }
+        if (shouldSetFloor) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.mapView centerOnPlace:places[0] animated:YES];
+            });
+        }
         } failure:^(NSError * _Nonnull error) {
             
         }];
-    }];
+    
     self.selectedContent = placeList;
     MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.selectedContent = self.selectedContent;
@@ -816,7 +811,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 
 #pragma mark Direction methods
 - (void) promoteDirectionPoints {
-    [self.mapView removePromotedPlaces];
+    /*[self.mapView removePromotedPlaces];
     if (_toDirectionPoint) {
         if ([_toDirectionPoint isKindOfClass:MWZPlace.class]) {
             [self.mapView addPromotedPlace:(MWZPlace*)_toDirectionPoint];
@@ -836,7 +831,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                 
             }];
         }
-    }
+    }*/
 }
 
 - (void) setFromDirectionPoint:(id<MWZDirectionPoint>)fromDirectionPoint {
@@ -1380,6 +1375,8 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:venueDidEnter:)]) {
         [self.delegate mapwizeView:self venueDidEnter:venue];
     }
+    
+    
     MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.venue = venue;
     defaultProperties.venueLoading = NO;
@@ -1514,6 +1511,12 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 - (void)mapView:(MWZMapView *_Nonnull)mapView didTapOnMarker:(MWZMapwizeAnnotation *_Nonnull)marker {
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:didTapOnMarker:)]) {
         [self.delegate mapwizeView:self didTapOnMarker:marker];
+    }
+}
+
+- (void)mapView:(MWZMapView *_Nonnull)mapView didTapMarker:(MWZMarker *_Nonnull)marker {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:didTapMarker:)]) {
+        [self.delegate mapwizeView:self didTapMarker:marker];
     }
 }
 

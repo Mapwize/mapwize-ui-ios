@@ -169,6 +169,9 @@ floorsDidChange:(NSArray<MWZFloor *> *_Nonnull)floors;
 - (void)mapwizeView:(MWZUIView *_Nonnull)mapwizeView
  didTapOnMarker:(MWZMapwizeAnnotation *_Nonnull)marker;
 
+- (void)mapwizeView:(MWZUIView *_Nonnull)mapwizeView
+       didTapMarker:(MWZMarker*_Nonnull)marker;
+
 /**
  Called when a navigation will start or will be recomputed
  */
