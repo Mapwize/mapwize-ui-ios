@@ -922,6 +922,17 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         && ((ILIndoorLocation*)self.fromDirectionPoint).floor) {
         [self.directionScene showLoading];
         MWZDirectionOptions* options = [[MWZDirectionOptions alloc] init];
+        options.endMarkerOptions = [[MWZMarkerOptions alloc] init];
+        options.endMarkerOptions.iconName = @"direction-end-marker-icon";
+        options.endMarkerOptions.iconScale = @0.4;
+        options.endMarkerOptions.titleOffset = @[@1, @0];
+        options.endMarkerOptions.titleAnchor = @"left";
+        if ([self.toDirectionPoint isKindOfClass:MWZPlace.class]) {
+            options.endMarkerOptions.title = [((MWZPlace*)self.toDirectionPoint) titleForLanguage:[self.mapView getLanguage]];
+        }
+        else {
+            options.endMarkerOptions.title = [((MWZPlacelist*)self.toDirectionPoint) titleForLanguage:[self.mapView getLanguage]];
+        }
         [self.mapView startNavigation:self.toDirectionPoint directionMode:self.directionMode options:options];
         if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:didStartDirectionInVenue:universe:from:to:mode:isNavigation:)]) {
             [self.delegate mapwizeView:self didStartDirectionInVenue:[self.mapView getVenue] universe:[self.mapView getUniverse] from:self.fromDirectionPoint to:self.toDirectionPoint mode:self.directionMode.identifier isNavigation:YES];
@@ -936,7 +947,29 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                 if (self.state == MWZViewStateDirectionOn || self.state == MWZViewStateDirectionOff) {
                     [self.directionScene hideLoading];
                     self.state = MWZViewStateDirectionOn;
-                    [self.mapView setDirection:direction];
+                    MWZDirectionOptions* options = [[MWZDirectionOptions alloc] init];
+                    options.endMarkerOptions = [[MWZMarkerOptions alloc] init];
+                    options.endMarkerOptions.iconName = @"direction-end-marker-icon";
+                    options.endMarkerOptions.iconScale = @0.4;
+                    options.endMarkerOptions.titleOffset = @[@1, @0];
+                    options.endMarkerOptions.titleAnchor = @"left";
+                    if ([self.toDirectionPoint isKindOfClass:MWZPlace.class]) {
+                        options.endMarkerOptions.title = [((MWZPlace*)self.toDirectionPoint) titleForLanguage:[self.mapView getLanguage]];
+                    }
+                    else {
+                        options.endMarkerOptions.title = [((MWZPlacelist*)self.toDirectionPoint) titleForLanguage:[self.mapView getLanguage]];
+                    }
+                    
+                    options.startMarkerOptions = [[MWZMarkerOptions alloc] init];
+                    options.startMarkerOptions.iconName = @"direction-start-marker-icon";
+                    options.startMarkerOptions.iconScale = @0.4;
+                    options.startMarkerOptions.titleOffset = @[@1, @0];
+                    options.startMarkerOptions.titleAnchor = @"left";
+                    if ([self.fromDirectionPoint isKindOfClass:MWZPlace.class]) {
+                        options.startMarkerOptions.title = [((MWZPlace*)self.fromDirectionPoint) titleForLanguage:[self.mapView getLanguage]];
+                    }
+                    
+                    [self.mapView setDirection:direction options:options];
                     [self.directionScene setInfoWith:direction.traveltime
                                    directionDistance:direction.distance
                                        directionMode:self.directionMode];
