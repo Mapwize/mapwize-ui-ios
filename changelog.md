@@ -1,5 +1,10 @@
 # Mapwize UI iOS Changelog
 
+## 2.2.2
+
+- Fixing FloorController scroll to visible floor
+- Removing vertical scroll indicator on FloorController
+
 ## 2.2.1
 
 - Updating Mapwize SDK to 3.2.1
