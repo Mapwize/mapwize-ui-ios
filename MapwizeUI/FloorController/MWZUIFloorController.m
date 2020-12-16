@@ -25,6 +25,7 @@ const int MWZUIFloorViewMarginSize = 4;
 - (instancetype)init {
     self = [super init];
     if (self) {
+        self.showsVerticalScrollIndicator = NO;
         self.floorViews = [[NSMutableArray alloc] init];
         self.floorViewByFloor = [[NSMutableDictionary alloc] init];
         self.contentView = [[UIView alloc] init];
@@ -45,6 +46,7 @@ const int MWZUIFloorViewMarginSize = 4;
 - (instancetype) initWithColor:(UIColor*) color {
     self = [super init];
     if (self) {
+        self.showsVerticalScrollIndicator = NO;
         _floorViews = [[NSMutableArray alloc] init];
         _floorViewByFloor = [[NSMutableDictionary alloc] init];
         _contentView = [[UIView alloc] init];
@@ -152,8 +154,8 @@ const int MWZUIFloorViewMarginSize = 4;
         [view setSelected:NO];
         [floorView setPreselected:NO];
     }
-    
     [floorView setSelected:YES];
+    [self scrollRectToVisible:floorView.frame animated:NO];
 }
 
 - (void) mapwizeFloorWillChange:(MWZFloor*) floor {
