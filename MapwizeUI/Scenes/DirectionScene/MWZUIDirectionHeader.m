@@ -48,12 +48,12 @@
     
     self.fromPictoImageView = [[UIImageView alloc] init];
     self.fromPictoImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.fromPictoImageView setImage:[UIImage imageNamed:@"followOff" inBundle:bundle compatibleWithTraitCollection:nil]];
+    [self.fromPictoImageView setImage:[UIImage imageNamed:@"directionStart" inBundle:[NSBundle bundleForClass:MWZPlace.class] compatibleWithTraitCollection:nil]];
     [self addSubview:self.fromPictoImageView];
     
     self.toPictoImageView = [[UIImageView alloc] init];
     self.toPictoImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.toPictoImageView setImage:[UIImage imageNamed:@"place" inBundle:bundle compatibleWithTraitCollection:nil]];
+    [self.toPictoImageView setImage:[UIImage imageNamed:@"directionEnd" inBundle:[NSBundle bundleForClass:MWZPlace.class] compatibleWithTraitCollection:nil]];
     [self addSubview:self.toPictoImageView];
     
     self.swapButton = [[UIButton alloc] init];
