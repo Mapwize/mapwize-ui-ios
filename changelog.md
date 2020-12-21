@@ -1,5 +1,31 @@
 # Mapwize UI iOS Changelog
 
+## 2.2.3
+
+- Upgrading the Mapwize SDK to 3.3.0
+  - Deprecating the following methods, classes and attributes:
+      - Methods:
+          - MapView: Add markers methods
+          - MapView: Add promoted place methods
+          - MapViewDelegate: didTapOnMarker
+      - Attributes: 
+          - DisplayEndMarker and endMarkerIcon in MWZDirectionOptions
+      - Class: 
+          MWZMapwizeAnnotation
+  - Adding marker to the map is now done using addMarkers:(MWZMarker*) methods:
+      - A marker can be created from MWZMarkerOptions allowing more customization.
+      
+  - Adding select place methods:
+      - Selecting a place highlights it and gives it more visibility. This behavior replaces the promote.
+      
+  - Adding marker and line options in MWZDirectionOptions to allow more customization on the direction drawing process.
+  - Adding missing direction mode icon.
+
+## 2.2.2
+
+- Fixing FloorController scroll to visible floor
+- Removing vertical scroll indicator on FloorController
+
 ## 2.2.1
 
 - Updating Mapwize SDK to 3.2.1

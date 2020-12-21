@@ -1,11 +1,34 @@
 language: objective-c
 osx_image: xcode11.3
 before_install:
+- brew install gnu-sed curl jq grep
+- export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/grep/libexec/gnubin:$PATH"
+- export LC_ALL=en_US.UTF-8
+- git config --global user.email "maxime.colmant@gmail.com"
+- git config --global user.name "Maxime Colmant"
 - gem install cocoapods xcpretty jazzy --no-document --quiet
 script:
-- ./ci/build-ui-cocoapods.sh || travis_terminate 1;
-- ./ci/build-jazzy-doc.sh --tag=${TRAVIS_BRANCH} || travis_terminate 1;
-- zip -r iosdoc.zip docs || travis_terminate 1;
+- ./ci/build-ui-cocoapods.sh
+- |
+  if [[ "$TRAVIS_BRANCH" == "master" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]] && [[ "$TRAVIS_COMMIT_MESSAGE" == *"releasing the Mapwize UI"* ]]; then
+    new_tag=$(sed -nE 's#\s+s\.version\s+=\s*"(.+)"#\1#p' MapwizeUI.podspec) &&
+    release_notes=$(sed -n "/^## ${new_tag}$/,/^## /p" changelog.md | grep -E "^(\*|-|\s+)" | sed ':a;N;$!ba;s/\n/\\n/g' ) &&
+    git tag ${new_tag} &&
+    git push https://${GITHUB_TOKEN}@github.com/Mapwize/mapwize-ui-ios.git ${new_tag} &&
+    res="404" && while [[ "$res" != "200" ]]; do res=$(curl -i -X GET -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/mapwize/mapwize-ui-ios/releases/tags/${new_tag} | grep Status | sed -nE 's#^Status: ([0-9]{3}) .+$#\1#p'); if [[ "$res" != "200" ]]; then sleep 30; fi; done &&
+    tag_id=$(curl -sS -X GET -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/mapwize/mapwize-ui-ios/releases/tags/${new_tag} | jq .id) &&
+    curl -sS -X PATCH -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/mapwize/mapwize-ui-ios/releases/${tag_id} -d "{ \"body\": \"${release_notes}\" }"
+  fi;
+- |
+  if ! [ -z "$TRAVIS_TAG" ]; then
+    ./ci/publish-ui-cocoapods.sh --tag="${TRAVIS_TAG}" &&
+    ./ci/build-jazzy-doc.sh --tag="${TRAVIS_TAG}" &&
+    zip -r iosdoc.zip docs &&
+    git add MapwizeUI.podspec &&
+    { git diff-index --quiet HEAD MapwizeUI.podspec || git commit -m ":robot: chore: updating the Podspec's version to ${TRAVIS_TAG} :robot:"; } &&
+    git switch -c master &&
+    git push -q https://${GITHUB_TOKEN}@github.com/Mapwize/mapwize-ui-ios.git master
+  fi;
 deploy:
 - provider: releases
   api_key: "${GITHUB_TOKEN}"
@@ -15,4 +38,5 @@ deploy:
     tags: true
 env:
   global:
-    secure: WgtRHlR+DFlS21MFTMdvJbcxIhXRD4XEspRIo/1eN7NserptkCKxu+Sj54EZxNN/m8lQhxQfH2GYf2kSrRAgAEhBrS9YymRhn3D5IOUn23U8ejvQlpc73Qz6SCWzzKgKoPRBjSUF9I9Pym8zi/hdUGVMhnXLauEJqaCiMl2fUdzyDMYxHd0ReAAdhYYfZ/IT7UK1FL6zM39cSV1mC8RXVC8aAoIa9P8ZlMAecOnXLfHjrs7qjyjn43RdDTIXuwdx19fKPNERThAf+eYzz982w8wbX1pvNPEAb0zQtHtxCpmKAXyEESofWWanHQ1sTdy4iieAAP5K8mVTDbx6KmKfDtZApbtC/vEqDO50wXWI+/WDzszx5um9VaylfCXGq7ZPqpjBdOY+447SHsGpUU21PlULjo3b9Y8S1WA24/ibvdMgiuDj1dZaaFRpn2eDep4THwtd396QZhLiFPObjLAL9NjQr3sGf6av7ptNH9Hov2oeS0DVp/fq5Ae1He+8uxOoJXSwu5ZgBf61s9lcmb04RJ7JETu6VB+ra789gMlvz4HOh2hUcRv1bLcSzNr1YGx4Q9T16PDjW83HvUcy9ZvX2GUof9NnbNlpUOPO6m1OwCVoBZW16o46jtARsCAQ1rD62pg7Q/oPL3zzyvwbyi9GOTWaRQ88TJwGudbBFovv6eA= # GITHUB_TOKEN
+  - secure: "WgtRHlR+DFlS21MFTMdvJbcxIhXRD4XEspRIo/1eN7NserptkCKxu+Sj54EZxNN/m8lQhxQfH2GYf2kSrRAgAEhBrS9YymRhn3D5IOUn23U8ejvQlpc73Qz6SCWzzKgKoPRBjSUF9I9Pym8zi/hdUGVMhnXLauEJqaCiMl2fUdzyDMYxHd0ReAAdhYYfZ/IT7UK1FL6zM39cSV1mC8RXVC8aAoIa9P8ZlMAecOnXLfHjrs7qjyjn43RdDTIXuwdx19fKPNERThAf+eYzz982w8wbX1pvNPEAb0zQtHtxCpmKAXyEESofWWanHQ1sTdy4iieAAP5K8mVTDbx6KmKfDtZApbtC/vEqDO50wXWI+/WDzszx5um9VaylfCXGq7ZPqpjBdOY+447SHsGpUU21PlULjo3b9Y8S1WA24/ibvdMgiuDj1dZaaFRpn2eDep4THwtd396QZhLiFPObjLAL9NjQr3sGf6av7ptNH9Hov2oeS0DVp/fq5Ae1He+8uxOoJXSwu5ZgBf61s9lcmb04RJ7JETu6VB+ra789gMlvz4HOh2hUcRv1bLcSzNr1YGx4Q9T16PDjW83HvUcy9ZvX2GUof9NnbNlpUOPO6m1OwCVoBZW16o46jtARsCAQ1rD62pg7Q/oPL3zzyvwbyi9GOTWaRQ88TJwGudbBFovv6eA=" # GITHUB_TOKEN
+  - secure: "cFTSX6fSGLzfwBWdyirwERwy8cXKUdauik45RiqsogD58ZcujDhw3PDX2XRtP4EW/+2lxCdYBKuZsQmyrALx6LTX+o6Dt8wB9hSfZlLvTjDh2232VBT6Jir1mH8KrHHTIpeHjup9xaBpeN5gN2N6BdQtvwgdlZPeQtrU5fHUakVrigwSDqiRJkiVJ0ElzlbpYgy0yI/LGPixfTAWn/mxlYGC/NGb584GgyX2VtZVN1lD1E3gN3WdUqRMxtLt9Lg1n5AjyXSdPUtLzVKyz3Z+4LYaPppHvHAjDrGqonAvCiQ3XlO5yhS10nxoORk1aJ/twx0knqQzispY0r3VvC1LdslJMw8THuFU/Djqh1muhllkRlcZL2Ek2MBl+XQNOtRuIDq/uZ6mnqKvO/6Lqt4ZzCdf6X6RcnL1zW20GtjgXb9CQ0CfVAoFb+x2hdkSRyvB7ELf6t32GFw/JGPkr0eXNgvfBPObtH2qmuXJOVDE5G9XWlKUxxGK4Dmkh8Pw5TpCzfsCItZHXRchkfSgrTtF/cG08plnpQMIj6RJPvQT1byqH3lCGc9g8jPDrI5cOVgK+hvhCwoVpnTHhnCnUtQuxyL2F1394oxwz+GWKio6FnOH44fbJl/CxaYADDzA3YP5JAGP8MzW+4SDpnDndgAVujjgMNUVQ3jF0soy/jGRa1A=" # COCOAPODS_TRUNK_TOKEN

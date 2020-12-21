@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/Mapwize/mapwize-ui-ios.svg?branch=master)](https://travis-ci.org/Mapwize/mapwize-ui-ios)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/mapwize/mapwize-ui-ios)
+![Cocoapods](https://img.shields.io/cocoapods/v/MapwizeUI)
+
 # Mapwize UI iOS
 
 Fully featured and ready to use UIView to add Mapwize Indoor Maps and Navigation in your iOS app.

@@ -29,6 +29,7 @@ const int MWZUIFloorViewMarginSize = 4;
         self.floorViews = [[NSMutableArray alloc] init];
         self.floorViewByFloor = [[NSMutableDictionary alloc] init];
         self.contentView = [[UIView alloc] init];
+        self.showsVerticalScrollIndicator = NO;
         [self addSubview:self.contentView];
         self.heightConstraint = [NSLayoutConstraint constraintWithItem:self
                                                         attribute:NSLayoutAttributeHeight
