@@ -100,6 +100,9 @@
         if (!_sceneProperties.venue) {
             [self setDirectionButtonHidden:NO];
         }
+        else if ([sceneProperties.selectedContent isKindOfClass:MWZPlacePreview.class]) {
+            [self showContent:sceneProperties.selectedContent language:sceneProperties.language showInfoButton:NO];
+        }
         else if (sceneProperties.selectedContent && sceneProperties.placeDetails) {
             [self showContent:sceneProperties.placeDetails
                      language:sceneProperties.language

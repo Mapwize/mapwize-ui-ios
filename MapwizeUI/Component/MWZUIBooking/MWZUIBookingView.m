@@ -1,6 +1,8 @@
 #import "MWZUIBookingView.h"
 #import "MWZUIBookingGridView.h"
 
+@import MapwizeSDK;
+
 @implementation MWZUIBookingView
 
 static double gridWidth = 25;

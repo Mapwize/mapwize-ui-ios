@@ -1,6 +1,7 @@
 #import "MWZUIDefaultContentView.h"
 #import "MWZUIIconTextButton.h"
 #import "MWZUIOpeningHoursUtils.h"
+#import "MWZPlaceDetails.h"
 @interface MWZUIDefaultContentView ()
 
 @property (nonatomic) UILabel* titleTextView;
