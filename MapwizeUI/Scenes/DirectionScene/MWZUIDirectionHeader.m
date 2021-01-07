@@ -86,6 +86,7 @@
     [self addSubview:self.toLabel];
     
     self.toTextField = [[MWZUIPaddingTextField alloc] init];
+    self.toTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.toTextField.translatesAutoresizingMaskIntoConstraints = NO;
     self.toTextField.placeholder = NSLocalizedString(@"Destination",@"");
     self.toTextField.layer.cornerRadius = 10;
@@ -113,6 +114,7 @@
     [self addSubview:self.fromLabel];
     
     self.fromTextField = [[MWZUIPaddingTextField alloc] init];
+    self.fromTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.fromTextField.translatesAutoresizingMaskIntoConstraints = NO;
     self.fromTextField.placeholder = NSLocalizedString(@"Starting point",@"");
     self.fromTextField.layer.cornerRadius = 10;
@@ -139,10 +141,12 @@
 
 - (void) didTapOnFrom:(UITapGestureRecognizer*) recognizer {
     [_delegate directionHeaderDidTapOnFromButton:self];
+    [_delegate searchDirectionQueryDidChange:self.fromTextField.text];
 }
 
 - (void) didTapOnTo:(UITapGestureRecognizer*) recognizer {
     [_delegate directionHeaderDidTapOnToButton:self];
+    [_delegate searchDirectionQueryDidChange:self.toTextField.text];
 }
 
 - (void) setupConstraints {
@@ -448,7 +452,7 @@
     [self.fromLabel setHidden:NO];
     [self.fromTextField setHidden:YES];
     [self.fromTextField resignFirstResponder];
-    self.fromTextField.text = @"";
+    //self.fromTextField.text = @"";
 }
 
 - (void) openToSearch {
@@ -461,16 +465,18 @@
     [self.toLabel setHidden:NO];
     [self.toTextField setHidden:YES];
     [self.toTextField resignFirstResponder];
-    self.toTextField.text = @"";
+    //self.toTextField.text = @"";
 }
 
 -(void) setFromText:(NSString*) text asPlaceHolder:(BOOL) asPlaceHolder {
     [self.fromLabel setText:text];
     if (asPlaceHolder) {
         [self.fromLabel setTextColor:[UIColor lightGrayColor]];
+        [self.fromTextField setText:@""];
     }
     else {
         [self.fromLabel setTextColor:[UIColor blackColor]];
+        [self.fromTextField setText:text];
     }
 }
 
@@ -478,9 +484,11 @@
     [self.toLabel setText:text];
     if (asPlaceHolder) {
         [self.toLabel setTextColor:[UIColor lightGrayColor]];
+        [self.toTextField setText:@""];
     }
     else {
         [self.toLabel setTextColor:[UIColor blackColor]];
+        [self.toTextField setText:text];
     }
 }
 
