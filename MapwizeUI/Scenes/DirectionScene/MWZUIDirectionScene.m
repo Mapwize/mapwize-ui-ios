@@ -145,6 +145,15 @@
                                                                 attribute:NSLayoutAttributeBottom
                                                                multiplier:1.0f
                                                                  constant:16.0f];
+    
+    [[NSLayoutConstraint constraintWithItem:self.resultList
+                                    attribute:NSLayoutAttributeBottom
+                                    relatedBy:NSLayoutRelationLessThanOrEqual
+                                       toItem:view
+                                    attribute:NSLayoutAttributeBottom
+                                   multiplier:1.0f
+                                     constant:-16.0f] setActive:YES];
+    
     [self.resultListTopConstraint setActive:YES];
     
     

@@ -36,7 +36,7 @@
         self.dataSource = self;
         self.delegate = self;
         self.separatorStyle = UITableViewCellSeparatorStyleNone;
-        self.scrollEnabled = NO;
+        self.showsVerticalScrollIndicator = NO;
         [self registerClass:[MWZUITitleWithoutFloorCellTableViewCell class] forCellReuseIdentifier:@"titleWithoutFloorCell"];
         [self registerClass:[MWZUITitleCell class] forCellReuseIdentifier:@"titleCell"];
         [self registerClass:[MWZUISubtitleCell class] forCellReuseIdentifier:@"subtitleCell"];
