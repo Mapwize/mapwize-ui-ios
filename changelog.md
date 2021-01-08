@@ -1,5 +1,10 @@
 # Mapwize UI iOS Changelog
 
+## 2.2.4
+
+- Add scroll in search results
+- Add delete button in search textfield
+
 ## 2.2.3
 
 - Upgrading the Mapwize SDK to 3.3.0
