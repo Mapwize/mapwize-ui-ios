@@ -1219,11 +1219,6 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         else {
             [self.directionScene setCurrentLocationViewHidden:YES];
         }
-        [self.directionScene showSearchResults:self.mainFroms
-                                     universes:@[[self.mapView getUniverse]]
-                                activeUniverse:[self.mapView getUniverse]
-                                  withLanguage:[self.mapView getLanguage]
-                                      forQuery:@""];
     }
 }
 
@@ -1234,12 +1229,6 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         [self.directionScene closeFromSearch];
         [self.directionScene setSearchResultsHidden:NO];
         [self.directionScene setCurrentLocationViewHidden:YES];
-        
-        [self.directionScene showSearchResults:self.mainSearches
-                                     universes:@[[self.mapView getUniverse]]
-                                activeUniverse:[self.mapView getUniverse]
-                                  withLanguage:[self.mapView getLanguage]
-                                      forQuery:@""];
     }
 }
 
