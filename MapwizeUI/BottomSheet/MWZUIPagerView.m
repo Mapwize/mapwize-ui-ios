@@ -79,11 +79,6 @@
     [_pagerHeader setTitles:headerTitles];
 }
 
-- (void) log {
-    NSLog(@"%f %f",self.frame.size.height,self.frame.size.width);
-    NSLog(@"%f %f",_scrollView.contentSize.height,_scrollView.contentSize.width);
-}
-
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     int index = (int)(targetContentOffset->x / self.frame.size.width);
     [_pagerHeader setSelectedIndex:[NSNumber numberWithInt:index]];

@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MWZServerUrl</key>
+	<string>https://review.mapwize.io/review-feat-place-4zeno3-api/</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Need location</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -50,6 +52,6 @@
 	<key>MGLMapboxMetricsEnabledSettingShownInApp</key>
 	<true/>
 	<key>MWZApiKey</key>
-	<string>YOUR_API_KEY</string>
+	<string>MapwizeDevAPIKEY</string>
 </dict>
 </plist>

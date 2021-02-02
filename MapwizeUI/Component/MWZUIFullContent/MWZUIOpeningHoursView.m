@@ -101,7 +101,7 @@
             cell.hoursLabel.font = [cell.hoursLabel.font fontWithSize:14];
         }
         else {
-            cell.hoursLabel.text = @"Opening hours not available";
+            cell.hoursLabel.text = NSLocalizedString(@"Opening hours not available", @"");
             UIFontDescriptor * fontD = [cell.hoursLabel.font.fontDescriptor
                         fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
             cell.hoursLabel.font = [UIFont fontWithDescriptor:fontD size:14];

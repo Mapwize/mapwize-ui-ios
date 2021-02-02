@@ -30,7 +30,7 @@ static double gridWidth = 25;
         [imageView setTintColor:self.color];
         [bookingLabel setFont:[UIFont systemFontOfSize:14]];
         BOOL isOccupied = [self isOccupied:placeDetails];
-        [bookingLabel setText:isOccupied?@"Currently occupied":@"Currently available"];
+        [bookingLabel setText:isOccupied?NSLocalizedString(@"Currently occupied", @""):NSLocalizedString(@"Currently available", @"")];
     }
     else {
         [imageView setTintColor:[UIColor darkGrayColor]];
@@ -38,7 +38,7 @@ static double gridWidth = 25;
                     fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
         bookingLabel.font = [UIFont fontWithDescriptor:fontD size:14];
         bookingLabel.textColor = [UIColor darkGrayColor];
-        [bookingLabel setText:@"Schedule not available"];
+        [bookingLabel setText:NSLocalizedString(@"Schedule not available", @"")];
     }
     [self addSubview:imageView];
     [[imageView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:16] setActive:YES];

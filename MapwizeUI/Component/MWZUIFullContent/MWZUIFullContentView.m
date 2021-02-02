@@ -157,11 +157,11 @@
     
     _pagerView = [[MWZUIPagerView alloc] initWithFrame:CGRectZero color:_color];
     _pagerView.translatesAutoresizingMaskIntoConstraints = NO;
-    [_pagerView addSlide:overviewScroll named:@"OVERVIEW"];
+    [_pagerView addSlide:overviewScroll named:[NSLocalizedString(@"Overview", @"") uppercaseString]];
     if ([_placeDetails detailsForLanguage:language] && [_placeDetails detailsForLanguage:language].length > 0) {
         WKWebView* webview = [[WKWebView alloc] initWithFrame:CGRectZero];
         [webview loadHTMLString:[_placeDetails detailsForLanguage:language] baseURL:nil];
-        [_pagerView addSlide:webview named:@"DETAILS"];
+        [_pagerView addSlide:webview named:[NSLocalizedString(@"Details", @"") uppercaseString]];
     }
     
     
@@ -178,26 +178,26 @@
                                                                              showInfoButton:(BOOL)shouldShowInformationButton
                                                                                    language:(NSString*)language {
     NSMutableArray<MWZUIFullContentViewComponentButton*>* buttons = [[NSMutableArray alloc] init];
-    MWZUIFullContentViewComponentButton* directionButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"DIRECTIONS" image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:NO];
+    MWZUIFullContentViewComponentButton* directionButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:[NSLocalizedString(@"Direction", @"") uppercaseString] image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:NO];
     [directionButton addTarget:self action:@selector(directionButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [buttons addObject:directionButton];
     if (shouldShowInformationButton) {
-        MWZUIFullContentViewComponentButton* informationButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"INFORMATION" image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:YES];
+        MWZUIFullContentViewComponentButton* informationButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:[NSLocalizedString(@"Information", @"") uppercaseString] image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:YES];
         [informationButton addTarget:self action:@selector(informationButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttons addObject:informationButton];
     }
     if (placeDetails.phone) {
-        MWZUIFullContentViewComponentButton* phoneButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"CALL" image:[UIImage systemImageNamed:@"phone.fill"] color:_color outlined:YES];
+        MWZUIFullContentViewComponentButton* phoneButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:[NSLocalizedString(@"Call", @"") uppercaseString] image:[UIImage systemImageNamed:@"phone.fill"] color:_color outlined:YES];
         [phoneButton addTarget:self action:@selector(phoneButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttons addObject:phoneButton];
     }
     if (placeDetails.website) {
-        MWZUIFullContentViewComponentButton* websiteButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"WEBSITE" image:[UIImage systemImageNamed:@"network"] color:_color outlined:YES];
+        MWZUIFullContentViewComponentButton* websiteButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:[NSLocalizedString(@"Website", @"") uppercaseString] image:[UIImage systemImageNamed:@"network"] color:_color outlined:YES];
         [websiteButton addTarget:self action:@selector(websiteButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttons addObject:websiteButton];
     }
     if (placeDetails.shareLink) {
-        MWZUIFullContentViewComponentButton* shareButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"SHARE" image:[UIImage systemImageNamed:@"square.and.arrow.up"] color:_color outlined:YES];
+        MWZUIFullContentViewComponentButton* shareButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:[NSLocalizedString(@"Share", @"") uppercaseString] image:[UIImage systemImageNamed:@"square.and.arrow.up"] color:_color outlined:YES];
         [shareButton addTarget:self action:@selector(shareButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttons addObject:shareButton];
     }
@@ -294,7 +294,7 @@
         return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"network"] contentView:websiteLabel color:_color tapGestureRecognizer:singleFingerTap type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {
-        [websiteLabel setText:@"Website not available"];
+        [websiteLabel setText:NSLocalizedString(@"Website not available", @"")];
         UIFontDescriptor * fontD = [websiteLabel.font.fontDescriptor
                     fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
         websiteLabel.font = [UIFont fontWithDescriptor:fontD size:0];
@@ -311,15 +311,20 @@
     [floorLabel setFont:[UIFont systemFontOfSize:14]];
     if (placeDetails) {
         if (placeDetails.floor) {
-            [floorLabel setText:[NSString stringWithFormat:@"Floor %@", placeDetails.floor[@"number"]]];
+            if (placeDetails.floor[@"number"]) {
+                [floorLabel setText:[NSString stringWithFormat:NSLocalizedString(@"Floor %@", @""), placeDetails.floor[@"number"]]];
+            }
+            else {
+                [floorLabel setText:NSLocalizedString(@"Outdoor", @"")];
+            }
         }
         else {
-            [floorLabel setText:@"Outdoor"];
+            [floorLabel setText:NSLocalizedString(@"Outdoor", @"")];
         }
         return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"alt"] contentView:floorLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {
-        [floorLabel setText:@"Capacity not available"];
+        [floorLabel setText:NSLocalizedString(@"Floor not available",@"")];
         UIFontDescriptor * fontD = [floorLabel.font.fontDescriptor
                     fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
         floorLabel.font = [UIFont fontWithDescriptor:fontD size:0];
@@ -337,7 +342,7 @@
         return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"person.3"] contentView:capacityLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {
-        [capacityLabel setText:@"Capacity not available"];
+        [capacityLabel setText:NSLocalizedString(@"Capacity not available",@"")];
         UIFontDescriptor * fontD = [capacityLabel.font.fontDescriptor
                     fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
         capacityLabel.font = [UIFont fontWithDescriptor:fontD size:0];
@@ -358,7 +363,7 @@
         return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"phone"] contentView:phoneLabel color:_color tapGestureRecognizer:singleFingerTap type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {
-        [phoneLabel setText:@"Phone number not available"];
+        [phoneLabel setText:NSLocalizedString(@"Phone number not available", @"")];
         UIFontDescriptor * fontD = [phoneLabel.font.fontDescriptor
                     fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
         phoneLabel.font = [UIFont fontWithDescriptor:fontD size:0];
