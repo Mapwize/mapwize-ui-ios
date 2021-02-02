@@ -1,11 +1,5 @@
-//
-//  MWZUIBookingGridView.h
-//  BottomSheet
-//
-//  Created by Etienne on 01/10/2020.
-//
-
 #import <UIKit/UIKit.h>
+@import MapwizeSDK;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFrame:(CGRect)frame gridWidth:(double)gridWidth color:(UIColor*)color;
 
-- (void) setCurrentTime:(double)hours events:(NSArray<NSDictionary*>*)events;
+- (void) setCurrentTime:(double)hours events:(NSArray<MWZPlaceDetailsEvent*>*)events;
 
 @end
 

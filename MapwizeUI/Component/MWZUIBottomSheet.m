@@ -118,7 +118,7 @@
     NSMutableArray<MWZUIFullContentViewComponentButton*>* fullHeaderButtons = [_fullContentView buildHeaderButtonsForPlaceDetails:_placeDetails language:language];
     NSMutableArray<MWZUIFullContentViewComponentRow*>* fullRows = [_fullContentView buildContentRowsForPlaceDetails:_placeDetails language:language];
     MWZUIBottomSheetComponents* components = [[MWZUIBottomSheetComponents alloc] initWithHeaderButtons:fullHeaderButtons contentRows:fullRows minimizedViewButtons:minimizedViewButtons];
-    if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlace:withDefaultComponents:)]) {
+    if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlaceDetails:withDefaultComponents:)]) {
         components = [_delegate requireComponentForPlaceDetails:_placeDetails withDefaultComponents:components];
     }
     
@@ -203,8 +203,8 @@
         [self updateHeight:self.frame.size.height - _currentTranslation - translation.y];
     }
     if (sender.state == UIGestureRecognizerStateEnded) {
-        CGPoint velocity = [sender velocityInView:sender.view.superview];
-        /*if (velocity.y < -500) {
+        /*CGPoint velocity = [sender velocityInView:sender.view.superview];
+        if (velocity.y < -500) {
             [self animateTo:0];
             return;
         }

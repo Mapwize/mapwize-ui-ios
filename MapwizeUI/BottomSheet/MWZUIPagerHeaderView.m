@@ -38,7 +38,6 @@
     }
     _titles = titles;
     int divider = titles.count > 4 ? 4 : (int)titles.count;
-    int size = self.frame.size.width / divider;
     for (MWZUIPagerHeaderTitle* title in _titles) {
         UIButton* button = [[UIButton alloc] init];
         

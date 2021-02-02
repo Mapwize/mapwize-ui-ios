@@ -152,7 +152,7 @@
         [websiteButton addTarget:self action:@selector(websiteButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttons addObject:websiteButton];
     }
-    if (NO) {//place.sharable) {
+    if (placeDetails.shareLink) {
         MWZUIFullContentViewComponentButton* shareButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"SHARE" image:[UIImage systemImageNamed:@"square.and.arrow.up"] color:_color outlined:YES];
         [shareButton addTarget:self action:@selector(shareButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttons addObject:shareButton];
@@ -229,65 +229,6 @@
     return [[MWZUIBookingView alloc] initWithFrame:CGRectZero placeDetails:placeDetails color:_color];
 }
 
-- (UIView*) addBookingRowBelow:(UIView*) view {
-    
-    UIView* bookingRow = [[UIView alloc] initWithFrame:CGRectZero];
-    bookingRow.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:bookingRow];
-    [[bookingRow.topAnchor constraintEqualToAnchor:view.bottomAnchor constant:0.0] setActive:YES];
-    [[bookingRow.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:0.0] setActive:YES];
-    [[bookingRow.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:0.0] setActive:YES];
-    
-    UIImageView* bookingImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-    bookingImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [bookingImageView setImage:[[UIImage systemImageNamed:@"calendar.badge.clock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-    [bookingImageView setTintColor:_color];
-    [bookingRow addSubview:bookingImageView];
-    [[bookingImageView.leadingAnchor constraintEqualToAnchor:bookingRow.leadingAnchor constant:16] setActive:YES];
-    [[bookingImageView.topAnchor constraintEqualToAnchor:view.bottomAnchor constant:16.0] setActive:YES];
-    [[bookingImageView.heightAnchor constraintEqualToConstant:24] setActive:YES];
-    [[bookingImageView.widthAnchor constraintEqualToConstant:24] setActive:YES];
-    
-    UILabel* bookingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    bookingLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    [bookingLabel setFont:[UIFont systemFontOfSize:14]];
-    BOOL isOccupied = [self isOccupied:_placeDetails];
-    [bookingLabel setText:isOccupied?@"Currently occupied":@"Currently available"];
-    
-    [bookingRow addSubview:bookingLabel];
-    [[bookingLabel.leadingAnchor constraintEqualToAnchor:bookingImageView.trailingAnchor constant:36] setActive:YES];
-    [[bookingLabel.trailingAnchor constraintEqualToAnchor:bookingRow.trailingAnchor] setActive:YES];
-    [[bookingLabel.centerYAnchor constraintEqualToAnchor:bookingImageView.centerYAnchor constant:0.0] setActive:YES];
-    
-    MWZUIBookingView* gridView = [[MWZUIBookingView alloc] initWithFrame:CGRectZero placeDetails:_placeDetails color:_color];
-    gridView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:gridView];
-    [[gridView.topAnchor constraintEqualToAnchor:bookingImageView.bottomAnchor constant:16.0] setActive:YES];
-    [[gridView.heightAnchor constraintEqualToConstant:130] setActive:YES];
-    [[gridView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-16] setActive:YES];
-    [[gridView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:16] setActive:YES];
-    [[gridView.bottomAnchor constraintEqualToAnchor:bookingRow.bottomAnchor constant:0] setActive:YES];
-    return gridView;
-}
-
-- (BOOL) isOccupied:(MWZPlace*)place {
-    /*NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate now]];
-    NSInteger hour = [components hour];
-    NSInteger min = [components minute];
-    double time = hour + min/60.0;
-    
-    for (NSDictionary* event in mock.calendarEvents) {
-        double startTime = [event[@"startTime"] doubleValue];
-        double endTime = [event[@"endTime"] doubleValue];
-        if (startTime<time && endTime>time) {
-            return YES;
-        }
-    }*/
-    
-    return NO;
-}
-
 - (MWZUIFullContentViewComponentRow*) getWebsiteRowForPlaceDetails:(MWZPlaceDetails*)placeDetails {
     UILabel* websiteLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     websiteLabel.translatesAutoresizingMaskIntoConstraints = NO;
@@ -324,7 +265,7 @@
     [floorLabel setFont:[UIFont systemFontOfSize:14]];
     if (placeDetails) {
         if (placeDetails.floor) {
-            [floorLabel setText:[NSString stringWithFormat:@"%@", placeDetails.floor]];
+            [floorLabel setText:[NSString stringWithFormat:@"Floor %@", placeDetails.floor[@"number"]]];
         }
         else {
             [floorLabel setText:@"Outdoor"];
@@ -411,41 +352,6 @@
     }
     
     return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"clock"] contentView:_openingHoursView color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowOpeningHours infoAvailable:NO];
-}
-
-- (UIView*) addOpeningHoursRowBelow:(UIView*) view {
-    UIView* openingHoursRow = [[UIView alloc] initWithFrame:CGRectZero];
-    openingHoursRow.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:openingHoursRow];
-    [[openingHoursRow.topAnchor constraintEqualToAnchor:view.bottomAnchor constant:0.0] setActive:YES];
-    [[openingHoursRow.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:0.0] setActive:YES];
-    [[openingHoursRow.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:0.0] setActive:YES];
-    
-    UIImageView* openingHoursImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-    openingHoursImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [openingHoursImageView setImage:[[UIImage systemImageNamed:@"clock"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-    [openingHoursImageView setTintColor:_color];
-    [openingHoursRow addSubview:openingHoursImageView];
-    [[openingHoursImageView.leadingAnchor constraintEqualToAnchor:openingHoursRow.leadingAnchor constant:16] setActive:YES];
-    [[openingHoursImageView.topAnchor constraintEqualToAnchor:openingHoursRow.topAnchor constant:16.0] setActive:YES];
-    [[openingHoursImageView.heightAnchor constraintEqualToConstant:24] setActive:YES];
-    [[openingHoursImageView.widthAnchor constraintEqualToConstant:24] setActive:YES];
-    
-    _openingHoursView = [[MWZUIOpeningHoursView alloc] initWithFrame:CGRectZero];
-    _openingHoursView.translatesAutoresizingMaskIntoConstraints = NO;
-    [openingHoursRow addSubview:_openingHoursView];
-    [[_openingHoursView.leadingAnchor constraintEqualToAnchor:openingHoursImageView.trailingAnchor constant:16] setActive:YES];
-    [[_openingHoursView.trailingAnchor constraintEqualToAnchor:openingHoursRow.trailingAnchor] setActive:YES];
-    [[_openingHoursView.topAnchor constraintEqualToAnchor:openingHoursRow.topAnchor constant:16.0] setActive:YES];
-    [[_openingHoursView.bottomAnchor constraintEqualToAnchor:openingHoursRow.bottomAnchor constant:0] setActive:YES];
-    [_openingHoursView setOpeningHours:@[]];
-    
-    UITapGestureRecognizer *singleFingerTap =
-      [[UITapGestureRecognizer alloc] initWithTarget:self
-                                              action:@selector(toggleOpeningHours:)];
-    [openingHoursRow addGestureRecognizer:singleFingerTap];
-    
-    return openingHoursRow;
 }
 
 - (void)toggleOpeningHours:(UITapGestureRecognizer *)recognizer

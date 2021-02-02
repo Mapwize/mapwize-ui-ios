@@ -18,9 +18,6 @@
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [calendar components:(NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate now]];
     NSInteger weekday = [components weekday];
-    NSInteger hour = [components hour];
-    NSInteger min = [components minute];
-    NSInteger currentMin = hour * 60 + min;
     
     NSArray<MWZUIOpeningInterval*>* intervals = [MWZUIOpeningHoursUtils buildIntervals:input];
     
@@ -206,47 +203,6 @@
     return output;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*- (NSString*) getCurrentOpeningStateString:(NSArray<NSDictionary*>*) input {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate now]];
-    NSInteger weekday = [components weekday];
-    NSInteger hour = [components hour];
-    NSInteger min = [components minute];
-    NSInteger currentMin = hour * 60 + min;
-    
-    NSDictionary<NSNumber*, NSArray*>* openingByDay = [self convertToOpeningByDay:input];
-    // Check if open 24/7
-    
-    // Else
-    if ([self isOpenToday:openingByDay[[NSNumber numberWithLong:weekday]] minuts:currentMin]) {
-        // Get next close time
-    }
-    else {
-        // Get next open date
-    }
-    
-    return @"";
-}*/
-
 + (NSDictionary*) getNextCloseTime:(NSDictionary<NSNumber*, NSArray*>*)input day:(NSInteger)day minuts:(NSInteger)minuts {
     NSMutableArray<NSNumber*>* dayIndex = [[NSMutableArray alloc] init];
     for (int i=0; i<7; i++) {
@@ -311,7 +267,7 @@
 
 + (NSInteger) convertStringToMinuts:(NSString*) input {
     NSInteger hours = [[input substringWithRange:NSMakeRange(0, 2)] intValue];
-    NSInteger minutes = [[input substringWithRange:NSMakeRange(2, 2)] intValue];
+    NSInteger minutes = [[input substringWithRange:NSMakeRange(3, 2)] intValue];
     return hours * 60 + minutes;
 }
 

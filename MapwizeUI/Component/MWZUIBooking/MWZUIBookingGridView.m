@@ -1,12 +1,4 @@
-//
-//  MWZUIBookingGridView.m
-//  BottomSheet
-//
-//  Created by Etienne on 01/10/2020.
-//
-
 #import "MWZUIBookingGridView.h"
-@import MapwizeSDK;
 
 @interface MWZUIBookingGridView ()
 
@@ -68,10 +60,27 @@
 
     
     for (MWZPlaceDetailsEvent* event in _events) {
-        double startTime = [event.start doubleValue];
-        double endTime = [event.end doubleValue];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
+        NSDate *startDate = [dateFormatter dateFromString: event.start];
+        NSDate *endDate = [dateFormatter dateFromString: event.end];
+
+        if (![[NSCalendar currentCalendar] isDateInToday:startDate] && ![[NSCalendar currentCalendar] isDateInToday:endDate]) {
+            continue;
+        }
+        
+        NSDateComponents *startCoponents = [[NSCalendar currentCalendar] components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:startDate];
+        NSDateComponents *endCoponents = [[NSCalendar currentCalendar] components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:endDate];
+        
+        double startTime = [startCoponents hour] + [startCoponents minute] / 60.0;
+        double endTime = [endCoponents hour] + [endCoponents minute] / 60.0;
+        if (![[NSCalendar currentCalendar] isDateInToday:startDate] && [[NSCalendar currentCalendar] isDateInToday:endDate]) {
+            startTime = 0;
+        }
+        else if (![[NSCalendar currentCalendar] isDateInToday:endDate] && [[NSCalendar currentCalendar] isDateInToday:startDate]) {
+            endTime = 23.99;
+        }
         CGContextSetFillColorWithColor(context, _color.CGColor);
-        //CGContextFillRect(context, CGRectMake(startTime*_gridWidth, 10, (endTime-startTime)*_gridWidth, 100 - 1));
         
         [[UIBezierPath bezierPathWithRoundedRect:CGRectMake(startTime*_gridWidth, 10, (endTime-startTime)*_gridWidth, 100 - 1) byRoundingCorners:UIRectCornerTopLeft|UIRectCornerTopRight cornerRadii:CGSizeMake(8, 8)] fill];
         
