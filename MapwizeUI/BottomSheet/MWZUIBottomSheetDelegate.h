@@ -21,6 +21,8 @@
 
 - (void) didTapOnWebsiteButton;
 
+- (void) didTapOnInfoButton;
+
 @end
 
 #endif /* MWZUIBottomSheetDelegate_h */

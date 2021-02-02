@@ -63,7 +63,7 @@
 		8F8607CB219D67AB00281AB7 /* MWZUIIconTextButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860792219D67AB00281AB7 /* MWZUIIconTextButton.m */; };
 		8F8607CC219D67AB00281AB7 /* MWZUIBorderedTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860793219D67AB00281AB7 /* MWZUIBorderedTextField.h */; };
 		8F8607CD219D67AB00281AB7 /* MWZUICurrentLocationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860794219D67AB00281AB7 /* MWZUICurrentLocationView.h */; };
-		8F8607CF219D67AB00281AB7 /* MWZUIIconTextButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860796219D67AB00281AB7 /* MWZUIIconTextButton.h */; };
+		8F8607CF219D67AB00281AB7 /* MWZUIIconTextButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F860796219D67AB00281AB7 /* MWZUIIconTextButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8607D0219D67AB00281AB7 /* MWZUIBorderedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860797219D67AB00281AB7 /* MWZUIBorderedTextField.m */; };
 		8F8607D2219D67AB00281AB7 /* MWZUICurrentLocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F860799219D67AB00281AB7 /* MWZUICurrentLocationView.m */; };
 		8F8607D4219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F86079C219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.m */; };
@@ -112,11 +112,11 @@
 		8F927973252DD45B006CB433 /* MWZUIFullContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F927968252DD45B006CB433 /* MWZUIFullContentView.m */; };
 		8F927974252DD45B006CB433 /* MWZUIOpeningHoursView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F927969252DD45B006CB433 /* MWZUIOpeningHoursView.h */; };
 		8F927975252DD45B006CB433 /* MWZUIFullContentViewComponentRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F92796A252DD45B006CB433 /* MWZUIFullContentViewComponentRow.m */; };
-		8F927976252DD45B006CB433 /* MWZUIFullContentViewComponentRow.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F92796B252DD45B006CB433 /* MWZUIFullContentViewComponentRow.h */; };
+		8F927976252DD45B006CB433 /* MWZUIFullContentViewComponentRow.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F92796B252DD45B006CB433 /* MWZUIFullContentViewComponentRow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F927977252DD45B006CB433 /* MWZUIOpeningHoursView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F92796C252DD45B006CB433 /* MWZUIOpeningHoursView.m */; };
-		8F927978252DD45B006CB433 /* MWZUIBottomSheetComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F92796D252DD45B006CB433 /* MWZUIBottomSheetComponents.h */; };
+		8F927978252DD45B006CB433 /* MWZUIBottomSheetComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F92796D252DD45B006CB433 /* MWZUIBottomSheetComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F927979252DD45B006CB433 /* MWZUIBottomSheetComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F92796E252DD45B006CB433 /* MWZUIBottomSheetComponents.m */; };
-		8F92797A252DD45B006CB433 /* MWZUIFullContentViewComponentButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F92796F252DD45B006CB433 /* MWZUIFullContentViewComponentButton.h */; };
+		8F92797A252DD45B006CB433 /* MWZUIFullContentViewComponentButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F92796F252DD45B006CB433 /* MWZUIFullContentViewComponentButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F92797B252DD45B006CB433 /* MWZUIFullContentViewComponentButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F927970252DD45B006CB433 /* MWZUIFullContentViewComponentButton.m */; };
 		8F927A63252F28F0006CB433 /* MWZUIBottomSheetDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F927A62252F28F0006CB433 /* MWZUIBottomSheetDelegate.h */; };
 		8F927A8125306CAB006CB433 /* MWZUIPagerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F927A7F25306CAB006CB433 /* MWZUIPagerView.h */; };
@@ -181,9 +181,6 @@
 		8F787C4B23E453D1000EA02F /* MWZUIPaddingLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZUIPaddingLabel.m; sourceTree = "<group>"; };
 		8F787C4C23E453D1000EA02F /* MWZUIPaddingLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIPaddingLabel.h; sourceTree = "<group>"; };
 		8F787C5C23EAEDA7000EA02F /* MWZUIEventChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIEventChannel.h; sourceTree = "<group>"; };
-		8F847E0525514C3700F8A231 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		8F847E0625514C3F00F8A231 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		8F847E0725514C5000F8A231 /* nl-NL */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "nl-NL"; path = "nl-NL.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		8F847D2D25481AC000F8A231 /* MWZUIIssuesReportingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUIIssuesReportingViewController.h; sourceTree = "<group>"; };
 		8F847D2E25481AC000F8A231 /* MWZUIIssuesReportingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIIssuesReportingViewController.m; sourceTree = "<group>"; };
 		8F847D4B254ABC5200F8A231 /* MWZUIIssueTypeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUIIssueTypeView.h; sourceTree = "<group>"; };
@@ -192,6 +189,9 @@
 		8F847D5D254AC85A00F8A231 /* MWZUIIssueTypeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIIssueTypeCell.m; sourceTree = "<group>"; };
 		8F847D6D254AD1D900F8A231 /* MWZUICollectionViewFlowFlowLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUICollectionViewFlowFlowLayout.h; sourceTree = "<group>"; };
 		8F847D6E254AD1D900F8A231 /* MWZUICollectionViewFlowFlowLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUICollectionViewFlowFlowLayout.m; sourceTree = "<group>"; };
+		8F847E0525514C3700F8A231 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8F847E0625514C3F00F8A231 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8F847E0725514C5000F8A231 /* nl-NL */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "nl-NL"; path = "nl-NL.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		8F860776219D66A100281AB7 /* MapwizeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapwizeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F860779219D66A100281AB7 /* MapwizeUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapwizeUI.h; sourceTree = "<group>"; };
 		8F86077A219D66A100281AB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -277,7 +277,6 @@
 		8FF4115B25385AF2005A32CA /* MWZUIOpeningInterval.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIOpeningInterval.m; sourceTree = "<group>"; };
 		8FF4116B25388C8C005A32CA /* MWZUIOpeningHoursTodayTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUIOpeningHoursTodayTableViewCell.h; sourceTree = "<group>"; };
 		8FF4116C25388C8C005A32CA /* MWZUIOpeningHoursTodayTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIOpeningHoursTodayTableViewCell.m; sourceTree = "<group>"; };
-		95A637949CADFFF8509C533B /* Pods_MapwizeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapwizeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6B8D5702226785400A3AD82 /* MWZUIOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIOptions.m; sourceTree = "<group>"; };
 		C6B8D5722226786E00A3AD82 /* MWZUIOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUIOptions.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */

@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFrame:(CGRect) frame color:(UIColor*)color;
 
 - (void) showPlacePreview:(MWZPlacePreview*)placePreview;
-- (void) showPlaceDetails:(MWZPlaceDetails*)placeDetails language:(NSString*)language;
+- (void) showPlaceDetails:(MWZPlaceDetails*)placeDetails shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language;
 - (void) removeContent;
 
 @end

@@ -81,7 +81,7 @@ extension ViewController: MWZUIViewDelegate {
     }
     
     func mapwizeView(_ mapwizeView: MWZUIView, shouldShowInformationButtonFor mapwizeObject: MWZObject) -> Bool {
-        return false
+        return true
     }
     
     func mapwizeView(_ mapwizeView: MWZUIView, shouldShowFloorControllerFor floors: [MWZFloor]) -> Bool {
@@ -90,5 +90,12 @@ extension ViewController: MWZUIViewDelegate {
         }
         return false
     }
+    
+    /*func mapwizeView(_ mapwizeView: MWZUIView, requireComponentFor place: MWZPlace!, withDefaultComponents components: MWZUIBottomSheetComponents) -> MWZUIBottomSheetComponents {
+        components.minimizedViewButtons.removeAllObjects()
+        components.contentRows.removeAllObjects()
+        components.headerButtons.removeAllObjects()
+        return components
+    }*/
     
 }

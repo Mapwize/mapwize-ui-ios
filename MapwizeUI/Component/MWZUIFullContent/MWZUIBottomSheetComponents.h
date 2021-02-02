@@ -10,7 +10,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSMutableArray<MWZUIFullContentViewComponentRow*>* contentRows;
 @property (nonatomic) NSMutableArray<MWZUIIconTextButton*>* minimizedViewButtons;
 
-- (instancetype) initWithHeaderButtons:(NSMutableArray<MWZUIFullContentViewComponentButton*>*)headerButtons contentRows:(NSMutableArray<MWZUIFullContentViewComponentRow*>*) contentRows minimizedViewButtons:(NSMutableArray<MWZUIIconTextButton*>*) minimizedViewButtons;
+- (instancetype) initWithHeaderButtons:(NSMutableArray<MWZUIFullContentViewComponentButton*>*)headerButtons
+                           contentRows:(NSMutableArray<MWZUIFullContentViewComponentRow*>*) contentRows
+                  minimizedViewButtons:(NSMutableArray<MWZUIIconTextButton*>*) minimizedViewButtons;
 
 @end
 

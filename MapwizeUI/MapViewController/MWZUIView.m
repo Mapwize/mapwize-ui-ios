@@ -1095,6 +1095,9 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 }
 
 - (MWZUIBottomSheetComponents*) requireComponentForPlace:(MWZPlace*)place withDefaultComponents:(MWZUIBottomSheetComponents*)components {
+    if (_delegate && [_delegate respondsToSelector:@selector(mapwizeView:requireComponentForPlace:withDefaultComponents:)]) {
+        return [_delegate mapwizeView:self requireComponentForPlace:place withDefaultComponents:components];
+    }
     return components;
 }
 

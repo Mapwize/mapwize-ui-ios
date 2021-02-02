@@ -3,7 +3,8 @@
 
 @class MWZUIView;
 #import "MWZUIEventChannel.h"
-
+@import MapwizeSDK;
+@class MWZUIBottomSheetComponents;
 /**
  The MWZUIViewDelegate allow you to respond to the map events
  */
@@ -55,6 +56,8 @@
  @return YES if the information button should be displayed. NO otherwise
 */
 - (BOOL) mapwizeView:(MWZUIView* _Nonnull) mapwizeView shouldShowInformationButtonFor:(id<MWZObject> _Nonnull) mapwizeObject;
+
+- (MWZUIBottomSheetComponents* _Nonnull) mapwizeView:(MWZUIView* _Nonnull) mapwizeView requireComponentForPlace:(MWZPlace*)place withDefaultComponents:(MWZUIBottomSheetComponents* _Nonnull)components;
 
 /**
  Called when the available floors change

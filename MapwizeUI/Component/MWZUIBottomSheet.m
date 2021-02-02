@@ -90,7 +90,7 @@
     _placeDetails = nil;
 }
 
-- (void) showPlaceDetails:(MWZPlaceDetails*)placeDetails language:(NSString*)language {
+- (void) showPlaceDetails:(MWZPlaceDetails*)placeDetails shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language {
     _placePreview = nil;
     _placeDetails = placeDetails;
     [_headerImageCollectionView reloadData];
@@ -114,8 +114,8 @@
     [_fullContentView setHidden:YES];
     _fullContentView.alpha = 0.0;
     
-    NSMutableArray<MWZUIIconTextButton*>* minimizedViewButtons = [_defaultContentView buildButtonsForPlaceDetails:_placeDetails];
-    NSMutableArray<MWZUIFullContentViewComponentButton*>* fullHeaderButtons = [_fullContentView buildHeaderButtonsForPlaceDetails:_placeDetails language:language];
+    NSMutableArray<MWZUIIconTextButton*>* minimizedViewButtons = [_defaultContentView buildButtonsForPlaceDetails:_placeDetails showInfoButton:shouldShowInformationButton];
+    NSMutableArray<MWZUIFullContentViewComponentButton*>* fullHeaderButtons = [_fullContentView buildHeaderButtonsForPlaceDetails:_placeDetails  showInfoButton:shouldShowInformationButton language:language];
     NSMutableArray<MWZUIFullContentViewComponentRow*>* fullRows = [_fullContentView buildContentRowsForPlaceDetails:_placeDetails language:language];
     MWZUIBottomSheetComponents* components = [[MWZUIBottomSheetComponents alloc] initWithHeaderButtons:fullHeaderButtons contentRows:fullRows minimizedViewButtons:minimizedViewButtons];
     if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlaceDetails:withDefaultComponents:)]) {
@@ -168,8 +168,7 @@
     flowLayout.itemSize = CGSizeMake(self.frame.size.height/3, self.frame.size.height/3);
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     flowLayout.minimumInteritemSpacing = 40;
-    flowLayout.minimumLineSpacing = 2;
-    //flowLayout.minimumLineSpacing = 0;
+    flowLayout.minimumLineSpacing = 0;
     _headerImageCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
     _headerImageCollectionView.dataSource = self;
     _headerImageCollectionView.delegate = self;
@@ -376,9 +375,6 @@
 }
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    /*if (!_place || !_place.photos || _place.photos.count == 0) {
-        return 3;
-    }*/
     return [_placeDetails.photos count] >= 3 ? [_placeDetails.photos count] : 3;
 }
 
@@ -395,14 +391,49 @@
     [_delegate didTapOnDirectionButton];
 }
 
+- (void) didTapOnInfoButton {
+    [_delegate didTapOnInfoButton];
+}
+
 - (void) didTapOnCallButton {
     [_delegate didTapOnCallButton];
+    NSURL *urlOption1 = [NSURL URLWithString:[@"telprompt://" stringByAppendingString:_placeDetails.phone]];
+    NSURL *urlOption2 = [NSURL URLWithString:[@"tel://" stringByAppendingString:_placeDetails.phone]];
+    NSURL *targetURL = nil;
+    if ([UIApplication.sharedApplication canOpenURL:urlOption1]) {
+        targetURL = urlOption1;
+    } else if ([UIApplication.sharedApplication canOpenURL:urlOption2]) {
+        targetURL = urlOption2;
+    }
+
+    if (targetURL) {
+        if (@available(iOS 10.0, *)) {
+            [UIApplication.sharedApplication openURL:targetURL options:@{} completionHandler:nil];
+        } else {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            [UIApplication.sharedApplication openURL:targetURL];
+    #pragma clang diagnostic pop
+        }
+    }
 }
 - (void) didTapOnShareButton {
     [_delegate didTapOnShareButton];
+    NSArray *activityItems = @[_placeDetails.shareLink];
+    UIActivityViewController *activityViewControntroller = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+    activityViewControntroller.excludedActivityTypes = @[];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        activityViewControntroller.popoverPresentationController.sourceView = self;
+        activityViewControntroller.popoverPresentationController.sourceRect = CGRectMake(self.bounds.size.width/2, self.bounds.size.height/4, 0, 0);
+    }
+    [self.window.rootViewController presentViewController:activityViewControntroller animated:true completion:nil];
 }
 - (void) didTapOnWebsiteButton {
     [_delegate didTapOnWebsiteButton];
+    NSURL* url = [NSURL URLWithString:_placeDetails.website];
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+       [[UIApplication sharedApplication] openURL:url];
+    }
 }
 
 @end

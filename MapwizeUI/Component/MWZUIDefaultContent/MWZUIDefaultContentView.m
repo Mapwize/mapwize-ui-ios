@@ -76,7 +76,7 @@
         [[subtitle.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:8.0] setActive:YES];
         lastAnchorView = subtitle;
     }
-    if (_placeDetails.openingHours) {
+    if (_placeDetails.openingHours && [_placeDetails.openingHours count] > 0) {
         UILabel* openingHours = [[UILabel alloc] initWithFrame:CGRectZero];
         openingHours.translatesAutoresizingMaskIntoConstraints = NO;
         openingHours.textColor = [UIColor darkGrayColor];
@@ -90,32 +90,53 @@
         lastAnchorView = openingHours;
     }
     
+    if (buttons.count == 0) {
+        [[lastAnchorView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-8.0] setActive:YES];
+        return;
+    }
+    
+    UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+    scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    scrollView.showsHorizontalScrollIndicator = NO;
+    scrollView.showsVerticalScrollIndicator = NO;
+    [self addSubview:scrollView];
+    [[scrollView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor] setActive:YES];
+    [[scrollView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor] setActive:YES];
+    [[scrollView.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:8.0] setActive:YES];
+    [[scrollView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor] setActive:YES];
+    [[scrollView.heightAnchor constraintEqualToConstant:48] setActive:YES];
+    
     UIView* lastAnchorButton = nil;
     for (MWZUIIconTextButton* button in buttons) {
         button.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:button];
+        [scrollView addSubview:button];
         if (lastAnchorButton) {
-            [[button.leadingAnchor constraintEqualToAnchor:lastAnchorView.trailingAnchor constant:8.0] setActive:YES];
+            [[button.leadingAnchor constraintEqualToAnchor:lastAnchorButton.trailingAnchor constant:8.0] setActive:YES];
         }
         else {
-            [[button.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
+            [[button.leadingAnchor constraintEqualToAnchor:scrollView.leadingAnchor constant:8.0] setActive:YES];
         }
-        [[button.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:8.0] setActive:YES];
-        [[button.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-8.0] setActive:YES];
+        [[button.topAnchor constraintEqualToAnchor:scrollView.topAnchor constant:8.0] setActive:YES];
+        [[button.bottomAnchor constraintEqualToAnchor:scrollView.bottomAnchor constant:-8.0] setActive:YES];
         lastAnchorButton = button;
     }
-    if (buttons.count == 0) {
-        [[lastAnchorView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-8.0] setActive:YES];
-    }
+    [[lastAnchorButton.trailingAnchor constraintEqualToAnchor:scrollView.trailingAnchor] setActive:YES];
+    
 }
 
 
 
-- (NSMutableArray<MWZUIIconTextButton*>*) buildButtonsForPlaceDetails:(MWZPlaceDetails*)placeDetails {
+-(NSMutableArray<MWZUIIconTextButton*>*) buildButtonsForPlaceDetails:(MWZPlaceDetails*)placeDetails showInfoButton:(BOOL)showInfoButton {
     NSMutableArray<MWZUIIconTextButton*>* buttons = [[NSMutableArray alloc] init];
     MWZUIIconTextButton* directionButton = [[MWZUIIconTextButton alloc] initWithTitle:@"Direction" image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:NO];
     [buttons addObject:directionButton];
     [directionButton addTarget:self action:@selector(directionButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    if (showInfoButton) {
+        MWZUIIconTextButton* info = [[MWZUIIconTextButton alloc] initWithTitle:@"Information" image:[UIImage systemImageNamed:@"phone"] color:_color outlined:YES];
+        [buttons addObject:info];
+        [info addTarget:self action:@selector(infoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
     
     if (placeDetails.phone) {
         MWZUIIconTextButton* phoneButton = [[MWZUIIconTextButton alloc] initWithTitle:@"Call" image:[UIImage systemImageNamed:@"phone"] color:_color outlined:YES];
@@ -123,11 +144,27 @@
         [phoneButton addTarget:self action:@selector(phoneButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     
+    if (placeDetails.website) {
+        MWZUIIconTextButton* websiteButton = [[MWZUIIconTextButton alloc] initWithTitle:@"Website" image:[UIImage systemImageNamed:@"phone"] color:_color outlined:YES];
+        [buttons addObject:websiteButton];
+        [websiteButton addTarget:self action:@selector(websiteButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    if (placeDetails.shareLink) {
+        MWZUIIconTextButton* shareButton = [[MWZUIIconTextButton alloc] initWithTitle:@"Share" image:[UIImage systemImageNamed:@"phone"] color:_color outlined:YES];
+        [buttons addObject:shareButton];
+        [shareButton addTarget:self action:@selector(shareButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
     return buttons;
 }
 
 - (void) directionButtonAction:(UIButton*)button {
     [_delegate didTapOnDirectionButton];
+}
+
+- (void) infoButtonAction:(UIButton*)button {
+    [_delegate didTapOnInfoButton];
 }
 
 - (void) phoneButtonAction:(UIButton*)button {

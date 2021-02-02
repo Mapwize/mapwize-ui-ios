@@ -11,6 +11,8 @@
 
 - (void) didTapOnWebsiteButton;
 
+- (void) didTapOnInfoButton;
+
 @end
 
 #endif /* MWZUIFullContentViewDelegate_h */

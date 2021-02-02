@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(instancetype) initWithFrame:(CGRect)frame color:(UIColor*)color;
 
--(NSMutableArray<MWZUIIconTextButton*>*) buildButtonsForPlaceDetails:(MWZPlaceDetails*)placeDetails;
+-(NSMutableArray<MWZUIIconTextButton*>*) buildButtonsForPlaceDetails:(MWZPlaceDetails*)placeDetails showInfoButton:(BOOL)showInfoButton;
 -(void)setContentForPlaceDetails:(MWZPlaceDetails*)placeDetails
                  language:(NSString*)language
                   buttons:(NSMutableArray<MWZUIIconTextButton*>*)buttons;

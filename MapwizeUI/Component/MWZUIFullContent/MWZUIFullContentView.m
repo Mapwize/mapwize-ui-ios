@@ -84,30 +84,67 @@
     [[overview.leadingAnchor constraintEqualToAnchor:overviewScroll.leadingAnchor] setActive:YES];
     [[overview.trailingAnchor constraintEqualToAnchor:overviewScroll.trailingAnchor] setActive:YES];
     [[overview.widthAnchor constraintEqualToAnchor:overviewScroll.widthAnchor] setActive:YES];
-    //[[overviewScroll.widthAnchor constraintEqualToAnchor:self.widthAnchor] setActive:YES];
-    _headerButtonStackView = [[UIStackView alloc] initWithFrame:CGRectZero];
-    _headerButtonStackView.translatesAutoresizingMaskIntoConstraints = NO;
-    _headerButtonStackView.distribution = UIStackViewDistributionFillEqually;
-    _headerButtonStackView.alignment = UIStackViewAlignmentLeading;
-    _headerButtonStackView.axis = UILayoutConstraintAxisHorizontal;
-    [overview addSubview:_headerButtonStackView];
-    [[_headerButtonStackView.topAnchor constraintEqualToAnchor:overview.topAnchor constant:0.0] setActive:YES];
-    [[_headerButtonStackView.leadingAnchor constraintEqualToAnchor:overview.leadingAnchor constant:16.0] setActive:YES];
-    [[_headerButtonStackView.trailingAnchor constraintLessThanOrEqualToAnchor:overview.trailingAnchor constant:-16.0] setActive:YES];
-    [[_headerButtonStackView.heightAnchor constraintEqualToConstant:70] setActive:YES];
     
-    for (MWZUIFullContentViewComponentButton* button in buttons) {
-        [_headerButtonStackView addArrangedSubview:button];
+    UIView* lastView;
+    
+    if ([buttons count] <= 4) {
+        _headerButtonStackView = [[UIStackView alloc] initWithFrame:CGRectZero];
+        _headerButtonStackView.translatesAutoresizingMaskIntoConstraints = NO;
+        _headerButtonStackView.distribution = UIStackViewDistributionFillEqually;
+        _headerButtonStackView.alignment = UIStackViewAlignmentLeading;
+        _headerButtonStackView.axis = UILayoutConstraintAxisHorizontal;
+        [overview addSubview:_headerButtonStackView];
+        [[_headerButtonStackView.topAnchor constraintEqualToAnchor:overview.topAnchor constant:0.0] setActive:YES];
+        [[_headerButtonStackView.leadingAnchor constraintEqualToAnchor:overview.leadingAnchor constant:16.0] setActive:YES];
+        [[_headerButtonStackView.trailingAnchor constraintLessThanOrEqualToAnchor:overview.trailingAnchor constant:-16.0] setActive:YES];
+        [[_headerButtonStackView.heightAnchor constraintEqualToConstant:70] setActive:YES];
+        
+        for (MWZUIFullContentViewComponentButton* button in buttons) {
+            [_headerButtonStackView addArrangedSubview:button];
+        }
+        
+        if (buttons.count == 4) {
+            [[_headerButtonStackView.widthAnchor constraintEqualToAnchor:overview.widthAnchor constant:-32] setActive:YES];
+        }
+        else {
+            [[_headerButtonStackView.widthAnchor constraintLessThanOrEqualToAnchor:overview.widthAnchor constant:-32] setActive:YES];
+        }
+        lastView = [self addSeparatorBelow:_headerButtonStackView inView:overview marginTop:16];
     }
     
-    if (buttons.count == 4) {
-        [[_headerButtonStackView.widthAnchor constraintEqualToAnchor:overview.widthAnchor constant:-32] setActive:YES];
-    }
     else {
-        [[_headerButtonStackView.widthAnchor constraintLessThanOrEqualToAnchor:overview.widthAnchor constant:-32] setActive:YES];
+        UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+        scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+        scrollView.showsHorizontalScrollIndicator = NO;
+        scrollView.showsVerticalScrollIndicator = NO;
+        [overview addSubview:scrollView];
+        [[scrollView.topAnchor constraintEqualToAnchor:overview.topAnchor constant:0.0] setActive:YES];
+        [[scrollView.leadingAnchor constraintEqualToAnchor:overview.leadingAnchor constant:0.0] setActive:YES];
+        [[scrollView.trailingAnchor constraintEqualToAnchor:overview.trailingAnchor constant:0.0] setActive:YES];
+        [[scrollView.heightAnchor constraintEqualToConstant:80] setActive:YES];
+        
+        UIView* lastAnchorButton = nil;
+        for (MWZUIFullContentViewComponentButton* button in buttons) {
+            button.translatesAutoresizingMaskIntoConstraints = NO;
+            [scrollView addSubview:button];
+            if (lastAnchorButton) {
+                [[button.leadingAnchor constraintEqualToAnchor:lastAnchorButton.trailingAnchor constant:8.0] setActive:YES];
+            }
+            else {
+                [[button.leadingAnchor constraintEqualToAnchor:scrollView.leadingAnchor constant:8.0] setActive:YES];
+            }
+            [[button.widthAnchor constraintEqualToConstant:100] setActive:YES];
+            [[button.topAnchor constraintEqualToAnchor:scrollView.topAnchor constant:8.0] setActive:YES];
+            [[button.bottomAnchor constraintEqualToAnchor:scrollView.bottomAnchor constant:-8.0] setActive:YES];
+            lastAnchorButton = button;
+        }
+        [[lastAnchorButton.trailingAnchor constraintEqualToAnchor:scrollView.trailingAnchor] setActive:YES];
+        
+        lastView = [self addSeparatorBelow:scrollView inView:overview marginTop:16];
     }
     
-    UIView* lastView = [self addSeparatorBelow:_headerButtonStackView inView:overview marginTop:16];
+    
+    
     
     for (MWZUIFullContentViewComponentRow* row in rows) {
         lastView = [self addRow:row inView:overview below:lastView];
@@ -137,11 +174,18 @@
     [_pagerView build];
 }
 
-- (NSMutableArray<MWZUIFullContentViewComponentButton*>*) buildHeaderButtonsForPlaceDetails:(MWZPlaceDetails*)placeDetails language:(NSString*)language {
+- (NSMutableArray<MWZUIFullContentViewComponentButton*>*) buildHeaderButtonsForPlaceDetails:(MWZPlaceDetails*)placeDetails
+                                                                             showInfoButton:(BOOL)shouldShowInformationButton
+                                                                                   language:(NSString*)language {
     NSMutableArray<MWZUIFullContentViewComponentButton*>* buttons = [[NSMutableArray alloc] init];
     MWZUIFullContentViewComponentButton* directionButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"DIRECTIONS" image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:NO];
     [directionButton addTarget:self action:@selector(directionButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [buttons addObject:directionButton];
+    if (shouldShowInformationButton) {
+        MWZUIFullContentViewComponentButton* informationButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"INFORMATION" image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:YES];
+        [informationButton addTarget:self action:@selector(informationButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [buttons addObject:informationButton];
+    }
     if (placeDetails.phone) {
         MWZUIFullContentViewComponentButton* phoneButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:@"CALL" image:[UIImage systemImageNamed:@"phone.fill"] color:_color outlined:YES];
         [phoneButton addTarget:self action:@selector(phoneButtonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -165,6 +209,7 @@
     NSMutableArray<MWZUIFullContentViewComponentRow*>* unfilledRow = [[NSMutableArray alloc] init];
     if (placeDetails.floor) {
         MWZUIFullContentViewComponentRow* row = [self getFloorRowForPlaceDetails:placeDetails];
+        
         [rows addObject:row];
     }
     else {
@@ -181,6 +226,7 @@
     }
     if (placeDetails.phone) {
         MWZUIFullContentViewComponentRow* row = [self getPhoneRowForPlaceDetails:placeDetails];
+        
         [rows addObject:row];
     }
     else {
@@ -242,7 +288,10 @@
         NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
         NSTextCheckingResult *match = [regex firstMatchInString:searchedString options:0 range: searchedRange];
         [websiteLabel setText:[searchedString substringWithRange:[match rangeAtIndex:1]]];
-        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"network"] contentView:websiteLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
+        UITapGestureRecognizer *singleFingerTap =
+          [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                  action:@selector(websiteButtonAction:)];
+        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"network"] contentView:websiteLabel color:_color tapGestureRecognizer:singleFingerTap type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {
         [websiteLabel setText:@"Website not available"];
@@ -252,9 +301,6 @@
         websiteLabel.textColor = [UIColor darkGrayColor];
         return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"network"] contentView:websiteLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:NO];
     }
-    /*UITapGestureRecognizer *singleFingerTap =
-      [[UITapGestureRecognizer alloc] initWithTarget:self
-                                              action:@selector(toggleOpeningHours:)];*/
     
     
 }
@@ -306,7 +352,10 @@
     [phoneLabel setFont:[UIFont systemFontOfSize:14]];
     if (placeDetails && placeDetails.phone) {
         [phoneLabel setText:[placeDetails.phone stringByReplacingOccurrencesOfString:@"." withString:@" "]];
-        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"phone"] contentView:phoneLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
+        UITapGestureRecognizer *singleFingerTap =
+          [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                  action:@selector(phoneButtonAction:)];
+        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"phone"] contentView:phoneLabel color:_color tapGestureRecognizer:singleFingerTap type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {
         [phoneLabel setText:@"Phone number not available"];
@@ -317,28 +366,6 @@
         return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"phone"] contentView:phoneLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:NO];
     }
 }
-
-/*- (void) handlePhoneTap:(UITapGestureRecognizer*) recognier {
-    NSURL *urlOption1 = [NSURL URLWithString:[@"telprompt://" stringByAppendingString:_mock.phoneNumber]];
-    NSURL *urlOption2 = [NSURL URLWithString:[@"tel://" stringByAppendingString:_mock.phoneNumber]];
-    NSURL *targetURL = nil;
-    if ([UIApplication.sharedApplication canOpenURL:urlOption1]) {
-        targetURL = urlOption1;
-    } else if ([UIApplication.sharedApplication canOpenURL:urlOption2]) {
-        targetURL = urlOption2;
-    }
-
-    if (targetURL) {
-        if (@available(iOS 10.0, *)) {
-            [UIApplication.sharedApplication openURL:targetURL options:@{} completionHandler:nil];
-        } else {
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            [UIApplication.sharedApplication openURL:targetURL];
-    #pragma clang diagnostic pop
-        }
-    }
-}*/
 
 - (MWZUIFullContentViewComponentRow*) getOpeningHoursRowForPlaceDetails:(MWZPlaceDetails*)placeDetails {
     _openingHoursView = [[MWZUIOpeningHoursView alloc] initWithFrame:CGRectZero];
@@ -387,5 +414,10 @@
 - (void) websiteButtonAction:(UIButton*)button {
     [_delegate didTapOnWebsiteButton];
 }
+
+- (void) informationButtonAction:(UIButton*)button {
+    [_delegate didTapOnInfoButton];
+}
+
 
 @end

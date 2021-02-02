@@ -82,19 +82,30 @@ static double gridWidth = 25;
 }
 
 - (BOOL) isOccupied:(MWZPlaceDetails*)placeDetails {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate now]];
-    NSInteger hour = [components hour];
-    NSInteger min = [components minute];
-    double time = hour + min/60.0;
-    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
+
     for (MWZPlaceDetailsEvent* event in placeDetails.events) {
-        if (event.start.doubleValue<time && event.end.doubleValue>time) {
+        NSDate *startDate = [dateFormatter dateFromString: event.start];
+        NSDate *endDate = [dateFormatter dateFromString: event.end];
+        if ([self date:[NSDate now] isBetweenDate:startDate andDate:endDate]) {
             return YES;
         }
     }
     
     return NO;
 }
+
+- (BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate
+{
+    if ([date compare:beginDate] == NSOrderedAscending)
+        return NO;
+
+    if ([date compare:endDate] == NSOrderedDescending)
+        return NO;
+
+    return YES;
+}
+
 
 @end

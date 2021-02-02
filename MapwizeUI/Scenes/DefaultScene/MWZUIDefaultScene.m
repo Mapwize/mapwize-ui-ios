@@ -166,7 +166,7 @@
         [self.bottomSheet showPlacePreview:object];
     }
     if ([object isKindOfClass:MWZPlaceDetails.class]) {
-        [self.bottomSheet showPlaceDetails:object language:language];
+        [self.bottomSheet showPlaceDetails:object shouldShowInformationButton:showInfoButton language:language];
     }
     if ([object isKindOfClass:MWZPlacelist.class]) {
         //[self.bottomSheet showMock:[MWZUIPlaceMock getMock1]];
@@ -233,6 +233,10 @@
 
 - (void) didTapOnWebsiteButton {
     [_delegate didTapOnWebsiteButton];
+}
+
+- (void) didTapOnInfoButton {
+    [_delegate didTapOnInformationButton];
 }
 
 - (MWZUIBottomSheetComponents *)requireComponentForPlaceDetails:(MWZPlaceDetails *)placeDetails withDefaultComponents:(MWZUIBottomSheetComponents *)components {
