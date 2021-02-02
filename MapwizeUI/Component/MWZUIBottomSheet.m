@@ -90,6 +90,29 @@
     _placeDetails = nil;
 }
 
+- (void) showPlacelist:(MWZPlacelist*)placelist shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language {
+    _placeDetails = nil;
+    _placePreview = nil;
+    [_defaultContentView removeFromSuperview];
+    [_fullContentView removeFromSuperview];
+    _defaultContentView = [[MWZUIDefaultContentView alloc] initWithFrame:self.frame color:_color];
+    _defaultContentView.translatesAutoresizingMaskIntoConstraints = NO;
+    _defaultContentView.delegate = self;
+    [_contentView addSubview:_defaultContentView];
+    [[_defaultContentView.leadingAnchor constraintEqualToAnchor:_contentView.leadingAnchor] setActive:YES];
+    [[_defaultContentView.trailingAnchor constraintEqualToAnchor:_contentView.trailingAnchor] setActive:YES];
+    [[_defaultContentView.topAnchor constraintEqualToAnchor:_contentView.topAnchor] setActive:YES];
+    
+    NSMutableArray<MWZUIIconTextButton*>* buttons = [_defaultContentView buildButtonsForPlacelist:placelist showInfoButton:shouldShowInformationButton];
+    
+    [_defaultContentView setContentForPlacelist:placelist language:language buttons:buttons];
+    [_defaultContentView layoutIfNeeded];
+    self.defaultContentHeight = _defaultContentView.frame.size.height + self.safeAreaInsets.bottom;
+    if (!_placeDetails) {
+        [self animateToHeight:self.defaultContentHeight];
+    }
+}
+
 - (void) showPlaceDetails:(MWZPlaceDetails*)placeDetails shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language {
     _placePreview = nil;
     _placeDetails = placeDetails;
@@ -192,6 +215,9 @@
 }
 
 - (void) dragView:(UIPanGestureRecognizer*) sender {
+    if (!_fullContentView) {
+        return;
+    }
     CGPoint translation = [sender translationInView:sender.view.superview];
     if (sender.state == UIGestureRecognizerStateBegan) {
         _currentTranslation = self.frame.origin.y;

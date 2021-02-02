@@ -108,6 +108,9 @@
                      language:sceneProperties.language
                showInfoButton:!sceneProperties.infoButtonHidden];
         }
+        else if ([sceneProperties.selectedContent isKindOfClass:MWZPlacelist.class]) {
+            [self showContent:sceneProperties.selectedContent language:sceneProperties.language showInfoButton:NO];
+        }
         else if (_sceneProperties.selectedContent) {
             [self hideContent];
         }
@@ -169,6 +172,7 @@
         [self.bottomSheet showPlaceDetails:object shouldShowInformationButton:showInfoButton language:language];
     }
     if ([object isKindOfClass:MWZPlacelist.class]) {
+        [self.bottomSheet showPlacelist:object shouldShowInformationButton:showInfoButton language:language];
         //[self.bottomSheet showMock:[MWZUIPlaceMock getMock1]];
         /*[self.bottomInfoView selectContentWithPlaceList:(MWZPlacelist*)object
                                                language:language

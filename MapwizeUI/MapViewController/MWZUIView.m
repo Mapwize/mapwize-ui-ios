@@ -827,6 +827,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     self.selectedContent = placeList;
     MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.selectedContent = self.selectedContent;
+    defaultProperties.placeDetails = nil;
     defaultProperties.language = [self.mapView getLanguage];
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
         defaultProperties.infoButtonHidden = ![self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
