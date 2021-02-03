@@ -30,10 +30,10 @@
 "Call" = "Call";
 "Website" = "Website";
 "Share" = "Share";
-"Opened 24/7" = "Opened 24/7";
-"Opened - closes %@ at %@" = "Opened - closes %@ at %@";
-"Opened - closes tomorrow at %@" = "Opened - closes tomorrow at %@";
-"Opened - closes at %@" = "Opened - closes at %@";
+"Open 24/7" = "Open 24/7";
+"Open - closes %@ at %@" = "Open - closes %@ at %@";
+"Open - closes tomorrow at %@" = "Open - closes tomorrow at %@";
+"Open - closes at %@" = "Open - closes at %@";
 "Closed - opens at %@" = "Closed - opens at %@";
 "Closed - opens tomorrow at %@" = "Closed - opens tomorrow at %@";
 "Closed - opens %@ at %@" = "Closed - opens %@ at %@";
