@@ -23,7 +23,6 @@
 #import "MWZUIUniversesButtonDelegate.h"
 #import "MWZUIBottomSheetComponents.h"
 #import "MWZUIOpeningHoursUtils.h"
-#import "MWZUIIssuesReportingViewController.h"
 
 typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZViewStateDefault,

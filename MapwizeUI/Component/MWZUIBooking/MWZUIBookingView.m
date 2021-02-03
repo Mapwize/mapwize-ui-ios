@@ -64,7 +64,7 @@ static double gridWidth = 25;
         
         
         NSCalendar *calendar = [NSCalendar currentCalendar];
-        NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate now]];
+        NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate date]];
         NSInteger hour = [components hour];
         NSInteger min = [components minute];
         double time = hour + min/60.0;
@@ -88,7 +88,7 @@ static double gridWidth = 25;
     for (MWZPlaceDetailsEvent* event in placeDetails.events) {
         NSDate *startDate = [dateFormatter dateFromString: event.start];
         NSDate *endDate = [dateFormatter dateFromString: event.end];
-        if ([self date:[NSDate now] isBetweenDate:startDate andDate:endDate]) {
+        if ([self date:[NSDate date] isBetweenDate:startDate andDate:endDate]) {
             return YES;
         }
     }

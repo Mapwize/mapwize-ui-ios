@@ -5,7 +5,7 @@
 
 + (NSArray<MWZUIOpeningInterval*>*) getSortedIntervals:(NSArray<NSDictionary*>*) input {
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:(NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate now]];
+    NSDateComponents *components = [calendar components:(NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate date]];
     NSInteger weekday = [components weekday];
     NSInteger hour = [components hour];
     NSInteger min = [components minute];
@@ -16,7 +16,7 @@
 
 + (NSArray<NSDictionary*>*) getOpeningStrings:(NSArray<NSDictionary*>*) input {
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:(NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate now]];
+    NSDateComponents *components = [calendar components:(NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate date]];
     NSInteger weekday = [components weekday];
     
     NSArray<MWZUIOpeningInterval*>* intervals = [MWZUIOpeningHoursUtils buildIntervals:input];
@@ -54,7 +54,7 @@
 
 + (NSString*) getCurrentOpeningStateString:(NSArray<NSDictionary*>*) input {
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:(NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate now]];
+    NSDateComponents *components = [calendar components:(NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate date]];
     NSInteger weekday = [components weekday];
     NSInteger hour = [components hour];
     NSInteger min = [components minute];
