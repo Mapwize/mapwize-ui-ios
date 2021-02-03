@@ -12,7 +12,7 @@
 
 - (instancetype) initWithDay:(NSInteger)day open:(NSInteger)open close:(NSInteger)close {
     if (self = [super init]) {
-        _day = day;
+        _day = day + 1;
         _open = open;
         _close = close;
     }

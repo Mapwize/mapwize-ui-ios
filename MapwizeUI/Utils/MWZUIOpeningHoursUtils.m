@@ -94,7 +94,7 @@
                 return [NSString stringWithFormat:NSLocalizedString(@"Closed - opens at %@", @""), [MWZUIOpeningHoursUtils getFormattedHours:openingInterval.open]];
             }
             else {
-                if (openingInterval.day - currentInterval.day == 1 || openingInterval.day - currentInterval.day == 6) {
+                if (openingInterval.day - weekday == 1 || openingInterval.day - weekday == -6) {
                     return [NSString stringWithFormat:NSLocalizedString(@"Closed - opens tomorrow at %@", @""), [MWZUIOpeningHoursUtils getFormattedHours:openingInterval.open]];
                 }
                 else {
@@ -174,9 +174,18 @@
         MWZUIOpeningInterval* int1 = obj1;
         MWZUIOpeningInterval* int2 = obj2;
         if (int1.day == int2.day) {
-            return int1.open < int2.open;
+            if (int1.open < int2.open) {
+                return NSOrderedAscending;
+            }
+            //return int1.open < int2.open;
         }
-        return int1.day < int2.day;
+        if (int1.day < int2.day) {
+            return NSOrderedAscending;
+        }
+        else {
+            return NSOrderedDescending;
+        }
+       // return int1.day < int2.day;
     }];
     
     int index = -1;
