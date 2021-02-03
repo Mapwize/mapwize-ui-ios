@@ -83,7 +83,11 @@
     [[_defaultContentView.topAnchor constraintEqualToAnchor:_contentView.topAnchor] setActive:YES];
     [_defaultContentView setPlacePreview:placePreview];
     [_defaultContentView layoutIfNeeded];
-    self.defaultContentHeight = _defaultContentView.frame.size.height + self.safeAreaInsets.bottom;
+    if (@available(iOS 11.0, *)) {
+        self.defaultContentHeight = _defaultContentView.frame.size.height + self.safeAreaInsets.bottom;
+    } else {
+        self.defaultContentHeight = _defaultContentView.frame.size.height;
+    }
     if (!_placeDetails) {
         [self animateToHeight:self.defaultContentHeight];
     }
@@ -107,7 +111,11 @@
     
     [_defaultContentView setContentForPlacelist:placelist language:language buttons:buttons];
     [_defaultContentView layoutIfNeeded];
-    self.defaultContentHeight = _defaultContentView.frame.size.height + self.safeAreaInsets.bottom;
+    if (@available(iOS 11.0, *)) {
+        self.defaultContentHeight = _defaultContentView.frame.size.height + self.safeAreaInsets.bottom;
+    } else {
+        self.defaultContentHeight = _defaultContentView.frame.size.height;
+    }
     if (!_placeDetails) {
         [self animateToHeight:self.defaultContentHeight];
     }
@@ -149,7 +157,11 @@
     [_fullContentView setContentForPlaceDetails:_placeDetails language:language buttons:components.headerButtons rows:components.contentRows];
     
     [_defaultContentView layoutIfNeeded];
-    self.defaultContentHeight = _defaultContentView.frame.size.height + self.safeAreaInsets.bottom;
+    if (@available(iOS 11.0, *)) {
+        self.defaultContentHeight = _defaultContentView.frame.size.height + self.safeAreaInsets.bottom;
+    } else {
+        self.defaultContentHeight = _defaultContentView.frame.size.height;
+    }
     if (_placeDetails.photos && _placeDetails.photos.count > 0) {
         _maximizedHeaderHeight = _parentFrame.size.height * 1/3;
         [self animateToHeight:self.defaultHeaderHeight + self.defaultContentHeight];

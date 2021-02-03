@@ -37,7 +37,7 @@
     [[_titleTextView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-8.0] setActive:YES];
     [[_titleTextView.topAnchor constraintEqualToAnchor:self.topAnchor constant:8.0] setActive:YES];
     
-    UIActivityIndicatorView* progressView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
+    UIActivityIndicatorView* progressView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
     progressView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:progressView];
     [progressView startAnimating];
