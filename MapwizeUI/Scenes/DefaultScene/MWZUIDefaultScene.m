@@ -206,10 +206,10 @@
     [_delegate didTapOnInformationButton];
 }
 
-- (MWZUIBottomSheetComponents *)requireComponentForPlace:(MWZPlace *)place
+- (MWZUIBottomSheetComponents *)requireComponentForPlaceDetails:(MWZPlace *)place
                                    withDefaultComponents:(MWZUIBottomSheetComponents *)components {
-    if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlace:withDefaultComponents:)]) {
-        return [_delegate requireComponentForPlace:place withDefaultComponents:components];
+    if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlaceDetails:withDefaultComponents:)]) {
+        return [_delegate requireComponentForPlaceDetails:place withDefaultComponents:components];
     }
     return components;
 }
@@ -241,13 +241,6 @@
 
 - (void) didTapOnInfoButton {
     [_delegate didTapOnInformationButton];
-}
-
-- (MWZUIBottomSheetComponents *)requireComponentForPlaceDetails:(MWZPlaceDetails *)placeDetails withDefaultComponents:(MWZUIBottomSheetComponents *)components {
-    if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlace:withDefaultComponents:)]) {
-        return [_delegate requireComponentForPlace:_sceneProperties.selectedContent withDefaultComponents:components];
-    }
-    return components;
 }
 
 

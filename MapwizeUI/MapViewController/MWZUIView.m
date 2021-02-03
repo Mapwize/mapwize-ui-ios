@@ -1094,9 +1094,9 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     [self unselectContent];
 }
 
-- (MWZUIBottomSheetComponents*) requireComponentForPlace:(MWZPlace*)place withDefaultComponents:(MWZUIBottomSheetComponents*)components {
-    if (_delegate && [_delegate respondsToSelector:@selector(mapwizeView:requireComponentForPlace:withDefaultComponents:)]) {
-        return [_delegate mapwizeView:self requireComponentForPlace:place withDefaultComponents:components];
+- (MWZUIBottomSheetComponents*) requireComponentForPlaceDetails:(MWZPlaceDetails*)placeDetails withDefaultComponents:(MWZUIBottomSheetComponents*)components {
+    if (_delegate && [_delegate respondsToSelector:@selector(mapwizeView:requireComponentForPlaceDetails:withDefaultComponents:)]) {
+        return [_delegate mapwizeView:self requireComponentForPlaceDetails:placeDetails withDefaultComponents:components];
     }
     return components;
 }

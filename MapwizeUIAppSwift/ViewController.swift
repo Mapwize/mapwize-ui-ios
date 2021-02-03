@@ -91,7 +91,7 @@ extension ViewController: MWZUIViewDelegate {
         return false
     }
     
-    /*func mapwizeView(_ mapwizeView: MWZUIView, requireComponentFor place: MWZPlace!, withDefaultComponents components: MWZUIBottomSheetComponents) -> MWZUIBottomSheetComponents {
+    /*func mapwizeView(_ mapwizeView: MWZUIView, requireComponentFor placeDetails: MWZPlaceDetails!, withDefaultComponents components: MWZUIBottomSheetComponents) -> MWZUIBottomSheetComponents {
         components.minimizedViewButtons.removeAllObjects()
         components.contentRows.removeAllObjects()
         components.headerButtons.removeAllObjects()

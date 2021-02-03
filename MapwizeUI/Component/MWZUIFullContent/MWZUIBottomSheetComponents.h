@@ -4,6 +4,9 @@
 #import "MWZUIIconTextButton.h"
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ MWZUIBottomSheetComponents is used as container for all the content displayed in the bottomsheet.
+ */
 @interface MWZUIBottomSheetComponents : NSObject
 
 @property (nonatomic) NSMutableArray<MWZUIFullContentViewComponentButton*>* headerButtons;

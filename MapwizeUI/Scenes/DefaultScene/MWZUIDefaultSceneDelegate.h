@@ -2,7 +2,7 @@
 #define MWZUIDefaultSceneDelegate_h
 
 @class MWZUIBottomSheetComponents;
-@class MWZPlace;
+@class MWZPlaceDetails;
 @class MWZPlacelist;
 @class MWZUIBottomSheetComponents;
 
@@ -11,7 +11,7 @@
 - (void) didTapOnSearchButton;
 - (void) didTapOnMenuButton;
 - (void) didTapOnInformationButton;
-- (MWZUIBottomSheetComponents*) requireComponentForPlace:(MWZPlace*)place withDefaultComponents:(MWZUIBottomSheetComponents*)components;
+- (MWZUIBottomSheetComponents*) requireComponentForPlaceDetails:(MWZPlaceDetails*)placeDetails withDefaultComponents:(MWZUIBottomSheetComponents*)components;
 - (MWZUIBottomSheetComponents*) requireComponentForPlacelist:(MWZPlacelist*)placelist withDefaultComponents:(MWZUIBottomSheetComponents*)components;
 - (void) didClose;
 - (void) didTapOnDirectionButton;
