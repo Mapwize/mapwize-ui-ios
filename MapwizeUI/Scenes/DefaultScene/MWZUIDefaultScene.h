@@ -6,15 +6,16 @@
 #import "MWZUIBottomInfoViewDelegate.h"
 #import "MWZUIScene.h"
 #import "MWZUIDefaultSceneProperties.h"
+#import "MWZUIBottomSheet.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MWZUIDefaultScene : NSObject <MWZUIScene, MWZUIMapViewMenuBarDelegate, MWZUIBottomInfoViewDelegate>
+@interface MWZUIDefaultScene : NSObject <MWZUIScene, MWZUIMapViewMenuBarDelegate, MWZUIBottomInfoViewDelegate, MWZUIBottomSheetDelegate>
 
 - (instancetype) initWith:(UIColor*) mainColor menuIsHidden:(BOOL) menuIsHidden;
 
 @property (nonatomic) MWZUIMapViewMenuBar* menuBar;
-@property (nonatomic) MWZUIBottomInfoView* bottomInfoView;
+@property (nonatomic) MWZUIBottomSheet* bottomSheet;
 @property (nonatomic) UIColor* mainColor;
 @property (assign) BOOL menuIsHidden;
 @property (nonatomic, weak) id<MWZUIDefaultSceneDelegate> delegate;

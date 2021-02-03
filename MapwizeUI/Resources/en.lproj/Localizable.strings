@@ -16,3 +16,27 @@
 "Choose your preferred language" = "Choose your preferred language";
 "Cancel" = "Cancel";
 "Search error" = "Search went wrong";
+"Outdoor" = "Outdoor";
+"Website not available" = "Website not available";
+"Capacity not available" = "Capacity not available";
+"Floor not available" = "Floor not available";
+"Phone number not available" = "Phone number not available";
+"Opening hours not available" = "Opening hours not available";
+"Currently occupied" = "Currently occupied";
+"Currently available" = "Currently available";
+"Schedule not available" = "Schedule not available";
+"Overview" = "Overview";
+"Details" = "Details";
+"Call" = "Call";
+"Website" = "Website";
+"Share" = "Share";
+"Opened 24/7" = "Opened 24/7";
+"Open - close %@ at %@" = "Open - close %@ at %@";
+"Open - close tomorrow at %@" = "Open - close tomorrow at %@";
+"Open - close at %@" = "Open - close at %@";
+"Close - open at %@" = "Close - open at %@";
+"Close - open tomorrow at %@" = "Close - open tomorrow at %@";
+"Close - open %@ at %@" = "Close - open %@ at %@";
+"Closed 24/7" = "Closed 24/7";
+"Close" = "Close";
+

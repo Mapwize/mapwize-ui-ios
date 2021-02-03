@@ -1,4 +1,6 @@
 #import "MWZUIDefaultScene.h"
+#import "MWZUIBottomSheetDelegate.h"
+#import "MWZUIBottomSheetComponents.h"
 
 @implementation MWZUIDefaultScene
 
@@ -75,58 +77,12 @@
                                        constant:16.0f] setActive:YES];
     }
     
-    self.bottomInfoView = [[MWZUIBottomInfoView alloc] initWithColor:self.mainColor];
-    self.bottomInfoView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.bottomInfoView.delegate = self;
-    [view addSubview:self.bottomInfoView];
-    
-    [[NSLayoutConstraint constraintWithItem:self.bottomInfoView
-                                  attribute:NSLayoutAttributeHeight
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:nil
-                                  attribute:NSLayoutAttributeNotAnAttribute
-                                 multiplier:1.0f
-                                   constant:0.f] setActive:YES];
-    
-    if (@available(iOS 11.0, *)) {
-        [[NSLayoutConstraint constraintWithItem:self.bottomInfoView
-                                      attribute:NSLayoutAttributeRight
-                                      relatedBy:NSLayoutRelationEqual
-                                         toItem:view
-                                      attribute:NSLayoutAttributeRight
-                                     multiplier:1.0f
-                                       constant:-view.safeAreaInsets.right] setActive:YES];
-        [[NSLayoutConstraint constraintWithItem:self.bottomInfoView
-                                      attribute:NSLayoutAttributeLeft
-                                      relatedBy:NSLayoutRelationEqual
-                                         toItem:view
-                                      attribute:NSLayoutAttributeLeft
-                                     multiplier:1.0f
-                                       constant:-view.safeAreaInsets.right] setActive:YES];
-    } else {
-        [[NSLayoutConstraint constraintWithItem:self.bottomInfoView
-                                      attribute:NSLayoutAttributeRight
-                                      relatedBy:NSLayoutRelationEqual
-                                         toItem:view
-                                      attribute:NSLayoutAttributeRight
-                                     multiplier:1.0f
-                                       constant:0] setActive:YES];
-        [[NSLayoutConstraint constraintWithItem:self.bottomInfoView
-                                      attribute:NSLayoutAttributeLeft
-                                      relatedBy:NSLayoutRelationEqual
-                                         toItem:view
-                                      attribute:NSLayoutAttributeLeft
-                                     multiplier:1.0f
-                                       constant:0] setActive:YES];
-    }
-    
-    [[NSLayoutConstraint constraintWithItem:self.bottomInfoView
-                                  attribute:NSLayoutAttributeBottom
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:view
-                                  attribute:NSLayoutAttributeBottom
-                                 multiplier:1.0f
-                                   constant:0.0f] setActive:YES];
+    _bottomSheet = [[MWZUIBottomSheet alloc] initWithFrame:view.frame color:_mainColor];
+    _bottomSheet.translatesAutoresizingMaskIntoConstraints = NO;
+    [view addSubview:_bottomSheet];
+    [[_bottomSheet.leadingAnchor constraintEqualToAnchor:view.leadingAnchor] setActive:YES];
+    [[_bottomSheet.trailingAnchor constraintEqualToAnchor:view.trailingAnchor] setActive:YES];
+    _bottomSheet.delegate = self;
 }
 
 - (UIView*) getTopViewToConstraint {
@@ -134,7 +90,7 @@
 }
 
 - (UIView*) getBottomViewToConstraint {
-    return self.bottomInfoView;
+    return self.bottomSheet;
 }
 
 - (void) setSceneProperties:(MWZUIDefaultSceneProperties *)sceneProperties {
@@ -144,10 +100,16 @@
         if (!_sceneProperties.venue) {
             [self setDirectionButtonHidden:NO];
         }
-        if (sceneProperties.selectedContent) {
-            [self showContent:sceneProperties.selectedContent
+        else if ([sceneProperties.selectedContent isKindOfClass:MWZPlacePreview.class]) {
+            [self showContent:sceneProperties.selectedContent language:sceneProperties.language showInfoButton:NO];
+        }
+        else if (sceneProperties.selectedContent && sceneProperties.placeDetails) {
+            [self showContent:sceneProperties.placeDetails
                      language:sceneProperties.language
                showInfoButton:!sceneProperties.infoButtonHidden];
+        }
+        else if ([sceneProperties.selectedContent isKindOfClass:MWZPlacelist.class]) {
+            [self showContent:sceneProperties.selectedContent language:sceneProperties.language showInfoButton:NO];
         }
         else if (_sceneProperties.selectedContent) {
             [self hideContent];
@@ -200,26 +162,26 @@
 }
 
 
-- (void) showContent:(id<MWZObject>) object
+- (void) showContent:(id) object
             language:(NSString*) language
       showInfoButton:(BOOL) showInfoButton {
     if ([object isKindOfClass:MWZPlacePreview.class]) {
-        [self.bottomInfoView selectContentWithPlacePreview:(MWZPlacePreview*)object];
+        [self.bottomSheet showPlacePreview:object];
     }
-    if ([object isKindOfClass:MWZPlace.class]) {
-        [self.bottomInfoView selectContentWithPlace:(MWZPlace*)object
-                                           language:language
-                                     showInfoButton:showInfoButton];
+    if ([object isKindOfClass:MWZPlaceDetails.class]) {
+        [self.bottomSheet showPlaceDetails:object shouldShowInformationButton:showInfoButton language:language];
     }
     if ([object isKindOfClass:MWZPlacelist.class]) {
-        [self.bottomInfoView selectContentWithPlaceList:(MWZPlacelist*)object
+        [self.bottomSheet showPlacelist:object shouldShowInformationButton:showInfoButton language:language];
+        //[self.bottomSheet showMock:[MWZUIPlaceMock getMock1]];
+        /*[self.bottomInfoView selectContentWithPlaceList:(MWZPlacelist*)object
                                                language:language
-                                         showInfoButton:showInfoButton];
+                                         showInfoButton:showInfoButton];*/
     }
 }
 
 - (void) hideContent {
-    [self.bottomInfoView unselectContent];
+    [self.bottomSheet removeContent];
 }
 
 #pragma mark MWZMapViewMenuBarDelegate
@@ -243,5 +205,52 @@
 - (void)didPressInformation {
     [_delegate didTapOnInformationButton];
 }
+
+- (MWZUIBottomSheetComponents *)requireComponentForPlace:(MWZPlace *)place
+                                   withDefaultComponents:(MWZUIBottomSheetComponents *)components {
+    if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlace:withDefaultComponents:)]) {
+        return [_delegate requireComponentForPlace:place withDefaultComponents:components];
+    }
+    return components;
+}
+
+- (MWZUIBottomSheetComponents *)requireComponentForPlacelist:(MWZPlacelist *)placelist withDefaultComponents:(MWZUIBottomSheetComponents *)components {
+    if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlacelist:withDefaultComponents:)]) {
+        return [_delegate requireComponentForPlacelist:placelist withDefaultComponents:components];
+    }
+    return components;
+}
+
+- (void) didClose {
+    if (_delegate && [_delegate respondsToSelector:@selector(didClose)]) {
+        [_delegate didClose];
+    }
+}
+
+- (void) didTapOnCallButton {
+    [_delegate didTapOnCallButton];
+}
+
+- (void) didTapOnShareButton {
+    [_delegate didTapOnShareButton];
+}
+
+- (void) didTapOnWebsiteButton {
+    [_delegate didTapOnWebsiteButton];
+}
+
+- (void) didTapOnInfoButton {
+    [_delegate didTapOnInformationButton];
+}
+
+- (MWZUIBottomSheetComponents *)requireComponentForPlaceDetails:(MWZPlaceDetails *)placeDetails withDefaultComponents:(MWZUIBottomSheetComponents *)components {
+    if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlace:withDefaultComponents:)]) {
+        return [_delegate requireComponentForPlace:_sceneProperties.selectedContent withDefaultComponents:components];
+    }
+    return components;
+}
+
+
+
 
 @end

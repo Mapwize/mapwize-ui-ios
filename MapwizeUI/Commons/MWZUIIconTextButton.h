@@ -4,7 +4,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MWZUIIconTextButton : UIButton
 
-- (instancetype)initWithTitle:(NSString*) text imageName:(UIImage*) image color:(UIColor*) color outlined:(BOOL) outlined;
+- (instancetype)initWithTitle:(NSString*) text image:(UIImage*) image color:(UIColor*) color outlined:(BOOL) outlined;
 
 @end
 
