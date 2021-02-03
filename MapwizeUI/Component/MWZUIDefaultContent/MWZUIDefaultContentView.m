@@ -161,12 +161,12 @@
 
 -(NSMutableArray<MWZUIIconTextButton*>*) buildButtonsForPlacelist:(MWZPlacelist *)placelist showInfoButton:(BOOL)showInfoButton {
     NSMutableArray<MWZUIIconTextButton*>* buttons = [[NSMutableArray alloc] init];
-    MWZUIIconTextButton* directionButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Direction", @"") image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:NO];
+    MWZUIIconTextButton* directionButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Direction", @"") image:[UIImage imageNamed:@"direction" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil] color:_color outlined:NO];
     [buttons addObject:directionButton];
     [directionButton addTarget:self action:@selector(directionButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     
     if (showInfoButton) {
-        MWZUIIconTextButton* info = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Information", @"") image:[UIImage systemImageNamed:@"phone"] color:_color outlined:YES];
+        MWZUIIconTextButton* info = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Information", @"") image:[UIImage imageNamed:@"info" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil] color:_color outlined:YES];
         [buttons addObject:info];
         [info addTarget:self action:@selector(infoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -175,30 +175,30 @@
 
 -(NSMutableArray<MWZUIIconTextButton*>*) buildButtonsForPlaceDetails:(MWZPlaceDetails*)placeDetails showInfoButton:(BOOL)showInfoButton {
     NSMutableArray<MWZUIIconTextButton*>* buttons = [[NSMutableArray alloc] init];
-    MWZUIIconTextButton* directionButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Direction", @"") image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:NO];
+    MWZUIIconTextButton* directionButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Direction", @"") image:[UIImage imageNamed:@"direction" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil] color:_color outlined:NO];
     [buttons addObject:directionButton];
     [directionButton addTarget:self action:@selector(directionButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     
     if (showInfoButton) {
-        MWZUIIconTextButton* info = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Information", @"") image:[UIImage systemImageNamed:@"phone"] color:_color outlined:YES];
+        MWZUIIconTextButton* info = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Information", @"") image:[UIImage imageNamed:@"info" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil] color:_color outlined:YES];
         [buttons addObject:info];
         [info addTarget:self action:@selector(infoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     if (placeDetails.phone) {
-        MWZUIIconTextButton* phoneButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Call", @"") image:[UIImage systemImageNamed:@"phone"] color:_color outlined:YES];
+        MWZUIIconTextButton* phoneButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Call", @"") image:[UIImage imageNamed:@"phone" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil] color:_color outlined:YES];
         [buttons addObject:phoneButton];
         [phoneButton addTarget:self action:@selector(phoneButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     if (placeDetails.website) {
-        MWZUIIconTextButton* websiteButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Website", @"") image:[UIImage systemImageNamed:@"phone"] color:_color outlined:YES];
+        MWZUIIconTextButton* websiteButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Website", @"") image:[UIImage imageNamed:@"globe" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil] color:_color outlined:YES];
         [buttons addObject:websiteButton];
         [websiteButton addTarget:self action:@selector(websiteButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     if (placeDetails.shareLink) {
-        MWZUIIconTextButton* shareButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Share", @"") image:[UIImage systemImageNamed:@"phone"] color:_color outlined:YES];
+        MWZUIIconTextButton* shareButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Share", @"") image:[UIImage imageNamed:@"share" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil] color:_color outlined:YES];
         [buttons addObject:shareButton];
         [shareButton addTarget:self action:@selector(shareButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     }

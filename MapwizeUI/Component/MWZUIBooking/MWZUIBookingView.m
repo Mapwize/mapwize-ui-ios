@@ -20,7 +20,7 @@ static double gridWidth = 25;
 }
 
 - (void) setupViewWithPlaceDetails:(MWZPlaceDetails*)placeDetails {
-    self.image = [UIImage systemImageNamed:@"calendar.badge.clock"];
+    self.image = [UIImage imageNamed:@"calendar" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
     UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     [imageView setImage:[self.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];

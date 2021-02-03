@@ -406,8 +406,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath: (NSIndexPath *)indexPath {
     NSInteger count = [_placeDetails.photos count];
-    NSInteger div = count >= 3 ? 3 : count;
-    double width = count == 1 ? self.frame.size.width : self.frame.size.height / 3;
+    double width = count <= 1 ? self.frame.size.width : self.frame.size.height / 3;
     return CGSizeMake(width, self.frame.size.height / 3);
  }
 

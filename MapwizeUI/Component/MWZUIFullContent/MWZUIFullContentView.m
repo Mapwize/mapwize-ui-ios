@@ -179,26 +179,30 @@
                                                                              showInfoButton:(BOOL)shouldShowInformationButton
                                                                                    language:(NSString*)language {
     NSMutableArray<MWZUIFullContentViewComponentButton*>* buttons = [[NSMutableArray alloc] init];
-    MWZUIFullContentViewComponentButton* directionButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:[NSLocalizedString(@"Direction", @"") uppercaseString] image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:NO];
+    MWZUIFullContentViewComponentButton* directionButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:[NSLocalizedString(@"Direction", @"") uppercaseString] image:[UIImage imageNamed:@"direction" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil] color:_color outlined:NO];
     [directionButton addTarget:self action:@selector(directionButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [buttons addObject:directionButton];
     if (shouldShowInformationButton) {
-        MWZUIFullContentViewComponentButton* informationButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:[NSLocalizedString(@"Information", @"") uppercaseString] image:[UIImage systemImageNamed:@"arrow.triangle.turn.up.right.diamond.fill"] color:_color outlined:YES];
+        UIImage* image = [UIImage imageNamed:@"info" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
+        MWZUIFullContentViewComponentButton* informationButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:[NSLocalizedString(@"Information", @"") uppercaseString] image:image color:_color outlined:YES];
         [informationButton addTarget:self action:@selector(informationButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttons addObject:informationButton];
     }
     if (placeDetails.phone) {
-        MWZUIFullContentViewComponentButton* phoneButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:[NSLocalizedString(@"Call", @"") uppercaseString] image:[UIImage systemImageNamed:@"phone.fill"] color:_color outlined:YES];
+        UIImage* image = [UIImage imageNamed:@"phone" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
+        MWZUIFullContentViewComponentButton* phoneButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:[NSLocalizedString(@"Call", @"") uppercaseString] image:image color:_color outlined:YES];
         [phoneButton addTarget:self action:@selector(phoneButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttons addObject:phoneButton];
     }
     if (placeDetails.website) {
-        MWZUIFullContentViewComponentButton* websiteButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:[NSLocalizedString(@"Website", @"") uppercaseString] image:[UIImage systemImageNamed:@"network"] color:_color outlined:YES];
+        UIImage* image = [UIImage imageNamed:@"globe" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
+        MWZUIFullContentViewComponentButton* websiteButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:[NSLocalizedString(@"Website", @"") uppercaseString] image:image color:_color outlined:YES];
         [websiteButton addTarget:self action:@selector(websiteButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttons addObject:websiteButton];
     }
     if (placeDetails.shareLink) {
-        MWZUIFullContentViewComponentButton* shareButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:[NSLocalizedString(@"Share", @"") uppercaseString] image:[UIImage systemImageNamed:@"square.and.arrow.up"] color:_color outlined:YES];
+        UIImage* image = [UIImage imageNamed:@"share" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
+        MWZUIFullContentViewComponentButton* shareButton = [[MWZUIFullContentViewComponentButton alloc] initWithTitle:[NSLocalizedString(@"Share", @"") uppercaseString] image:image color:_color outlined:YES];
         [shareButton addTarget:self action:@selector(shareButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttons addObject:shareButton];
     }
@@ -277,6 +281,7 @@
 }
 
 - (MWZUIFullContentViewComponentRow*) getWebsiteRowForPlaceDetails:(MWZPlaceDetails*)placeDetails {
+    UIImage* image = [UIImage imageNamed:@"globe" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
     UILabel* websiteLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     websiteLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [websiteLabel setFont:[UIFont systemFontOfSize:14]];
@@ -292,7 +297,7 @@
         UITapGestureRecognizer *singleFingerTap =
           [[UITapGestureRecognizer alloc] initWithTarget:self
                                                   action:@selector(websiteButtonAction:)];
-        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"network"] contentView:websiteLabel color:_color tapGestureRecognizer:singleFingerTap type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
+        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:image contentView:websiteLabel color:_color tapGestureRecognizer:singleFingerTap type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {
         [websiteLabel setText:NSLocalizedString(@"Website not available", @"")];
@@ -300,13 +305,14 @@
                     fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
         websiteLabel.font = [UIFont fontWithDescriptor:fontD size:0];
         websiteLabel.textColor = [UIColor darkGrayColor];
-        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"network"] contentView:websiteLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:NO];
+        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:image contentView:websiteLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:NO];
     }
     
     
 }
 
 - (MWZUIFullContentViewComponentRow*) getFloorRowForPlaceDetails:(MWZPlaceDetails*)placeDetails {
+    UIImage* image = [UIImage imageNamed:@"floor" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
     UILabel* floorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     floorLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [floorLabel setFont:[UIFont systemFontOfSize:14]];
@@ -322,7 +328,7 @@
         else {
             [floorLabel setText:NSLocalizedString(@"Outdoor", @"")];
         }
-        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"alt"] contentView:floorLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
+        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:image contentView:floorLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {
         [floorLabel setText:NSLocalizedString(@"Floor not available",@"")];
@@ -330,17 +336,18 @@
                     fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
         floorLabel.font = [UIFont fontWithDescriptor:fontD size:0];
         floorLabel.textColor = [UIColor darkGrayColor];
-        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"alt"] contentView:floorLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:NO];
+        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:image contentView:floorLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:NO];
     }
 }
 
 - (MWZUIFullContentViewComponentRow*) getCapacityRowForPlaceDetails:(MWZPlaceDetails*)placeDetails {
     UILabel* capacityLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    UIImage* capacityImage = [UIImage imageNamed:@"group" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
     capacityLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [capacityLabel setFont:[UIFont systemFontOfSize:14]];
     if (placeDetails && placeDetails.capacity) {
         [capacityLabel setText:[NSString stringWithFormat:@"%@", placeDetails.capacity]];
-        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"person.3"] contentView:capacityLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
+        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:capacityImage contentView:capacityLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {
         [capacityLabel setText:NSLocalizedString(@"Capacity not available",@"")];
@@ -348,11 +355,12 @@
                     fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
         capacityLabel.font = [UIFont fontWithDescriptor:fontD size:0];
         capacityLabel.textColor = [UIColor darkGrayColor];
-        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"person.3"] contentView:capacityLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:NO];
+        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:capacityImage contentView:capacityLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:NO];
     }
 }
 
 - (MWZUIFullContentViewComponentRow*) getPhoneRowForPlaceDetails:(MWZPlaceDetails*)placeDetails {
+    UIImage* image = [UIImage imageNamed:@"phoneOutline" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
     UILabel* phoneLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     phoneLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [phoneLabel setFont:[UIFont systemFontOfSize:14]];
@@ -361,7 +369,7 @@
         UITapGestureRecognizer *singleFingerTap =
           [[UITapGestureRecognizer alloc] initWithTarget:self
                                                   action:@selector(phoneButtonAction:)];
-        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"phone"] contentView:phoneLabel color:_color tapGestureRecognizer:singleFingerTap type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
+        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:image contentView:phoneLabel color:_color tapGestureRecognizer:singleFingerTap type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {
         [phoneLabel setText:NSLocalizedString(@"Phone number not available", @"")];
@@ -369,11 +377,12 @@
                     fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
         phoneLabel.font = [UIFont fontWithDescriptor:fontD size:0];
         phoneLabel.textColor = [UIColor darkGrayColor];
-        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"phone"] contentView:phoneLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:NO];
+        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:image contentView:phoneLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:NO];
     }
 }
 
 - (MWZUIFullContentViewComponentRow*) getOpeningHoursRowForPlaceDetails:(MWZPlaceDetails*)placeDetails {
+    UIImage* image = [UIImage imageNamed:@"clock" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
     _openingHoursView = [[MWZUIOpeningHoursView alloc] initWithFrame:CGRectZero];
     [_openingHoursView setOpeningHours:placeDetails.openingHours];
 
@@ -381,10 +390,10 @@
         UITapGestureRecognizer *singleFingerTap =
           [[UITapGestureRecognizer alloc] initWithTarget:self
                                                   action:@selector(toggleOpeningHours:)];
-        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"clock"] contentView:_openingHoursView color:_color tapGestureRecognizer:singleFingerTap type:MWZUIFullContentViewComponentRowOpeningHours infoAvailable:YES];
+        return [[MWZUIFullContentViewComponentRow alloc] initWithImage:image contentView:_openingHoursView color:_color tapGestureRecognizer:singleFingerTap type:MWZUIFullContentViewComponentRowOpeningHours infoAvailable:YES];
     }
     
-    return [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"clock"] contentView:_openingHoursView color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowOpeningHours infoAvailable:NO];
+    return [[MWZUIFullContentViewComponentRow alloc] initWithImage:image contentView:_openingHoursView color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowOpeningHours infoAvailable:NO];
 }
 
 - (void)toggleOpeningHours:(UITapGestureRecognizer *)recognizer

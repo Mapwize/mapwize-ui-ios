@@ -37,7 +37,6 @@
         _selectedTitle = titles[0];
     }
     _titles = titles;
-    int divider = titles.count > 4 ? 4 : (int)titles.count;
     for (MWZUIPagerHeaderTitle* title in _titles) {
         UIButton* button = [[UIButton alloc] init];
         

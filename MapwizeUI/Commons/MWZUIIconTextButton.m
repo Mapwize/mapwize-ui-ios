@@ -105,7 +105,7 @@
         }
         self.layer.cornerRadius = 18.0f;
         self.layer.borderWidth = 0.5f;
-        [imageView setImage:image];
+        [imageView setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
         [labelView setText:text];
     }
     return self;
