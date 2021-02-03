@@ -31,12 +31,12 @@
 "Website" = "Website";
 "Share" = "Share";
 "Opened 24/7" = "Opened 24/7";
-"Open - close %@ at %@" = "Open - close %@ at %@";
-"Open - close tomorrow at %@" = "Open - close tomorrow at %@";
-"Open - close at %@" = "Open - close at %@";
-"Close - open at %@" = "Close - open at %@";
-"Close - open tomorrow at %@" = "Close - open tomorrow at %@";
-"Close - open %@ at %@" = "Close - open %@ at %@";
+"Opened - closes %@ at %@" = "Opened - closes %@ at %@";
+"Opened - closes tomorrow at %@" = "Opened - closes tomorrow at %@";
+"Opened - closes at %@" = "Opened - closes at %@";
+"Closed - opens at %@" = "Closed - opens at %@";
+"Closed - opens tomorrow at %@" = "Closed - opens tomorrow at %@";
+"Closed - opens %@ at %@" = "Closed - opens %@ at %@";
 "Closed 24/7" = "Closed 24/7";
-"Close" = "Close";
+"Closed" = "Closed";
 

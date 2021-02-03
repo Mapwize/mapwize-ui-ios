@@ -384,7 +384,7 @@
 - (MWZUIFullContentViewComponentRow*) getOpeningHoursRowForPlaceDetails:(MWZPlaceDetails*)placeDetails {
     UIImage* image = [UIImage imageNamed:@"clock" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
     _openingHoursView = [[MWZUIOpeningHoursView alloc] initWithFrame:CGRectZero];
-    [_openingHoursView setOpeningHours:placeDetails.openingHours];
+    [_openingHoursView setOpeningHours:placeDetails.openingHours timezoneCode:placeDetails.timezone];
 
     if (placeDetails.openingHours.count > 0) {
         UITapGestureRecognizer *singleFingerTap =

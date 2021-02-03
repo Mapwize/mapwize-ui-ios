@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSArray* openingHours;
 
 - (void) toggleExpanded;
+- (void) setOpeningHours:(NSArray *)openingHours timezoneCode:(NSString*) timezoneCode;
 
 @end
 

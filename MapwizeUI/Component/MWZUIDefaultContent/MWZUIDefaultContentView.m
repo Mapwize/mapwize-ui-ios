@@ -115,7 +115,7 @@
         openingHours.translatesAutoresizingMaskIntoConstraints = NO;
         openingHours.textColor = [UIColor darkGrayColor];
         openingHours.font = [openingHours.font fontWithSize:16];
-        openingHours.text = [MWZUIOpeningHoursUtils getCurrentOpeningStateString:_placeDetails.openingHours];
+        openingHours.text = [MWZUIOpeningHoursUtils getCurrentOpeningStateString:_placeDetails.openingHours timezoneCode:_placeDetails.timezone];
         [self addSubview:openingHours];
         [[openingHours.heightAnchor constraintEqualToConstant:16] setActive:YES];
         [[openingHours.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];

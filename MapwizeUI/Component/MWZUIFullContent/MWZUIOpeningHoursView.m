@@ -14,8 +14,10 @@
 @interface MWZUIOpeningHoursView () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic) UITableView* tableView;
+@property (nonatomic) NSString* timezoneCode;
 @property (nonatomic) NSLayoutConstraint* tableViewHeightConstraint;
 @property (nonatomic) NSArray<NSDictionary*>* sortedIntervals;
+
 @end
 
 @implementation MWZUIOpeningHoursView
@@ -31,7 +33,8 @@
     return self;
 }
 
-- (void) setOpeningHours:(NSArray *)openingHours {
+- (void) setOpeningHours:(NSArray *)openingHours timezoneCode:(NSString*) timezoneCode {
+    _timezoneCode = timezoneCode;
     _openingHours = openingHours;
     _sortedIntervals = [MWZUIOpeningHoursUtils getOpeningStrings:openingHours];
     [_tableView reloadData];
@@ -97,7 +100,7 @@
             cell = [[MWZUIOpeningHoursTodayTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"todayCell"];
         }
         if (_openingHours.count > 0) {
-            cell.hoursLabel.text = [MWZUIOpeningHoursUtils getCurrentOpeningStateString:_openingHours];
+            cell.hoursLabel.text = [MWZUIOpeningHoursUtils getCurrentOpeningStateString:_openingHours timezoneCode:_timezoneCode];
             cell.hoursLabel.font = [cell.hoursLabel.font fontWithSize:14];
         }
         else {

@@ -33,7 +33,7 @@
     for (int i=0; i<7; i++) {
         NSArray* arr = dic[[NSNumber numberWithInt:(i + weekday) % 7]];
         if (!arr) {
-            [output addObject:@{@"value":NSLocalizedString(@"Close", @""), @"day":[MWZUIOpeningHoursUtils getDayName:(i + weekday) % 7]}];
+            [output addObject:@{@"value":NSLocalizedString(@"Closed", @""), @"day":[MWZUIOpeningHoursUtils getDayName:(i + weekday) % 7]}];
         }
         else {
             NSString* s = @"";
@@ -52,11 +52,14 @@
     return output;
 }
 
-+ (NSString*) getCurrentOpeningStateString:(NSArray<NSDictionary*>*) input {
++ (NSString*) getCurrentOpeningStateString:(NSArray<NSDictionary*>*) input timezoneCode:(NSString*)timezoneCode {
+    NSTimeZone* localTimezone = [NSTimeZone localTimeZone];
+    NSTimeZone* venueTimezone = [NSTimeZone timeZoneWithName:timezoneCode];
+    NSInteger diff = (localTimezone.secondsFromGMT - venueTimezone.secondsFromGMT) / 3600;
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [calendar components:(NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate date]];
     NSInteger weekday = [components weekday];
-    NSInteger hour = [components hour];
+    NSInteger hour = [components hour] + diff;
     NSInteger min = [components minute];
     NSInteger currentMin = hour * 60 + min;
     
@@ -68,14 +71,14 @@
         MWZUIOpeningInterval* closingInterval = [MWZUIOpeningHoursUtils getNextCloseIntervalFromIntervals:intervals currentInterval:currentInterval];
         if (closingInterval) {
             if (closingInterval == currentInterval) {
-                return [NSString stringWithFormat:NSLocalizedString(@"Open - close at %@", @""), [MWZUIOpeningHoursUtils getFormattedHours:closingInterval.close]];
+                return [NSString stringWithFormat:NSLocalizedString(@"Opened - closes at %@", @""), [MWZUIOpeningHoursUtils getFormattedHours:closingInterval.close]];
             }
             else {
                 if (closingInterval.day - currentInterval.day == 1 || closingInterval.day - currentInterval.day == 6) {
-                    return [NSString stringWithFormat:NSLocalizedString(@"Open - close tomorrow at %@", @""), [MWZUIOpeningHoursUtils getFormattedHours:closingInterval.close]];
+                    return [NSString stringWithFormat:NSLocalizedString(@"Opened - closes tomorrow at %@", @""), [MWZUIOpeningHoursUtils getFormattedHours:closingInterval.close]];
                 }
                 else {
-                    return [NSString stringWithFormat:NSLocalizedString(@"Open - close %@ at %@", @""), [MWZUIOpeningHoursUtils getDayName:closingInterval.day], [MWZUIOpeningHoursUtils getFormattedHours:closingInterval.close]];
+                    return [NSString stringWithFormat:NSLocalizedString(@"Opened - closes %@ at %@", @""), [MWZUIOpeningHoursUtils getDayName:closingInterval.day], [MWZUIOpeningHoursUtils getFormattedHours:closingInterval.close]];
                 }
                 
             }
@@ -88,14 +91,14 @@
         MWZUIOpeningInterval* openingInterval = [MWZUIOpeningHoursUtils getNextOpeningIntervalFromIntervals:intervals day:weekday minuts:currentMin];
         if (openingInterval) {
             if (openingInterval == currentInterval) {
-                return [NSString stringWithFormat:NSLocalizedString(@"Close - open at %@", @""), [MWZUIOpeningHoursUtils getFormattedHours:openingInterval.open]];
+                return [NSString stringWithFormat:NSLocalizedString(@"Closed - opens at %@", @""), [MWZUIOpeningHoursUtils getFormattedHours:openingInterval.open]];
             }
             else {
                 if (openingInterval.day - currentInterval.day == 1 || openingInterval.day - currentInterval.day == 6) {
-                    return [NSString stringWithFormat:NSLocalizedString(@"Close - open tomorrow at %@", @""), [MWZUIOpeningHoursUtils getFormattedHours:openingInterval.open]];
+                    return [NSString stringWithFormat:NSLocalizedString(@"Closed - opens tomorrow at %@", @""), [MWZUIOpeningHoursUtils getFormattedHours:openingInterval.open]];
                 }
                 else {
-                    return [NSString stringWithFormat:NSLocalizedString(@"Close - open %@ at %@", @""), [MWZUIOpeningHoursUtils getDayName:openingInterval.day], [MWZUIOpeningHoursUtils getFormattedHours:openingInterval.open]];
+                    return [NSString stringWithFormat:NSLocalizedString(@"Closed - opens %@ at %@", @""), [MWZUIOpeningHoursUtils getDayName:openingInterval.day], [MWZUIOpeningHoursUtils getFormattedHours:openingInterval.open]];
                 }
                 
             }

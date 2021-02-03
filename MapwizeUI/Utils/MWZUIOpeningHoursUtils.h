@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MWZUIOpeningHoursUtils : NSObject
 
 + (NSArray<MWZUIOpeningInterval*>*) getSortedIntervals:(NSArray<NSDictionary*>*) input;
-+ (NSString*) getCurrentOpeningStateString:(NSArray<NSDictionary*>*) input;
++ (NSString*) getCurrentOpeningStateString:(NSArray<NSDictionary*>*) input timezoneCode:(NSString*)timezoneCode;
 + (NSString*) getDayName:(NSInteger)day;
 + (NSString*) getFormattedHours:(NSInteger)minuts;
 + (NSArray<NSDictionary*>*) getOpeningStrings:(NSArray<NSDictionary*>*) input;
