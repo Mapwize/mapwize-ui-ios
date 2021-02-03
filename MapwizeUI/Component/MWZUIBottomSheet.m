@@ -190,7 +190,7 @@
     UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.itemSize = CGSizeMake(self.frame.size.height/3, self.frame.size.height/3);
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-    flowLayout.minimumInteritemSpacing = 40;
+    flowLayout.minimumInteritemSpacing = 0;
     flowLayout.minimumLineSpacing = 0;
     _headerImageCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
     _headerImageCollectionView.dataSource = self;
@@ -401,8 +401,15 @@
 }
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [_placeDetails.photos count] >= 3 ? [_placeDetails.photos count] : 3;
+    return [_placeDetails.photos count] == 0 ? 1 : [_placeDetails.photos count];// >= 3 ? [_placeDetails.photos count] : 3;
 }
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath: (NSIndexPath *)indexPath {
+    NSInteger count = [_placeDetails.photos count];
+    NSInteger div = count >= 3 ? 3 : count;
+    double width = count == 1 ? self.frame.size.width : self.frame.size.height / 3;
+    return CGSizeMake(width, self.frame.size.height / 3);
+ }
 
 - (MWZUIBottomSheetComponents*) requireComponentForPlaceDetails:(MWZPlaceDetails*)placeDetails withDefaultComponents:(MWZUIBottomSheetComponents*)components {
     return components;

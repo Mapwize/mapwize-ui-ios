@@ -117,11 +117,12 @@
         scrollView.translatesAutoresizingMaskIntoConstraints = NO;
         scrollView.showsHorizontalScrollIndicator = NO;
         scrollView.showsVerticalScrollIndicator = NO;
+        scrollView.bounces = NO;
         [overview addSubview:scrollView];
         [[scrollView.topAnchor constraintEqualToAnchor:overview.topAnchor constant:0.0] setActive:YES];
         [[scrollView.leadingAnchor constraintEqualToAnchor:overview.leadingAnchor constant:0.0] setActive:YES];
         [[scrollView.trailingAnchor constraintEqualToAnchor:overview.trailingAnchor constant:0.0] setActive:YES];
-        [[scrollView.heightAnchor constraintEqualToConstant:80] setActive:YES];
+        [[scrollView.heightAnchor constraintEqualToConstant:96] setActive:YES];
         
         UIView* lastAnchorButton = nil;
         for (MWZUIFullContentViewComponentButton* button in buttons) {
