@@ -11,7 +11,7 @@ install: true
 script:
 - ./ci/build-ui-cocoapods.sh
 - |
-  if [[ "$TRAVIS_PULL_REQUEST" == "false" ]] && ! [ -z "$TRAVIS_TAG" ]; then
+  if [[ "$TRAVIS_PULL_REQUEST" == "false" ]] && [ -z "$TRAVIS_TAG" ]; then
     { git diff-index --quiet HEAD Podfile.lock || git commit -m ":robot: chore: updating the Podfile.lock :robot:"; }
     git add Podfile.lock
     git push -q https://${GITHUB_TOKEN}@github.com/Mapwize/mapwize-ui-ios.git ${TRAVIS_BRANCH}
