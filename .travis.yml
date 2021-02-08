@@ -7,6 +7,7 @@ before_install:
 - git config --global user.email "maxime.colmant@gmail.com"
 - git config --global user.name "Maxime Colmant"
 - gem install cocoapods xcpretty jazzy --no-document --quiet
+install: true
 script:
 - ./ci/build-ui-cocoapods.sh
 - |
