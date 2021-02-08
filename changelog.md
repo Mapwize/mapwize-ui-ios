@@ -1,5 +1,10 @@
 # Mapwize UI iOS Changelog
 
+## 2.2.5
+
+- Upgrading the Mapwize SDK to 3.3.2
+  - Fixing venue's default bearing issue
+
 ## 2.2.4
 
 - Add scroll in search results
