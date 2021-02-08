@@ -771,17 +771,6 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     [self.defaultScene setSceneProperties:defaultProperties];
     [placePreview getFullObjectAsyncWithSuccess:^(MWZPlace * _Nonnull place) {
         if ([self.selectedContent isKindOfClass:MWZPlacePreview.class] && [((MWZPlacePreview*)self.selectedContent).identifier isEqualToString:place.identifier]) {
-            /*self.selectedContent = place;
-            MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
-            defaultProperties.selectedContent = self.selectedContent;
-            defaultProperties.language = [self.mapView getLanguage];
-            if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
-                defaultProperties.infoButtonHidden = ![self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
-            }
-            else {
-                defaultProperties.infoButtonHidden = YES;
-            }
-            [self.defaultScene setSceneProperties:defaultProperties];*/
             [self selectPlace:place centerOn:NO];
         }
     } failure:^(NSError * _Nonnull error) {
