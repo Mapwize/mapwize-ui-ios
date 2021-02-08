@@ -12,7 +12,7 @@ echo -e "${BLUE}  > Cleaning old builds...${NC}"
 
 pod cache clean --all
 pod deintegrate MapwizeUI.xcodeproj
-rm -rf build ui Pods
+rm -rf build ui Pods Podfile.lock
 mkdir -p build ui/simulator ui/device
 ### ====== ###
 

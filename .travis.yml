@@ -10,6 +10,12 @@ before_install:
 script:
 - ./ci/build-ui-cocoapods.sh
 - |
+  if [[ "$TRAVIS_PULL_REQUEST" == "false" ]] && ! [ -z "$TRAVIS_TAG" ]; then
+    { git diff-index --quiet HEAD Podfile.lock || git commit -m ":robot: chore: updating the Podfile.lock :robot:"; }
+    git add Podfile.lock
+    git push -q https://${GITHUB_TOKEN}@github.com/Mapwize/mapwize-ui-ios.git ${TRAVIS_BRANCH}
+  fi;
+- |
   if [[ "$TRAVIS_BRANCH" == "master" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
     git diff --exit-code -G '^\s+s\.version\s+=.*$' HEAD~1..HEAD > /dev/null
     is_modified_version=$?
