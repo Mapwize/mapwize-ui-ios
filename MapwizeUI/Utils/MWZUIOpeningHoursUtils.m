@@ -30,8 +30,12 @@
     }
     
     NSMutableArray* output = [[NSMutableArray alloc] init];
+    int add = 0;
     for (int i=0; i<7; i++) {
-        NSArray* arr = dic[[NSNumber numberWithInt:(i + weekday) % 7]];
+        int next = (i + weekday) % 8;
+        if (next == 0) add = 1;
+        next += add;
+        NSArray* arr = dic[[NSNumber numberWithInt:next]];
         if (!arr) {
             [output addObject:@{@"value":NSLocalizedString(@"Closed", @""), @"day":[MWZUIOpeningHoursUtils getDayName:(i + weekday) % 7]}];
         }

@@ -406,7 +406,7 @@
     separator.translatesAutoresizingMaskIntoConstraints = NO;
     [inView addSubview:separator];
     separator.backgroundColor = [UIColor lightGrayColor];
-    [[separator.heightAnchor constraintEqualToConstant:0.5] setActive:YES];
+    [[separator.heightAnchor constraintEqualToConstant:1] setActive:YES];
     [[separator.leadingAnchor constraintEqualToAnchor:inView.leadingAnchor] setActive:YES];
     [[separator.trailingAnchor constraintEqualToAnchor:inView.trailingAnchor] setActive:YES];
     [[separator.topAnchor constraintEqualToAnchor:view.bottomAnchor constant:marginTop] setActive:YES];

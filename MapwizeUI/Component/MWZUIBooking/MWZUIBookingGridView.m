@@ -65,7 +65,7 @@
         NSDate *startDate = [dateFormatter dateFromString: event.start];
         NSDate *endDate = [dateFormatter dateFromString: event.end];
 
-        if (![[NSCalendar currentCalendar] isDateInToday:startDate] && ![[NSCalendar currentCalendar] isDateInToday:endDate]) {
+        if ([startDate timeIntervalSinceDate:[NSDate date]] > 0 || [endDate timeIntervalSinceDate:[NSDate date]] < 0) {
             continue;
         }
         
@@ -74,10 +74,10 @@
         
         double startTime = [startCoponents hour] + [startCoponents minute] / 60.0;
         double endTime = [endCoponents hour] + [endCoponents minute] / 60.0;
-        if (![[NSCalendar currentCalendar] isDateInToday:startDate] && [[NSCalendar currentCalendar] isDateInToday:endDate]) {
+        if (![[NSCalendar currentCalendar] isDateInToday:startDate]) {
             startTime = 0;
         }
-        else if (![[NSCalendar currentCalendar] isDateInToday:endDate] && [[NSCalendar currentCalendar] isDateInToday:startDate]) {
+        if (![[NSCalendar currentCalendar] isDateInToday:endDate]) {
             endTime = 23.99;
         }
         CGContextSetFillColorWithColor(context, _color.CGColor);

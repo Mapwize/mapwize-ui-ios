@@ -207,7 +207,7 @@
     _headerImageCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
     _headerImageCollectionView.dataSource = self;
     _headerImageCollectionView.delegate = self;
-    _headerImageCollectionView.backgroundColor = [UIColor clearColor];
+    _headerImageCollectionView.backgroundColor = [UIColor whiteColor];
     _headerImageCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     _headerImageCollectionView.showsVerticalScrollIndicator = NO;
     _headerImageCollectionView.showsHorizontalScrollIndicator = NO;
@@ -418,7 +418,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath: (NSIndexPath *)indexPath {
     NSInteger count = [_placeDetails.photos count];
-    double width = count <= 1 ? self.frame.size.width : self.frame.size.height / 3;
+    double width = self.frame.size.width;
     return CGSizeMake(width, self.frame.size.height / 3);
  }
 
