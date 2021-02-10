@@ -10,6 +10,7 @@
 @property (assign) CGFloat currentTranslation;
 @property (assign) CGFloat initialTranslation;
 @property (nonatomic) UIView* headerView;
+@property (nonatomic) UIButton* closeButton;
 @property (nonatomic) UICollectionView* headerImageCollectionView;
 @property (nonatomic) UIView* contentView;
 @property (nonatomic) MWZUIDefaultContentView* defaultContentView;
@@ -99,6 +100,7 @@
     _placePreview = nil;
     [_defaultContentView removeFromSuperview];
     [_fullContentView removeFromSuperview];
+    _fullContentView = nil;
     _defaultContentView = [[MWZUIDefaultContentView alloc] initWithFrame:self.frame color:_color];
     _defaultContentView.translatesAutoresizingMaskIntoConstraints = NO;
     _defaultContentView.delegate = self;
@@ -218,12 +220,62 @@
     [[_headerImageCollectionView.bottomAnchor constraintEqualToAnchor:_headerView.bottomAnchor] setActive:YES];
     [_headerImageCollectionView registerClass:[MWZUICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
     
+    
+    _closeButton = [[UIButton alloc] initWithFrame:CGRectZero];
+    _closeButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [_headerView addSubview:_closeButton];
+    
+    NSBundle* bundle = [NSBundle bundleForClass:self.class];
+    UIImage* backImage = [UIImage imageNamed:@"back" inBundle:bundle compatibleWithTraitCollection:nil];
+    [_closeButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
+    [_closeButton setImage:backImage forState:UIControlStateNormal];
+    _closeButton.layer.cornerRadius = 20;
+    _closeButton.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
+    _closeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    //_closeButton.backgroundColor = [UIColor whiteColor];
+    if (@available(iOS 11.0, *)) {
+        [[_closeButton.topAnchor constraintEqualToAnchor:_headerView.safeAreaLayoutGuide.topAnchor constant:16.0] setActive:YES];
+    } else {
+        [[_closeButton.topAnchor constraintEqualToAnchor:_headerView.topAnchor constant:16.0] setActive:YES];
+    }
+    [[_closeButton.leadingAnchor constraintEqualToAnchor:_headerView.leadingAnchor constant:16.0] setActive:YES];
+    [[_closeButton.heightAnchor constraintEqualToConstant:40.0] setActive:YES];
+    [[_closeButton.widthAnchor constraintEqualToConstant:40.0] setActive:YES];
+    [_closeButton setHidden:YES];
+    _closeButton.alpha = 0;
+    
+    
+}
+
+- (void) backClick {
+    [_fullContentView setHidden:NO];
+    [_defaultContentView setHidden:NO];
+    [_closeButton setHidden:NO];
+    [self animateToHeight:_defaultContentHeight + _defaultHeaderHeight];
 }
 
 - (void) setupGestureRecognizer {
     UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragView:)];
     self.userInteractionEnabled = YES;
     [self addGestureRecognizer:panGesture];
+    
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleView:)];
+    [self addGestureRecognizer:tapGesture];
+}
+
+- (void) toggleView:(UIPanGestureRecognizer*) sender {
+    if (!_fullContentView) {
+        return;
+    }
+    [_fullContentView setHidden:NO];
+    [_defaultContentView setHidden:NO];
+    [_closeButton setHidden:NO];
+    if (_selfTopConstraint.constant == 0) {
+        [self animateToHeight:_defaultContentHeight + _defaultHeaderHeight];
+    }
+    else {
+        [self animateToHeight:_maximizedHeaderHeight + _maximizedContentHeight];
+    }
 }
 
 - (void) dragView:(UIPanGestureRecognizer*) sender {
@@ -235,6 +287,7 @@
         _currentTranslation = self.frame.origin.y;
         [_defaultContentView setHidden:NO];
         [_fullContentView setHidden:NO];
+        [_closeButton setHidden:NO];
     }
     if (self.frame.size.height - _currentTranslation - translation.y < self.frame.size.height) {
         [self updateHeight:self.frame.size.height - _currentTranslation - translation.y];
@@ -338,6 +391,7 @@
     _headerHeightConstraint.constant = [self headerHeightFormula:height];
     _defaultContentView.alpha = [self alphaFormula:height];
     _fullContentView.alpha = [self reversedAlphaFormula:height];
+    self.closeButton.alpha = [self reversedAlphaFormula:height];
 }
 
 - (void) animateToHeight:(CGFloat) height {
@@ -348,13 +402,16 @@
         self.headerHeightConstraint.constant = [self headerHeightFormula:height];
         self.defaultContentView.alpha = [self alphaFormula:height];
         self.fullContentView.alpha = [self reversedAlphaFormula:height];
+        self.closeButton.alpha = [self reversedAlphaFormula:height];
         [self.superview layoutIfNeeded];
     } completion:^(BOOL finished) {
-        if (self.defaultContentView.alpha == 0.0) {
+        if (self.defaultContentView.alpha < 0.1) {
             [self.defaultContentView setHidden:YES];
+            [self.closeButton setHidden:NO];
         }
-        if (self.fullContentView.alpha == 0.0) {
+        if (self.fullContentView.alpha < 0.1) {
             [self.fullContentView setHidden:YES];
+            [self.closeButton setHidden:YES];
         }
     }];
 }
