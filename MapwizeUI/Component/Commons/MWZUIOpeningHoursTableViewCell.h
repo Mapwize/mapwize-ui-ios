@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, retain) UILabel* dayLabel;
 @property (nonatomic, retain) UILabel* hoursLabel;
+@property (nonatomic, retain) UIImageView* toggleImage;
 
 @end
 

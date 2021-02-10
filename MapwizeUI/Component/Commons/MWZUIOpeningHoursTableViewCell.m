@@ -34,6 +34,15 @@
     [[_hoursLabel.topAnchor constraintEqualToAnchor:self.topAnchor constant:4] setActive:YES];
     [[_hoursLabel.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-4] setActive:YES];
     
+    _toggleImage = [[UIImageView alloc] initWithFrame:CGRectZero];
+    _toggleImage.translatesAutoresizingMaskIntoConstraints = NO;
+    _toggleImage.backgroundColor = [UIColor redColor];
+    [self addSubview:_toggleImage];
+    [[_toggleImage.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-16] setActive:YES];
+    [[_toggleImage.centerYAnchor constraintEqualToAnchor:self.centerYAnchor] setActive:YES];
+    [[_toggleImage.widthAnchor constraintEqualToConstant:24.0] setActive:YES];
+    [[_toggleImage.heightAnchor constraintEqualToConstant:24.0] setActive:YES];
+    
 }
 
 @end

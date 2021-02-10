@@ -86,10 +86,12 @@
                         fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
             cell.hoursLabel.font = [UIFont fontWithDescriptor:fontD size:14];
             cell.dayLabel.font = [UIFont fontWithDescriptor:fontD size:14];
+            [cell.toggleImage setHidden:NO];
         }
         else {
             cell.hoursLabel.font = [cell.hoursLabel.font fontWithSize:14];
             cell.dayLabel.font = [cell.hoursLabel.font fontWithSize:14];
+            [cell.toggleImage setHidden:YES];
         }
         cell.hoursLabel.numberOfLines = 0;
         returnedCell = cell;

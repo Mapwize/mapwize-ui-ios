@@ -27,6 +27,15 @@
     [[_hoursLabel.topAnchor constraintEqualToAnchor:self.topAnchor constant:4] setActive:YES];
     [[_hoursLabel.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-4] setActive:YES];
     
+    
+    UIImageView* image = [[UIImageView alloc] initWithFrame:CGRectZero];
+    image.translatesAutoresizingMaskIntoConstraints = NO;
+    image.backgroundColor = [UIColor redColor];
+    [self addSubview:image];
+    [[image.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-16] setActive:YES];
+    [[image.centerYAnchor constraintEqualToAnchor:self.centerYAnchor] setActive:YES];
+    [[image.widthAnchor constraintEqualToConstant:24.0] setActive:YES];
+    [[image.heightAnchor constraintEqualToConstant:24.0] setActive:YES];
 }
 
 @end
