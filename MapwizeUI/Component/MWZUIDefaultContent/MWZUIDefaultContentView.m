@@ -99,6 +99,21 @@
     [[_titleTextView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-8.0] setActive:YES];
     [[_titleTextView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0] setActive:YES];
     
+    UIView* lastAnchorView = _titleTextView;
+    if ([place subtitleForLanguage:language] && [[place subtitleForLanguage:language] length] > 0) {
+        UILabel* subtitle = [[UILabel alloc] initWithFrame:CGRectZero];
+        subtitle.translatesAutoresizingMaskIntoConstraints = NO;
+        subtitle.textColor = [UIColor darkGrayColor];
+        subtitle.font = [subtitle.font fontWithSize:14];
+        subtitle.text = [place subtitleForLanguage:language];
+        [self addSubview:subtitle];
+        [[subtitle.heightAnchor constraintEqualToConstant:16] setActive:YES];
+        [[subtitle.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
+        [[subtitle.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-8.0] setActive:YES];
+        [[subtitle.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:4.0] setActive:YES];
+        lastAnchorView = subtitle;
+    }
+    
     UIView* lastAnchorButton = nil;
     for (MWZUIIconTextButton* button in buttons) {
         button.translatesAutoresizingMaskIntoConstraints = NO;
@@ -109,7 +124,7 @@
         else {
             [[button.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
         }
-        [[button.topAnchor constraintEqualToAnchor:_titleTextView.bottomAnchor constant:16.0] setActive:YES];
+        [[button.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:16.0] setActive:YES];
         [[button.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-16.0] setActive:YES];
         lastAnchorButton = button;
     }
