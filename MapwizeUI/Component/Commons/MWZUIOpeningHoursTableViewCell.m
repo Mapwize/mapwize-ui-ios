@@ -36,7 +36,10 @@
     
     _toggleImage = [[UIImageView alloc] initWithFrame:CGRectZero];
     _toggleImage.translatesAutoresizingMaskIntoConstraints = NO;
-    _toggleImage.backgroundColor = [UIColor redColor];
+    NSBundle* bundle = [NSBundle bundleForClass:self.class];
+    UIImage* chevron = [UIImage imageNamed:@"back" inBundle:bundle compatibleWithTraitCollection:nil];
+    _toggleImage.transform = CGAffineTransformMakeRotation(90 * M_PI / 180);
+    _toggleImage.image = chevron;
     [self addSubview:_toggleImage];
     [[_toggleImage.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-16] setActive:YES];
     [[_toggleImage.centerYAnchor constraintEqualToAnchor:self.centerYAnchor] setActive:YES];

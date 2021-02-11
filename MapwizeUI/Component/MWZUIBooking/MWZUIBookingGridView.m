@@ -88,7 +88,7 @@
     
     // and now draw the Path!
     context = UIGraphicsGetCurrentContext();
-    CGContextSetStrokeColorWithColor(context, _color.CGColor);
+    CGContextSetStrokeColorWithColor(context, [UIColor colorWithWhite:0.3 alpha:1].CGColor);
 
     // Draw them with a 2.0 stroke width so they are a bit more visible.
     CGContextSetLineWidth(context, 2.0f);

@@ -30,7 +30,10 @@
     
     UIImageView* image = [[UIImageView alloc] initWithFrame:CGRectZero];
     image.translatesAutoresizingMaskIntoConstraints = NO;
-    image.backgroundColor = [UIColor redColor];
+    NSBundle* bundle = [NSBundle bundleForClass:self.class];
+    UIImage* chevron = [UIImage imageNamed:@"back" inBundle:bundle compatibleWithTraitCollection:nil];
+    image.transform = CGAffineTransformMakeRotation(-90 * M_PI / 180);
+    image.image = chevron;
     [self addSubview:image];
     [[image.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-16] setActive:YES];
     [[image.centerYAnchor constraintEqualToAnchor:self.centerYAnchor] setActive:YES];

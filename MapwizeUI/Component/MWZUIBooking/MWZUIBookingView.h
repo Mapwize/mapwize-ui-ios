@@ -10,6 +10,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype) initWithFrame:(CGRect)frame placeDetails:(MWZPlaceDetails*)placeDetails color:(UIColor*)color;
 
++ (BOOL) isOccupied:(MWZPlaceDetails*)placeDetails;
+
 @end
 
 NS_ASSUME_NONNULL_END

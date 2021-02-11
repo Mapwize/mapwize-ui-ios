@@ -13,6 +13,8 @@
 @property (nonatomic) UIButton* closeButton;
 @property (nonatomic) UICollectionView* headerImageCollectionView;
 @property (nonatomic) UIView* contentView;
+@property (nonatomic) UIView* dragSymbolView;
+@property (nonatomic) UIView* dragSymbolViewContent;
 @property (nonatomic) MWZUIDefaultContentView* defaultContentView;
 @property (nonatomic) MWZUIFullContentView* fullContentView;
 
@@ -30,6 +32,7 @@
 @property (assign) CGFloat maximizedHeaderHeight;
 @property (nonatomic) NSLayoutConstraint* headerHeightConstraint;
 @property (nonatomic) NSLayoutConstraint* selfTopConstraint;
+@property (nonatomic) NSLayoutConstraint* dragSymbolHeightConstraint;
 
 @property (nonatomic) CGRect parentFrame;
 @property (nonatomic) UIColor* color;
@@ -76,6 +79,7 @@
     [_headerImageCollectionView reloadData];
     [_defaultContentView removeFromSuperview];
     [_fullContentView removeFromSuperview];
+    [_dragSymbolViewContent setHidden:YES];
     _defaultContentView = [[MWZUIDefaultContentView alloc] initWithFrame:self.frame color:_color];
     _defaultContentView.translatesAutoresizingMaskIntoConstraints = NO;
     [_contentView addSubview:_defaultContentView];
@@ -101,6 +105,7 @@
     [_defaultContentView removeFromSuperview];
     [_fullContentView removeFromSuperview];
     _fullContentView = nil;
+    [_dragSymbolViewContent setHidden:YES];
     _defaultContentView = [[MWZUIDefaultContentView alloc] initWithFrame:self.frame color:_color];
     _defaultContentView.translatesAutoresizingMaskIntoConstraints = NO;
     _defaultContentView.delegate = self;
@@ -129,6 +134,7 @@
     [_headerImageCollectionView reloadData];
     [_defaultContentView removeFromSuperview];
     [_fullContentView removeFromSuperview];
+    [_dragSymbolViewContent setHidden:NO];
     _defaultContentView = [[MWZUIDefaultContentView alloc] initWithFrame:self.frame color:_color];
     _defaultContentView.translatesAutoresizingMaskIntoConstraints = NO;
     [_contentView addSubview:_defaultContentView];
@@ -196,7 +202,27 @@
     _headerHeightConstraint = [_headerView.heightAnchor constraintEqualToConstant:0];
     [_headerHeightConstraint setActive:YES];
     
-    [[_contentView.topAnchor constraintEqualToAnchor:_headerView.bottomAnchor] setActive:YES];
+    _dragSymbolView = [[UIView alloc] initWithFrame:CGRectZero];
+    _dragSymbolView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:_dragSymbolView];
+    [[_dragSymbolView.topAnchor constraintEqualToAnchor:_headerView.bottomAnchor] setActive:YES];
+    _dragSymbolHeightConstraint = [_dragSymbolView.heightAnchor constraintEqualToConstant:16.0];
+    [_dragSymbolHeightConstraint setActive:YES];
+    [[_dragSymbolView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor] setActive:YES];
+    [[_dragSymbolView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor] setActive:YES];
+    _dragSymbolView.backgroundColor = [UIColor whiteColor];
+    
+    _dragSymbolViewContent = [[UIView alloc] initWithFrame:CGRectZero];
+    _dragSymbolViewContent.translatesAutoresizingMaskIntoConstraints = NO;
+    _dragSymbolViewContent.layer.cornerRadius = 2;
+    _dragSymbolViewContent.layer.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1].CGColor;
+    [_dragSymbolView addSubview:_dragSymbolViewContent];
+    [[_dragSymbolViewContent.heightAnchor constraintEqualToConstant:4] setActive:YES];
+    [[_dragSymbolViewContent.widthAnchor constraintEqualToConstant:40] setActive:YES];
+    [[_dragSymbolViewContent.centerYAnchor constraintEqualToAnchor:_dragSymbolView.centerYAnchor] setActive:YES];
+    [[_dragSymbolViewContent.centerXAnchor constraintEqualToAnchor:_dragSymbolView.centerXAnchor] setActive:YES];
+    
+    [[_contentView.topAnchor constraintEqualToAnchor:_dragSymbolView.bottomAnchor] setActive:YES];
     [[_contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor] setActive:YES];
     [[_contentView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor] setActive:YES];
     [[_contentView.heightAnchor constraintEqualToAnchor:self.heightAnchor multiplier:0.75] setActive:YES];
@@ -228,10 +254,11 @@
     NSBundle* bundle = [NSBundle bundleForClass:self.class];
     UIImage* backImage = [UIImage imageNamed:@"back" inBundle:bundle compatibleWithTraitCollection:nil];
     [_closeButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
-    [_closeButton setImage:backImage forState:UIControlStateNormal];
+    [_closeButton setImage:[backImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     _closeButton.layer.cornerRadius = 20;
-    _closeButton.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
+    _closeButton.backgroundColor = [UIColor colorWithWhite:0 alpha:0.4];
     _closeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    _closeButton.tintColor = [UIColor whiteColor];
     //_closeButton.backgroundColor = [UIColor whiteColor];
     if (@available(iOS 11.0, *)) {
         [[_closeButton.topAnchor constraintEqualToAnchor:_headerView.safeAreaLayoutGuide.topAnchor constant:16.0] setActive:YES];
@@ -267,13 +294,10 @@
     if (!_fullContentView) {
         return;
     }
-    [_fullContentView setHidden:NO];
-    [_defaultContentView setHidden:NO];
-    [_closeButton setHidden:NO];
-    if (_selfTopConstraint.constant == 0) {
-        [self animateToHeight:_defaultContentHeight + _defaultHeaderHeight];
-    }
-    else {
+    if (_selfTopConstraint.constant != 0) {
+        [_fullContentView setHidden:NO];
+        [_defaultContentView setHidden:NO];
+        [_closeButton setHidden:NO];
         [self animateToHeight:_maximizedHeaderHeight + _maximizedContentHeight];
     }
 }

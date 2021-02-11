@@ -2,6 +2,8 @@
 #import "MWZUIIconTextButton.h"
 #import "MWZUIOpeningHoursUtils.h"
 #import "MWZPlaceDetails.h"
+#import "MWZUIBookingView.h"
+
 @interface MWZUIDefaultContentView ()
 
 @property (nonatomic) UILabel* titleTextView;
@@ -35,7 +37,7 @@
     [[_titleTextView.heightAnchor constraintEqualToConstant:24] setActive:YES];
     [[_titleTextView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
     [[_titleTextView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-8.0] setActive:YES];
-    [[_titleTextView.topAnchor constraintEqualToAnchor:self.topAnchor constant:8.0] setActive:YES];
+    [[_titleTextView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0] setActive:YES];
     
     UIActivityIndicatorView* progressView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
     progressView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -61,7 +63,7 @@
     [[_titleTextView.heightAnchor constraintEqualToConstant:24] setActive:YES];
     [[_titleTextView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
     [[_titleTextView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-8.0] setActive:YES];
-    [[_titleTextView.topAnchor constraintEqualToAnchor:self.topAnchor constant:8.0] setActive:YES];
+    [[_titleTextView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0] setActive:YES];
     
     UIView* lastAnchorButton = nil;
     for (MWZUIIconTextButton* button in buttons) {
@@ -73,8 +75,8 @@
         else {
             [[button.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
         }
-        [[button.topAnchor constraintEqualToAnchor:_titleTextView.bottomAnchor constant:8.0] setActive:YES];
-        [[button.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-8.0] setActive:YES];
+        [[button.topAnchor constraintEqualToAnchor:_titleTextView.bottomAnchor constant:16.0] setActive:YES];
+        [[button.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-16.0] setActive:YES];
         lastAnchorButton = button;
     }
     
@@ -94,34 +96,48 @@
     [[_titleTextView.heightAnchor constraintEqualToConstant:24] setActive:YES];
     [[_titleTextView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
     [[_titleTextView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-8.0] setActive:YES];
-    [[_titleTextView.topAnchor constraintEqualToAnchor:self.topAnchor constant:8.0] setActive:YES];
+    [[_titleTextView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0] setActive:YES];
     
     UIView* lastAnchorView = _titleTextView;
     if ([_placeDetails subtitleForLanguage:language] && [[_placeDetails subtitleForLanguage:language] length] > 0) {
         UILabel* subtitle = [[UILabel alloc] initWithFrame:CGRectZero];
         subtitle.translatesAutoresizingMaskIntoConstraints = NO;
         subtitle.textColor = [UIColor darkGrayColor];
-        subtitle.font = [subtitle.font fontWithSize:16];
+        subtitle.font = [subtitle.font fontWithSize:14];
         subtitle.text = [_placeDetails subtitleForLanguage:language];
         [self addSubview:subtitle];
         [[subtitle.heightAnchor constraintEqualToConstant:16] setActive:YES];
         [[subtitle.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
         [[subtitle.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-8.0] setActive:YES];
-        [[subtitle.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:8.0] setActive:YES];
+        [[subtitle.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:4.0] setActive:YES];
         lastAnchorView = subtitle;
     }
     if (_placeDetails.openingHours && [_placeDetails.openingHours count] > 0) {
         UILabel* openingHours = [[UILabel alloc] initWithFrame:CGRectZero];
         openingHours.translatesAutoresizingMaskIntoConstraints = NO;
         openingHours.textColor = [UIColor darkGrayColor];
-        openingHours.font = [openingHours.font fontWithSize:16];
+        openingHours.font = [openingHours.font fontWithSize:14];
         openingHours.text = [MWZUIOpeningHoursUtils getCurrentOpeningStateString:_placeDetails.openingHours timezoneCode:_placeDetails.timezone];
         [self addSubview:openingHours];
         [[openingHours.heightAnchor constraintEqualToConstant:16] setActive:YES];
         [[openingHours.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
         [[openingHours.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-8.0] setActive:YES];
-        [[openingHours.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:8.0] setActive:YES];
+        [[openingHours.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:4.0] setActive:YES];
         lastAnchorView = openingHours;
+    }
+    if (placeDetails.events) {
+        BOOL isOccupied = [MWZUIBookingView isOccupied:placeDetails];
+        UILabel* bookingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        bookingLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        bookingLabel.textColor = [UIColor darkGrayColor];
+        bookingLabel.font = [bookingLabel.font fontWithSize:14];
+        bookingLabel.text = isOccupied?NSLocalizedString(@"Currently occupied", @""):NSLocalizedString(@"Currently available", @"");
+        [self addSubview:bookingLabel];
+        [[bookingLabel.heightAnchor constraintEqualToConstant:16] setActive:YES];
+        [[bookingLabel.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
+        [[bookingLabel.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-8.0] setActive:YES];
+        [[bookingLabel.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:4.0] setActive:YES];
+        lastAnchorView = bookingLabel;
     }
     
     if (buttons.count == 0) {
@@ -138,7 +154,7 @@
     [[scrollView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor] setActive:YES];
     [[scrollView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor] setActive:YES];
     [[scrollView.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:8.0] setActive:YES];
-    [[scrollView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor] setActive:YES];
+    [[scrollView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-8] setActive:YES];
     [[scrollView.heightAnchor constraintEqualToConstant:52] setActive:YES];
     
     UIView* lastAnchorButton = nil;

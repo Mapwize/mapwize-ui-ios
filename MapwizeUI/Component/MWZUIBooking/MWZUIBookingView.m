@@ -29,7 +29,7 @@ static double gridWidth = 25;
     if (self.infoAvailable) {
         [imageView setTintColor:self.color];
         [bookingLabel setFont:[UIFont systemFontOfSize:14]];
-        BOOL isOccupied = [self isOccupied:placeDetails];
+        BOOL isOccupied = [MWZUIBookingView isOccupied:placeDetails];
         [bookingLabel setText:isOccupied?NSLocalizedString(@"Currently occupied", @""):NSLocalizedString(@"Currently available", @"")];
     }
     else {
@@ -81,14 +81,14 @@ static double gridWidth = 25;
     }
 }
 
-- (BOOL) isOccupied:(MWZPlaceDetails*)placeDetails {
++ (BOOL) isOccupied:(MWZPlaceDetails*)placeDetails {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
 
     for (MWZPlaceDetailsEvent* event in placeDetails.events) {
         NSDate *startDate = [dateFormatter dateFromString: event.start];
         NSDate *endDate = [dateFormatter dateFromString: event.end];
-        if ([self date:[NSDate date] isBetweenDate:startDate andDate:endDate]) {
+        if ([MWZUIBookingView date:[NSDate date] isBetweenDate:startDate andDate:endDate]) {
             return YES;
         }
     }
@@ -96,7 +96,7 @@ static double gridWidth = 25;
     return NO;
 }
 
-- (BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate
++ (BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate
 {
     if ([date compare:beginDate] == NSOrderedAscending)
         return NO;

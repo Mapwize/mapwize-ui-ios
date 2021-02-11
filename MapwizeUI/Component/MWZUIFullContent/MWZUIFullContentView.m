@@ -58,7 +58,7 @@
     [[_titleTextView.heightAnchor constraintEqualToConstant:24] setActive:YES];
     [[_titleTextView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:16.0] setActive:YES];
     [[_titleTextView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-16.0] setActive:YES];
-    [[_titleTextView.topAnchor constraintEqualToAnchor:self.topAnchor constant:16.0] setActive:YES];
+    [[_titleTextView.topAnchor constraintEqualToAnchor:self.topAnchor constant:8.0] setActive:YES];
     [[_titleTextView.widthAnchor constraintEqualToAnchor:self.widthAnchor constant:-32] setActive:YES];
     
     _subtitleTextView = [[UILabel alloc] initWithFrame:CGRectZero];
