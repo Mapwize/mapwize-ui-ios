@@ -128,6 +128,35 @@
     }
 }
 
+- (void) showPlace:(MWZPlace*)place shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language {
+    _placeDetails = nil;
+    _placePreview = nil;
+    [_defaultContentView removeFromSuperview];
+    [_fullContentView removeFromSuperview];
+    _fullContentView = nil;
+    [_dragSymbolViewContent setHidden:YES];
+    _defaultContentView = [[MWZUIDefaultContentView alloc] initWithFrame:self.frame color:_color];
+    _defaultContentView.translatesAutoresizingMaskIntoConstraints = NO;
+    _defaultContentView.delegate = self;
+    [_contentView addSubview:_defaultContentView];
+    [[_defaultContentView.leadingAnchor constraintEqualToAnchor:_contentView.leadingAnchor] setActive:YES];
+    [[_defaultContentView.trailingAnchor constraintEqualToAnchor:_contentView.trailingAnchor] setActive:YES];
+    [[_defaultContentView.topAnchor constraintEqualToAnchor:_contentView.topAnchor] setActive:YES];
+    
+    NSMutableArray<MWZUIIconTextButton*>* buttons = [_defaultContentView buildButtonsForPlace:place showInfoButton:shouldShowInformationButton];
+    
+    [_defaultContentView setContentForPlace:place language:language buttons:buttons];
+    [_defaultContentView layoutIfNeeded];
+    if (@available(iOS 11.0, *)) {
+        self.defaultContentHeight = _defaultContentView.frame.size.height + self.safeAreaInsets.bottom;
+    } else {
+        self.defaultContentHeight = _defaultContentView.frame.size.height;
+    }
+    if (!_placeDetails) {
+        [self animateToHeight:self.defaultContentHeight];
+    }
+}
+
 - (void) showPlaceDetails:(MWZPlaceDetails*)placeDetails shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language {
     _placePreview = nil;
     _placeDetails = placeDetails;

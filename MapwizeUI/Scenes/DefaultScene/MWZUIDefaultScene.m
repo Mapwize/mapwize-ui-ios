@@ -111,6 +111,9 @@
         else if ([sceneProperties.selectedContent isKindOfClass:MWZPlacelist.class]) {
             [self showContent:sceneProperties.selectedContent language:sceneProperties.language showInfoButton:NO];
         }
+        else if ([sceneProperties.selectedContent isKindOfClass:MWZPlace.class]) {
+            [self showContent:sceneProperties.selectedContent language:sceneProperties.language showInfoButton:NO];
+        }
         else if (_sceneProperties.selectedContent) {
             [self hideContent];
         }
@@ -173,10 +176,9 @@
     }
     if ([object isKindOfClass:MWZPlacelist.class]) {
         [self.bottomSheet showPlacelist:object shouldShowInformationButton:showInfoButton language:language];
-        //[self.bottomSheet showMock:[MWZUIPlaceMock getMock1]];
-        /*[self.bottomInfoView selectContentWithPlaceList:(MWZPlacelist*)object
-                                               language:language
-                                         showInfoButton:showInfoButton];*/
+    }
+    if ([object isKindOfClass:MWZPlace.class]) {
+        [self.bottomSheet showPlace:object shouldShowInformationButton:showInfoButton language:language];
     }
 }
 

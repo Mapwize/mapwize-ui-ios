@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) showPlacePreview:(MWZPlacePreview*)placePreview;
 - (void) showPlaceDetails:(MWZPlaceDetails*)placeDetails shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language;
 - (void) showPlacelist:(MWZPlacelist*)placelist shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language;
+- (void) showPlace:(MWZPlace*)place shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language;
 - (void) removeContent;
 
 @end

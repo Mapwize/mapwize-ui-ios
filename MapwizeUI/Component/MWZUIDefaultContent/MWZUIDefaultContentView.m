@@ -82,6 +82,39 @@
     
 }
 
+-(void)setContentForPlace:(MWZPlace*)place
+                 language:(NSString*)language
+                  buttons:(NSMutableArray<MWZUIIconTextButton*>*)buttons {
+    _titleTextView = [[UILabel alloc] initWithFrame:CGRectZero];
+    _titleTextView.font=[_titleTextView.font fontWithSize:21];
+    
+    _titleTextView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    _titleTextView.text = [place titleForLanguage:language];
+    
+    [self addSubview:_titleTextView];
+    
+    [[_titleTextView.heightAnchor constraintEqualToConstant:24] setActive:YES];
+    [[_titleTextView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
+    [[_titleTextView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-8.0] setActive:YES];
+    [[_titleTextView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0] setActive:YES];
+    
+    UIView* lastAnchorButton = nil;
+    for (MWZUIIconTextButton* button in buttons) {
+        button.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:button];
+        if (lastAnchorButton) {
+            [[button.leadingAnchor constraintEqualToAnchor:lastAnchorButton.trailingAnchor constant:8.0] setActive:YES];
+        }
+        else {
+            [[button.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8.0] setActive:YES];
+        }
+        [[button.topAnchor constraintEqualToAnchor:_titleTextView.bottomAnchor constant:16.0] setActive:YES];
+        [[button.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-16.0] setActive:YES];
+        lastAnchorButton = button;
+    }
+}
+
 -(void)setContentForPlaceDetails:(MWZPlaceDetails*)placeDetails
                  language:(NSString*)language
                   buttons:(NSMutableArray<MWZUIIconTextButton*>*)buttons {
@@ -176,6 +209,20 @@
 }
 
 -(NSMutableArray<MWZUIIconTextButton*>*) buildButtonsForPlacelist:(MWZPlacelist *)placelist showInfoButton:(BOOL)showInfoButton {
+    NSMutableArray<MWZUIIconTextButton*>* buttons = [[NSMutableArray alloc] init];
+    MWZUIIconTextButton* directionButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Direction", @"") image:[UIImage imageNamed:@"direction" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil] color:_color outlined:NO];
+    [buttons addObject:directionButton];
+    [directionButton addTarget:self action:@selector(directionButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    if (showInfoButton) {
+        MWZUIIconTextButton* info = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Information", @"") image:[UIImage imageNamed:@"info" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil] color:_color outlined:YES];
+        [buttons addObject:info];
+        [info addTarget:self action:@selector(infoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return buttons;
+}
+
+-(NSMutableArray<MWZUIIconTextButton*>*) buildButtonsForPlace:(MWZPlace *)place showInfoButton:(BOOL)showInfoButton {
     NSMutableArray<MWZUIIconTextButton*>* buttons = [[NSMutableArray alloc] init];
     MWZUIIconTextButton* directionButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Direction", @"") image:[UIImage imageNamed:@"direction" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil] color:_color outlined:NO];
     [buttons addObject:directionButton];

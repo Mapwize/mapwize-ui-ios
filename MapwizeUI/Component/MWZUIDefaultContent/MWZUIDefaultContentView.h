@@ -20,11 +20,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(NSMutableArray<MWZUIIconTextButton*>*) buildButtonsForPlaceDetails:(MWZPlaceDetails*)placeDetails showInfoButton:(BOOL)showInfoButton;
 
+-(NSMutableArray<MWZUIIconTextButton*>*) buildButtonsForPlace:(MWZPlace *)place showInfoButton:(BOOL)showInfoButton;
+
 -(void)setContentForPlaceDetails:(MWZPlaceDetails*)placeDetails
                  language:(NSString*)language
                   buttons:(NSMutableArray<MWZUIIconTextButton*>*)buttons;
 
 -(void)setContentForPlacelist:(MWZPlacelist*)placelist
+                 language:(NSString*)language
+                  buttons:(NSMutableArray<MWZUIIconTextButton*>*)buttons;
+
+-(void)setContentForPlace:(MWZPlace*)place
                  language:(NSString*)language
                   buttons:(NSMutableArray<MWZUIIconTextButton*>*)buttons;
 
