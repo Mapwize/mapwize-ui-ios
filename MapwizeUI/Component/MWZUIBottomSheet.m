@@ -327,7 +327,7 @@
         [_fullContentView setHidden:NO];
         [_defaultContentView setHidden:NO];
         [_closeButton setHidden:NO];
-        [self animateToHeight:_maximizedHeaderHeight + _maximizedContentHeight];
+        [self animateToHeight:self.frame.size.height];
     }
 }
 

@@ -104,6 +104,7 @@
         if (_openingHours.count > 0) {
             cell.hoursLabel.text = [MWZUIOpeningHoursUtils getCurrentOpeningStateString:_openingHours timezoneCode:_timezoneCode];
             cell.hoursLabel.font = [cell.hoursLabel.font fontWithSize:14];
+            [cell.toggleImage setHidden:NO];
         }
         else {
             cell.hoursLabel.text = NSLocalizedString(@"Opening hours not available", @"");
@@ -111,6 +112,7 @@
                         fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
             cell.hoursLabel.font = [UIFont fontWithDescriptor:fontD size:14];
             cell.hoursLabel.textColor = [UIColor darkGrayColor];
+            [cell.toggleImage setHidden:YES];
         }
         returnedCell = cell;
     }

@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MWZUIOpeningHoursTodayTableViewCell : UITableViewCell
 
 @property (nonatomic, retain) UILabel* hoursLabel;
-
+@property (nonatomic, retain) UIImageView* toggleImage;
 @end
 
 NS_ASSUME_NONNULL_END

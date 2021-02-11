@@ -28,17 +28,17 @@
     [[_hoursLabel.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-4] setActive:YES];
     
     
-    UIImageView* image = [[UIImageView alloc] initWithFrame:CGRectZero];
-    image.translatesAutoresizingMaskIntoConstraints = NO;
+    _toggleImage = [[UIImageView alloc] initWithFrame:CGRectZero];
+    _toggleImage.translatesAutoresizingMaskIntoConstraints = NO;
     NSBundle* bundle = [NSBundle bundleForClass:self.class];
     UIImage* chevron = [UIImage imageNamed:@"back" inBundle:bundle compatibleWithTraitCollection:nil];
-    image.transform = CGAffineTransformMakeRotation(-90 * M_PI / 180);
-    image.image = chevron;
-    [self addSubview:image];
-    [[image.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-16] setActive:YES];
-    [[image.centerYAnchor constraintEqualToAnchor:self.centerYAnchor] setActive:YES];
-    [[image.widthAnchor constraintEqualToConstant:24.0] setActive:YES];
-    [[image.heightAnchor constraintEqualToConstant:24.0] setActive:YES];
+    _toggleImage.transform = CGAffineTransformMakeRotation(-90 * M_PI / 180);
+    _toggleImage.image = chevron;
+    [self addSubview:_toggleImage];
+    [[_toggleImage.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-16] setActive:YES];
+    [[_toggleImage.centerYAnchor constraintEqualToAnchor:self.centerYAnchor] setActive:YES];
+    [[_toggleImage.widthAnchor constraintEqualToConstant:24.0] setActive:YES];
+    [[_toggleImage.heightAnchor constraintEqualToConstant:24.0] setActive:YES];
 }
 
 @end

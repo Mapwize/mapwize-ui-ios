@@ -173,7 +173,7 @@
         [[openingHours.topAnchor constraintEqualToAnchor:lastAnchorView.bottomAnchor constant:4.0] setActive:YES];
         lastAnchorView = openingHours;
     }
-    if (placeDetails.events) {
+    if (placeDetails.events && placeDetails.events.count > 0) {
         BOOL isOccupied = [MWZUIBookingView isOccupied:placeDetails];
         UILabel* bookingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         bookingLabel.translatesAutoresizingMaskIntoConstraints = NO;
