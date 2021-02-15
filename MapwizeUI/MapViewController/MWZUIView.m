@@ -745,6 +745,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     } failure:^(NSError * _Nonnull error) {
         MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
         defaultProperties.selectedContent = self.selectedContent;
+        defaultProperties.placeDetails = nil;
         defaultProperties.language = [self.mapView getLanguage];
         if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
             defaultProperties.infoButtonHidden = ![self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
@@ -1122,10 +1123,11 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.searchScene showResults:searchResponse
                                            withLanguage:[self.mapView getLanguage] forQuery:query];
+                    [self.searchScene setNetworkError:NO];
                 });
             } failure:^(NSError *error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.searchScene setNetworkError];
+                    [self.searchScene setNetworkError:YES];
                 });
             }];
         }
@@ -1149,10 +1151,11 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                          activeUniverse:[self.mapView getUniverse]
                                            withLanguage:[self.mapView getLanguage]
                                                forQuery:query];
+                    [self.searchScene setNetworkError:NO];
                 });
             } failure:^(NSError *error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.searchScene setNetworkError];
+                    [self.searchScene setNetworkError:YES];
                 });
             }];
         }
@@ -1327,10 +1330,11 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                     activeUniverse:[self.mapView getUniverse]
                                       withLanguage:[self.mapView getLanguage]
                                           forQuery:query];
+            [self.searchScene setNetworkError:NO];
         });
     } failure:^(NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.searchScene setNetworkError];
+            [self.searchScene setNetworkError:YES];
         });
     }];
 }

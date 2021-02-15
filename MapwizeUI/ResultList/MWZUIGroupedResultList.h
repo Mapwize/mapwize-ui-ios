@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
             language:(NSString*) language
             forQuery:(NSString*) query;
 - (void) swapResults:(NSArray<id<MWZObject>> *)results language:(NSString *)language forQuery:(NSString*) query;
-- (void) setNetworkError;
+- (void) setNetworkError:(BOOL)networkError;
 @end
 
 NS_ASSUME_NONNULL_END
