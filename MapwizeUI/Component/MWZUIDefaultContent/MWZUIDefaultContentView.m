@@ -1,8 +1,9 @@
 #import "MWZUIDefaultContentView.h"
 #import "MWZUIIconTextButton.h"
 #import "MWZUIOpeningHoursUtils.h"
-#import "MWZPlaceDetails.h"
 #import "MWZUIBookingView.h"
+
+#import <MapwizeSDK/MapwizeSDK.h>
 
 @interface MWZUIDefaultContentView ()
 

@@ -3,7 +3,8 @@
 #import "MWZUIDefaultContentView.h"
 #import "MWZUIFullContentView.h"
 #import "MWZUIBottomSheetComponents.h"
-#import "MWZPlaceDetails.h"
+
+#import <MapwizeSDK/MapwizeSDK.h>
 
 @interface MWZUIBottomSheet () <UICollectionViewDelegate, UICollectionViewDataSource>
 

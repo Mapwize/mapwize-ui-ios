@@ -12,7 +12,7 @@
 #import "MWZUIBookingView.h"
 #import "MWZUIBottomSheet.h"
 #import "MWZUIPagerView.h"
-#import "MWZPlaceDetails.h"
+#import <MapwizeSDK/MapwizeSDK.h>
 #import <WebKit/WebKit.h>
 
 @interface MWZUIFullContentView () <UIGestureRecognizerDelegate>
