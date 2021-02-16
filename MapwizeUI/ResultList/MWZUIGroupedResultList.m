@@ -53,8 +53,31 @@
                                                                    constant:0];
         self.tableHeightConstraint.priority = 200;
         [self.tableHeightConstraint setActive:YES];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardDidShow:)
+                                                     name:UIKeyboardDidShowNotification
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardDidHide:)
+                                                     name:UIKeyboardDidHideNotification
+                                                   object:nil];
     }
     return self;
+}
+
+- (void)keyboardDidShow: (NSNotification *) notif{
+    NSValue* value = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
+    double bottom = 0;
+    if (@available(iOS 11.0, *)) {
+        bottom = UIApplication.sharedApplication.keyWindow.safeAreaInsets.bottom;
+    }
+    [self setContentInset:UIEdgeInsetsMake(self.contentInset.top, self.contentInset.left, value.CGRectValue.size.height - bottom, self.contentInset.right)];
+}
+
+- (void)keyboardDidHide: (NSNotification *) notif{
+    [self setContentInset:UIEdgeInsetsMake(self.contentInset.top, self.contentInset.left, 0, self.contentInset.right)];
 }
 
 - (void) setLanguage:(NSString*) language {
