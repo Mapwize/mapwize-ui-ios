@@ -1,14 +1,18 @@
 # Mapwize UI iOS Changelog
 
+## 2.2.6
+
+- Improving search results visibility when keyboard is open 
+
 ## 2.2.5
 
 - Upgrading the Mapwize SDK to 3.3.2
-  - Fixing venue's default bearing issue
+- Fixing venue's default bearing issue
 
 ## 2.2.4
 
-- Add scroll in search results
-- Add delete button in search textfield
+- Adding scroll in search results
+- Adding delete button in search textfield
 
 ## 2.2.3
 
