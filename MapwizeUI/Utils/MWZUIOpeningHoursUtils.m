@@ -59,7 +59,7 @@
 + (NSString*) getCurrentOpeningStateString:(NSArray<NSDictionary*>*) input timezoneCode:(NSString*)timezoneCode {
     NSTimeZone* localTimezone = [NSTimeZone localTimeZone];
     NSTimeZone* venueTimezone = [NSTimeZone timeZoneWithName:timezoneCode];
-    NSInteger diff = (localTimezone.secondsFromGMT - venueTimezone.secondsFromGMT) / 3600;
+    NSInteger diff = (venueTimezone.secondsFromGMT - localTimezone.secondsFromGMT) / 3600;
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [calendar components:(NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:[NSDate date]];
     NSInteger weekday = [components weekday];

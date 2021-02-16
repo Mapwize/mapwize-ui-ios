@@ -65,7 +65,10 @@
         NSDate *startDate = [dateFormatter dateFromString: event.start];
         NSDate *endDate = [dateFormatter dateFromString: event.end];
 
-        if ([startDate timeIntervalSinceDate:[NSDate date]] > 0 || [endDate timeIntervalSinceDate:[NSDate date]] < 0) {
+        
+        NSDate* startOfDay = [self getStartOfDay];
+        NSDate* endOfDay = [self getEndOfDay];
+        if ([startDate timeIntervalSinceDate:endOfDay] > 0 || [endDate timeIntervalSinceDate:startOfDay] < 0) {
             continue;
         }
         
@@ -100,6 +103,32 @@
     }
     CGContextStrokePath(context);
     
+}
+
+- (NSDate*) getStartOfDay {
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components: NSCalendarUnitYear|
+                                    NSCalendarUnitMonth|
+                                    NSCalendarUnitDay
+                                               fromDate:[NSDate date]];
+    [components setHour:0];
+    [components setMinute:0];
+    [components setSecond:0];
+    NSDate *newDate = [calendar dateFromComponents:components];
+    return newDate;
+}
+
+- (NSDate*) getEndOfDay {
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components: NSCalendarUnitYear|
+                                    NSCalendarUnitMonth|
+                                    NSCalendarUnitDay
+                                               fromDate:[NSDate date]];
+    [components setHour:23];
+    [components setMinute:59];
+    [components setSecond:0];
+    NSDate *newDate = [calendar dateFromComponents:components];
+    return newDate;
 }
 
 @end
