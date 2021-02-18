@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
               withLanguage:(NSString*) language
                   forQuery:(NSString*) query;
 - (void) showResults:(NSArray<id<MWZObject>> *)results withLanguage:(NSString *)language forQuery:(NSString*) query;
-- (void) setNetworkError;
+- (void) setNetworkError:(BOOL)networkError;
 
 @end
 

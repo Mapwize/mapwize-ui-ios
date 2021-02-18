@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		397FE89B8614767993A008E9 /* Pods_MapwizeUIAppSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AFBBC641F8549BB2770B35B /* Pods_MapwizeUIAppSwift.framework */; };
+		8F37FA6E25C9E978004BE642 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8F37FA7025C9E978004BE642 /* Localizable.strings */; };
 		8F63C45C219EE3CD00F4ECF9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F63C45B219EE3CD00F4ECF9 /* AppDelegate.swift */; };
 		8F63C45E219EE3CD00F4ECF9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F63C45D219EE3CD00F4ECF9 /* ViewController.swift */; };
 		8F63C461219EE3CD00F4ECF9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8F63C45F219EE3CD00F4ECF9 /* Main.storyboard */; };
@@ -19,12 +20,13 @@
 		2D29A16DE719DFEB2196B906 /* Pods-MapwizeUIAppSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapwizeUIAppSwift.debug.xcconfig"; path = "Target Support Files/Pods-MapwizeUIAppSwift/Pods-MapwizeUIAppSwift.debug.xcconfig"; sourceTree = "<group>"; };
 		3F5FF53151C2E05EF9B6CD17 /* Pods-MapwizeUIAppSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapwizeUIAppSwift.release.xcconfig"; path = "Target Support Files/Pods-MapwizeUIAppSwift/Pods-MapwizeUIAppSwift.release.xcconfig"; sourceTree = "<group>"; };
 		6AFBBC641F8549BB2770B35B /* Pods_MapwizeUIAppSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapwizeUIAppSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F37F9EA25C9DEB0004BE642 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8F37F9EB25C9DEB0004BE642 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8F37FA6F25C9E978004BE642 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8F63C458219EE3CD00F4ECF9 /* MapwizeUIAppSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapwizeUIAppSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F63C45B219EE3CD00F4ECF9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8F63C45D219EE3CD00F4ECF9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		8F63C460219EE3CD00F4ECF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8F63C462219EE3CE00F4ECF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		8F63C465219EE3CE00F4ECF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8F63C467219EE3CE00F4ECF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -46,7 +48,6 @@
 				2D29A16DE719DFEB2196B906 /* Pods-MapwizeUIAppSwift.debug.xcconfig */,
 				3F5FF53151C2E05EF9B6CD17 /* Pods-MapwizeUIAppSwift.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -85,6 +86,7 @@
 				8F63C462219EE3CE00F4ECF9 /* Assets.xcassets */,
 				8F63C464219EE3CE00F4ECF9 /* LaunchScreen.storyboard */,
 				8F63C467219EE3CE00F4ECF9 /* Info.plist */,
+				8F37FA7025C9E978004BE642 /* Localizable.strings */,
 			);
 			path = MapwizeUIAppSwift;
 			sourceTree = "<group>";
@@ -132,7 +134,6 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
 			);
 			mainGroup = 8F63C44F219EE3CD00F4ECF9;
 			productRefGroup = 8F63C459219EE3CD00F4ECF9 /* Products */;
@@ -150,6 +151,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F63C466219EE3CE00F4ECF9 /* LaunchScreen.storyboard in Resources */,
+				8F37FA6E25C9E978004BE642 /* Localizable.strings in Resources */,
 				8F63C463219EE3CE00F4ECF9 /* Assets.xcassets in Resources */,
 				8F63C461219EE3CD00F4ECF9 /* Main.storyboard in Resources */,
 			);
@@ -212,10 +214,18 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		8F37FA7025C9E978004BE642 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8F37FA6F25C9E978004BE642 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		8F63C45F219EE3CD00F4ECF9 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				8F63C460219EE3CD00F4ECF9 /* Base */,
+				8F37F9EA25C9DEB0004BE642 /* en */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -223,7 +233,7 @@
 		8F63C464219EE3CE00F4ECF9 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				8F63C465219EE3CE00F4ECF9 /* Base */,
+				8F37F9EB25C9DEB0004BE642 /* en */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";

@@ -103,8 +103,8 @@
     [self reloadData];
 }
 
-- (void) setNetworkError {
-    _networkError = YES;
+- (void) setNetworkError:(BOOL)networkError {
+    _networkError = networkError;
     [self reloadData];
 }
 

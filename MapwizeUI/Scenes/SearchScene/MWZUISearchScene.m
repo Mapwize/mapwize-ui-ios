@@ -284,8 +284,8 @@
                         forQuery:query];
 }
 
-- (void) setNetworkError {
-    [self.resultList setNetworkError];
+- (void) setNetworkError:(BOOL)networkError {
+    [self.resultList setNetworkError:networkError];
 }
 
 #pragma mark MWZSearchQueryBarDelegate

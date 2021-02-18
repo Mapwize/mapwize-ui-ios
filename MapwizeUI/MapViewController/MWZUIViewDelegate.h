@@ -3,7 +3,8 @@
 
 @class MWZUIView;
 #import "MWZUIEventChannel.h"
-
+@import MapwizeSDK;
+@class MWZUIBottomSheetComponents;
 /**
  The MWZUIViewDelegate allow you to respond to the map events
  */
@@ -55,6 +56,18 @@
  @return YES if the information button should be displayed. NO otherwise
 */
 - (BOOL) mapwizeView:(MWZUIView* _Nonnull) mapwizeView shouldShowInformationButtonFor:(id<MWZObject> _Nonnull) mapwizeObject;
+
+
+/**
+ Called when the bottom view is going to be displayed
+ The MapwizeUI SDK build all component that will be displayed in the view and give it back to the developper through this method's components argument.
+ You can change, remove or add component in the MWZUIBottomSheetComponents and return it.
+ The returned MWZUIBottomSheetComponents will be used to display the final content.
+ @param mapwizeView the view that called the methode
+ @param placeDetails the placeDetails object about to be displayed in the bottom view
+ @param components the components build by the SDK based on the info contains in the object.
+ */
+- (MWZUIBottomSheetComponents* _Nonnull) mapwizeView:(MWZUIView* _Nonnull) mapwizeView requireComponentForPlaceDetails:(MWZPlaceDetails* _Nonnull)placeDetails withDefaultComponents:(MWZUIBottomSheetComponents* _Nonnull)components;
 
 /**
  Called when the available floors change

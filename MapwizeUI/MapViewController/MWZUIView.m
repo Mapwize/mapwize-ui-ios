@@ -21,6 +21,8 @@
 #import "MWZUIFollowUserButtonDelegate.h"
 #import "MWZUILanguagesButtonDelegate.h"
 #import "MWZUIUniversesButtonDelegate.h"
+#import "MWZUIBottomSheetComponents.h"
+#import "MWZUIOpeningHoursUtils.h"
 
 typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZViewStateDefault,
@@ -109,7 +111,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     self.defaultScene = [[MWZUIDefaultScene alloc] initWith:self.options.mainColor menuIsHidden:self.settings.menuButtonIsHidden];
     self.defaultScene.delegate = self;
     self.sceneCoordinator.defaultScene = self.defaultScene;
-    
+
     self.searchScene = [[MWZUISearchScene alloc] initWith:self.options.mainColor];
     self.searchScene.delegate = self;
     self.sceneCoordinator.searchScene = self.searchScene;
@@ -117,6 +119,8 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     self.directionScene = [[MWZUIDirectionScene alloc] initWith:self.options.mainColor];
     self.directionScene.delegate = self;
     self.sceneCoordinator.directionScene = self.directionScene;
+    
+    
     
     [self applyFloorControllerConstraint];
     [self applyCompassConstraints];
@@ -141,6 +145,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
             
         }];
     }
+    
 }
 
 - (void) addLanguagesButton {
@@ -722,16 +727,38 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     [self.mapView removeMarkers];
     [self.mapView selectPlace:place];
     self.selectedContent = place;
-    MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
-    defaultProperties.selectedContent = self.selectedContent;
-    defaultProperties.language = [self.mapView getLanguage];
-    if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
-        defaultProperties.infoButtonHidden = ![self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
-    }
-    else {
-        defaultProperties.infoButtonHidden = YES;
-    }
-    [self.defaultScene setSceneProperties:defaultProperties];
+    
+    [_mapView.mapwizeApi getPlaceDetailsWithPlaceIdentifier:place.identifier success:^(MWZPlaceDetails * _Nonnull details) {
+        MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
+        defaultProperties.selectedContent = self.selectedContent;
+        defaultProperties.language = [self.mapView getLanguage];
+        defaultProperties.placeDetails = details;
+        if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
+            defaultProperties.infoButtonHidden = ![self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
+        }
+        else {
+            defaultProperties.infoButtonHidden = YES;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.defaultScene setSceneProperties:defaultProperties];
+        });
+    } failure:^(NSError * _Nonnull error) {
+        MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
+        defaultProperties.selectedContent = self.selectedContent;
+        defaultProperties.placeDetails = nil;
+        defaultProperties.language = [self.mapView getLanguage];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
+            defaultProperties.infoButtonHidden = ![self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
+        }
+        else {
+            defaultProperties.infoButtonHidden = YES;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.defaultScene setSceneProperties:defaultProperties];
+        });
+    }];
+    
+    
 }
 
 - (void) selectPlacePreview:(MWZPlacePreview*) placePreview {
@@ -745,28 +772,18 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     [self.defaultScene setSceneProperties:defaultProperties];
     [placePreview getFullObjectAsyncWithSuccess:^(MWZPlace * _Nonnull place) {
         if ([self.selectedContent isKindOfClass:MWZPlacePreview.class] && [((MWZPlacePreview*)self.selectedContent).identifier isEqualToString:place.identifier]) {
-            self.selectedContent = place;
-            MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
-            defaultProperties.selectedContent = self.selectedContent;
-            defaultProperties.language = [self.mapView getLanguage];
-            if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
-                defaultProperties.infoButtonHidden = ![self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
-            }
-            else {
-                defaultProperties.infoButtonHidden = YES;
-            }
-            [self.defaultScene setSceneProperties:defaultProperties];
+            [self selectPlace:place centerOn:NO];
         }
     } failure:^(NSError * _Nonnull error) {
         
     }];
+    
+    
 }
 
 - (void) selectPlaceList:(MWZPlacelist*) placeList {
-    if (self.selectedContent) {
-        [self.mapView unselectPlace];
-        [self.mapView removeMarkers];
-    }
+    [self.mapView unselectPlace];
+    [self.mapView removeMarkers];
     
     [self.mapView.mapwizeApi getPlacesForPlacelistWithIdentifier:placeList.identifier success:^(NSArray<MWZPlace *> * _Nonnull places) {
         NSMutableArray<MWZMarker*>* markers = [[NSMutableArray alloc] init];
@@ -799,6 +816,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     self.selectedContent = placeList;
     MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.selectedContent = self.selectedContent;
+    defaultProperties.placeDetails = nil;
     defaultProperties.language = [self.mapView getLanguage];
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowInformationButtonFor:)]) {
         defaultProperties.infoButtonHidden = ![self.delegate mapwizeView:self shouldShowInformationButtonFor:self.selectedContent];
@@ -1039,6 +1057,16 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     [self defaultToDirectionTransition];
 }
 
+- (void) didTapOnCallButton {
+    NSLog(@"SHOW PHONE CALL");
+}
+- (void) didTapOnShareButton {
+    NSLog(@"SHOW SHARE PLACE");
+}
+- (void) didTapOnWebsiteButton {
+    NSLog(@"SHOW WEBSITE");
+}
+
 - (void) didTapOnInformationButton {
     if ([self.selectedContent isKindOfClass:MWZPlace.class]) {
         if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:didTapOnPlaceInformationButton:)]) {
@@ -1050,6 +1078,21 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
             [self.delegate mapwizeView:self didTapOnPlacelistInformationButton:(MWZPlacelist*)self.selectedContent];
         }
     }
+}
+
+- (void) didClose {
+    [self unselectContent];
+}
+
+- (MWZUIBottomSheetComponents*) requireComponentForPlaceDetails:(MWZPlaceDetails*)placeDetails withDefaultComponents:(MWZUIBottomSheetComponents*)components {
+    if (_delegate && [_delegate respondsToSelector:@selector(mapwizeView:requireComponentForPlaceDetails:withDefaultComponents:)]) {
+        return [_delegate mapwizeView:self requireComponentForPlaceDetails:placeDetails withDefaultComponents:components];
+    }
+    return components;
+}
+
+- (MWZUIBottomSheetComponents*) requireComponentForPlacelist:(MWZPlacelist*)placelist withDefaultComponents:(MWZUIBottomSheetComponents*)components {
+    return components;
 }
 
 #pragma mark MWZSearchSceneDelegate
@@ -1080,10 +1123,11 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.searchScene showResults:searchResponse
                                            withLanguage:[self.mapView getLanguage] forQuery:query];
+                    [self.searchScene setNetworkError:NO];
                 });
             } failure:^(NSError *error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.searchScene setNetworkError];
+                    [self.searchScene setNetworkError:YES];
                 });
             }];
         }
@@ -1107,10 +1151,11 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                          activeUniverse:[self.mapView getUniverse]
                                            withLanguage:[self.mapView getLanguage]
                                                forQuery:query];
+                    [self.searchScene setNetworkError:NO];
                 });
             } failure:^(NSError *error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.searchScene setNetworkError];
+                    [self.searchScene setNetworkError:YES];
                 });
             }];
         }
@@ -1285,10 +1330,11 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                     activeUniverse:[self.mapView getUniverse]
                                       withLanguage:[self.mapView getLanguage]
                                           forQuery:query];
+            [self.searchScene setNetworkError:NO];
         });
     } failure:^(NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.searchScene setNetworkError];
+            [self.searchScene setNetworkError:YES];
         });
     }];
 }
@@ -1329,7 +1375,6 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     [self.mapView setLanguage:language forVenue:[self.mapView getVenue]];
 }
 
-
 #pragma mark MWZMapViewDelegate
 
 - (void) mapViewDidLoad:(MWZMapView *)mapView {
@@ -1346,6 +1391,8 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 }
 
 - (void)mapView:(MWZMapView *_Nonnull)mapView didTap:(MWZClickEvent *_Nonnull)clickEvent {
+    
+    
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:didTap:)]) {
         [self.delegate mapwizeView:self didTap:clickEvent];
     }
@@ -1394,6 +1441,10 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 }
 
 - (void)mapView:(MWZMapView *_Nonnull)mapView venueDidEnter:(MWZVenue *_Nonnull)venue {
+    
+    /*MWZUIIssuesReportingViewController* issueController = [[MWZUIIssuesReportingViewController alloc] initWithVenue:venue place:nil userInfo:nil color:_options.mainColor];
+    [self.window.rootViewController presentViewController:issueController animated:YES completion:nil];
+    */
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:venueDidEnter:)]) {
         [self.delegate mapwizeView:self venueDidEnter:venue];
     }

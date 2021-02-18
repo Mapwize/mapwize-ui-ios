@@ -6,7 +6,7 @@
     UIColor* color;
 }
 
-- (instancetype)initWithTitle:(NSString*) text imageName:(UIImage*) image color:(UIColor*) color outlined:(BOOL) outlined {
+- (instancetype)initWithTitle:(NSString*) text image:(UIImage*) image color:(UIColor*) color outlined:(BOOL) outlined {
     self = [super init];
     if (self) {
         imageView = [[UIImageView alloc] init];
@@ -105,7 +105,7 @@
         }
         self.layer.cornerRadius = 18.0f;
         self.layer.borderWidth = 0.5f;
-        [imageView setImage:image];
+        [imageView setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
         [labelView setText:text];
     }
     return self;

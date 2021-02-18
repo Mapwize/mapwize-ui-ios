@@ -141,12 +141,16 @@
 
 - (void) didTapOnFrom:(UITapGestureRecognizer*) recognizer {
     [_delegate directionHeaderDidTapOnFromButton:self];
-    [_delegate searchDirectionQueryDidChange:self.fromTextField.text];
+    if (!self.fromTextField.isHidden) {
+        [_delegate searchDirectionQueryDidChange:self.fromTextField.text];
+    }
 }
 
 - (void) didTapOnTo:(UITapGestureRecognizer*) recognizer {
     [_delegate directionHeaderDidTapOnToButton:self];
-    [_delegate searchDirectionQueryDidChange:self.toTextField.text];
+    if (!self.toTextField.isHidden) {
+        [_delegate searchDirectionQueryDidChange:self.toTextField.text];
+    }
 }
 
 - (void) setupConstraints {

@@ -179,6 +179,40 @@ Display a direction object and show the direction UI already configured
         directionMode:(MWZDirectionMode*) directionMode
 ```
 
+## Place details
+
+Place details provides you with a ready to use, yet customizable UI.
+You can have a full control over the displayed buttons and rows.
+
+You can use the following callback to control the Buttons and the Rows of the Details UI.
+
+```objective-c
+/**
+ Called when the bottom view is going to be displayed
+ The MapwizeUI SDK build all component that will be displayed in the view and give it back to the developper through this method's components argument.
+ You can change, remove or add component in the MWZUIBottomSheetComponents and return it.
+ The returned MWZUIBottomSheetComponents will be used to display the final content.
+ @param mapwizeView the view that called the methode
+ @param placeDetails the placeDetails object about to be displayed in the bottom view
+ @param components the components build by the SDK based on the info contains in the object.
+ */
+- (MWZUIBottomSheetComponents* _Nonnull) mapwizeView:(MWZUIView* _Nonnull) mapwizeView requireComponentForPlaceDetails:(MWZPlaceDetails* _Nonnull)placeDetails withDefaultComponents:(MWZUIBottomSheetComponents* _Nonnull)components;
+```
+
+You will receive a list of Buttons, you can modify them, change their order or remove some of them.
+
+
+The `shouldDisplayInformationButton` callback is called before the `requireComponentForPlaceDetails`.
+The `requireComponentForPlaceDetails` callback will have the last word on the display of the Rows or Buttons.
+
+### Managing Buttons
+
+You can create a Small Button object using the `MWZUIIconTextButton` constructor `- (instancetype)initWithTitle:(NSString*) title image:(UIImage*) image color:(UIColor*) color outlined:(BOOL) outlined;`
+
+You can create a Big Button object using the `MWZUIFullContentViewComponentButton` constructor `- (instancetype)initWithTitle:(NSString*) title image:(UIImage*) image color:(UIColor*) color outlined:(BOOL) outlined;`
+
+### Managing Rows
+You can create a Row object using: `MWZUIFullContentViewComponentRow` constructor `- (instancetype) initWithImage:(UIImage*)image contentView:(UIView*)contentView color:(UIColor*)color tapGestureRecognizer:(nullable UITapGestureRecognizer*)tapGestureRecognizer type:(MWZUIFullContentViewComponentRowType)type infoAvailable:(BOOL) infoAvailable`
 
 ## Information button
 

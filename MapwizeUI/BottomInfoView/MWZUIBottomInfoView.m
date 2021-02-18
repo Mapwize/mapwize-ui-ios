@@ -122,7 +122,7 @@
     NSBundle* bundle = [NSBundle bundleForClass:self.class];
     UIImage* image = [UIImage imageNamed:@"direction" inBundle:bundle compatibleWithTraitCollection:nil];
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.directionButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Directions", @"") imageName:image color:self.color outlined:NO];
+    self.directionButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Directions", @"") image:image color:self.color outlined:NO];
     self.directionButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.directionButton addTarget:self action:@selector(directionClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.directionButton];
@@ -133,7 +133,7 @@
     
     UIImage* infoImage = [UIImage imageNamed:@"info" inBundle:bundle compatibleWithTraitCollection:nil];
     infoImage = [infoImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.informationsButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Information", @"") imageName:infoImage color:self.color outlined:YES];
+    self.informationsButton = [[MWZUIIconTextButton alloc] initWithTitle:NSLocalizedString(@"Information", @"") image:infoImage color:self.color outlined:YES];
     self.informationsButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.informationsButton addTarget:self action:@selector(informationClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.informationsButton];
