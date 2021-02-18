@@ -1,5 +1,10 @@
 # Mapwize UI iOS Changelog
 
+## 2.3.0
+
+- Upgrading the Mapwize SDK to 3.3.2
+- Adding PlaceDetails User interface
+
 ## 2.2.6
 
 - Improving search results visibility when keyboard is open 
