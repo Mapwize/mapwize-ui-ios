@@ -175,7 +175,7 @@
     NSMutableArray<MWZUIIconTextButton*>* minimizedViewButtons = [_defaultContentView buildButtonsForPlaceDetails:_placeDetails showInfoButton:shouldShowInformationButton];
     NSMutableArray<MWZUIFullContentViewComponentButton*>* fullHeaderButtons = [_fullContentView buildHeaderButtonsForPlaceDetails:_placeDetails  showInfoButton:shouldShowInformationButton language:language];
     NSMutableArray<MWZUIFullContentViewComponentRow*>* fullRows = [_fullContentView buildContentRowsForPlaceDetails:_placeDetails language:language];
-    MWZUIBottomSheetComponents* components = [[MWZUIBottomSheetComponents alloc] initWithHeaderButtons:fullHeaderButtons contentRows:fullRows minimizedViewButtons:minimizedViewButtons preventExpand:YES];
+    MWZUIBottomSheetComponents* components = [[MWZUIBottomSheetComponents alloc] initWithHeaderButtons:fullHeaderButtons contentRows:fullRows minimizedViewButtons:minimizedViewButtons preventExpand:NO];
     if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlaceDetails:withDefaultComponents:)]) {
         components = [_delegate requireComponentForPlaceDetails:_placeDetails withDefaultComponents:components];
     }
