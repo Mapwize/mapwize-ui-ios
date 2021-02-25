@@ -164,7 +164,7 @@
     [_headerImageCollectionView reloadData];
     [_defaultContentView removeFromSuperview];
     [_fullContentView removeFromSuperview];
-    [_dragSymbolViewContent setHidden:NO];
+    [_dragSymbolViewContent setHidden:YES];
     _defaultContentView = [[MWZUIDefaultContentView alloc] initWithFrame:self.frame color:_color];
     _defaultContentView.translatesAutoresizingMaskIntoConstraints = NO;
     [_contentView addSubview:_defaultContentView];
@@ -172,27 +172,31 @@
     [[_defaultContentView.trailingAnchor constraintEqualToAnchor:_contentView.trailingAnchor] setActive:YES];
     [[_defaultContentView.topAnchor constraintEqualToAnchor:_contentView.topAnchor] setActive:YES];
     
-    _fullContentView = [[MWZUIFullContentView alloc] initWithFrame:self.frame color:_color];
-    _fullContentView.translatesAutoresizingMaskIntoConstraints = NO;
-    [_contentView addSubview:_fullContentView];
-    [[_fullContentView.leadingAnchor constraintEqualToAnchor:_contentView.leadingAnchor] setActive:YES];
-    [[_fullContentView.trailingAnchor constraintEqualToAnchor:_contentView.trailingAnchor] setActive:YES];
-    [[_fullContentView.topAnchor constraintEqualToAnchor:_contentView.topAnchor] setActive:YES];
-    [[_fullContentView.bottomAnchor constraintEqualToAnchor:_contentView.bottomAnchor] setActive:YES];
-    [[_fullContentView.widthAnchor constraintEqualToAnchor:self.widthAnchor] setActive:YES];
-    [_fullContentView setHidden:YES];
-    _fullContentView.alpha = 0.0;
-    
     NSMutableArray<MWZUIIconTextButton*>* minimizedViewButtons = [_defaultContentView buildButtonsForPlaceDetails:_placeDetails showInfoButton:shouldShowInformationButton];
     NSMutableArray<MWZUIFullContentViewComponentButton*>* fullHeaderButtons = [_fullContentView buildHeaderButtonsForPlaceDetails:_placeDetails  showInfoButton:shouldShowInformationButton language:language];
     NSMutableArray<MWZUIFullContentViewComponentRow*>* fullRows = [_fullContentView buildContentRowsForPlaceDetails:_placeDetails language:language];
-    MWZUIBottomSheetComponents* components = [[MWZUIBottomSheetComponents alloc] initWithHeaderButtons:fullHeaderButtons contentRows:fullRows minimizedViewButtons:minimizedViewButtons];
+    MWZUIBottomSheetComponents* components = [[MWZUIBottomSheetComponents alloc] initWithHeaderButtons:fullHeaderButtons contentRows:fullRows minimizedViewButtons:minimizedViewButtons preventExpand:YES];
     if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlaceDetails:withDefaultComponents:)]) {
         components = [_delegate requireComponentForPlaceDetails:_placeDetails withDefaultComponents:components];
     }
     
     [_defaultContentView setContentForPlaceDetails:_placeDetails language:language buttons:components.minimizedViewButtons];;
-    [_fullContentView setContentForPlaceDetails:_placeDetails language:language buttons:components.headerButtons rows:components.contentRows];
+    
+    if (!components.preventExpand) {
+        _fullContentView = [[MWZUIFullContentView alloc] initWithFrame:self.frame color:_color];
+        _fullContentView.translatesAutoresizingMaskIntoConstraints = NO;
+        [_contentView addSubview:_fullContentView];
+        [[_fullContentView.leadingAnchor constraintEqualToAnchor:_contentView.leadingAnchor] setActive:YES];
+        [[_fullContentView.trailingAnchor constraintEqualToAnchor:_contentView.trailingAnchor] setActive:YES];
+        [[_fullContentView.topAnchor constraintEqualToAnchor:_contentView.topAnchor] setActive:YES];
+        [[_fullContentView.bottomAnchor constraintEqualToAnchor:_contentView.bottomAnchor] setActive:YES];
+        [[_fullContentView.widthAnchor constraintEqualToAnchor:self.widthAnchor] setActive:YES];
+        [_fullContentView setHidden:YES];
+        _fullContentView.alpha = 0.0;
+        [_dragSymbolViewContent setHidden:NO];
+        [_fullContentView setContentForPlaceDetails:_placeDetails language:language buttons:components.headerButtons rows:components.contentRows];
+        _fullContentView.delegate = self;
+    }
     
     [_defaultContentView layoutIfNeeded];
     if (@available(iOS 11.0, *)) {
@@ -208,8 +212,6 @@
         _maximizedHeaderHeight = 0;
         [self animateToHeight:self.defaultContentHeight];
     }
-    
-    _fullContentView.delegate = self;
     _defaultContentView.delegate = self;
 }
 

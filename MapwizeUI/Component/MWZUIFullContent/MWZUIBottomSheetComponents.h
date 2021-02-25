@@ -9,13 +9,19 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface MWZUIBottomSheetComponents : NSObject
 
+/// If true, the details view won't be able to expand
+@property (assign) BOOL preventExpand;
+/// The list of buttons displayed in the large view
 @property (nonatomic) NSMutableArray<MWZUIFullContentViewComponentButton*>* headerButtons;
+/// The list of rows displayed in the large view
 @property (nonatomic) NSMutableArray<MWZUIFullContentViewComponentRow*>* contentRows;
+/// The list of buttons displayed in the small view
 @property (nonatomic) NSMutableArray<MWZUIIconTextButton*>* minimizedViewButtons;
 
 - (instancetype) initWithHeaderButtons:(NSMutableArray<MWZUIFullContentViewComponentButton*>*)headerButtons
                            contentRows:(NSMutableArray<MWZUIFullContentViewComponentRow*>*) contentRows
-                  minimizedViewButtons:(NSMutableArray<MWZUIIconTextButton*>*) minimizedViewButtons;
+                  minimizedViewButtons:(NSMutableArray<MWZUIIconTextButton*>*) minimizedViewButtons
+                         preventExpand:(BOOL)preventExpand;
 
 @end
 

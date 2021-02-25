@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.3.1
+
+- Adding option to prevent the place details view to be expanded
+
 ## 2.3.0
 
 - Upgrading the Mapwize SDK to 3.3.2
