@@ -122,6 +122,14 @@
 		8F977D912534879300B0DEB0 /* MWZUIDefaultContentViewDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F977D902534879300B0DEB0 /* MWZUIDefaultContentViewDelegate.h */; };
 		8FDB0CAF23EAF0B100B3536A /* MWZUISettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDB0CAD23EAF0B100B3536A /* MWZUISettings.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8FDB0CB023EAF0B100B3536A /* MWZUISettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDB0CAE23EAF0B100B3536A /* MWZUISettings.m */; };
+		8FDBF31925EE4E3200EF3153 /* MWZUIIssuesReportingViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDBF31725EE4E3200EF3153 /* MWZUIIssuesReportingViewController.h */; };
+		8FDBF31A25EE4E3200EF3153 /* MWZUIIssuesReportingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDBF31825EE4E3200EF3153 /* MWZUIIssuesReportingViewController.m */; };
+		8FDBF32C25EE4F8400EF3153 /* MWZUIIssueTypeView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDBF32A25EE4F8400EF3153 /* MWZUIIssueTypeView.h */; };
+		8FDBF32D25EE4F8400EF3153 /* MWZUIIssueTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDBF32B25EE4F8400EF3153 /* MWZUIIssueTypeView.m */; };
+		8FDBF33125EE4FB800EF3153 /* MWZUIIssueTypeCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDBF32F25EE4FB800EF3153 /* MWZUIIssueTypeCell.h */; };
+		8FDBF33225EE4FB800EF3153 /* MWZUIIssueTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDBF33025EE4FB800EF3153 /* MWZUIIssueTypeCell.m */; };
+		8FDBF34225EE4FFA00EF3153 /* MWZUICollectionViewFlowLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDBF34025EE4FFA00EF3153 /* MWZUICollectionViewFlowLayout.h */; };
+		8FDBF34325EE4FFA00EF3153 /* MWZUICollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDBF34125EE4FFA00EF3153 /* MWZUICollectionViewFlowLayout.m */; };
 		8FF4114B25382AF5005A32CA /* MWZUIOpeningHoursUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FF4114925382AF5005A32CA /* MWZUIOpeningHoursUtils.h */; };
 		8FF4114C25382AF5005A32CA /* MWZUIOpeningHoursUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FF4114A25382AF5005A32CA /* MWZUIOpeningHoursUtils.m */; };
 		8FF4115C25385AF2005A32CA /* MWZUIOpeningInterval.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FF4115A25385AF2005A32CA /* MWZUIOpeningInterval.h */; };
@@ -252,6 +260,14 @@
 		8F977D902534879300B0DEB0 /* MWZUIDefaultContentViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUIDefaultContentViewDelegate.h; sourceTree = "<group>"; };
 		8FDB0CAD23EAF0B100B3536A /* MWZUISettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZUISettings.h; sourceTree = "<group>"; };
 		8FDB0CAE23EAF0B100B3536A /* MWZUISettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZUISettings.m; sourceTree = "<group>"; };
+		8FDBF31725EE4E3200EF3153 /* MWZUIIssuesReportingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUIIssuesReportingViewController.h; sourceTree = "<group>"; };
+		8FDBF31825EE4E3200EF3153 /* MWZUIIssuesReportingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIIssuesReportingViewController.m; sourceTree = "<group>"; };
+		8FDBF32A25EE4F8400EF3153 /* MWZUIIssueTypeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUIIssueTypeView.h; sourceTree = "<group>"; };
+		8FDBF32B25EE4F8400EF3153 /* MWZUIIssueTypeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIIssueTypeView.m; sourceTree = "<group>"; };
+		8FDBF32F25EE4FB800EF3153 /* MWZUIIssueTypeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUIIssueTypeCell.h; sourceTree = "<group>"; };
+		8FDBF33025EE4FB800EF3153 /* MWZUIIssueTypeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIIssueTypeCell.m; sourceTree = "<group>"; };
+		8FDBF34025EE4FFA00EF3153 /* MWZUICollectionViewFlowLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUICollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		8FDBF34125EE4FFA00EF3153 /* MWZUICollectionViewFlowLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUICollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		8FF4114925382AF5005A32CA /* MWZUIOpeningHoursUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUIOpeningHoursUtils.h; sourceTree = "<group>"; };
 		8FF4114A25382AF5005A32CA /* MWZUIOpeningHoursUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWZUIOpeningHoursUtils.m; sourceTree = "<group>"; };
 		8FF4115A25385AF2005A32CA /* MWZUIOpeningInterval.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWZUIOpeningInterval.h; sourceTree = "<group>"; };
@@ -537,6 +553,14 @@
 				8F927A9525309555006CB433 /* MWZUIPagerHeaderTitle.h */,
 				8F927A9625309555006CB433 /* MWZUIPagerHeaderTitle.m */,
 				8F927AA825309F59006CB433 /* MWZUIPagerHeaderViewDelegate.h */,
+				8FDBF31725EE4E3200EF3153 /* MWZUIIssuesReportingViewController.h */,
+				8FDBF31825EE4E3200EF3153 /* MWZUIIssuesReportingViewController.m */,
+				8FDBF32A25EE4F8400EF3153 /* MWZUIIssueTypeView.h */,
+				8FDBF32B25EE4F8400EF3153 /* MWZUIIssueTypeView.m */,
+				8FDBF32F25EE4FB800EF3153 /* MWZUIIssueTypeCell.h */,
+				8FDBF33025EE4FB800EF3153 /* MWZUIIssueTypeCell.m */,
+				8FDBF34025EE4FFA00EF3153 /* MWZUICollectionViewFlowLayout.h */,
+				8FDBF34125EE4FFA00EF3153 /* MWZUICollectionViewFlowLayout.m */,
 			);
 			path = BottomSheet;
 			sourceTree = "<group>";
@@ -597,6 +621,7 @@
 				8F63877B23BE194F0006B10E /* MWZUIDirectionModeSegmentDelegate.h in Headers */,
 				8F8607CC219D67AB00281AB7 /* MWZUIBorderedTextField.h in Headers */,
 				C6B8D573222679EC00A3AD82 /* MWZUIOptions.h in Headers */,
+				8FDBF31925EE4E3200EF3153 /* MWZUIIssuesReportingViewController.h in Headers */,
 				8FF4115C25385AF2005A32CA /* MWZUIOpeningInterval.h in Headers */,
 				8F92794A252DD42F006CB433 /* MWZUIBottomSheet.h in Headers */,
 				8F8607E3219D67AB00281AB7 /* MWZUIGroupedResultList.h in Headers */,
@@ -628,8 +653,10 @@
 				8F787C5023E453D1000EA02F /* MWZUIPaddingLabel.h in Headers */,
 				8FDB0CAF23EAF0B100B3536A /* MWZUISettings.h in Headers */,
 				8F63876D23BE194F0006B10E /* MWZUISearchViewControllerOptions.h in Headers */,
+				8FDBF34225EE4FFA00EF3153 /* MWZUICollectionViewFlowLayout.h in Headers */,
 				8F63876723BE194F0006B10E /* MWZUIMapViewMenuBar.h in Headers */,
 				8F31F9E7232687DC00BB4956 /* MWZUIFloorControllerDelegate.h in Headers */,
+				8FDBF32C25EE4F8400EF3153 /* MWZUIIssueTypeView.h in Headers */,
 				8F8607E4219D67AB00281AB7 /* MWZUITitleCell.h in Headers */,
 				8F63877E23BE194F0006B10E /* MWZUIDirectionScene.h in Headers */,
 				8F8607CF219D67AB00281AB7 /* MWZUIIconTextButton.h in Headers */,
@@ -661,6 +688,7 @@
 				8F63876F23BE194F0006B10E /* MWZUISearchQueryBarDelegate.h in Headers */,
 				8F86077B219D66A100281AB7 /* MapwizeUI.h in Headers */,
 				8F63873F23BE19320006B10E /* MWZUIViewDelegate.h in Headers */,
+				8FDBF33125EE4FB800EF3153 /* MWZUIIssueTypeCell.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -761,10 +789,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F8607D4219D67AB00281AB7 /* ILIndoorLocation+DirectionPoint.m in Sources */,
+				8FDBF32D25EE4F8400EF3153 /* MWZUIIssueTypeView.m in Sources */,
 				8F8607EA219D67AB00281AB7 /* MWZUITitleCell.m in Sources */,
 				8F63877623BE194F0006B10E /* MWZUIDirectionModeSegment.m in Sources */,
 				8F63877523BE194F0006B10E /* MWZUIDirectionHeader.m in Sources */,
 				8F927979252DD45B006CB433 /* MWZUIBottomSheetComponents.m in Sources */,
+				8FDBF33225EE4FB800EF3153 /* MWZUIIssueTypeCell.m in Sources */,
 				8F8640D4222831140043E9E5 /* MWZUITitleWithoutFloorCellTableViewCell.m in Sources */,
 				8F92795D252DD448006CB433 /* MWZUIBookingGridView.m in Sources */,
 				8F8607E6219D67AB00281AB7 /* MWZUISubtitleCell.m in Sources */,
@@ -792,6 +822,7 @@
 				C6B8D5712226785400A3AD82 /* MWZUIOptions.m in Sources */,
 				8F927A8225306CAB006CB433 /* MWZUIPagerView.m in Sources */,
 				8F927977252DD45B006CB433 /* MWZUIOpeningHoursView.m in Sources */,
+				8FDBF31A25EE4E3200EF3153 /* MWZUIIssuesReportingViewController.m in Sources */,
 				8F8607E9219D67AB00281AB7 /* MWZUIGroupedResultList.m in Sources */,
 				8F860818219DC5F200281AB7 /* MWZUIColors.m in Sources */,
 				8F63873D23BE19320006B10E /* MWZUIView.m in Sources */,
@@ -803,6 +834,7 @@
 				8FF4116E25388C8C005A32CA /* MWZUIOpeningHoursTodayTableViewCell.m in Sources */,
 				8FF4115D25385AF2005A32CA /* MWZUIOpeningInterval.m in Sources */,
 				8F63876323BE194F0006B10E /* MWZUIMapViewMenuBar.m in Sources */,
+				8FDBF34325EE4FFA00EF3153 /* MWZUICollectionViewFlowLayout.m in Sources */,
 				8F8607EF219D67AB00281AB7 /* MWZUIFloorController.m in Sources */,
 				8F63876623BE194F0006B10E /* MWZUIDefaultScene.m in Sources */,
 				8F92795C252DD448006CB433 /* MWZUIBookingView.m in Sources */,
