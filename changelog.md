@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.3.2
+
+- Fixing details view sometimes not showing properly
+
 ## 2.3.1
 
 - Adding option to prevent the place details view to be expanded

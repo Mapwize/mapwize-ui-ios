@@ -24,7 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSMutableArray<MWZUIFullContentViewComponentButton*>*) buildHeaderButtonsForPlaceDetails:(MWZPlaceDetails*)placeDetails
                                                                              showInfoButton:(BOOL)shouldShowInformationButton
                                                                                    language:(NSString*)language;
-- (NSMutableArray<MWZUIFullContentViewComponentRow*>*) buildContentRowsForPlaceDetails:(MWZPlaceDetails*)placeDetails language:(NSString*)language;
+
+- (NSMutableArray<MWZUIFullContentViewComponentRow*>*) buildContentRowsForPlaceDetails:(MWZPlaceDetails*)placeDetails
+                                                                              language:(NSString*)language;
 
 @end
 

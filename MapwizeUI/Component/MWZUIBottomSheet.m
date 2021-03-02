@@ -6,7 +6,7 @@
 
 #import <MapwizeSDK/MapwizeSDK.h>
 
-@interface MWZUIBottomSheet () <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface MWZUIBottomSheet () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (assign) CGFloat currentTranslation;
 @property (assign) CGFloat initialTranslation;
@@ -172,6 +172,8 @@
     [[_defaultContentView.trailingAnchor constraintEqualToAnchor:_contentView.trailingAnchor] setActive:YES];
     [[_defaultContentView.topAnchor constraintEqualToAnchor:_contentView.topAnchor] setActive:YES];
     
+    _fullContentView = [[MWZUIFullContentView alloc] initWithFrame:self.frame color:_color];
+    
     NSMutableArray<MWZUIIconTextButton*>* minimizedViewButtons = [_defaultContentView buildButtonsForPlaceDetails:_placeDetails showInfoButton:shouldShowInformationButton];
     NSMutableArray<MWZUIFullContentViewComponentButton*>* fullHeaderButtons = [_fullContentView buildHeaderButtonsForPlaceDetails:_placeDetails  showInfoButton:shouldShowInformationButton language:language];
     NSMutableArray<MWZUIFullContentViewComponentRow*>* fullRows = [_fullContentView buildContentRowsForPlaceDetails:_placeDetails language:language];
@@ -183,7 +185,6 @@
     [_defaultContentView setContentForPlaceDetails:_placeDetails language:language buttons:components.minimizedViewButtons];;
     
     if (!components.preventExpand) {
-        _fullContentView = [[MWZUIFullContentView alloc] initWithFrame:self.frame color:_color];
         _fullContentView.translatesAutoresizingMaskIntoConstraints = NO;
         [_contentView addSubview:_fullContentView];
         [[_fullContentView.leadingAnchor constraintEqualToAnchor:_contentView.leadingAnchor] setActive:YES];
@@ -196,6 +197,9 @@
         [_dragSymbolViewContent setHidden:NO];
         [_fullContentView setContentForPlaceDetails:_placeDetails language:language buttons:components.headerButtons rows:components.contentRows];
         _fullContentView.delegate = self;
+    }
+    else {
+        _fullContentView = nil;
     }
     
     [_defaultContentView layoutIfNeeded];
@@ -260,10 +264,12 @@
     [[_contentView.heightAnchor constraintEqualToAnchor:self.heightAnchor multiplier:0.75] setActive:YES];
     
     UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    
     flowLayout.itemSize = CGSizeMake(self.frame.size.height/3, self.frame.size.height/3);
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     flowLayout.minimumInteritemSpacing = 0;
     flowLayout.minimumLineSpacing = 0;
+    flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
     _headerImageCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
     _headerImageCollectionView.dataSource = self;
     _headerImageCollectionView.delegate = self;
@@ -442,12 +448,12 @@
 }
 
 - (void) updateHeight:(CGFloat) height {
-    //self.transform = CGAffineTransformMakeTranslation(0, self.frame.size.height - height);
     _selfTopConstraint.constant = self.frame.size.height - height;
     _headerHeightConstraint.constant = [self headerHeightFormula:height];
     _defaultContentView.alpha = [self alphaFormula:height];
     _fullContentView.alpha = [self reversedAlphaFormula:height];
     self.closeButton.alpha = [self reversedAlphaFormula:height];
+    [self.headerImageCollectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void) animateToHeight:(CGFloat) height {
@@ -459,6 +465,7 @@
         self.defaultContentView.alpha = [self alphaFormula:height];
         self.fullContentView.alpha = [self reversedAlphaFormula:height];
         self.closeButton.alpha = [self reversedAlphaFormula:height];
+        [self.headerImageCollectionView.collectionViewLayout invalidateLayout];
         [self.superview layoutIfNeeded];
     } completion:^(BOOL finished) {
         if (self.defaultContentView.alpha < 0.1) {
@@ -483,6 +490,9 @@
                      compatibleWithTraitCollection:nil];
         return cell;
     }
+    cell.imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [[cell.imageView.heightAnchor constraintEqualToAnchor:cell.heightAnchor] setActive:YES];
+    [[cell.imageView.widthAnchor constraintEqualToAnchor:cell.widthAnchor] setActive:YES];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.placeDetails.photos[indexPath.row]]];
 
@@ -522,6 +532,7 @@
             }
         });
     });
+    cell.backgroundColor = [UIColor redColor];
     return cell;
 }
 
@@ -530,10 +541,11 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath: (NSIndexPath *)indexPath {
-    NSInteger count = [_placeDetails.photos count];
     double width = self.frame.size.width;
-    return CGSizeMake(width, self.frame.size.height / 3);
+    return CGSizeMake(width, collectionView.frame.size.height);
  }
+
+
 
 - (MWZUIBottomSheetComponents*) requireComponentForPlaceDetails:(MWZPlaceDetails*)placeDetails withDefaultComponents:(MWZUIBottomSheetComponents*)components {
     return components;
