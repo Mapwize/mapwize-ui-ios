@@ -1,5 +1,11 @@
 # Mapwize UI iOS Changelog
 
+## 2.3.4
+
+- Fixing infinity scroll on search result list
+- Fixing photos blinking when scrolling
+- Fixing multiple constraints warning logs
+
 ## 2.3.3
 
 - Fixing crash when MapView is embedded in UINavigationController

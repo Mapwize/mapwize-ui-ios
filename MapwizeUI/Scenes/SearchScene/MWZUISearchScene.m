@@ -1,5 +1,11 @@
 #import "MWZUISearchScene.h"
 
+@interface MWZUISearchScene()
+
+@property (nonatomic) NSLayoutConstraint* searchResultBottomConstraint;
+
+@end
+
 @implementation MWZUISearchScene
 
 - (instancetype) initWith:(UIColor*) mainColor {
@@ -77,7 +83,7 @@
                                          toItem:view
                                       attribute:NSLayoutAttributeRight
                                      multiplier:1.0f
-                                       constant:- 16.0f] setActive:YES];
+                                       constant:-16.0f] setActive:YES];
         [[NSLayoutConstraint constraintWithItem:self.searchQueryBar
                                       attribute:NSLayoutAttributeLeft
                                       relatedBy:NSLayoutRelationEqual
@@ -96,6 +102,7 @@
     
     self.resultContainerView = [[UIView alloc] init];
     self.resultContainerView.clipsToBounds = YES;
+    self.resultContainerView.layer.masksToBounds = YES;
     self.resultContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     [view addSubview:self.resultContainerView];
     if (@available(iOS 11.0, *)) {
@@ -120,13 +127,14 @@
                                       attribute:NSLayoutAttributeBottom
                                      multiplier:1.0f
                                        constant:16.0f] setActive:YES];
-        [[NSLayoutConstraint constraintWithItem:self.resultContainerView
+        _searchResultBottomConstraint = [NSLayoutConstraint constraintWithItem:self.resultContainerView
                                       attribute:NSLayoutAttributeBottom
                                       relatedBy:NSLayoutRelationLessThanOrEqual
                                          toItem:view.safeAreaLayoutGuide
                                       attribute:NSLayoutAttributeBottom
                                      multiplier:1.0f
-                                       constant:-16.0f] setActive:YES];
+                                       constant:-16.0f];
+        [_searchResultBottomConstraint setActive:YES];
         _resultContainerViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.resultContainerView
                                                                             attribute:NSLayoutAttributeHeight
                                                                             relatedBy:NSLayoutRelationEqual
@@ -242,6 +250,26 @@
                                      multiplier:1.0f
                                        constant:0.0f] setActive:YES];
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+- (void)keyboardDidShow: (NSNotification *) notif {
+    NSValue* value = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
+    double bottom = value.CGRectValue.size.height;
+    _searchResultBottomConstraint.constant = -bottom;
+}
+
+- (void)keyboardDidHide: (NSNotification *) notif{
+    _searchResultBottomConstraint.constant = -16;
 }
 
 - (UIView*) getTopViewToConstraint {

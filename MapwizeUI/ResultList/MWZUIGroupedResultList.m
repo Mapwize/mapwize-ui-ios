@@ -6,6 +6,7 @@
 
 @interface MWZUIGroupedResultList () <UITableViewDelegate, UITableViewDataSource>
 
+@property (nonatomic) UITableView* tableView;
 @property (nonatomic) NSArray<MWZUniverse*>* accessibleUniverses;
 @property (nonatomic) NSMutableArray<MWZUniverse*>* universes;
 @property (nonatomic) MWZUniverse* activeUniverse;
@@ -31,15 +32,24 @@
         self.layer.shadowOpacity = .3f;
         self.layer.shadowColor = [UIColor blackColor].CGColor;
         self.layer.shadowOffset = CGSizeMake(0, 2);
-        self.rowHeight = UITableViewAutomaticDimension;
-        [self addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
-        self.dataSource = self;
-        self.delegate = self;
-        self.separatorStyle = UITableViewCellSeparatorStyleNone;
-        self.showsVerticalScrollIndicator = NO;
-        [self registerClass:[MWZUITitleWithoutFloorCellTableViewCell class] forCellReuseIdentifier:@"titleWithoutFloorCell"];
-        [self registerClass:[MWZUITitleCell class] forCellReuseIdentifier:@"titleCell"];
-        [self registerClass:[MWZUISubtitleCell class] forCellReuseIdentifier:@"subtitleCell"];
+        
+        self.tableView = [[UITableView alloc] initWithFrame:CGRectZero];
+        [self addSubview:self.tableView];
+        self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+        [[self.tableView.topAnchor constraintEqualToAnchor:self.topAnchor] setActive:YES];
+        [[self.tableView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor] setActive:YES];
+        [[self.tableView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor] setActive:YES];
+        [[self.tableView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor] setActive:YES];
+        
+        self.tableView.rowHeight = UITableViewAutomaticDimension;
+        [self.tableView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+        self.tableView.dataSource = self;
+        self.tableView.delegate = self;
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        self.tableView.showsVerticalScrollIndicator = NO;
+        [self.tableView registerClass:[MWZUITitleWithoutFloorCellTableViewCell class] forCellReuseIdentifier:@"titleWithoutFloorCell"];
+        [self.tableView registerClass:[MWZUITitleCell class] forCellReuseIdentifier:@"titleCell"];
+        [self.tableView registerClass:[MWZUISubtitleCell class] forCellReuseIdentifier:@"subtitleCell"];
         _contentByUniverseId = [[NSMutableDictionary alloc] init];
         _ungroupedResults = [[NSMutableArray alloc] init];
         _universes = [[NSMutableArray alloc] init];
@@ -53,31 +63,8 @@
                                                                    constant:0];
         self.tableHeightConstraint.priority = 200;
         [self.tableHeightConstraint setActive:YES];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardDidShow:)
-                                                     name:UIKeyboardDidShowNotification
-                                                   object:nil];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardDidHide:)
-                                                     name:UIKeyboardDidHideNotification
-                                                   object:nil];
     }
     return self;
-}
-
-- (void)keyboardDidShow: (NSNotification *) notif{
-    NSValue* value = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
-    double bottom = 0;
-    if (@available(iOS 11.0, *)) {
-        bottom = UIApplication.sharedApplication.keyWindow.safeAreaInsets.bottom;
-    }
-    [self setContentInset:UIEdgeInsetsMake(self.contentInset.top, self.contentInset.left, value.CGRectValue.size.height - bottom, self.contentInset.right)];
-}
-
-- (void)keyboardDidHide: (NSNotification *) notif{
-    [self setContentInset:UIEdgeInsetsMake(self.contentInset.top, self.contentInset.left, 0, self.contentInset.right)];
 }
 
 - (void) setLanguage:(NSString*) language {
@@ -100,12 +87,12 @@
         [self buildResultsMap:results universes:universes activeUniverse:activeUniverse];
         [self buildUniversesArray];
     }
-    [self reloadData];
+    [self.tableView reloadData];
 }
 
 - (void) setNetworkError:(BOOL)networkError {
     _networkError = networkError;
-    [self reloadData];
+    [self.tableView reloadData];
 }
 
 - (void) swapResults:(NSArray<id<MWZObject>> *)results language:(NSString *)language forQuery:(NSString*) query {
@@ -117,7 +104,7 @@
     self.activeUniverse = nil;
     [self.ungroupedResults removeAllObjects];
     [self.ungroupedResults addObjectsFromArray:results];
-    [self reloadData];
+    [self.tableView reloadData];
 }
 
 - (void) buildResultsMap:(NSArray<id<MWZObject>>*) results
@@ -172,7 +159,7 @@
     NSMutableArray<id<MWZObject>>* content;
     
     if (self.networkError) {
-        MWZUITitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
+        MWZUITitleCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
         cell.titleView.text = NSLocalizedString(@"Search error", "");
         [cell.imageView setImage:nil];
         return cell;
@@ -182,7 +169,7 @@
         return [self getCellFor:mapwizeObject];
     }
     else if (!self.universes || self.universes.count == 0) {
-        MWZUITitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
+        MWZUITitleCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
         cell.titleView.text = NSLocalizedString(@"No results", "");
         [cell.imageView setImage:nil];
         return cell;
@@ -206,7 +193,7 @@
     
     if ([mapwizeObject isKindOfClass:MWZVenue.class]) {
         MWZVenue* venue = (MWZVenue*) mapwizeObject;
-        MWZUITitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
+        MWZUITitleCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
         cell.titleView.text = [venue titleForLanguage:self.language];
         [cell.imageView setImage:imageVenue];
         return cell;
@@ -214,7 +201,7 @@
     if ([mapwizeObject isKindOfClass:MWZPlace.class]) {
         MWZPlace* place = (MWZPlace*) mapwizeObject;
         if ([place subtitleForLanguage:self.language] && [[place subtitleForLanguage:self.language] length] > 0) {
-            MWZUISubtitleCell* cell = [self dequeueReusableCellWithIdentifier:@"subtitleCell"];
+            MWZUISubtitleCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"subtitleCell"];
             cell.titleView.text = [place titleForLanguage:self.language];
             cell.subtitleView.text = [place subtitleForLanguage:self.language];
             cell.floorView.text = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), place.floor];
@@ -222,7 +209,7 @@
             return cell;
         }
         else {
-            MWZUITitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleCell"];
+            MWZUITitleCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"titleCell"];
             cell.titleView.text = [place titleForLanguage:self.language];
             cell.floorView.text = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), place.floor];
             [cell.imageView setImage:imagePlace];
@@ -231,12 +218,12 @@
     }
     if ([mapwizeObject isKindOfClass:MWZPlacelist.class]) {
         MWZPlacelist* placeList = (MWZPlacelist*) mapwizeObject;
-        MWZUITitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
+        MWZUITitleCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
         cell.titleView.text = [placeList titleForLanguage:self.language];
         [cell.imageView setImage:imagePlacelist];
         return cell;
     }
-    MWZUITitleCell* cell = [self dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
+    MWZUITitleCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"titleWithoutFloorCell"];
     return cell;
 }
 
@@ -258,7 +245,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self deselectRowAtIndexPath:indexPath animated:NO];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (self.universes && self.universes.count > 0) {
         MWZUniverse* universe = self.universes[indexPath.section];
         id<MWZObject> mapwizeObject = self.contentByUniverseId[universe.identifier][indexPath.row];
@@ -281,8 +268,8 @@
 }
 
 - (void) updateHeight {
-    if (self.tableHeightConstraint.constant != self.contentSize.height) {
-        self.tableHeightConstraint.constant = self.contentSize.height;
+    if (self.tableHeightConstraint.constant != self.tableView.contentSize.height) {
+        self.tableHeightConstraint.constant = self.tableView.contentSize.height;
     }
 }
 

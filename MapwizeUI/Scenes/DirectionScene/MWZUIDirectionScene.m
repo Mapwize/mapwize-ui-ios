@@ -1,5 +1,11 @@
 #import "MWZUIDirectionScene.h"
 
+@interface MWZUIDirectionScene()
+
+@property (nonatomic) NSLayoutConstraint* searchResultBottomConstraint;
+
+@end
+
 @implementation MWZUIDirectionScene
 
 - (instancetype) initWith:(UIColor*) mainColor {
@@ -146,13 +152,14 @@
                                                                multiplier:1.0f
                                                                  constant:16.0f];
     
-    [[NSLayoutConstraint constraintWithItem:self.resultList
+    _searchResultBottomConstraint = [NSLayoutConstraint constraintWithItem:self.resultList
                                     attribute:NSLayoutAttributeBottom
                                     relatedBy:NSLayoutRelationLessThanOrEqual
-                                       toItem:view
+                                       toItem:view.safeAreaLayoutGuide
                                     attribute:NSLayoutAttributeBottom
                                    multiplier:1.0f
-                                     constant:-16.0f] setActive:YES];
+                                     constant:-16.0f];
+    [_searchResultBottomConstraint setActive:YES];
     
     [self.resultListTopConstraint setActive:YES];
     
@@ -211,6 +218,26 @@
     
     [self setSearchResultsHidden:YES];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    
+}
+
+- (void)keyboardDidShow: (NSNotification *) notif {
+    NSValue* value = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
+    double bottom = value.CGRectValue.size.height;
+    _searchResultBottomConstraint.constant = -bottom;
+}
+
+- (void)keyboardDidHide: (NSNotification *) notif{
+    _searchResultBottomConstraint.constant = -16;
 }
 
 - (void) currentLocationTapped:(UITapGestureRecognizer*) recognizer {

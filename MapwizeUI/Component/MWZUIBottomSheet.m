@@ -224,6 +224,7 @@
     [_selfTopConstraint setActive:YES];
     [[self.heightAnchor constraintEqualToConstant:self.maximizedHeaderHeight + self.maximizedContentHeight] setActive:YES];
     _headerView = [[UIView alloc] initWithFrame:CGRectZero];
+    _headerView.layer.masksToBounds = YES;
     _headerView.translatesAutoresizingMaskIntoConstraints = NO;
     _headerView.backgroundColor = [UIColor clearColor];
     _contentView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -277,11 +278,16 @@
     _headerImageCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     _headerImageCollectionView.showsVerticalScrollIndicator = NO;
     _headerImageCollectionView.showsHorizontalScrollIndicator = NO;
+    _headerImageCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    if (@available(iOS 11.0, *)) {
+        _headerImageCollectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }
     [_headerView addSubview:_headerImageCollectionView];
-    [[_headerImageCollectionView.topAnchor constraintEqualToAnchor:_headerView.topAnchor] setActive:YES];
+    [[_headerImageCollectionView.centerYAnchor constraintEqualToAnchor:_headerView.centerYAnchor] setActive:YES];
     [[_headerImageCollectionView.trailingAnchor constraintEqualToAnchor:_headerView.trailingAnchor] setActive:YES];
     [[_headerImageCollectionView.leadingAnchor constraintEqualToAnchor:_headerView.leadingAnchor] setActive:YES];
-    [[_headerImageCollectionView.bottomAnchor constraintEqualToAnchor:_headerView.bottomAnchor] setActive:YES];
+    [[_headerImageCollectionView.heightAnchor constraintEqualToConstant:self.frame.size.height / 3] setActive:YES];
+    //[[_headerImageCollectionView.bottomAnchor constraintEqualToAnchor:_headerView.bottomAnchor] setActive:YES];
     [_headerImageCollectionView registerClass:[MWZUICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
     
     
@@ -453,7 +459,7 @@
     _defaultContentView.alpha = [self alphaFormula:height];
     _fullContentView.alpha = [self reversedAlphaFormula:height];
     self.closeButton.alpha = [self reversedAlphaFormula:height];
-    [self.headerImageCollectionView.collectionViewLayout invalidateLayout];
+    //[self.headerImageCollectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void) animateToHeight:(CGFloat) height {
@@ -465,7 +471,7 @@
         self.defaultContentView.alpha = [self alphaFormula:height];
         self.fullContentView.alpha = [self reversedAlphaFormula:height];
         self.closeButton.alpha = [self reversedAlphaFormula:height];
-        [self.headerImageCollectionView.collectionViewLayout invalidateLayout];
+        //[self.headerImageCollectionView.collectionViewLayout invalidateLayout];
         [self.superview layoutIfNeeded];
     } completion:^(BOOL finished) {
         if (self.defaultContentView.alpha < 0.1) {
@@ -490,9 +496,6 @@
                      compatibleWithTraitCollection:nil];
         return cell;
     }
-    cell.imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [[cell.imageView.heightAnchor constraintEqualToAnchor:cell.heightAnchor] setActive:YES];
-    [[cell.imageView.widthAnchor constraintEqualToAnchor:cell.widthAnchor] setActive:YES];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.placeDetails.photos[indexPath.row]]];
 
@@ -532,7 +535,6 @@
             }
         });
     });
-    cell.backgroundColor = [UIColor redColor];
     return cell;
 }
 
@@ -542,7 +544,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath: (NSIndexPath *)indexPath {
     double width = self.frame.size.width;
-    return CGSizeMake(width, collectionView.frame.size.height);
+    return CGSizeMake(width, self.frame.size.height / 3 - 2);
  }
 
 

@@ -6,7 +6,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MWZUIGroupedResultList : UITableView
+@interface MWZUIGroupedResultList : UIView
 
 @property (nonatomic, weak) id<MWZUIGroupedResultListDelegate> resultDelegate;
 

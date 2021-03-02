@@ -36,6 +36,7 @@
     [self.searchScene.searchQueryBar setTransform:CGAffineTransformMakeTranslation(0,0)];
     [self.searchScene.backgroundView setTransform:CGAffineTransformMakeTranslation(0,0)];
     [self.searchScene.searchQueryBar.backButton setUserInteractionEnabled:NO];
+    [self.containerView layoutIfNeeded];
     [UIView animateWithDuration:0.3 animations:^{
         [self.searchScene.backgroundView setAlpha:alpha];
         [self.searchScene.searchQueryBar setAlpha:alpha];
