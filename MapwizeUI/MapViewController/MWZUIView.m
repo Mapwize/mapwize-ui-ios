@@ -23,6 +23,8 @@
 #import "MWZUIUniversesButtonDelegate.h"
 #import "MWZUIBottomSheetComponents.h"
 #import "MWZUIOpeningHoursUtils.h"
+#import "MWZUIIssuesReportingViewController.h"
+
 
 typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZViewStateDefault,
@@ -1464,6 +1466,10 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         self.universesButtonLeftConstraint.constant =  16.0f * 2 + 50.f;
     }
     [self.universesButton showIfNeeded];
+    
+    MWZUIIssuesReportingViewController* issueController = [[MWZUIIssuesReportingViewController alloc] initWithVenue:venue placeDetails:nil userInfo:nil language:[mapView getLanguage] color:_options.mainColor];
+    [self.window.rootViewController presentViewController:issueController animated:YES completion:nil];
+
 }
 
 - (void)mapView:(MWZMapView *)mapView venueDidFailEntering:(MWZVenue *)venue withError:(NSError *)error {
