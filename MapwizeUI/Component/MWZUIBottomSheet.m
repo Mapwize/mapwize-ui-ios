@@ -21,8 +21,6 @@
 
 @property (nonatomic) MWZPlaceDetails* placeDetails;
 @property (nonatomic) MWZPlacePreview* placePreview;
-// STATE : HIDDEN, SMALL, SMALL+HEADER, FULL
-//         0,      100,   200,          FULL
 
 
 @property (assign) CGFloat defaultContentHeight;
@@ -66,7 +64,9 @@
 }
 
 - (void) didMoveToSuperview {
-    [self setupViews];
+    if (self.superview) {
+        [self setupViews];
+    }
 }
 
 - (void) removeContent {

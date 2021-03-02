@@ -7,10 +7,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let timezone = NSTimeZone(name: "America/Chicago")
-        let date = Date()
-        print(timezone?.secondsFromGMT(for: date))
-        
         let opts = MWZUIOptions()
         //opts.mainColor = .systemBlue
         let settings = MWZUISettings()

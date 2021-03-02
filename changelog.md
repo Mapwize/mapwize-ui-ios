@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.3.3
+
+- Fixing crash when MapView is embedded in UINavigationController
+
 ## 2.3.2
 
 - Fixing details view sometimes not showing properly
