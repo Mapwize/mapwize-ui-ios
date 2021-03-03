@@ -7,19 +7,14 @@ PODS:
     - IndoorLocation (= 1.0.4)
     - Mapbox-iOS-SDK (~> 5.0)
     - SSZipArchive (= 2.2.3)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  - MapwizeUI (2.3.3):
+  - MapwizeUI (2.3.4):
     - MapwizeSDK (= 3.4.0)
->>>>>>> 1254ff0... Integrate old views
-=======
->>>>>>> 2f743fc... :robot: chore: updating the Podfile.lock :robot:
   - SSZipArchive (2.2.3)
 
 DEPENDENCIES:
   - IndoorLocation
   - MapwizeSDK
+  - MapwizeUI (from `.`)
 
 SPEC REPOS:
   trunk:
@@ -28,6 +23,10 @@ SPEC REPOS:
     - MapboxMobileEvents
     - MapwizeSDK
     - SSZipArchive
+
+EXTERNAL SOURCES:
+  MapwizeUI:
+    :path: "."
 
 SPEC CHECKSUMS:
   IndoorLocation: 9812c8c2d499ef25e6146ef90cf23f8d107213a8
@@ -39,6 +38,7 @@ SPEC CHECKSUMS:
   MapwizeSDK: db6d79e1ccf2324da0ce2590121293f1d2251d70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   MapwizeUI: e99a2dfeb5d08b5c24a3caa038a12aeb526d8c75
 >>>>>>> 1254ff0... Integrate old views
@@ -48,8 +48,11 @@ SPEC CHECKSUMS:
 =======
 >>>>>>> 2f743fc... :robot: chore: updating the Podfile.lock :robot:
 >>>>>>> c403107... :robot: chore: updating the Podfile.lock :robot:
+=======
+  MapwizeUI: b8b8accbb344341f892be32501fef89dfb811be2
+>>>>>>> 52b9c6b... remove merge conflict in podfile
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
 
 PODFILE CHECKSUM: e19951664c55d9350d6010a1aacafcdaf1d2974b
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.0
