@@ -1,5 +1,12 @@
 # Mapwize UI iOS Changelog
 
+## 2.3.6
+
+- Upgrading the Mapwize SDK to 3.4.2
+  - Fixing DirectionMode serializer wrong 'identifier' field
+  - Adding PlaceDetails serializer
+  - Adding languagesDidChange in MWZMapViewDelegate (web sdk parity)
+
 ## 2.3.5
 
 - Upgrading the Mapwize SDK to 3.4.1
