@@ -9,6 +9,7 @@ class ViewController: UIViewController {
         
         let opts = MWZUIOptions()
         //opts.mainColor = .systemBlue
+        //opts.centerOnPlaceId = "5c5079e326372b001bd238c6"
         let settings = MWZUISettings()
         mapwizeView = MWZUIView(frame: self.view.frame, mapwizeOptions: opts, uiSettings: settings)
         mapwizeView.translatesAutoresizingMaskIntoConstraints = false

@@ -254,7 +254,7 @@
         MWZUIFullContentViewComponentRow* row = [self getCapacityRowForPlaceDetails:nil];
         [unfilledRow addObject:row];
     }
-    if (placeDetails.events) {//place.calendarEvents) {
+    if (placeDetails.events) {
         MWZUIFullContentViewComponentRow* row = [self getBookingRowForPlaceDetails:placeDetails];
         [rows addObject:row];
     }
