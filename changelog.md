@@ -1,5 +1,10 @@
 # Mapwize UI iOS Changelog
 
+## 2.3.5
+
+- Upgrading the Mapwize SDK to 3.4.1
+  - Fixing map orientation when centerOnVenue options is used
+
 ## 2.3.4
 
 - Fixing infinity scroll on search result list
