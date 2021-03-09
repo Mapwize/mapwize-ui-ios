@@ -208,10 +208,10 @@
     [_delegate didTapOnInformationButton];
 }
 
-- (MWZUIBottomSheetComponents *)requireComponentForPlaceDetails:(MWZPlace *)place
+- (MWZUIBottomSheetComponents *)requireComponentForPlaceDetails:(MWZPlaceDetails *)placeDetails
                                    withDefaultComponents:(MWZUIBottomSheetComponents *)components {
     if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlaceDetails:withDefaultComponents:)]) {
-        return [_delegate requireComponentForPlaceDetails:place withDefaultComponents:components];
+        return [_delegate requireComponentForPlaceDetails:placeDetails withDefaultComponents:components];
     }
     return components;
 }
