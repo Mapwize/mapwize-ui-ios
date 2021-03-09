@@ -13,7 +13,7 @@ static double gridWidth = 25;
     if (self) {
         self.color = color;
         self.type = MWZUIFullContentViewComponentRowSchedule;
-        self.infoAvailable = placeDetails.events && placeDetails.events.count > 0;
+        self.infoAvailable = placeDetails.events;
         [self setupViewWithPlaceDetails:placeDetails];
     }
     return self;
