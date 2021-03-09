@@ -152,13 +152,25 @@
                                                                multiplier:1.0f
                                                                  constant:16.0f];
     
-    _searchResultBottomConstraint = [NSLayoutConstraint constraintWithItem:self.resultList
-                                    attribute:NSLayoutAttributeBottom
-                                    relatedBy:NSLayoutRelationLessThanOrEqual
-                                       toItem:view.safeAreaLayoutGuide
-                                    attribute:NSLayoutAttributeBottom
-                                   multiplier:1.0f
-                                     constant:-16.0f];
+    if (@available(iOS 11.0, *)) {
+        _searchResultBottomConstraint = [NSLayoutConstraint constraintWithItem:self.resultList
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                     relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                        toItem:view.safeAreaLayoutGuide
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                    multiplier:1.0f
+                                                                      constant:-16.0f];
+    }
+    else {
+        _searchResultBottomConstraint = [NSLayoutConstraint constraintWithItem:self.resultList
+                                        attribute:NSLayoutAttributeBottom
+                                        relatedBy:NSLayoutRelationLessThanOrEqual
+                                           toItem:view
+                                        attribute:NSLayoutAttributeBottom
+                                       multiplier:1.0f
+                                         constant:-16.0f];
+    }
+    
     [_searchResultBottomConstraint setActive:YES];
     
     [self.resultListTopConstraint setActive:YES];
