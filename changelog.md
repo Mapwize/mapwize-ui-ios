@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.3.6
+
+- Improving support of calendar events in details view
+
 ## 2.3.5
 
 - Upgrading the Mapwize SDK to 3.4.1

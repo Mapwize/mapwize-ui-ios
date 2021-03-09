@@ -7,8 +7,8 @@ PODS:
     - IndoorLocation (= 1.0.4)
     - Mapbox-iOS-SDK (~> 5.0)
     - SSZipArchive (= 2.2.3)
-  - MapwizeUI (2.3.4):
-    - MapwizeSDK (= 3.4.0)
+  - MapwizeUI (2.3.5):
+    - MapwizeSDK (= 3.4.1)
   - SSZipArchive (2.2.3)
 
 DEPENDENCIES:
@@ -32,12 +32,8 @@ SPEC CHECKSUMS:
   IndoorLocation: 9812c8c2d499ef25e6146ef90cf23f8d107213a8
   Mapbox-iOS-SDK: a5915700ec84bc1a7f8b3e746d474789e35b7956
   MapboxMobileEvents: 2bc0ca2eedb627b73cf403258dce2b2fa98074a6
-<<<<<<< HEAD
   MapwizeSDK: 8c763a6e88318f725591721257bfc7c88049dcb6
-=======
-  MapwizeSDK: db6d79e1ccf2324da0ce2590121293f1d2251d70
-  MapwizeUI: b8b8accbb344341f892be32501fef89dfb811be2
->>>>>>> booking-view
+  MapwizeUI: 1fc8408bbe04a27a7d1a6102a0dd1d41960983f9
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
 
 PODFILE CHECKSUM: e19951664c55d9350d6010a1aacafcdaf1d2974b
