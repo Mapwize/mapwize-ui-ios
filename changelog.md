@@ -1,5 +1,11 @@
 # Mapwize UI iOS Changelog
 
+## 2.3.8
+
+- Upgrading the Mapwize SDK to 3.4.4
+  - Improving centerOnVenue options internal logic
+  - Fixing animated parameter not used in centerOn methods
+
 ## 2.3.7
 
 - Upgrading the Mapwize SDK to 3.4.3
