@@ -10,6 +10,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/Mapwize/mapwize-ui-ios.git", :tag => "#{s.version}" }
   s.source_files  = "MapwizeUI/**/*.{h,m}"
   s.resources = "MapwizeUI/Resources/*"
-  s.dependency "MapwizeSDK", "3.4.3"
+  s.dependency "MapwizeSDK", "3.4.4"
 end
   
