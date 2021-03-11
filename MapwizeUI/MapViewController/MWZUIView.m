@@ -948,10 +948,11 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         if ([self.toDirectionPoint isKindOfClass:MWZPlace.class]) {
             options.endMarkerOptions.title = [((MWZPlace*)self.toDirectionPoint) titleForLanguage:[self.mapView getLanguage]];
         }
-        else {
+        else if ([self.toDirectionPoint isKindOfClass:MWZPlacelist.class]) {
             options.endMarkerOptions.title = [((MWZPlacelist*)self.toDirectionPoint) titleForLanguage:[self.mapView getLanguage]];
         }
         [self.mapView startNavigation:self.toDirectionPoint directionMode:self.directionMode options:options];
+        self.state = MWZViewStateDirectionOn;
         if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:didStartDirectionInVenue:universe:from:to:mode:isNavigation:)]) {
             [self.delegate mapwizeView:self didStartDirectionInVenue:[self.mapView getVenue] universe:[self.mapView getUniverse] from:self.fromDirectionPoint to:self.toDirectionPoint mode:self.directionMode.identifier isNavigation:YES];
         }
@@ -974,7 +975,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                     if ([self.toDirectionPoint isKindOfClass:MWZPlace.class]) {
                         options.endMarkerOptions.title = [((MWZPlace*)self.toDirectionPoint) titleForLanguage:[self.mapView getLanguage]];
                     }
-                    else {
+                    else if ([self.toDirectionPoint isKindOfClass:MWZPlacelist.class]) {
                         options.endMarkerOptions.title = [((MWZPlacelist*)self.toDirectionPoint) titleForLanguage:[self.mapView getLanguage]];
                     }
                     

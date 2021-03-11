@@ -1,5 +1,10 @@
 # Mapwize UI iOS Changelog
 
+## 2.3.8
+
+- Fixing issue with DirectionMode change when navigation is running
+- Fixing crash when swapping from and to when navigation is running
+
 ## 2.3.7
 
 - Upgrading the Mapwize SDK to 3.4.3
