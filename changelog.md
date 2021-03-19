@@ -1,5 +1,10 @@
 # Mapwize UI iOS Changelog
 
+## 2.3.9
+
+- Upgrading the Mapwize SDK to 3.4.5
+  - Fixing serialization issue for ReactNative
+
 ## 2.3.8
 
 - Fixing issue with DirectionMode change when navigation is running
