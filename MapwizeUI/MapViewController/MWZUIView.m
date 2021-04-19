@@ -1564,7 +1564,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowFloorControllerFor:)]) {
         showFloorController = [self.delegate mapwizeView:self shouldShowFloorControllerFor:floors];
     }
-    [self.floorController mapwizeFloorsDidChange:floors showController:showFloorController];
+    [self.floorController mapwizeFloorsDidChange:floors showController:showFloorController language:[mapView getLanguage]];
 }
 
 - (void)mapView:(MWZMapView *)mapView languageDidChange:(NSString *)language {

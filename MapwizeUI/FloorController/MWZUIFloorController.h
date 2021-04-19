@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype) initWithColor:(UIColor*) color;
 
-- (void) mapwizeFloorsDidChange:(NSArray<MWZFloor*>*) floors showController:(BOOL) showController;
+- (void) mapwizeFloorsDidChange:(NSArray<MWZFloor*>*) floors showController:(BOOL) showController language:(NSString*)language;
 - (void) mapwizeFloorWillChange:(MWZFloor*) floor;
 - (void) mapwizeFloorDidChange:(MWZFloor*) floor;
 

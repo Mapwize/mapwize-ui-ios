@@ -213,12 +213,12 @@
     NSMutableArray<MWZUIFullContentViewComponentRow*>* rows = [[NSMutableArray alloc] init];
     NSMutableArray<MWZUIFullContentViewComponentRow*>* unfilledRow = [[NSMutableArray alloc] init];
     if (placeDetails.floor) {
-        MWZUIFullContentViewComponentRow* row = [self getFloorRowForPlaceDetails:placeDetails];
+        MWZUIFullContentViewComponentRow* row = [self getFloorRowForPlaceDetails:placeDetails language:language];
         
         [rows addObject:row];
     }
     else {
-        MWZUIFullContentViewComponentRow* row = [self getFloorRowForPlaceDetails:nil];
+        MWZUIFullContentViewComponentRow* row = [self getFloorRowForPlaceDetails:nil language:language];
         [unfilledRow addObject:row];
     }
     if (placeDetails.openingHours) {
@@ -311,23 +311,20 @@
     
 }
 
-- (MWZUIFullContentViewComponentRow*) getFloorRowForPlaceDetails:(MWZPlaceDetails*)placeDetails {
+- (MWZUIFullContentViewComponentRow*) getFloorRowForPlaceDetails:(MWZPlaceDetails*)placeDetails language:(NSString*)language {
     UIImage* image = [UIImage imageNamed:@"floor" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
     UILabel* floorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     floorLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [floorLabel setFont:[UIFont systemFontOfSize:14]];
     if (placeDetails) {
-        if (placeDetails.floor) {
-            if (placeDetails.floor[@"number"]) {
-                [floorLabel setText:[NSString stringWithFormat:NSLocalizedString(@"Floor %@", @""), placeDetails.floor[@"number"]]];
-            }
-            else {
-                [floorLabel setText:NSLocalizedString(@"Outdoor", @"")];
+        NSString* floorTitle = @"";
+        for (MWZFloorTranslation* t in placeDetails.floor.translations) {
+            if ([t.language isEqualToString:language]) {
+                floorTitle = t.title;
+                break;
             }
         }
-        else {
-            [floorLabel setText:NSLocalizedString(@"Outdoor", @"")];
-        }
+        [floorLabel setText:floorTitle];
         return [[MWZUIFullContentViewComponentRow alloc] initWithImage:image contentView:floorLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
     }
     else {
