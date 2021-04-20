@@ -115,10 +115,10 @@
     
     lastView = [self addSeparatorBelow:issueTypesRow inView:self.view marginTop:0.0];
     
-    UITextField* summaryContentView = [[UITextField alloc] initWithFrame:CGRectZero];
-    summaryContentView.placeholder = @"Summary";
-    [summaryContentView setFont:[UIFont systemFontOfSize:14]];
-    MWZUIFullContentViewComponentRow* summaryRow = [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"info.circle.fill"] contentView:summaryContentView color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowCustom infoAvailable:YES];
+    _summaryTextField = [[UITextField alloc] initWithFrame:CGRectZero];
+    _summaryTextField.placeholder = @"Summary";
+    [_summaryTextField setFont:[UIFont systemFontOfSize:14]];
+    MWZUIFullContentViewComponentRow* summaryRow = [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"info.circle.fill"] contentView:_summaryTextField color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowCustom infoAvailable:YES];
     summaryRow.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:summaryRow];
     [[summaryRow.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:8.0] setActive:YES];
@@ -132,10 +132,10 @@
     detailsContentView.textContainerInset = UIEdgeInsetsMake(4, 0, 4, 0);
     detailsContentView.text = @"Description";
     detailsContentView.textColor = [UIColor placeholderTextColor];
-    detailsContentView.font = summaryContentView.font;
+    detailsContentView.font = _summaryTextField.font;
     detailsContentView.delegate = self;
     [[detailsContentView.heightAnchor constraintEqualToConstant:100] setActive:YES];
-    [detailsContentView setFont:summaryContentView.font];
+    [detailsContentView setFont:_summaryTextField.font];
     MWZUIFullContentViewComponentRow* detailsRow = [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"info.circle.fill"] contentView:detailsContentView color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowCustom infoAvailable:YES];
     detailsRow.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:detailsRow];
@@ -182,7 +182,7 @@
     if ([textView.text isEqualToString:@""]) {
         textView.text = @"Description";
         textView.textColor = [UIColor placeholderTextColor];
-        textView.font = _pickedIssueType.font;
+        textView.font = _summaryTextField.font;
     }
 }
 
