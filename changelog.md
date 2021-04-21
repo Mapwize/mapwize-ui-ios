@@ -1,5 +1,10 @@
 # Mapwize UI iOS Changelog
 
+## 2.4.0
+
+- Upgrading the Mapwize SDK to 3.5.0
+- Using floor translation in search result and place details view
+
 ## 2.3.8
 
 - Fixing issue with DirectionMode change when navigation is running
@@ -8,7 +13,7 @@
 ## 2.3.7
 
 - Upgrading the Mapwize SDK to 3.4.3
-  - Making MWZOrganization class public
+- Making MWZOrganization class public
 
 ## 2.3.6
 

@@ -204,14 +204,32 @@
             MWZUISubtitleCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"subtitleCell"];
             cell.titleView.text = [place titleForLanguage:self.language];
             cell.subtitleView.text = [place subtitleForLanguage:self.language];
-            cell.floorView.text = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), place.floor];
+            if (place.floorDetails) {
+                NSString* floorTitle = [place.floorDetails titleForLanguage:self.language];
+                if ([floorTitle isEqualToString:[NSString stringWithFormat:@"%@", place.floorDetails.number]]) {
+                    floorTitle = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), place.floor];
+                }
+                cell.floorView.text = floorTitle;
+            }
+            else {
+                cell.floorView.text = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), place.floor];
+            }
             [cell.imageView setImage:imagePlace];
             return cell;
         }
         else {
             MWZUITitleCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"titleCell"];
             cell.titleView.text = [place titleForLanguage:self.language];
-            cell.floorView.text = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), place.floor];
+            if (place.floorDetails) {
+                NSString* floorTitle = [place.floorDetails titleForLanguage:self.language];
+                if ([floorTitle isEqualToString:[NSString stringWithFormat:@"%@", place.floorDetails.number]]) {
+                    floorTitle = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), place.floor];
+                }
+                cell.floorView.text = floorTitle;
+            }
+            else {
+                cell.floorView.text = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), place.floor];
+            }
             [cell.imageView setImage:imagePlace];
             return cell;
         }

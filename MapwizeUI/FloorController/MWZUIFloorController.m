@@ -66,7 +66,7 @@ const int MWZUIFloorViewMarginSize = 4;
     return self;
 }
 
-- (void) mapwizeFloorsDidChange:(NSArray<MWZFloor*>*) floors showController:(BOOL) showController {
+- (void) mapwizeFloorsDidChange:(NSArray<MWZFloor*>*) floors showController:(BOOL) showController language:(NSString*)language {
     if (!floors || floors.count == 0 || !showController) {
         [self close];
         return;
@@ -81,7 +81,7 @@ const int MWZUIFloorViewMarginSize = 4;
         for (MWZFloor* floor in reversedFloors) {
             BOOL selected = NO;
             MWZUIFloorView* floorView = [[MWZUIFloorView alloc] initWithFrame:CGRectMake(4, self.yAnchor, MWZUIFloorViewWidth, MWZUIFloorViewHeight) withIsSelected:selected mainColor:_mainColor];
-            floorView.text = [NSString stringWithFormat:@"%@", floor.name];
+            floorView.text = [floor shortTitleForLanguage:language];
             floorView.floor = floor.number;
             floorView.userInteractionEnabled = YES;
             [self.contentView addSubview:floorView];
