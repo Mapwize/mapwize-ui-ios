@@ -317,12 +317,9 @@
     floorLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [floorLabel setFont:[UIFont systemFontOfSize:14]];
     if (placeDetails) {
-        NSString* floorTitle = @"";
-        for (MWZFloorTranslation* t in placeDetails.floor.translations) {
-            if ([t.language isEqualToString:language]) {
-                floorTitle = t.title;
-                break;
-            }
+        NSString* floorTitle = [placeDetails.floor titleForLanguage:maplanguage];
+        if ([floorTitle isEqualToString:[NSString stringWithFormat:@"%@", placeDetails.floor.number]]) {
+            floorTitle = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), placeDetails.floor.number];
         }
         [floorLabel setText:floorTitle];
         return [[MWZUIFullContentViewComponentRow alloc] initWithImage:image contentView:floorLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
