@@ -1,5 +1,13 @@
 # Mapwize UI iOS Changelog
 
+## 2.3.9
+
+- Upgrading the Mapwize SDK to 3.5.0
+  - Adding translated floor property to placeDetails and direction routes
+  - Updating connector view in direction
+  - Adding support for titleDisplay place property
+  - Adding titleDisplay in setStyle method
+
 ## 2.3.8
 
 - Fixing issue with DirectionMode change when navigation is running
