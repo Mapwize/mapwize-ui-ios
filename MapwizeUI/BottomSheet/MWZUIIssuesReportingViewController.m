@@ -20,7 +20,7 @@
 @property (nonatomic) MWZVenue* venue;
 @property (nonatomic) MWZPlaceDetails* placeDetails;
 @property (nonatomic) MWZUserInfo* userInfo;
-@property (nonatomic) NSArray<NSString*>* issueTypes;
+@property (nonatomic) NSArray<MWZIssueType*>* issueTypes;
 @property (nonatomic) UIColor* color;
 
 @end
@@ -36,7 +36,7 @@
     _venue = venue;
     _placeDetails = placeDetails;
     _userInfo = userInfo;
-    _issueTypes = @[@"Place cassée", @"Plan moche", @"Trait pas droit", @"Android c'est nul"];
+    _issueTypes = placeDetails.issueTypes;
     _color = color;
     return self;
 }

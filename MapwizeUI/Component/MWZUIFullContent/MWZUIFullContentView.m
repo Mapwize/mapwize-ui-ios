@@ -317,7 +317,7 @@
     floorLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [floorLabel setFont:[UIFont systemFontOfSize:14]];
     if (placeDetails) {
-        NSString* floorTitle = [placeDetails.floor titleForLanguage:maplanguage];
+        NSString* floorTitle = [placeDetails.floor titleForLanguage:language];
         if ([floorTitle isEqualToString:[NSString stringWithFormat:@"%@", placeDetails.floor.number]]) {
             floorTitle = [NSString stringWithFormat:NSLocalizedString(@"Floor %@", ""), placeDetails.floor.number];
         }

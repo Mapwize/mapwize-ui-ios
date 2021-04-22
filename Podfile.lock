@@ -3,21 +3,17 @@ PODS:
   - Mapbox-iOS-SDK (5.9.0):
     - MapboxMobileEvents (= 0.10.2)
   - MapboxMobileEvents (0.10.2)
-<<<<<<< HEAD
   - MapwizeSDK (3.5.0):
-=======
-  - MapwizeSDK (3.4.3):
->>>>>>> 27547bd... podfile lock update
     - IndoorLocation (= 1.0.4)
     - Mapbox-iOS-SDK (~> 5.0)
     - SSZipArchive (= 2.2.3)
-  - MapwizeUI (2.3.8):
-    - MapwizeSDK (= 3.4.3)
+  - MapwizeUI (2.4.0):
+    - MapwizeSDK (= 3.5.0)
   - SSZipArchive (2.2.3)
 
 DEPENDENCIES:
   - IndoorLocation
-  - MapwizeSDK
+  - MapwizeSDK (from `../mapwize-sdk-ios`)
   - MapwizeUI (from `.`)
 
 SPEC REPOS:
@@ -25,10 +21,11 @@ SPEC REPOS:
     - IndoorLocation
     - Mapbox-iOS-SDK
     - MapboxMobileEvents
-    - MapwizeSDK
     - SSZipArchive
 
 EXTERNAL SOURCES:
+  MapwizeSDK:
+    :path: "../mapwize-sdk-ios"
   MapwizeUI:
     :path: "."
 
@@ -36,48 +33,10 @@ SPEC CHECKSUMS:
   IndoorLocation: 9812c8c2d499ef25e6146ef90cf23f8d107213a8
   Mapbox-iOS-SDK: a5915700ec84bc1a7f8b3e746d474789e35b7956
   MapboxMobileEvents: 2bc0ca2eedb627b73cf403258dce2b2fa98074a6
-<<<<<<< HEAD
-<<<<<<< HEAD
-  MapwizeSDK: e664dad1322010f424430d38ab8b3b204a2b5bc8
-=======
-<<<<<<< HEAD
-  MapwizeSDK: 447b42dc59fc4cf5a3f34db40772bfd47f135966
-=======
-  MapwizeSDK: db6d79e1ccf2324da0ce2590121293f1d2251d70
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  MapwizeUI: e99a2dfeb5d08b5c24a3caa038a12aeb526d8c75
->>>>>>> 1254ff0... Integrate old views
-<<<<<<< HEAD
->>>>>>> ed882f5... Integrate old views
-<<<<<<< HEAD
->>>>>>> 83e2d7f... Integrate old views
-=======
-=======
-=======
->>>>>>> 2f743fc... :robot: chore: updating the Podfile.lock :robot:
->>>>>>> c403107... :robot: chore: updating the Podfile.lock :robot:
-<<<<<<< HEAD
->>>>>>> 7314b93... :robot: chore: updating the Podfile.lock :robot:
-=======
-=======
-  MapwizeUI: b8b8accbb344341f892be32501fef89dfb811be2
->>>>>>> 52b9c6b... remove merge conflict in podfile
-<<<<<<< HEAD
->>>>>>> b514748... remove merge conflict in podfile
-=======
-=======
->>>>>>> e4beae1... :robot: chore: updating the Podfile.lock :robot:
->>>>>>> 087807a... :robot: chore: updating the Podfile.lock :robot:
-=======
-  MapwizeSDK: 2e2965e0e2649d86bffcb05ab95fb47ccbb46c95
-  MapwizeUI: c1e39ab3404c2914c52c5f6ade601157af9fe288
->>>>>>> 27547bd... podfile lock update
+  MapwizeSDK: 7fff9192d03575c48e3aab39c56af926304b6c75
+  MapwizeUI: 73cef697553848c70ac73e1b59b5997a7bd31394
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
 
-PODFILE CHECKSUM: e19951664c55d9350d6010a1aacafcdaf1d2974b
+PODFILE CHECKSUM: 3e18d38575b1111c4d80a0cfc49c9df2a80e48a3
 
 COCOAPODS: 1.10.1
