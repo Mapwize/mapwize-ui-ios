@@ -1,5 +1,11 @@
 # Mapwize UI iOS Changelog
 
+## 2.4.1
+
+- Upgrading the Mapwize SDK to 3.5.1
+  - Adding api method to create and retrieve issue
+  - Fixing issue with geojson display
+
 ## 2.4.0
 
 - Upgrading the Mapwize SDK to 3.5.0
