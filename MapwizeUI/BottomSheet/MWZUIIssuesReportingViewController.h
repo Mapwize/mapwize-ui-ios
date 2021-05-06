@@ -9,7 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
                   placeDetails:(MWZPlaceDetails*)placeDetails
                       userInfo:(MWZUserInfo*)userInfo
                       language:(NSString*)language
-                         color:(UIColor*)color;
+                         color:(UIColor*)color
+                           api:(id<MWZMapwizeApi>)api;
 
 @end
 

@@ -15,8 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFrame:(CGRect) frame color:(UIColor*)color;
 
 - (void) showPlacePreview:(MWZPlacePreview*)placePreview;
-- (void) showPlaceDetails:(MWZPlaceDetails*)placeDetails shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language;
-- (void) showPlacelist:(MWZPlacelist*)placelist shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language;
+- (void) showPlaceDetails:(MWZPlaceDetails*)placeDetails
+shouldShowInformationButton:(BOOL) shouldShowInformationButton
+      shouldShowReportRow:(BOOL) shouldShowReportRow
+                 language:(NSString*)language;
+- (void) showPlacelist:(MWZPlacelist*)placelist shouldShowInformationButton:(BOOL) shouldShowInformationButton
+   shouldShowReportRow:(BOOL) shouldShowReportRow
+              language:(NSString*)language;
 - (void) showPlace:(MWZPlace*)place shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language;
 - (void) removeContent;
 

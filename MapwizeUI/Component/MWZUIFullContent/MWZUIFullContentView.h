@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                    language:(NSString*)language;
 
 - (NSMutableArray<MWZUIFullContentViewComponentRow*>*) buildContentRowsForPlaceDetails:(MWZPlaceDetails*)placeDetails
-                                                                              language:(NSString*)language;
+                                                                              language:(NSString*)language shouldShowReportRow:(BOOL)reportRow;
 
 @end
 

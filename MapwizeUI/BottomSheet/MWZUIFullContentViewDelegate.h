@@ -13,6 +13,8 @@
 
 - (void) didTapOnInfoButton;
 
+- (void) didTapOnReportIssueButton;
+
 @end
 
 #endif /* MWZUIFullContentViewDelegate_h */

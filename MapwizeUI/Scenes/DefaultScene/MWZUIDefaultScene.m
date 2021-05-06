@@ -101,18 +101,19 @@
             [self setDirectionButtonHidden:NO];
         }
         else if ([sceneProperties.selectedContent isKindOfClass:MWZPlacePreview.class]) {
-            [self showContent:sceneProperties.selectedContent language:sceneProperties.language showInfoButton:NO];
+            [self showContent:sceneProperties.selectedContent language:sceneProperties.language showInfoButton:NO showReportRow:NO];
         }
         else if (sceneProperties.selectedContent && sceneProperties.placeDetails) {
             [self showContent:sceneProperties.placeDetails
                      language:sceneProperties.language
-               showInfoButton:!sceneProperties.infoButtonHidden];
+               showInfoButton:!sceneProperties.infoButtonHidden
+             showReportRow:!sceneProperties.reportRowHidden];
         }
         else if ([sceneProperties.selectedContent isKindOfClass:MWZPlacelist.class]) {
-            [self showContent:sceneProperties.selectedContent language:sceneProperties.language showInfoButton:NO];
+            [self showContent:sceneProperties.selectedContent language:sceneProperties.language showInfoButton:NO showReportRow:NO];
         }
         else if ([sceneProperties.selectedContent isKindOfClass:MWZPlace.class]) {
-            [self showContent:sceneProperties.selectedContent language:sceneProperties.language showInfoButton:NO];
+            [self showContent:sceneProperties.selectedContent language:sceneProperties.language showInfoButton:NO showReportRow:NO];
         }
         else if (_sceneProperties.selectedContent) {
             [self hideContent];
@@ -167,15 +168,16 @@
 
 - (void) showContent:(id) object
             language:(NSString*) language
-      showInfoButton:(BOOL) showInfoButton {
+      showInfoButton:(BOOL) showInfoButton
+       showReportRow:(BOOL) showReportRow {
     if ([object isKindOfClass:MWZPlacePreview.class]) {
         [self.bottomSheet showPlacePreview:object];
     }
     if ([object isKindOfClass:MWZPlaceDetails.class]) {
-        [self.bottomSheet showPlaceDetails:object shouldShowInformationButton:showInfoButton language:language];
+        [self.bottomSheet showPlaceDetails:object shouldShowInformationButton:showInfoButton shouldShowReportRow:showReportRow language:language];
     }
     if ([object isKindOfClass:MWZPlacelist.class]) {
-        [self.bottomSheet showPlacelist:object shouldShowInformationButton:showInfoButton language:language];
+        [self.bottomSheet showPlacelist:object shouldShowInformationButton:showInfoButton shouldShowReportRow:showReportRow language:language];
     }
     if ([object isKindOfClass:MWZPlace.class]) {
         [self.bottomSheet showPlace:object shouldShowInformationButton:showInfoButton language:language];
@@ -245,6 +247,9 @@
     [_delegate didTapOnInformationButton];
 }
 
+- (void) didTapOnReportIssueButton:(MWZPlaceDetails *)details {
+    [_delegate didTapOnReportIssueButton:details];
+}
 
 
 

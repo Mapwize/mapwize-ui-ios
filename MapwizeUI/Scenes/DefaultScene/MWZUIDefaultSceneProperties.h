@@ -10,6 +10,7 @@
 @property (nonatomic) MWZPlaceDetails* placeDetails;
 @property (nonatomic) NSString* language;
 @property (nonatomic, assign) BOOL infoButtonHidden;
+@property (nonatomic, assign) BOOL reportRowHidden;
 
 + (instancetype) scenePropertiesWithProperties:(MWZUIDefaultSceneProperties*) properties;
 

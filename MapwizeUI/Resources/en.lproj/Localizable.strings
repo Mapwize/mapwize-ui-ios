@@ -39,4 +39,12 @@
 "Closed - opens %@ at %@" = "Closed - opens %@ at %@";
 "Closed 24/7" = "Closed 24/7";
 "Closed" = "Closed";
-
+"This field is required" = "This field is required";
+"Description" = "Description";
+"Summary" = "Summary";
+"Issue type" = "Issue type";
+"Email" = "Email";
+"Place" = "Place";
+"Venue" = "Venue";
+"Report an issue" = "Report an issue";
+"Your issue has been reported!" = "Your issue has been reported!";

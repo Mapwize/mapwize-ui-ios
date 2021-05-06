@@ -158,7 +158,10 @@
     }
 }
 
-- (void) showPlaceDetails:(MWZPlaceDetails*)placeDetails shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language {
+- (void) showPlaceDetails:(MWZPlaceDetails*)placeDetails
+shouldShowInformationButton:(BOOL) shouldShowInformationButton
+      shouldShowReportRow:(BOOL) shouldShowReportRow
+                 language:(NSString*)language {
     _placePreview = nil;
     _placeDetails = placeDetails;
     [_headerImageCollectionView reloadData];
@@ -176,7 +179,7 @@
     
     NSMutableArray<MWZUIIconTextButton*>* minimizedViewButtons = [_defaultContentView buildButtonsForPlaceDetails:_placeDetails showInfoButton:shouldShowInformationButton];
     NSMutableArray<MWZUIFullContentViewComponentButton*>* fullHeaderButtons = [_fullContentView buildHeaderButtonsForPlaceDetails:_placeDetails  showInfoButton:shouldShowInformationButton language:language];
-    NSMutableArray<MWZUIFullContentViewComponentRow*>* fullRows = [_fullContentView buildContentRowsForPlaceDetails:_placeDetails language:language];
+    NSMutableArray<MWZUIFullContentViewComponentRow*>* fullRows = [_fullContentView buildContentRowsForPlaceDetails:_placeDetails language:language shouldShowReportRow:shouldShowReportRow];
     MWZUIBottomSheetComponents* components = [[MWZUIBottomSheetComponents alloc] initWithHeaderButtons:fullHeaderButtons contentRows:fullRows minimizedViewButtons:minimizedViewButtons preventExpand:NO];
     if (_delegate && [_delegate respondsToSelector:@selector(requireComponentForPlaceDetails:withDefaultComponents:)]) {
         components = [_delegate requireComponentForPlaceDetails:_placeDetails withDefaultComponents:components];
@@ -605,6 +608,10 @@
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
        [[UIApplication sharedApplication] openURL:url];
     }
+}
+
+- (void) didTapOnReportIssueButton {
+    [_delegate didTapOnReportIssueButton:_placeDetails];
 }
 
 @end

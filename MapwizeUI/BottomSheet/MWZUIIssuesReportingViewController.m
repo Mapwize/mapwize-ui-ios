@@ -1,27 +1,37 @@
 #import "MWZUIIssuesReportingViewController.h"
 #import "MWZUIFullContentViewComponentRow.h"
 #import "MWZUIIssueTypeView.h"
+#import "MWZUITwoLinesRow.h"
+#import "MWZUILabelRow.h"
 
-@interface MWZUIIssuesReportingViewController () <UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate>
+@interface MWZUIIssuesReportingViewController () <UITextViewDelegate, MWZUIIssueTypeViewDelegate>
 
 @property (nonatomic) UILabel* targetedContentSummary;
 @property (nonatomic) UITextField* summaryTextField;
 @property (nonatomic) UITextView* descriptionTextView;
 @property (nonatomic) UILabel* pickedIssueType;
-@property (nonatomic) UIPickerView* issueTypesPicker;
 @property (nonatomic) UIButton* sendIssueButton;
 @property (nonatomic) UIButton* validateIssueTypeButton;
 
 @property (nonatomic) UILabel* typeDescription;
 @property (nonatomic) UILabel* subjectDescription;
 @property (nonatomic) UILabel* descriptionDescription;
+@property (nonatomic) UITextField* userContentView;
+@property (nonatomic) UITextView* detailsContentView;
+@property (nonatomic) id<MWZMapwizeApi> api;
 
-@property (nonatomic) NSString* selectedIssueType;
+@property (nonatomic) MWZIssueType* selectedIssueType;
 @property (nonatomic) MWZVenue* venue;
 @property (nonatomic) MWZPlaceDetails* placeDetails;
 @property (nonatomic) MWZUserInfo* userInfo;
 @property (nonatomic) NSArray<MWZIssueType*>* issueTypes;
 @property (nonatomic) UIColor* color;
+@property (nonatomic) NSString* language;
+
+@property (nonatomic) MWZUITwoLinesRow* emailRow;
+@property (nonatomic) MWZUIIssueTypeView* issueTypeRow;
+@property (nonatomic) MWZUITwoLinesRow* summaryRow;
+@property (nonatomic) MWZUITwoLinesRow* descriptionRow;
 
 @end
 
@@ -31,13 +41,16 @@
                   placeDetails:(MWZPlaceDetails*)placeDetails
                       userInfo:(MWZUserInfo*)userInfo
                       language:(NSString*)language
-                         color:(UIColor*)color {
+                         color:(UIColor*)color
+                           api:(id<MWZMapwizeApi>)api{
     self = [super init];
     _venue = venue;
     _placeDetails = placeDetails;
     _userInfo = userInfo;
     _issueTypes = placeDetails.issueTypes;
     _color = color;
+    _language = language;
+    _api = api;
     return self;
 }
 
@@ -49,7 +62,7 @@
 
 - (void) initView {
     _targetedContentSummary = [[UILabel alloc] initWithFrame:CGRectZero];
-    _targetedContentSummary.text = @"Report an issue";
+    _targetedContentSummary.text = NSLocalizedString(@"Report an issue", @"");
     _targetedContentSummary.font = [UIFont systemFontOfSize:28];
     _targetedContentSummary.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:_targetedContentSummary];
@@ -59,120 +72,156 @@
     
     UIButton* sendButton = [[UIButton alloc] initWithFrame:CGRectZero];
     sendButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [sendButton addTarget:self
+                   action:@selector(sendIssue)
+         forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:sendButton];
     
-    UIImage* sendImage = [[UIImage systemImageNamed:@"paperplane.fill"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    NSBundle* bundle = [NSBundle bundleForClass:self.class];
+    
+    UIImage* sendImage = [[UIImage imageNamed:@"send" inBundle:bundle compatibleWithTraitCollection:nil] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [sendButton.imageView setTintColor:_color];
     [sendButton setImage:sendImage forState:UIControlStateNormal];
+    [[sendButton.heightAnchor constraintEqualToConstant:24] setActive:YES];
+    [[sendButton.widthAnchor constraintEqualToConstant:24] setActive:YES];
     [[sendButton.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-16] setActive:YES];
     [[sendButton.centerYAnchor constraintEqualToAnchor:_targetedContentSummary.centerYAnchor constant:0] setActive:YES];
     
+    UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+    scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:scrollView];
+    [[scrollView.topAnchor constraintEqualToAnchor:_targetedContentSummary.bottomAnchor] setActive:YES];
+    [[scrollView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor] setActive:YES];
+    [[scrollView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor] setActive:YES];
+    [[scrollView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor] setActive:YES];
+    
     UILabel* venueContentView = [[UILabel alloc] initWithFrame:CGRectZero];
-    venueContentView.text = [_venue titleForLanguage:@"en"];
+    venueContentView.text = [_venue titleForLanguage:_language];
     [venueContentView setFont:[UIFont systemFontOfSize:14]];
-    MWZUIFullContentViewComponentRow* venueRow = [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"building.fill"] contentView:venueContentView color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowCustom infoAvailable:YES];
+    MWZUILabelRow* venueRow = [[MWZUILabelRow alloc] initWithImage:[UIImage imageNamed:@"venue" inBundle:bundle compatibleWithTraitCollection:nil] label:[_venue titleForLanguage:_language] color:_color];
     venueRow.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:venueRow];
-    [[venueRow.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:8.0] setActive:YES];
-    [[venueRow.topAnchor constraintEqualToAnchor:_targetedContentSummary.bottomAnchor constant:8.0] setActive:YES];
-    [[venueRow.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-8.0] setActive:YES];
+    [scrollView addSubview:venueRow];
+    [[venueRow.leadingAnchor constraintEqualToAnchor:scrollView.leadingAnchor constant:8.0] setActive:YES];
+    [[venueRow.topAnchor constraintEqualToAnchor:scrollView.topAnchor constant:8.0] setActive:YES];
+    [[venueRow.trailingAnchor constraintEqualToAnchor:scrollView.trailingAnchor constant:-8.0] setActive:YES];
     
-    UIView* lastView = [self addSeparatorBelow:venueRow inView:self.view marginTop:0.0];
-    if (_placeDetails) {
-        UILabel* placeContentView = [[UILabel alloc] initWithFrame:CGRectZero];
-        placeContentView.text = [_placeDetails titleForLanguage:@"en"];
-        [placeContentView setFont:[UIFont systemFontOfSize:14]];
-        MWZUIFullContentViewComponentRow* placeRow = [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"mappin.circle.fill"] contentView:placeContentView color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowCustom infoAvailable:YES];
-        placeRow.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.view addSubview:placeRow];
-        [[placeRow.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:8.0] setActive:YES];
-        [[placeRow.topAnchor constraintEqualToAnchor:lastView.bottomAnchor constant:0.0] setActive:YES];
-        [[placeRow.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-8.0] setActive:YES];
-        
-        lastView = [self addSeparatorBelow:placeRow inView:self.view marginTop:0.0];
-    }
+    UIView* lastView = [self addSeparatorBelow:venueRow inView:scrollView marginTop:0.0];
+    UILabel* placeContentView = [[UILabel alloc] initWithFrame:CGRectZero];
+    placeContentView.text = [_placeDetails titleForLanguage:_language];
+    [placeContentView setFont:[UIFont systemFontOfSize:14]];
+    MWZUILabelRow* placeRow = [[MWZUILabelRow alloc] initWithImage:[UIImage imageNamed:@"place" inBundle:bundle compatibleWithTraitCollection:nil] label:[_placeDetails titleForLanguage:_language] color:_color];
+    placeRow.translatesAutoresizingMaskIntoConstraints = NO;
+    [scrollView addSubview:placeRow];
+    [[placeRow.leadingAnchor constraintEqualToAnchor:scrollView.leadingAnchor constant:8.0] setActive:YES];
+    [[placeRow.topAnchor constraintEqualToAnchor:lastView.bottomAnchor constant:0.0] setActive:YES];
+    [[placeRow.trailingAnchor constraintEqualToAnchor:scrollView.trailingAnchor constant:-8.0] setActive:YES];
     
+    lastView = [self addSeparatorBelow:placeRow inView:scrollView marginTop:0.0];
+    
+    _userContentView = [[UITextField alloc] initWithFrame:CGRectZero];
+    _userContentView.placeholder = NSLocalizedString(@"Email", @"");
     if (_userInfo) {
-        UILabel* userContentView = [[UILabel alloc] initWithFrame:CGRectZero];
-        userContentView.text = _userInfo.displayName;
-        [userContentView setFont:[UIFont systemFontOfSize:14]];
-        MWZUIFullContentViewComponentRow* userRow = [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"person.fill"] contentView:userContentView color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowCustom infoAvailable:YES];
-        userRow.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.view addSubview:userRow];
-        [[userRow.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:8.0] setActive:YES];
-        [[userRow.topAnchor constraintEqualToAnchor:lastView.bottomAnchor constant:0.0] setActive:YES];
-        [[userRow.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-8.0] setActive:YES];
-        
-        lastView = [self addSeparatorBelow:userRow inView:self.view marginTop:0.0];
+        _userContentView.text = _userInfo.email;
     }
+    [_userContentView setFont:[UIFont systemFontOfSize:14]];
+    _emailRow = [[MWZUITwoLinesRow alloc] initWithImage:[UIImage imageNamed:@"people" inBundle:bundle compatibleWithTraitCollection:nil] label:NSLocalizedString(@"Email", @"") view:_userContentView color:_color];
+    _emailRow.translatesAutoresizingMaskIntoConstraints = NO;
+    [scrollView addSubview:_emailRow];
+    [[_emailRow.leadingAnchor constraintEqualToAnchor:scrollView.leadingAnchor constant:8.0] setActive:YES];
+    [[_emailRow.topAnchor constraintEqualToAnchor:lastView.bottomAnchor constant:0.0] setActive:YES];
+    [[_emailRow.trailingAnchor constraintEqualToAnchor:scrollView.trailingAnchor constant:-8.0] setActive:YES];
     
-    MWZUIIssueTypeView* issueTypesRow = [[MWZUIIssueTypeView alloc] initWithFrame:CGRectZero issueTypes:_issueTypes color:_color];
-    issueTypesRow.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:issueTypesRow];
-    [[issueTypesRow.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:8.0] setActive:YES];
-    [[issueTypesRow.topAnchor constraintEqualToAnchor:lastView.bottomAnchor constant:0.0] setActive:YES];
-    [[issueTypesRow.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-8.0] setActive:YES];
+    lastView = [self addSeparatorBelow:_emailRow inView:scrollView marginTop:0.0];
     
-    lastView = [self addSeparatorBelow:issueTypesRow inView:self.view marginTop:0.0];
+    _issueTypeRow = [[MWZUIIssueTypeView alloc] initWithFrame:CGRectZero issueTypes:_issueTypes color:_color language:_language];
+    _issueTypeRow.delegate = self;
+    _issueTypeRow.translatesAutoresizingMaskIntoConstraints = NO;
+    [scrollView addSubview:_issueTypeRow];
+    [[_issueTypeRow.leadingAnchor constraintEqualToAnchor:scrollView.leadingAnchor constant:8.0] setActive:YES];
+    [[_issueTypeRow.topAnchor constraintEqualToAnchor:lastView.bottomAnchor constant:0.0] setActive:YES];
+    [[_issueTypeRow.trailingAnchor constraintEqualToAnchor:scrollView.trailingAnchor constant:-8.0] setActive:YES];
+    
+    lastView = [self addSeparatorBelow:_issueTypeRow inView:scrollView marginTop:0.0];
     
     _summaryTextField = [[UITextField alloc] initWithFrame:CGRectZero];
-    _summaryTextField.placeholder = @"Summary";
+    _summaryTextField.placeholder = NSLocalizedString(@"Summary", @"");
     [_summaryTextField setFont:[UIFont systemFontOfSize:14]];
-    MWZUIFullContentViewComponentRow* summaryRow = [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"info.circle.fill"] contentView:_summaryTextField color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowCustom infoAvailable:YES];
-    summaryRow.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:summaryRow];
-    [[summaryRow.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:8.0] setActive:YES];
-    [[summaryRow.topAnchor constraintEqualToAnchor:lastView.bottomAnchor constant:0.0] setActive:YES];
-    [[summaryRow.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-8.0] setActive:YES];
+    _summaryRow = [[MWZUITwoLinesRow alloc] initWithImage:[UIImage imageNamed:@"object" inBundle:bundle compatibleWithTraitCollection:nil] label:NSLocalizedString(@"Summary", @"") view:_summaryTextField color:_color];
+    _summaryRow.translatesAutoresizingMaskIntoConstraints = NO;
+    [scrollView addSubview:_summaryRow];
+    [[_summaryRow.leadingAnchor constraintEqualToAnchor:scrollView.leadingAnchor constant:8.0] setActive:YES];
+    [[_summaryRow.topAnchor constraintEqualToAnchor:lastView.bottomAnchor constant:0.0] setActive:YES];
+    [[_summaryRow.trailingAnchor constraintEqualToAnchor:scrollView.trailingAnchor constant:-8.0] setActive:YES];
     
-    lastView = [self addSeparatorBelow:summaryRow inView:self.view marginTop:0.0];
+    lastView = [self addSeparatorBelow:_summaryRow inView:scrollView marginTop:0.0];
     
-    UITextView* detailsContentView = [[UITextView alloc] initWithFrame:CGRectZero];
-    detailsContentView.textContainer.lineFragmentPadding = 0;
-    detailsContentView.textContainerInset = UIEdgeInsetsMake(4, 0, 4, 0);
-    detailsContentView.text = @"Description";
-    detailsContentView.textColor = [UIColor placeholderTextColor];
-    detailsContentView.font = _summaryTextField.font;
-    detailsContentView.delegate = self;
-    [[detailsContentView.heightAnchor constraintEqualToConstant:100] setActive:YES];
-    [detailsContentView setFont:_summaryTextField.font];
-    MWZUIFullContentViewComponentRow* detailsRow = [[MWZUIFullContentViewComponentRow alloc] initWithImage:[UIImage systemImageNamed:@"info.circle.fill"] contentView:detailsContentView color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowCustom infoAvailable:YES];
-    detailsRow.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:detailsRow];
-    [[detailsRow.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:8.0] setActive:YES];
-    [[detailsRow.topAnchor constraintEqualToAnchor:lastView.bottomAnchor constant:0.0] setActive:YES];
-    [[detailsRow.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-8.0] setActive:YES];
+    _detailsContentView = [[UITextView alloc] initWithFrame:CGRectZero];
+    _detailsContentView.textContainer.lineFragmentPadding = 0;
+    _detailsContentView.textContainerInset = UIEdgeInsetsMake(4, 0, 4, 0);
+    _detailsContentView.text = NSLocalizedString(@"Description", @"");
+    _detailsContentView.textColor = [UIColor colorWithRed:0 green:0 blue:0.0980392 alpha:0.22];
+    _detailsContentView.font = _summaryTextField.font;
+    _detailsContentView.delegate = self;
+    [[_detailsContentView.heightAnchor constraintEqualToConstant:100] setActive:YES];
+    [_detailsContentView setFont:_summaryTextField.font];
+    _descriptionRow = [[MWZUITwoLinesRow alloc] initWithImage:[UIImage imageNamed:@"description" inBundle:bundle compatibleWithTraitCollection:nil] label:NSLocalizedString(@"Description", @"") view:_detailsContentView color:_color];
+    _descriptionRow.translatesAutoresizingMaskIntoConstraints = NO;
+    [scrollView addSubview:_descriptionRow];
+    [[_descriptionRow.leadingAnchor constraintEqualToAnchor:scrollView.leadingAnchor constant:8.0] setActive:YES];
+    [[_descriptionRow.topAnchor constraintEqualToAnchor:lastView.bottomAnchor constant:0.0] setActive:YES];
+    [[_descriptionRow.trailingAnchor constraintEqualToAnchor:scrollView.trailingAnchor constant:-8.0] setActive:YES];
+    [[_descriptionRow.bottomAnchor constraintEqualToAnchor:scrollView.bottomAnchor constant:0.0] setActive:YES];
+    
+    
+    [_api getUserInfoWithSuccess:^(MWZUserInfo * _Nonnull userInfo) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.userContentView.text = userInfo.email;
+            self.userInfo = userInfo;
+        });
+        } failure:^(NSError * _Nonnull error) {
+            
+        }];
 }
 
-- (void) validateIssueTypeButtonAction:(UIButton*)button {
-    _selectedIssueType = _issueTypes[[_issueTypesPicker selectedRowInComponent:0]];
-    _pickedIssueType.textColor = [UIColor blackColor];
-    _pickedIssueType.text = _selectedIssueType;
-    _pickedIssueType.hidden = NO;
-    _summaryTextField.hidden = NO;
-    _descriptionTextView.hidden = NO;
-    _sendIssueButton.hidden = NO;
-    _issueTypesPicker.hidden = YES;
-    _validateIssueTypeButton.hidden = YES;
-    _subjectDescription.hidden = NO;
-    _descriptionDescription.hidden = NO;
+- (void) sendIssue {
+    NSString* description = [_detailsContentView.text isEqualToString:NSLocalizedString(@"Description", @"")] ? @"" : _detailsContentView.text;
+    [_api createIssueWithVenueId:_venue.identifier ownerId:_venue.owner placeId:_placeDetails.identifier reporterEmail:_userContentView.text summary:_summaryTextField.text description:description issueTypeId:_selectedIssueType.identifier success:^(MWZIssue * _Nonnull issue) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString* message = NSLocalizedString(@"Your issue has been reported!", @"");
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"User action"
+                                                                           message:message
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }];
+            [alert addAction:cancelAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        });
+        } failure:^(NSError * _Nonnull error, NSDictionary* _Nonnull messages) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self highlightMissingFields:messages];
+            });
+        }];
 }
 
-- (void) showIssueTypePicker:(UITapGestureRecognizer *)recognizer {
-    _pickedIssueType.hidden = YES;
-    _summaryTextField.hidden = YES;
-    _descriptionTextView.hidden = YES;
-    _sendIssueButton.hidden = YES;
-    _issueTypesPicker.hidden = NO;
-    _validateIssueTypeButton.hidden = NO;
-    _subjectDescription.hidden = YES;
-    _descriptionDescription.hidden = YES;
+- (void) highlightMissingFields:(NSDictionary*)messages {
+    NSDictionary* errors = messages[@"errors"];
+    if (errors[@"summary"] && ![errors[@"summary"] isEqual: NSNull.null]) {
+        [_summaryRow setErrorMessage:NSLocalizedString(@"This field is required", @"")];
+    }
+    if (errors[@"description"] && ![errors[@"description"] isEqual: NSNull.null]) {
+        [_descriptionRow setErrorMessage:NSLocalizedString(@"This field is required", @"")];
+    }
+    if (errors[@"issueTypeId"] && ![errors[@"issueTypeId"] isEqual: NSNull.null]) {
+        [_issueTypeRow setErrorMessage:NSLocalizedString(@"This field is required", @"")];
+    }
 }
 
 #pragma UITextViewDelegate
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-    if ([textView.text isEqualToString:@"Description"]) {
+    if ([textView.text isEqualToString:NSLocalizedString(@"Description", @"")]) {
         textView.text = @"";
         textView.textColor = [UIColor blackColor];
     }
@@ -180,25 +229,10 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
     if ([textView.text isEqualToString:@""]) {
-        textView.text = @"Description";
-        textView.textColor = [UIColor placeholderTextColor];
+        textView.text = NSLocalizedString(@"Description", @"");
+        textView.textColor = [UIColor colorWithRed:0 green:0 blue:0.0980392 alpha:0.22];
         textView.font = _summaryTextField.font;
     }
-}
-
-#pragma UIPickerViewDelegate & DataSource
-
-- (NSInteger)numberOfComponentsInPickerView:(nonnull UIPickerView *)pickerView {
-    return 1;
-}
-
-- (NSInteger)pickerView:(nonnull UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return _issueTypes.count;
-}
-
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return _issueTypes[row];
 }
 
 - (UIView*) addSeparatorBelow:(UIView*) view inView:(UIView*)inView marginTop:(double) marginTop {
@@ -206,12 +240,16 @@
     separator.translatesAutoresizingMaskIntoConstraints = NO;
     [inView addSubview:separator];
     separator.backgroundColor = [UIColor lightGrayColor];
-    [[separator.heightAnchor constraintEqualToConstant:0.5] setActive:YES];
+    [[separator.heightAnchor constraintEqualToConstant:1] setActive:YES];
     [[separator.leadingAnchor constraintEqualToAnchor:inView.leadingAnchor] setActive:YES];
     [[separator.trailingAnchor constraintEqualToAnchor:inView.trailingAnchor] setActive:YES];
     [[separator.topAnchor constraintEqualToAnchor:view.bottomAnchor constant:marginTop] setActive:YES];
     [[separator.widthAnchor constraintEqualToAnchor:inView.widthAnchor] setActive:YES];
     return separator;
+}
+
+- (void)didSelectIssueType:(MWZIssueType *)issueType {
+    _selectedIssueType = issueType;
 }
 
 @end
