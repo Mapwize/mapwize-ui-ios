@@ -57,6 +57,8 @@
 */
 - (BOOL) mapwizeView:(MWZUIView* _Nonnull) mapwizeView shouldShowInformationButtonFor:(id<MWZObject> _Nonnull) mapwizeObject;
 
+- (BOOL) mapwizeView:(MWZUIView* _Nonnull) mapwizeView shouldShowReportRowFor:(id<MWZObject> _Nonnull) mapwizeObject;
+
 
 /**
  Called when the bottom view is going to be displayed

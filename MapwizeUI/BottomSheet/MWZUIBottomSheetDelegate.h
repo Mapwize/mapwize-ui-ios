@@ -23,6 +23,8 @@
 
 - (void) didTapOnInfoButton;
 
+- (void) didTapOnReportIssueButton:(MWZPlaceDetails*) details;
+
 @end
 
 #endif /* MWZUIBottomSheetDelegate_h */

@@ -10,6 +10,7 @@
     p.venue = properties.venue;
     p.venueLoading = properties.venueLoading;
     p.placeDetails = properties.placeDetails;
+    p.reportRowHidden = properties.reportRowHidden;
     return p;
 }
 

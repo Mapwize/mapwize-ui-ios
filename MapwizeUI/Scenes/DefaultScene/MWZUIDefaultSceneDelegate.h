@@ -18,6 +18,7 @@
 - (void) didTapOnCallButton;
 - (void) didTapOnShareButton;
 - (void) didTapOnWebsiteButton;
+- (void) didTapOnReportIssueButton:(MWZPlaceDetails *)details;
 
 @end
 

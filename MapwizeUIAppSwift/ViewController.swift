@@ -10,6 +10,8 @@ class ViewController: UIViewController {
         let opts = MWZUIOptions()
         //opts.mainColor = .systemBlue
         //opts.centerOnPlaceId = "5c5079e326372b001bd238c6"
+        opts.centerOnVenueId = "5e60cf717230ce001623d057"
+        opts.restrictContentToVenueId = "5e60cf717230ce001623d057"
         let settings = MWZUISettings()
         mapwizeView = MWZUIView(frame: self.view.frame, mapwizeOptions: opts, uiSettings: settings)
         mapwizeView.translatesAutoresizingMaskIntoConstraints = false
@@ -86,6 +88,10 @@ extension ViewController: MWZUIViewDelegate {
             return true
         }
         return false
+    }
+    
+    func mapwizeView(_ mapwizeView: MWZUIView, shouldShowReportRowFor mapwizeObject: MWZObject) -> Bool {
+        return true
     }
     
     /*func mapwizeView(_ mapwizeView: MWZUIView, requireComponentFor placeDetails: MWZPlaceDetails!, withDefaultComponents components: MWZUIBottomSheetComponents) -> MWZUIBottomSheetComponents {

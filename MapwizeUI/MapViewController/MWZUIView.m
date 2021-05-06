@@ -23,6 +23,8 @@
 #import "MWZUIUniversesButtonDelegate.h"
 #import "MWZUIBottomSheetComponents.h"
 #import "MWZUIOpeningHoursUtils.h"
+#import "MWZUIIssuesReportingViewController.h"
+
 
 typedef NS_ENUM(NSUInteger, MWZViewState) {
     MWZViewStateDefault,
@@ -704,6 +706,12 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     else {
         defaultProperties.infoButtonHidden = YES;
     }
+    if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowReportRowFor:)]) {
+        defaultProperties.reportRowHidden = ![self.delegate mapwizeView:self shouldShowReportRowFor:self.selectedContent];
+    }
+    else {
+        defaultProperties.reportRowHidden = YES;
+    }
     [self.defaultScene setSceneProperties:defaultProperties];
     if ([self.selectedContent isKindOfClass:MWZPlace.class]) {
         [self.mapView removeMarkers];
@@ -739,6 +747,12 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         else {
             defaultProperties.infoButtonHidden = YES;
         }
+        if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowReportRowFor:)]) {
+            defaultProperties.reportRowHidden = ![self.delegate mapwizeView:self shouldShowReportRowFor:self.selectedContent];
+        }
+        else {
+            defaultProperties.reportRowHidden = YES;
+        }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.defaultScene setSceneProperties:defaultProperties];
         });
@@ -752,6 +766,12 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         }
         else {
             defaultProperties.infoButtonHidden = YES;
+        }
+        if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldShowReportRowFor:)]) {
+            defaultProperties.reportRowHidden = ![self.delegate mapwizeView:self shouldShowReportRowFor:self.selectedContent];
+        }
+        else {
+            defaultProperties.reportRowHidden = YES;
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.defaultScene setSceneProperties:defaultProperties];
@@ -824,6 +844,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     else {
         defaultProperties.infoButtonHidden = YES;
     }
+    defaultProperties.reportRowHidden = YES;
     [self.defaultScene setSceneProperties:defaultProperties];
 }
 
@@ -1066,6 +1087,11 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 }
 - (void) didTapOnWebsiteButton {
     NSLog(@"SHOW WEBSITE");
+}
+
+- (void) didTapOnReportIssueButton:(MWZPlaceDetails*)details {
+    MWZUIIssuesReportingViewController* issueController = [[MWZUIIssuesReportingViewController alloc] initWithVenue:[self.mapView getVenue] placeDetails:details userInfo:nil language:[self.mapView getLanguage] color:self.options.mainColor api:_mapView.mapwizeApi];
+    [self.window.rootViewController presentViewController:issueController animated:YES completion:nil];
 }
 
 - (void) didTapOnInformationButton {
@@ -1443,13 +1469,9 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 
 - (void)mapView:(MWZMapView *_Nonnull)mapView venueDidEnter:(MWZVenue *_Nonnull)venue {
     
-    /*MWZUIIssuesReportingViewController* issueController = [[MWZUIIssuesReportingViewController alloc] initWithVenue:venue place:nil userInfo:nil color:_options.mainColor];
-    [self.window.rootViewController presentViewController:issueController animated:YES completion:nil];
-    */
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:venueDidEnter:)]) {
         [self.delegate mapwizeView:self venueDidEnter:venue];
     }
-    
     
     MWZUIDefaultSceneProperties* defaultProperties = [MWZUIDefaultSceneProperties scenePropertiesWithProperties:self.defaultScene.sceneProperties];
     defaultProperties.venue = venue;

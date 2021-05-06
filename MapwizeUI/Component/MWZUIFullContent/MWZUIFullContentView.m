@@ -12,10 +12,11 @@
 #import "MWZUIBookingView.h"
 #import "MWZUIBottomSheet.h"
 #import "MWZUIPagerView.h"
+#import "MWZUIReportIssueRow.h"
 #import <MapwizeSDK/MapwizeSDK.h>
 #import <WebKit/WebKit.h>
 
-@interface MWZUIFullContentView () <UIGestureRecognizerDelegate>
+@interface MWZUIFullContentView () <UIGestureRecognizerDelegate, MWZUIReportIssueRowDelegate>
 
 @property (nonatomic) UILabel* titleTextView;
 @property (nonatomic) UILabel* subtitleTextView;
@@ -209,12 +210,11 @@
     return buttons;
 }
 
-- (NSMutableArray<MWZUIFullContentViewComponentRow*>*) buildContentRowsForPlaceDetails:(MWZPlaceDetails*)placeDetails language:(NSString*)language {
+- (NSMutableArray<MWZUIFullContentViewComponentRow*>*) buildContentRowsForPlaceDetails:(MWZPlaceDetails*)placeDetails language:(NSString*)language shouldShowReportRow:(BOOL)reportRow {
     NSMutableArray<MWZUIFullContentViewComponentRow*>* rows = [[NSMutableArray alloc] init];
     NSMutableArray<MWZUIFullContentViewComponentRow*>* unfilledRow = [[NSMutableArray alloc] init];
     if (placeDetails.floor) {
         MWZUIFullContentViewComponentRow* row = [self getFloorRowForPlaceDetails:placeDetails language:language];
-        
         [rows addObject:row];
     }
     else {
@@ -262,8 +262,24 @@
         MWZUIFullContentViewComponentRow* row = [self getBookingRowForPlaceDetails:nil];
         [unfilledRow addObject:row];
     }
+    if (placeDetails.issueTypes && placeDetails.issueTypes.count > 0 && reportRow) {
+        MWZUIFullContentViewComponentRow* row = [self getReportRow];
+        UITapGestureRecognizer *singleFingerTap =
+          [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                  action:@selector(handleReportTap:)];
+        [row addGestureRecognizer:singleFingerTap];
+        [unfilledRow addObject:row];
+    }
     [rows addObjectsFromArray:unfilledRow];
     return rows;
+}
+
+
+
+//The event handling method
+- (void)handleReportTap:(UITapGestureRecognizer *)recognizer
+{
+    [_delegate didTapOnReportIssueButton];
 }
 
 - (UIView*) addRow:(MWZUIFullContentViewComponentRow*)componentRow inView:(UIView*)inView below:(UIView*)view {
@@ -310,6 +326,16 @@
     
     
 }
+
+- (MWZUIFullContentViewComponentRow*) getReportRow {
+    UIImage* image = [UIImage imageNamed:@"report" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
+    UILabel* floorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    floorLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [floorLabel setFont:[UIFont systemFontOfSize:14]];
+    [floorLabel setText:@"Report an issue"];
+    return [[MWZUIFullContentViewComponentRow alloc] initWithImage:image contentView:floorLabel color:_color tapGestureRecognizer:nil type:MWZUIFullContentViewComponentRowWebsite infoAvailable:YES];
+}
+
 
 - (MWZUIFullContentViewComponentRow*) getFloorRowForPlaceDetails:(MWZPlaceDetails*)placeDetails language:(NSString*)language {
     UIImage* image = [UIImage imageNamed:@"floor" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];
@@ -426,6 +452,10 @@
 
 - (void) informationButtonAction:(UIButton*)button {
     [_delegate didTapOnInfoButton];
+}
+
+- (void) didTapOnReportIssue {
+    [_delegate didTapOnReportIssueButton];
 }
 
 
