@@ -1,5 +1,10 @@
 # Mapwize UI iOS Changelog
 
+## 2.4.1
+
+- Upgrading the Mapwize SDK to 3.5.2
+  - Reordering geojson layer to improve display process
+
 ## 2.4.0
 
 - Upgrading the Mapwize SDK to 3.5.0
