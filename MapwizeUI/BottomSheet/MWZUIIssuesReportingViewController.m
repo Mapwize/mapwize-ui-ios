@@ -33,6 +33,8 @@
 @property (nonatomic) MWZUITwoLinesRow* summaryRow;
 @property (nonatomic) MWZUITwoLinesRow* descriptionRow;
 
+@property (nonatomic) UIScrollView* scrollView;
+
 @end
 
 @implementation MWZUIIssuesReportingViewController
@@ -51,6 +53,7 @@
     _color = color;
     _language = language;
     _api = api;
+    [self registerForKeyboardNotifications];
     return self;
 }
 
@@ -87,36 +90,36 @@
     [[sendButton.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-16] setActive:YES];
     [[sendButton.centerYAnchor constraintEqualToAnchor:_targetedContentSummary.centerYAnchor constant:0] setActive:YES];
     
-    UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
-    scrollView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:scrollView];
-    [[scrollView.topAnchor constraintEqualToAnchor:_targetedContentSummary.bottomAnchor] setActive:YES];
-    [[scrollView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor] setActive:YES];
-    [[scrollView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor] setActive:YES];
-    [[scrollView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor] setActive:YES];
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+    _scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:_scrollView];
+    [[_scrollView.topAnchor constraintEqualToAnchor:_targetedContentSummary.bottomAnchor] setActive:YES];
+    [[_scrollView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor] setActive:YES];
+    [[_scrollView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor] setActive:YES];
+    [[_scrollView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor] setActive:YES];
     
     UILabel* venueContentView = [[UILabel alloc] initWithFrame:CGRectZero];
     venueContentView.text = [_venue titleForLanguage:_language];
     [venueContentView setFont:[UIFont systemFontOfSize:14]];
     MWZUILabelRow* venueRow = [[MWZUILabelRow alloc] initWithImage:[UIImage imageNamed:@"venue" inBundle:bundle compatibleWithTraitCollection:nil] label:[_venue titleForLanguage:_language] color:_color];
     venueRow.translatesAutoresizingMaskIntoConstraints = NO;
-    [scrollView addSubview:venueRow];
-    [[venueRow.leadingAnchor constraintEqualToAnchor:scrollView.leadingAnchor constant:8.0] setActive:YES];
-    [[venueRow.topAnchor constraintEqualToAnchor:scrollView.topAnchor constant:8.0] setActive:YES];
-    [[venueRow.trailingAnchor constraintEqualToAnchor:scrollView.trailingAnchor constant:-8.0] setActive:YES];
+    [_scrollView addSubview:venueRow];
+    [[venueRow.leadingAnchor constraintEqualToAnchor:_scrollView.leadingAnchor constant:8.0] setActive:YES];
+    [[venueRow.topAnchor constraintEqualToAnchor:_scrollView.topAnchor constant:8.0] setActive:YES];
+    [[venueRow.trailingAnchor constraintEqualToAnchor:_scrollView.trailingAnchor constant:-8.0] setActive:YES];
     
-    UIView* lastView = [self addSeparatorBelow:venueRow inView:scrollView marginTop:0.0];
+    UIView* lastView = [self addSeparatorBelow:venueRow inView:_scrollView marginTop:0.0];
     UILabel* placeContentView = [[UILabel alloc] initWithFrame:CGRectZero];
     placeContentView.text = [_placeDetails titleForLanguage:_language];
     [placeContentView setFont:[UIFont systemFontOfSize:14]];
     MWZUILabelRow* placeRow = [[MWZUILabelRow alloc] initWithImage:[UIImage imageNamed:@"place" inBundle:bundle compatibleWithTraitCollection:nil] label:[_placeDetails titleForLanguage:_language] color:_color];
     placeRow.translatesAutoresizingMaskIntoConstraints = NO;
-    [scrollView addSubview:placeRow];
-    [[placeRow.leadingAnchor constraintEqualToAnchor:scrollView.leadingAnchor constant:8.0] setActive:YES];
+    [_scrollView addSubview:placeRow];
+    [[placeRow.leadingAnchor constraintEqualToAnchor:_scrollView.leadingAnchor constant:8.0] setActive:YES];
     [[placeRow.topAnchor constraintEqualToAnchor:lastView.bottomAnchor constant:0.0] setActive:YES];
-    [[placeRow.trailingAnchor constraintEqualToAnchor:scrollView.trailingAnchor constant:-8.0] setActive:YES];
+    [[placeRow.trailingAnchor constraintEqualToAnchor:_scrollView.trailingAnchor constant:-8.0] setActive:YES];
     
-    lastView = [self addSeparatorBelow:placeRow inView:scrollView marginTop:0.0];
+    lastView = [self addSeparatorBelow:placeRow inView:_scrollView marginTop:0.0];
     
     _userContentView = [[UITextField alloc] initWithFrame:CGRectZero];
     _userContentView.placeholder = NSLocalizedString(@"Email", @"");
@@ -126,34 +129,34 @@
     [_userContentView setFont:[UIFont systemFontOfSize:14]];
     _emailRow = [[MWZUITwoLinesRow alloc] initWithImage:[UIImage imageNamed:@"people" inBundle:bundle compatibleWithTraitCollection:nil] label:NSLocalizedString(@"Email", @"") view:_userContentView color:_color];
     _emailRow.translatesAutoresizingMaskIntoConstraints = NO;
-    [scrollView addSubview:_emailRow];
-    [[_emailRow.leadingAnchor constraintEqualToAnchor:scrollView.leadingAnchor constant:8.0] setActive:YES];
+    [_scrollView addSubview:_emailRow];
+    [[_emailRow.leadingAnchor constraintEqualToAnchor:_scrollView.leadingAnchor constant:8.0] setActive:YES];
     [[_emailRow.topAnchor constraintEqualToAnchor:lastView.bottomAnchor constant:0.0] setActive:YES];
-    [[_emailRow.trailingAnchor constraintEqualToAnchor:scrollView.trailingAnchor constant:-8.0] setActive:YES];
+    [[_emailRow.trailingAnchor constraintEqualToAnchor:_scrollView.trailingAnchor constant:-8.0] setActive:YES];
     
-    lastView = [self addSeparatorBelow:_emailRow inView:scrollView marginTop:0.0];
+    lastView = [self addSeparatorBelow:_emailRow inView:_scrollView marginTop:0.0];
     
     _issueTypeRow = [[MWZUIIssueTypeView alloc] initWithFrame:CGRectZero issueTypes:_issueTypes color:_color language:_language];
     _issueTypeRow.delegate = self;
     _issueTypeRow.translatesAutoresizingMaskIntoConstraints = NO;
-    [scrollView addSubview:_issueTypeRow];
-    [[_issueTypeRow.leadingAnchor constraintEqualToAnchor:scrollView.leadingAnchor constant:8.0] setActive:YES];
+    [_scrollView addSubview:_issueTypeRow];
+    [[_issueTypeRow.leadingAnchor constraintEqualToAnchor:_scrollView.leadingAnchor constant:8.0] setActive:YES];
     [[_issueTypeRow.topAnchor constraintEqualToAnchor:lastView.bottomAnchor constant:0.0] setActive:YES];
-    [[_issueTypeRow.trailingAnchor constraintEqualToAnchor:scrollView.trailingAnchor constant:-8.0] setActive:YES];
+    [[_issueTypeRow.trailingAnchor constraintEqualToAnchor:_scrollView.trailingAnchor constant:-8.0] setActive:YES];
     
-    lastView = [self addSeparatorBelow:_issueTypeRow inView:scrollView marginTop:0.0];
+    lastView = [self addSeparatorBelow:_issueTypeRow inView:_scrollView marginTop:0.0];
     
     _summaryTextField = [[UITextField alloc] initWithFrame:CGRectZero];
     _summaryTextField.placeholder = NSLocalizedString(@"Summary", @"");
     [_summaryTextField setFont:[UIFont systemFontOfSize:14]];
     _summaryRow = [[MWZUITwoLinesRow alloc] initWithImage:[UIImage imageNamed:@"object" inBundle:bundle compatibleWithTraitCollection:nil] label:NSLocalizedString(@"Summary", @"") view:_summaryTextField color:_color];
     _summaryRow.translatesAutoresizingMaskIntoConstraints = NO;
-    [scrollView addSubview:_summaryRow];
-    [[_summaryRow.leadingAnchor constraintEqualToAnchor:scrollView.leadingAnchor constant:8.0] setActive:YES];
+    [_scrollView addSubview:_summaryRow];
+    [[_summaryRow.leadingAnchor constraintEqualToAnchor:_scrollView.leadingAnchor constant:8.0] setActive:YES];
     [[_summaryRow.topAnchor constraintEqualToAnchor:lastView.bottomAnchor constant:0.0] setActive:YES];
-    [[_summaryRow.trailingAnchor constraintEqualToAnchor:scrollView.trailingAnchor constant:-8.0] setActive:YES];
+    [[_summaryRow.trailingAnchor constraintEqualToAnchor:_scrollView.trailingAnchor constant:-8.0] setActive:YES];
     
-    lastView = [self addSeparatorBelow:_summaryRow inView:scrollView marginTop:0.0];
+    lastView = [self addSeparatorBelow:_summaryRow inView:_scrollView marginTop:0.0];
     
     _detailsContentView = [[UITextView alloc] initWithFrame:CGRectZero];
     _detailsContentView.textContainer.lineFragmentPadding = 0;
@@ -166,11 +169,11 @@
     [_detailsContentView setFont:_summaryTextField.font];
     _descriptionRow = [[MWZUITwoLinesRow alloc] initWithImage:[UIImage imageNamed:@"description" inBundle:bundle compatibleWithTraitCollection:nil] label:NSLocalizedString(@"Description", @"") view:_detailsContentView color:_color];
     _descriptionRow.translatesAutoresizingMaskIntoConstraints = NO;
-    [scrollView addSubview:_descriptionRow];
-    [[_descriptionRow.leadingAnchor constraintEqualToAnchor:scrollView.leadingAnchor constant:8.0] setActive:YES];
+    [_scrollView addSubview:_descriptionRow];
+    [[_descriptionRow.leadingAnchor constraintEqualToAnchor:_scrollView.leadingAnchor constant:8.0] setActive:YES];
     [[_descriptionRow.topAnchor constraintEqualToAnchor:lastView.bottomAnchor constant:0.0] setActive:YES];
-    [[_descriptionRow.trailingAnchor constraintEqualToAnchor:scrollView.trailingAnchor constant:-8.0] setActive:YES];
-    [[_descriptionRow.bottomAnchor constraintEqualToAnchor:scrollView.bottomAnchor constant:0.0] setActive:YES];
+    [[_descriptionRow.trailingAnchor constraintEqualToAnchor:_scrollView.trailingAnchor constant:-8.0] setActive:YES];
+    [[_descriptionRow.bottomAnchor constraintEqualToAnchor:_scrollView.bottomAnchor constant:0.0] setActive:YES];
     
     
     [_api getUserInfoWithSuccess:^(MWZUserInfo * _Nonnull userInfo) {
@@ -250,6 +253,35 @@
 
 - (void)didSelectIssueType:(MWZIssueType *)issueType {
     _selectedIssueType = issueType;
+}
+
+- (void)registerForKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(keyboardWasShown:)
+            name:UIKeyboardDidShowNotification object:nil];
+
+   [[NSNotificationCenter defaultCenter] addObserver:self
+             selector:@selector(keyboardWillBeHidden:)
+             name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardWasShown:(NSNotification*)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    _scrollView.contentInset = contentInsets;
+    _scrollView.scrollIndicatorInsets = contentInsets;
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= kbSize.height;
+    if (!CGRectContainsPoint(aRect, _descriptionTextView.frame.origin) ) {
+        [self.scrollView scrollRectToVisible:_descriptionTextView.frame animated:YES];
+    }
+}
+
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification {
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    _scrollView.contentInset = contentInsets;
+    _scrollView.scrollIndicatorInsets = contentInsets;
 }
 
 @end
