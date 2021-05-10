@@ -64,6 +64,8 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 @property (nonatomic) MWZDirectionMode* directionMode;
 @property (nonatomic, assign) MWZViewState state;
 
+@property (nonatomic) MWZVenue* lastVenue;
+
 @property (nonatomic) NSLayoutConstraint* universesButtonLeftConstraint;
 
 @end
@@ -601,6 +603,16 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     self.state = MWZViewStateDefault;
     [self.universesButton showIfNeeded];
     [self.sceneCoordinator transitionFromSearchToDefault];
+}
+
+- (void) defaultToPreviousDirectionTransition {
+    self.state = MWZViewStateDirectionOn;
+    [self.universesButton setHidden:YES];
+    [self.sceneCoordinator transitionFromDefaultToDirection];
+    MWZDirection* direction = [self.mapView getDirection];
+    [self.directionScene setInfoWith:direction.traveltime
+                   directionDistance:direction.distance
+                       directionMode:self.directionMode];
 }
 
 - (void) defaultToDirectionTransition {
@@ -1486,6 +1498,13 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
         self.universesButtonLeftConstraint.constant =  16.0f * 2 + 50.f;
     }
     [self.universesButton showIfNeeded];
+    
+    if ([self.mapView getDirection] && [_lastVenue isEqual:venue]) {
+        [self defaultToPreviousDirectionTransition];
+        [self unselectContent];
+    }
+    
+    _lastVenue = venue;
 }
 
 - (void)mapView:(MWZMapView *)mapView venueDidFailEntering:(MWZVenue *)venue withError:(NSError *)error {
@@ -1519,6 +1538,8 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     [self.defaultScene setSceneProperties:defaultProperties];
     self.mainSearches = @[];
     [self unselectContent];
+    
+    [self directionToDefaultTransition];
 }
 
 - (void) mapView:(MWZMapView *)mapView universeWillChange:(MWZUniverse *)universe {
