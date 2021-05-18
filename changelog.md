@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.4.2
+
+- Fixing crash when exising venue in direction
+
 ## 2.4.1
 
 - Upgrading the Mapwize SDK to 3.5.2
