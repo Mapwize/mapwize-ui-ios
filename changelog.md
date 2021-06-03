@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.4.3
+
+- Fixing navigation info not updated
+
 ## 2.4.2
 
 - Fixing crash when exising venue in direction
