@@ -1672,6 +1672,9 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     if (self.delegate && [self.delegate respondsToSelector:@selector(mapwizeView:shouldRecomputeNavigation:)]) {
         return [self.delegate mapwizeView:self shouldRecomputeNavigation:navigationInfo];
     }
+    [self.directionScene setInfoWith:navigationInfo.duration
+                   directionDistance:navigationInfo.distance
+                       directionMode:self.directionMode];
     return navigationInfo.locationDelta > 10 && [self.mapView getUserLocation] && [self.mapView getUserLocation].floor;
 }
 
