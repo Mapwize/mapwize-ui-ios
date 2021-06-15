@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.5.0
+
+- Upgrading the Mapwize SDK to 3.6.0
+
 ## 2.4.3
 
 - Fixing navigation info not updated

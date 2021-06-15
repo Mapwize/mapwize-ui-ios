@@ -141,10 +141,15 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     }
     
     if (options.centerOnPlaceId) {
-        [self.mapView.mapwizeApi getPlaceWithIdentifier:options.centerOnPlaceId success:^(MWZPlace * _Nonnull place) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self selectPlace:place  centerOn:NO];
-            });
+        // Workaround until next sdk release
+        [self.mapView.mapwizeApi getPlaceDetailsWithPlaceIdentifier:options.centerOnPlaceId success:^(MWZPlaceDetails * _Nonnull placeDetails) {
+            [self.mapView.mapwizeApi getPlaceWithIdentifier:placeDetails.identifier success:^(MWZPlace * _Nonnull place) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self selectPlace:place  centerOn:NO];
+                });
+            } failure:^(NSError * _Nonnull error) {
+                
+            }];
         } failure:^(NSError * _Nonnull error) {
             
         }];
