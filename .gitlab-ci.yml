@@ -1,0 +1,60 @@
+stages:
+  - build
+  - sync
+  - publish
+
+variables:
+  GIT_STRATEGY: clone
+  FF_ENABLE_BASH_EXIT_CODE_CHECK: "true"
+
+build:cocoapods:
+  stage: build
+  variables:
+    LC_ALL: "en_US.UTF-8"
+    LANG: "en_US.UTF-8"
+  before_script:
+    - git remote set-url origin "https://$GITHUB_TOKEN@github.com/Mapwize/mapwize-ui-ios.git"
+    - git config --global user.email "maxime.colmant@gmail.com"
+    - git config --global user.name "Maxime Colmant"
+  script:
+    - ./ci/build-ui-cocoapods.sh
+  artifacts:
+    paths:
+    - Podfile.lock
+    - ui/
+  tags:
+    - ios
+
+sync:repo:
+  stage: sync
+  image: debian:buster
+  before_script:
+    - apt-get update 
+    - DEBIAN_FRONTEND=noninteractive apt-get install -y git
+    - git remote set-url origin "https://$GITHUB_TOKEN@github.com/Mapwize/mapwize-ui-ios.git"
+    - git config --global user.email "maxime.colmant@gmail.com"
+    - git config --global user.name "Maxime Colmant"
+  script:
+    - ./ci/sync-repo-script.sh
+  dependencies:
+    - build:cocoapods
+  only:
+    - branches
+
+publish:
+  stage: publish
+  variables:
+    LC_ALL: "en_US.UTF-8"
+    LANG: "en_US.UTF-8"
+  before_script:
+    - git remote set-url origin "https://$GITHUB_TOKEN@github.com/Mapwize/mapwize-ui-ios.git"
+    - git config --global user.email "maxime.colmant@gmail.com"
+    - git config --global user.name "Maxime Colmant"
+  script:
+    - ./ci/publish-script.sh
+  dependencies:
+    - build:cocoapods
+  only:
+    - tags
+  tags:
+    - ios
