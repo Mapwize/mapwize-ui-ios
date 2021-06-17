@@ -47,7 +47,7 @@ jazzy \
     --framework-root ui/MapwizeUI.framework \
     --module MapwizeUI \
     --readme=docs.md \
-    --output docs
+    --output docs > /dev/null
 
 rm -rf docs/docsets
 ### ====== ###

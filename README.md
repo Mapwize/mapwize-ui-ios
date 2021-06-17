@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Mapwize/mapwize-ui-ios.svg?branch=master)](https://travis-ci.org/Mapwize/mapwize-ui-ios)
+[![pipeline status](https://gitlab.com/mapwize/mapwize-ui-ios-mirror/badges/master/pipeline.svg)](https://gitlab.com/mapwize/mapwize-ui-ios-mirror/-/commits/master)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/mapwize/mapwize-ui-ios)
 ![Cocoapods](https://img.shields.io/cocoapods/v/MapwizeUI)
 
