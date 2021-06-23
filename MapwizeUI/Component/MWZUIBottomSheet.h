@@ -20,7 +20,6 @@ shouldShowInformationButton:(BOOL) shouldShowInformationButton
       shouldShowReportRow:(BOOL) shouldShowReportRow
                  language:(NSString*)language;
 - (void) showPlacelist:(MWZPlacelist*)placelist shouldShowInformationButton:(BOOL) shouldShowInformationButton
-   shouldShowReportRow:(BOOL) shouldShowReportRow
               language:(NSString*)language;
 - (void) showPlace:(MWZPlace*)place shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language;
 - (void) removeContent;

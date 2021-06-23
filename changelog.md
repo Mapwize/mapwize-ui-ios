@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.5.1
+
+- Fixing crash when selecting a placelist from search
+
 ## 2.5.0
 
 - Upgrading the Mapwize SDK to 3.6.0

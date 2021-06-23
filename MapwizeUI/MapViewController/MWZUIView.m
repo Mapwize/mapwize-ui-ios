@@ -209,7 +209,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                                                           toItem:self.safeAreaLayoutGuide
                                                                        attribute:NSLayoutAttributeBottom
                                                                       multiplier:1.0f
-                                                                        constant: -32.0f];
+                                                                        constant: -40.0f];
     }
     else {
         languagesButtonRightConstraint = [NSLayoutConstraint constraintWithItem:self.languagesButton
@@ -226,7 +226,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                                                           toItem:self
                                                                        attribute:NSLayoutAttributeBottom
                                                                       multiplier:1.0f
-                                                                        constant:-32.0f];
+                                                                        constant:-40.0f];
     }
     
     languagesButtonBottomConstraint.priority = 1000;
@@ -305,7 +305,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                                                           toItem:self.safeAreaLayoutGuide
                                                                        attribute:NSLayoutAttributeBottom
                                                                       multiplier:1.0f
-                                                                        constant:-32.0f];
+                                                                        constant:-40.0f];
     }
     else {
         self.universesButtonLeftConstraint = [NSLayoutConstraint constraintWithItem:self.universesButton
@@ -322,7 +322,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                                                           toItem:self
                                                                        attribute:NSLayoutAttributeBottom
                                                                       multiplier:1.0f
-                                                                        constant:-32.0f];
+                                                                        constant:-40.0f];
     }
     
     universesButtonBottomConstraint.priority = 1000;
@@ -401,7 +401,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                                                            toItem:self.safeAreaLayoutGuide
                                                                         attribute:NSLayoutAttributeBottom
                                                                        multiplier:1.0f
-                                                                         constant:-32.0f];
+                                                                         constant:-40.0f];
     } else {
         followUserButtonRightConstraint = [NSLayoutConstraint constraintWithItem:self.followUserButton
                                                                        attribute:NSLayoutAttributeRight
@@ -416,7 +416,7 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
                                                                            toItem:self
                                                                         attribute:NSLayoutAttributeBottom
                                                                        multiplier:1.0f
-                                                                         constant:-32.0f];
+                                                                         constant:-40.0f];
     }
     
     followUserButtonBottomConstraint.priority = 1000;
