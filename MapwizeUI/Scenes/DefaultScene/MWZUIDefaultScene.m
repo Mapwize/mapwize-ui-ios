@@ -177,7 +177,7 @@
         [self.bottomSheet showPlaceDetails:object shouldShowInformationButton:showInfoButton shouldShowReportRow:showReportRow language:language];
     }
     if ([object isKindOfClass:MWZPlacelist.class]) {
-        [self.bottomSheet showPlacelist:object shouldShowInformationButton:showInfoButton shouldShowReportRow:showReportRow language:language];
+        [self.bottomSheet showPlacelist:object shouldShowInformationButton:showInfoButton language:language];
     }
     if ([object isKindOfClass:MWZPlace.class]) {
         [self.bottomSheet showPlace:object shouldShowInformationButton:showInfoButton language:language];

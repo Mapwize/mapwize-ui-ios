@@ -100,7 +100,8 @@
     _placeDetails = nil;
 }
 
-- (void) showPlacelist:(MWZPlacelist*)placelist shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language {
+- (void) showPlacelist:(MWZPlacelist*)placelist shouldShowInformationButton:(BOOL) shouldShowInformationButton
+              language:(NSString*)language {
     _placeDetails = nil;
     _placePreview = nil;
     [_defaultContentView removeFromSuperview];
