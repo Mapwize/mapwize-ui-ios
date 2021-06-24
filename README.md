@@ -55,12 +55,18 @@ To get your own Mapwize API key, sign up for a free account at mapwize.io. Then 
 
 ### Mapbox configuration
 
-To run Mapbox on your device, you will need to add the following elements in your info.plist file:
-- MGLMapboxAccessToken -> pk.mapwize
-- MGLMapboxMetricsEnabledSettingShownInApp -> YES
+The Mapwize iOS SDK is built on top of [Mapbox GL native for iOS](https://github.com/mapbox/mapbox-gl-native).
 
-The first one enables Mapbox to load the Mapwize style, while the second guarantees we provide the required information for Mapbox.
-With these settings, a popup is shown to users when they click on the Mapwize logo (bottom left of the map).
+The Mapbox map is used as base map to display the outdoor. It is an amazingly powerful SDK allowing you to do a lot of cool stuff with the map. If you want to move the map, rotate it, overlay your own data or more, you can do it directly by controlling the Mapbox map. Adding Mapwize does not remove any capability from Mapbox, it just adds more. Have a look at the [Mapbox documentation](https://www.mapbox.com/ios-sdk/) to see all features.
+
+With the Mapwize SDK, we are extending Mapbox adding the possibility of getting inside buildings. As you zoom on the map, you will automatically enter in buildings, see the different floors and be able to navigate inside. If you want to change floors, see different universes (views) of the building, draw directions inside or display the user's indoor location, then you'll interact with the Mapwize plugin.
+
+### Configuring the outdoor map
+
+Mapwize SDK is using the Mapbox SDK to render the outdoor map. There are 2 options regarding the outdoor:
+
+- You can make use of the default Mapwize outdoor map. This comes free of charge with your Mapwize subscription but does not let you make any modification to the style or data. This comes by default. Attributions are shown to aknowledge the origin and copyright of the data.
+- You can use the full power of Mapbox to create your own outdoor map style and customize it precisely the way you want. This requires you to have a Mapbox subcription and set your Mapbox access token. To use your own Mapbox style within your Mapwize View, set `styleUrl` in your MWZMapwizeConfiguration.
 
 ### MWZMapwizeView
 
