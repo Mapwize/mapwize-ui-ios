@@ -1,5 +1,10 @@
 # Mapwize UI iOS Changelog
 
+## 2.5.3
+
+- Upgrading the Mapwize SDK to 3.6.2
+  - Adding floor controller component
+
 ## 2.5.2
 
 - Upgrading the Mapwize SDK to 3.6.1
