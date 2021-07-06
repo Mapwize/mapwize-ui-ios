@@ -36,6 +36,7 @@ if [ $? -ne 0 ]; then
         "Accept:application/vnd.github.v3+json" \
         "Authorization: token $GITHUB_TOKEN" \
         tag_name="$CI_COMMIT_REF_NAME" \
+        name="$CI_COMMIT_REF_NAME" \
         body="$release_notes")
 fi
 
