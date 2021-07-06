@@ -44,9 +44,9 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _parentFrame = frame;
+        self.frame = frame;
         _color = color;
-        //self.transform = CGAffineTransformMakeTranslation(0, _parentFrame.size.height);
+        //self.transform = CGAffineTransformMakeTranslation(0, self.frame.size.height);
         [self setupGestureRecognizer];
         [self setDefaultValuesFromFrame:frame];
         
@@ -63,8 +63,9 @@
     _maximizedHeaderHeight = parentFrame.size.height * 1/3;
 }
 
-- (void) didMoveToSuperview {
-    if (self.superview) {
+- (void) viewDidLayoutSubviews {
+    if (_selfTopConstraint == nil) {
+        [self setDefaultValuesFromFrame:self.frame];
         [self setupViews];
     }
 }
@@ -213,7 +214,7 @@ shouldShowInformationButton:(BOOL) shouldShowInformationButton
         self.defaultContentHeight = _defaultContentView.frame.size.height;
     }
     if (_placeDetails.photos && _placeDetails.photos.count > 0) {
-        _maximizedHeaderHeight = _parentFrame.size.height * 1/3;
+        _maximizedHeaderHeight = self.frame.size.height * 1/3;
         [self animateToHeight:self.defaultHeaderHeight + self.defaultContentHeight];
     }
     else {
@@ -224,9 +225,9 @@ shouldShowInformationButton:(BOOL) shouldShowInformationButton
 }
 
 - (void) setupViews {
-    _selfTopConstraint = [self.topAnchor constraintEqualToAnchor:self.superview.topAnchor constant:_parentFrame.size.height];
+    _selfTopConstraint = [self.topAnchor constraintEqualToAnchor:self.superview.topAnchor constant:self.frame.size.height];
     [_selfTopConstraint setActive:YES];
-    [[self.heightAnchor constraintEqualToConstant:self.maximizedHeaderHeight + self.maximizedContentHeight] setActive:YES];
+//    [[self.heightAnchor constraintEqualToConstant:self.maximizedHeaderHeight + self.maximizedContentHeight] setActive:YES];
     _headerView = [[UIView alloc] initWithFrame:CGRectZero];
     _headerView.layer.masksToBounds = YES;
     _headerView.translatesAutoresizingMaskIntoConstraints = NO;

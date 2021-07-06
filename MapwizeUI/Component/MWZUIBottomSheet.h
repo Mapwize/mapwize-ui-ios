@@ -24,6 +24,8 @@ shouldShowInformationButton:(BOOL) shouldShowInformationButton
 - (void) showPlace:(MWZPlace*)place shouldShowInformationButton:(BOOL) shouldShowInformationButton language:(NSString*)language;
 - (void) removeContent;
 
+- (void) viewDidLayoutSubviews;
+
 @end
 
 NS_ASSUME_NONNULL_END
