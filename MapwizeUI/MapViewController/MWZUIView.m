@@ -157,6 +157,11 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
     
 }
 
+- (void) layoutSubviews {
+    [super layoutSubviews];
+    [self.defaultScene.bottomSheet viewDidLayoutSubviews];
+}
+
 - (void) addLanguagesButton {
     self.languagesButton = [[MWZUILanguagesButton alloc] init];
     self.languagesButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -1097,13 +1102,13 @@ MWZUIUniversesButtonDelegate,MWZUILanguagesButtonDelegate>
 }
 
 - (void) didTapOnCallButton {
-    NSLog(@"SHOW PHONE CALL");
+    
 }
 - (void) didTapOnShareButton {
-    NSLog(@"SHOW SHARE PLACE");
+    
 }
 - (void) didTapOnWebsiteButton {
-    NSLog(@"SHOW WEBSITE");
+    
 }
 
 - (void) didTapOnReportIssueButton:(MWZPlaceDetails*)details {

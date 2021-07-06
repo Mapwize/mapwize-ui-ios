@@ -76,14 +76,16 @@
                                      multiplier:1.0f
                                        constant:16.0f] setActive:YES];
     }
-    
     _bottomSheet = [[MWZUIBottomSheet alloc] initWithFrame:view.frame color:_mainColor];
     _bottomSheet.translatesAutoresizingMaskIntoConstraints = NO;
     [view addSubview:_bottomSheet];
     [[_bottomSheet.leadingAnchor constraintEqualToAnchor:view.leadingAnchor] setActive:YES];
     [[_bottomSheet.trailingAnchor constraintEqualToAnchor:view.trailingAnchor] setActive:YES];
+    [[_bottomSheet.heightAnchor constraintEqualToAnchor:view.heightAnchor] setActive:YES];
     _bottomSheet.delegate = self;
+    
 }
+
 
 - (UIView*) getTopViewToConstraint {
     return self.menuBar;
