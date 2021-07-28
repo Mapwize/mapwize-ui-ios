@@ -1,5 +1,9 @@
 # Mapwize UI iOS Changelog
 
+## 2.5.4
+
+- Upgrading the Mapwize SDK to 3.6.3
+
 ## 2.5.3
 
 - Fixing bottom sheet size issue
