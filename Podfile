@@ -4,7 +4,7 @@ target 'MapwizeUI' do
   workspace 'MapwizeUIApp'
   project './MapwizeUI.xcodeproj'
   use_frameworks!
-  pod 'MapwizeSDK', '3.6.1'
+  pod 'MapwizeSDK', '3.6.3'
   pod 'IndoorLocation'
 end
 
